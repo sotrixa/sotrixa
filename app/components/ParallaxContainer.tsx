@@ -22,7 +22,7 @@ export default function ParallaxContainer({ children }: ParallaxContainerProps) 
 				const container = containerRef.current;
 				if (container) {
 					// Extreme fast scrolling with much higher multiplier
-					const scrollAmount = e.deltaY * 2;
+					const scrollAmount = e.deltaY * 1;
 
 					// Direct scrolling without animation for instant response
 					container.scrollLeft += scrollAmount;
@@ -51,12 +51,22 @@ export default function ParallaxContainer({ children }: ParallaxContainerProps) 
 
 			// Touch and mouse drag handlers
 			const handleMouseDown = (e: MouseEvent) => {
+				// Skip if clicking on a button or other interactive element
+				if (e.target instanceof Element && (e.target.tagName === 'BUTTON' || e.target.closest('button') || e.target.closest('a') || e.target.closest('[role="button"]'))) {
+					return;
+				}
+
 				setIsDragging(true);
 				setStartX(e.pageX - containerRef.current!.offsetLeft);
 				setScrollLeft(containerRef.current!.scrollLeft);
 			};
 
 			const handleTouchStart = (e: TouchEvent) => {
+				// Skip if touching a button or other interactive element
+				if (e.target instanceof Element && (e.target.tagName === 'BUTTON' || e.target.closest('button') || e.target.closest('a') || e.target.closest('[role="button"]'))) {
+					return;
+				}
+
 				setIsDragging(true);
 				setStartX(e.touches[0].pageX - containerRef.current!.offsetLeft);
 				setScrollLeft(containerRef.current!.scrollLeft);
