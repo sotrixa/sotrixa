@@ -5,7 +5,7 @@ import Section from '../components/Section';
 
 export default function HomeSection() {
 	return (
-		<Section id='home' className='bg-indigo-900 text-white'>
+		<Section id='home' className='bg-[#FAFAFA] text-white'>
 			<div className='space-y-6'>
 				<motion.h1 className='text-7xl font-bold' initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8, delay: 0.2 }}>
 					Welcome to Our World

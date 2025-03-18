@@ -12,7 +12,7 @@ export default function Navigation() {
 	};
 
 	return (
-		<nav className='fixed top-0 left-0 w-full z-50 bg-opacity-70 backdrop-blur-sm text-white'>
+		<nav className='fixed top-0 left-0 w-full z-50  bg-opacity-70 backdrop-blur-sm text-white'>
 			<div className='container mx-auto px-6 py-4'>
 				<div className='flex justify-between items-center'>
 					{/* Logo */}
@@ -22,8 +22,9 @@ export default function Navigation() {
 
 					{/* Menu toggle button - only shown when menu is closed */}
 					{!isOpen && (
-						<button className='flex items-center justify-center z-50 relative' onClick={toggleMenu} aria-label='Open menu'>
-							<Image src='/menu-open.svg' alt='Open menu' width={52} height={52} className='cursor-pointer' />
+						<button className='flex items-center gap-4 z-50 relative' onClick={toggleMenu} aria-label='Open menu'>
+							<span className='font-serif text-black text-lg'>Main Menu</span>
+							<Image src='/menu-open.svg' alt='Open menu' width={32} height={32} className='cursor-pointer' />
 						</button>
 					)}
 				</div>
@@ -37,7 +38,7 @@ export default function Navigation() {
 						<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className='fixed inset-0  bg-opacity-40 z-30' onClick={toggleMenu} />
 
 						{/* Menu panel */}
-						<motion.div initial={{ opacity: 0, x: '100%' }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: '100%' }} transition={{ type: 'tween', duration: 0.3 }} className='fixed top-0 right-0 bottom-0 h-screen w-3/12 bg-white z-40 flex flex-col text-black shadow-xl'>
+						<motion.div initial={{ opacity: 0, y: '-100%' }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: '-100%' }} transition={{ type: 'tween', duration: 0.3 }} className='fixed top-0 left-0 right-0 h-screen w-full bg-white z-40 flex flex-col text-black shadow-xl md:w-3/12 md:right-0 md:left-auto'>
 							{/* Header with title and close button */}
 							<div className='flex gap-4 items-right justify-end px-8 pt-8 pb-6 border-b border-gray-100'>
 								<h2 className='text-2xl font-bold'>Main Menu</h2>
