@@ -12,7 +12,7 @@ export default function Navigation() {
 	};
 
 	return (
-		<nav className='fixed top-0 left-0 w-full z-50  bg-opacity-70 backdrop-blur-sm text-white'>
+		<nav className='fixed top-0 left-0 w-full z-50  bg-opacity-70  text-white'>
 			<div className='container mx-auto px-6 py-4'>
 				<div className='flex justify-between items-center'>
 					{/* Logo */}
