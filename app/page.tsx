@@ -3,7 +3,7 @@
 import ParallaxContainer from './components/ParallaxContainer';
 import SmoothScroll from './components/SmoothScroll';
 import ScrollIndicator from './components/ScrollIndicator';
-import ScrollGuide from './components/ScrollGuide';
+// import ScrollGuide from './components/ScrollGuide';
 import KeyboardControls from './components/KeyboardControls';
 import HomeSection from './sections/HomeSection';
 import IntroSection from './sections/IntroSection';
@@ -17,7 +17,7 @@ export default function Home() {
 		<main className='relative bg-black min-h-screen'>
 			<SmoothScroll />
 			<ScrollIndicator />
-			<ScrollGuide />
+			{/* <ScrollGuide /> */}
 			<KeyboardControls />
 			<Navigation />
 

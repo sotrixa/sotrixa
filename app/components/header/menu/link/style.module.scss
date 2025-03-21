@@ -1,0 +1,82 @@
+.el {
+	perspective: 80vw;
+	transform-origin: top;
+
+	a {
+		position: relative;
+		text-decoration: none;
+		font-size: 5vw;
+		font-weight: 600;
+		letter-spacing: -0.05vw;
+		color: white;
+		transition: color 0.3s;
+		z-index: 2;
+
+		&:hover {
+			color: gray;
+		}
+	}
+
+	.outer {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+
+		.inner {
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			animation: rotatingSlow 15s linear infinite;
+
+			.container {
+				display: flex;
+				align-items: center;
+				gap: 20px;
+				height: 50%;
+				flex-shrink: 0;
+
+				.imageContainer {
+					position: relative;
+					width: 10vw;
+					aspect-ratio: 16/9;
+					overflow: hidden;
+				}
+
+				p {
+					font-size: 14px;
+					color: gray;
+				}
+			}
+		}
+	}
+
+	@media screen and (max-width: 500px) {
+		a {
+			font-size: 10vw;
+		}
+
+		.outer {
+			.inner {
+				.container {
+					.imageContainer {
+						width: 15vw;
+					}
+				}
+			}
+		}
+	}
+}
+
+@keyframes rotatingSlow {
+	0% {
+		transform: translateY(0);
+	}
+	100% {
+		transform: translateY(-50%);
+	}
+}
