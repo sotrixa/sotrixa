@@ -1,0 +1,117 @@
+.main {
+	display: flex;
+	height: 100vh;
+	align-items: center;
+	justify-content: center;
+	padding: 0 5rem;
+}
+
+.projectContainer {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+.project {
+	padding: 1.5rem 0;
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
+	cursor: pointer;
+	position: relative;
+}
+
+.project:last-of-type {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.projectHeader {
+	display: flex;
+	align-items: center;
+}
+
+.project h2 {
+	font-size: 1.5rem;
+	margin: 0;
+	font-weight: 400;
+}
+
+.project p {
+	margin: 0 0 0 1rem;
+	font-size: 0.85rem;
+	color: #777;
+	display: inline-block;
+}
+
+.viewButton {
+	display: none;
+}
+
+.viewButtonActive {
+	display: none;
+}
+
+/* Modal styles */
+.modalContainer {
+	height: 350px;
+	width: 400px;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	background-color: white;
+	pointer-events: none;
+	overflow: hidden;
+	z-index: 4;
+	transition: transform 0.3s ease-out;
+}
+
+.modalSlider {
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	transition: top 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.modal {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.cursor {
+	height: 80px;
+	width: 80px;
+	border-radius: 50%;
+	background-color: #fff;
+	position: fixed;
+	z-index: 5;
+	margin-left: 0px;
+	margin-top: 0px;
+	pointer-events: none;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.cursorLabel {
+	position: fixed;
+	z-index: 6;
+	width: 80px;
+	height: 80px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-left: 0px;
+	margin-top: 0px;
+	font-size: 14px;
+	font-weight: 700;
+	color: #000;
+	pointer-events: none;
+	text-transform: uppercase;
+}
+
+.serviceDetail {
+	width: 100%;
+	min-height: 100vh;
+	position: relative;
+	color: black;
+	padding: 0 5rem;
+}

@@ -1,42 +1,63 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import Section from '../components/Section';
+import { useState, useEffect } from 'react';
+import styles from './HomeSection.module.css';
 
 export default function HomeSection() {
+	const [windowWidth, setWindowWidth] = useState(0);
+
+	useEffect(() => {
+		setWindowWidth(window.innerWidth);
+		const handleResize = () => setWindowWidth(window.innerWidth);
+		window.addEventListener('resize', handleResize);
+		return () => window.removeEventListener('resize', handleResize);
+	}, []);
+
+	const getBlocks = () => {
+		const blockSize = windowWidth * 0.02;
+		const nbOfBlocks = Math.ceil(window.innerHeight / blockSize);
+		return [...Array(nbOfBlocks).keys()].map((_, index) => {
+			return <div key={index} onMouseEnter={(e) => colorize(e.target as HTMLDivElement)} />;
+		});
+	};
+
+	const colorize = (el: HTMLDivElement) => {
+		el.style.backgroundColor = 'black';
+		setTimeout(() => {
+			el.style.backgroundColor = 'transparent';
+		}, 300);
+	};
+
 	return (
-		<Section id='home' className='bg-[#FAFAFA] text-black'>
-			<div className='flex flex-row pl-60 gap-10'>
-				<div className='space-y-0 z-100 '>
-					<div className='mt-0 pt-0'>
-						<motion.h1 className='text-5xl md:text-7xl font-black leading-none' initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8, delay: 0.2 }}>
-							<span className='text-[#70DFC6]'>People</span> <span className='text-black'>are</span> <span className='text-[#F4DD65]'>fascinating</span>
-							<span className='text-black'>.</span>
-						</motion.h1>
-						<motion.h2 className='text-4xl md:text-6xl font-black leading-tight mt-0' initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8, delay: 0.3 }}>
-							Research should be too.
-						</motion.h2>
-					</div>
-
-					<motion.p className='text-lg max-w-xl mt-2' initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8, delay: 0.4 }}>
-						We transform complex data into meaningful insights through meticulous, human-centered research
-					</motion.p>
-
-					<motion.div className='flex gap-6' initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8, delay: 0.6 }}>
-						<div className='mt-10 space-x-10'>
-							<button className='font-medium cursor-pointer hover:underline '>Talk to us</button>
-							<button className='font-medium cursor-pointer hover:underline'>See our work</button>
-						</div>
-					</motion.div>
+		<div className={styles.container}>
+			<div className={styles.body}>
+				<h1 className={styles.heading}>
+					<span className={styles.teal}>People</span> <span className={styles.white}>are</span> <span className={styles.yellow}>fascinating</span>
+					<span className={styles.black}>.</span>
+				</h1>
+				<h2 className={styles.subheading}>Research should be too.</h2>
+				<p className={styles.paragraph}>We transform complex data into meaningful insights through meticulous, human-centered research</p>
+				<div className={styles.buttons}>
+					<button className={styles.button}>Talk to us</button>
+					<button className={styles.button}>See our work</button>
 				</div>
-
-				<motion.div className='md:w-full relative max-w-2xl' initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.5 }}>
-					<video className='w-full rounded-lg scale-150 -ml-36' autoPlay loop muted playsInline>
-						<source src='/video/home-page-video.mp4' type='video/mp4' />
-						Your browser does not support the video tag.
-					</video>
-				</motion.div>
 			</div>
-		</Section>
+
+			<div className={styles.videoContainer}>
+				<video className={styles.video} autoPlay loop muted playsInline>
+					<source src='/video/home-page-video.mp4' type='video/mp4' />
+					Your browser does not support the video tag.
+				</video>
+			</div>
+
+			<div className={styles.grid}>
+				{windowWidth > 0 &&
+					[...Array(40).keys()].map((_, index) => (
+						<div key={'b_' + index} className={styles.column}>
+							{getBlocks()}
+						</div>
+					))}
+			</div>
+		</div>
 	);
 }

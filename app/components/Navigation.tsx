@@ -7,7 +7,7 @@ import Header from './header';
 export default function Navigation() {
 	return (
 		<nav className='fixed top-0 left-0 w-full z-50'>
-			<div className='container mx-auto px-6 py-4'>
+			<div className='px-20 py-4'>
 				<div className='flex justify-between items-center'>
 					{/* Logo */}
 					<div>
