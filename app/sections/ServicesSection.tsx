@@ -1,220 +1,333 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useRef, useEffect, useState } from 'react';
 import Section from '../components/Section';
-import gsap from 'gsap';
-import Image from 'next/image';
-import styles from './ServicesSection.module.css';
+import { motion } from 'framer-motion';
+import { gsap } from 'gsap';
 
-// Define the service type
-interface ServiceDetails {
-	title: string;
-	description: string;
-	src: string;
-	color: string;
+// Define type for horizontal scroll controls
+interface HorizontalScrollControls {
+	nextPanel: () => void;
+	prevPanel: () => void;
+	navigateToPanel: (index: number) => void;
+	activeIndex: number;
 }
 
-// Service descriptions with image paths and colors
-const serviceDetails: ServiceDetails[] = [
-	{
-		title: 'RESEARCH',
-		description: 'Data-driven insights that reveal market opportunities and consumer behaviors.',
-		src: '/images/research.jpg',
-		color: '#7feadb',
-	},
-	{
-		title: 'BRANDING',
-		description: 'Crafting distinctive brand identities that resonate with your audience.',
-		src: '/images/branding.jpg',
-		color: '#f0d566',
-	},
-	{
-		title: 'BUSINESS PLANNING',
-		description: 'Strategic roadmaps and execution plans that align with your vision and drive growth.',
-		src: '/images/business.jpg',
-		color: '#ff9e7d',
-	},
-	{
-		title: 'BESPOKE STRATEGY',
-		description: 'Custom strategic frameworks tailored to your unique challenges and opportunities.',
-		src: '/images/strategy.jpg',
-		color: '#61c0fa',
-	},
-	{
-		title: 'MARKETING',
-		description: 'Integrated marketing campaigns that connect with your audience across touchpoints.',
-		src: '/images/marketing.jpg',
-		color: '#daa1ed',
-	},
-	{
-		title: 'WEBSITE DEVELOPMENT',
-		description: 'High-performance digital experiences built with modern technologies.',
-		src: '/images/website.jpg',
-		color: '#6bde8f',
-	},
-];
+// Extend Window interface
+declare global {
+	interface Window {
+		horizontalScrollControls?: HorizontalScrollControls;
+		isServicesActive?: boolean;
+		servicesHasControl?: boolean;
+	}
+}
 
 export default function ServicesSection() {
-	const [modal, setModal] = useState({ active: false, index: 0 });
-	const [viewMode, setViewMode] = useState(false);
-	const [selectedService, setSelectedService] = useState<ServiceDetails | null>(null);
+	const servicesRef = useRef<HTMLDivElement>(null);
+	const serviceItemsRef = useRef<(HTMLDivElement | null)[]>([]);
+	const [activeServiceIndex, setActiveServiceIndex] = useState(0);
+	const services = ['RESEARCH', 'BRANDING', 'BUSINESS PLANNING', 'BESOKE STRATEGY', 'MARKETING', 'WEBSITE DEVELOPMENT'];
+	const sectionIndex = 2; // Position of services section in the page layout
+	const hasCompletedServices = useRef(false);
+	const isAnimating = useRef(false);
+	const tl = useRef<gsap.core.Timeline | null>(null);
+	const lastScrollTime = useRef<number>(0);
 
-	// Scale animation for the modal
-	const scaleAnimation = {
-		initial: { scale: 0, x: '-50%', y: '-50%' },
-		enter: { scale: 1, x: '-50%', y: '-50%', transition: { duration: 0.4, ease: [0.76, 0, 0.24, 1] } },
-		closed: { scale: 0, x: '-50%', y: '-50%', transition: { duration: 0.4, ease: [0.32, 0, 0.67, 0] } },
-	};
-
-	// Refs for GSAP animations
-	const modalContainerRef = useRef(null);
-	const cursorRef = useRef(null);
-	const cursorLabelRef = useRef(null);
-
-	const handleViewClick = () => {
-		if (modal.active && modal.index >= 0 && modal.index < serviceDetails.length) {
-			console.log('View clicked for service:', serviceDetails[modal.index].title);
-			setSelectedService(serviceDetails[modal.index]);
-			setViewMode(true);
-			setModal({ active: false, index: 0 });
-		}
-	};
-
-	const handleServiceClick = (index: number) => {
-		console.log('Service clicked:', serviceDetails[index].title);
-		setSelectedService(serviceDetails[index]);
-		setViewMode(true);
-		setModal({ active: false, index: 0 });
-	};
-
-	const handleBackClick = () => {
-		setViewMode(false);
-		setSelectedService(null);
-	};
-
+	// GSAP animation for changing active service
 	useEffect(() => {
-		// Move Container with original timing
-		const xMoveContainer = gsap.quickTo(modalContainerRef.current, 'left', { duration: 0.8, ease: 'power3' });
-		const yMoveContainer = gsap.quickTo(modalContainerRef.current, 'top', { duration: 0.8, ease: 'power3' });
-		// Move cursor with original timing
-		const xMoveCursor = gsap.quickTo(cursorRef.current, 'left', { duration: 0.5, ease: 'power3' });
-		const yMoveCursor = gsap.quickTo(cursorRef.current, 'top', { duration: 0.5, ease: 'power3' });
-		// Move cursor label with slightly faster timing
-		const xMoveCursorLabel = gsap.quickTo(cursorLabelRef.current, 'left', { duration: 0.45, ease: 'power3' });
-		const yMoveCursorLabel = gsap.quickTo(cursorLabelRef.current, 'top', { duration: 0.45, ease: 'power3' });
+		if (!servicesRef.current) return;
 
-		window.addEventListener('mousemove', (e) => {
-			const { pageX, pageY } = e;
+		// Kill any existing timeline
+		if (tl.current) {
+			tl.current.kill();
+		}
 
-			xMoveContainer(pageX);
-			yMoveContainer(pageY);
-			xMoveCursor(pageX);
-			yMoveCursor(pageY);
-			xMoveCursorLabel(pageX);
-			yMoveCursorLabel(pageY);
+		// Create new timeline for the transition
+		const timeline = gsap.timeline({
+			onStart: () => {
+				isAnimating.current = true;
+			},
+			onComplete: () => {
+				isAnimating.current = false;
+				// Ensure we clear the debounce status when animation completes
+				lastScrollTime.current = Date.now();
+			},
 		});
 
-		return () => {
-			window.removeEventListener('mousemove', () => {});
+		// Animate all service items with staggered timing for better effect
+		serviceItemsRef.current.forEach((item, index) => {
+			if (!item) return;
+
+			// Calculate stagger timing based on distance from active item
+			const staggerDelay = Math.min(Math.abs(index - activeServiceIndex) * 0.03, 0.1);
+
+			// Scale and highlight active item
+			if (index === activeServiceIndex) {
+				timeline.to(
+					item,
+					{
+						color: '#d142e2',
+						scale: 1.3, // Bigger scale for active item
+						opacity: 1,
+						fontWeight: 800, // Make it bolder
+						letterSpacing: '0.05em', // Slightly increase letter spacing
+						duration: 0.3, // Faster animation
+						ease: 'back.out(1.2)', // Improved elastic effect
+					},
+					staggerDelay
+				);
+			}
+			// Show previous items with full opacity
+			else if (index < activeServiceIndex) {
+				timeline.to(
+					item,
+					{
+						color: '#000000',
+						scale: 1,
+						opacity: 1,
+						fontWeight: 700, // Return to normal weight
+						letterSpacing: 'normal',
+						duration: 0.25, // Faster animation
+						ease: 'power3.out', // Smoother deceleration
+					},
+					staggerDelay
+				);
+			}
+			// Dim future items
+			else {
+				timeline.to(
+					item,
+					{
+						color: '#000000',
+						scale: 1,
+						opacity: 0.6,
+						fontWeight: 700, // Return to normal weight
+						letterSpacing: 'normal',
+						duration: 0.25, // Faster animation
+						ease: 'power2.out',
+					},
+					staggerDelay
+				);
+			}
+		});
+
+		// Add enhanced bounce effect to the active item
+		const activeItem = serviceItemsRef.current[activeServiceIndex];
+		if (activeItem) {
+			timeline
+				.to(
+					activeItem,
+					{
+						y: -8, // Slightly more pronounced bounce
+						duration: 0.15,
+						ease: 'power1.out',
+					},
+					0.15 // Start bounce after initial scale
+				)
+				.to(
+					activeItem,
+					{
+						y: 0, // Return to original position
+						duration: 0.15,
+						ease: 'bounce.out', // Add bounce effect on return
+					},
+					0.3
+				);
+		}
+
+		tl.current = timeline;
+
+		// Log the current active service for debugging
+		console.log(`Active service changed to: ${activeServiceIndex + 1} of ${services.length}`);
+	}, [activeServiceIndex, services.length]);
+
+	// Take control of scrolling and implement GSAP-based service navigation
+	useEffect(() => {
+		if (typeof window === 'undefined') return;
+
+		// Function to check if we're currently on the services section
+		const isOnServicesSection = () => {
+			const activeSection = document.documentElement.getAttribute('data-active-section');
+			return activeSection === sectionIndex.toString();
 		};
-	}, []);
+
+		// Track active status in the window for other components to check
+		const updateActiveStatus = () => {
+			const isActive = isOnServicesSection();
+			window.isServicesActive = isActive;
+			window.servicesHasControl = isActive;
+		};
+
+		// Run immediately and on section changes
+		updateActiveStatus();
+
+		// Handle section change events
+		const handleSectionChange = () => {
+			updateActiveStatus();
+
+			// If we're now on services section, reset the service index
+			if (isOnServicesSection()) {
+				setActiveServiceIndex(0);
+				hasCompletedServices.current = false;
+				isAnimating.current = false; // Reset animation state
+			}
+		};
+
+		// Faster throttling for scroll events
+		const SCROLL_COOLDOWN = 25; // ms between scroll events (reduced for faster response)
+
+		// Go to next service with GSAP animation - with improved throttling
+		const goToNextService = () => {
+			const now = Date.now();
+			const timeSinceLastScroll = now - lastScrollTime.current;
+
+			// Exit if animation is running or not enough time has passed since last scroll
+			if (isAnimating.current || timeSinceLastScroll < SCROLL_COOLDOWN) {
+				return;
+			}
+
+			// Update last scroll time
+			lastScrollTime.current = now;
+
+			if (activeServiceIndex < services.length - 1) {
+				// Move to next service
+				setActiveServiceIndex((prev) => prev + 1);
+				console.log(`Moving to next service: ${activeServiceIndex + 2}`);
+			} else if (!hasCompletedServices.current) {
+				hasCompletedServices.current = true;
+				console.log('Completed all services, scroll down again to continue');
+			} else {
+				const nextPanel = window.horizontalScrollControls?.nextPanel;
+				if (nextPanel) {
+					console.log('Moving to next panel');
+					nextPanel();
+					hasCompletedServices.current = false;
+					setActiveServiceIndex(0);
+				}
+			}
+		};
+
+		// Go to previous service with GSAP animation - with improved throttling
+		const goToPrevService = () => {
+			const now = Date.now();
+			const timeSinceLastScroll = now - lastScrollTime.current;
+
+			// Exit if animation is running or not enough time has passed since last scroll
+			if (isAnimating.current || timeSinceLastScroll < SCROLL_COOLDOWN) {
+				return;
+			}
+
+			// Update last scroll time
+			lastScrollTime.current = now;
+
+			if (activeServiceIndex > 0) {
+				// Move to previous service
+				setActiveServiceIndex((prev) => prev - 1);
+				console.log(`Moving to previous service: ${activeServiceIndex}`);
+				hasCompletedServices.current = false;
+			} else {
+				const prevPanel = window.horizontalScrollControls?.prevPanel;
+				if (prevPanel) {
+					console.log('Moving to previous panel');
+					prevPanel();
+				}
+			}
+		};
+
+		// More responsive wheel event handling with higher sensitivity
+		const handleWheel = (e: WheelEvent) => {
+			// Only handle wheel events when on services section
+			if (!isOnServicesSection()) return;
+
+			// Always prevent default behavior when on services section
+			e.preventDefault();
+			e.stopPropagation();
+
+			// Determine scroll direction with a small threshold for better responsiveness
+			const minWheelDelta = 2; // Lower threshold for faster response
+			if (e.deltaY > minWheelDelta) {
+				goToNextService();
+			} else if (e.deltaY < -minWheelDelta) {
+				goToPrevService();
+			}
+
+			return false;
+		};
+
+		// Register event listeners
+		window.addEventListener('wheel', handleWheel, { passive: false, capture: true });
+		document.addEventListener('sectionChange', handleSectionChange as EventListener);
+
+		// Add keyboard support
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if (!isOnServicesSection()) return;
+
+			if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+				e.preventDefault();
+				goToNextService();
+			} else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+				e.preventDefault();
+				goToPrevService();
+			}
+		};
+
+		window.addEventListener('keydown', handleKeyDown);
+
+		return () => {
+			window.removeEventListener('wheel', handleWheel, { capture: true });
+			document.removeEventListener('sectionChange', handleSectionChange as EventListener);
+			window.removeEventListener('keydown', handleKeyDown);
+			window.isServicesActive = false;
+			window.servicesHasControl = false;
+		};
+	}, [activeServiceIndex, services.length, sectionIndex]);
 
 	return (
-		<>
-			<Section id='services' className='bg-[#FAFAFA] text-black relative overflow-hidden'>
-				{!viewMode ? (
-					<div className={styles.main}>
-						<div className='flex flex-row justify-between items-center w-full h-full'>
-							{/* Left Column - Agency Description */}
-							<div className='w-1/2 pr-12'>
-								<motion.div className='text-4xl md:text-5xl font-bold leading-tight' initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-									<p className='tracking-tight'>
-										A full-service agency
-										<br />
-										specialising in <span className='text-[#f0d566]'>brand</span>, <span className='text-[#daa1ed]'>audience</span>, <br></br>
-										<span className='text-[#7feadb]'>creative research</span>
-									</p>
-								</motion.div>
-							</div>
-
-							{/* Right Column - Services */}
-							<div className='w-1/2'>
-								<div className={styles.projectContainer}>
-									{serviceDetails.map((service, index) => (
-										<div key={service.title} className={styles.project} onMouseEnter={() => setModal({ active: true, index })} onMouseLeave={() => setModal({ active: false, index })}>
-											<div className={styles.projectHeader} onClick={() => handleServiceClick(index)}>
-												<h2>{service.title}</h2>
-												<p>Design & Development</p>
-											</div>
-										</div>
-									))}
-								</div>
-							</div>
-						</div>
+		<Section id='services' className='bg-white text-black p-25'>
+			<div className='flex flex-col md:flex-row items-center justify-between gap-12 py-12'>
+				{/* Left side with colored text */}
+				<motion.div className='md:w-1/2' initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.1 }}>
+					<div className='text-[42px] leading-tight font-bold max-w-[642px]'>
+						<span className='text-black'>A full-service agency </span>
+						<br />
+						<span className='text-black'>specialising in </span>
+						<span className='text-[#f4dd65]'>brand</span>
+						<span className='text-black'>, </span>
+						<br />
+						<span className='text-[#d142e2]'>audience</span>
+						<span className='text-black'>, and </span>
+						<span className='text-[#70DFC6]'>creative </span>
+						<br />
+						<span className='text-[#70DFC6]'>research</span>
 					</div>
-				) : (
-					/* Service Detail View */
-					selectedService && (
-						<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className={styles.serviceDetail} style={{ backgroundColor: selectedService.color }}>
-							<div className='container mx-auto py-16'>
-								<button className='mb-8 text-black flex items-center font-medium' onClick={handleBackClick}>
-									<svg xmlns='http://www.w3.org/2000/svg' className='h-5 w-5 mr-2' viewBox='0 0 20 20' fill='currentColor'>
-										<path fillRule='evenodd' d='M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z' clipRule='evenodd' />
-									</svg>
-									Back to services
-								</button>
+				</motion.div>
 
-								<div className='flex flex-col md:flex-row'>
-									<div className='md:w-1/2 mb-8 md:mb-0 md:pr-12'>
-										<h1 className='text-4xl md:text-5xl font-bold mb-6'>{selectedService.title}</h1>
-										<p className='text-xl mb-8'>{selectedService.description}</p>
-										<div className='bg-white p-6 rounded-lg shadow-lg'>
-											<h2 className='text-2xl font-bold mb-4'>Our Approach</h2>
-											<p className='mb-4'>We combine strategic insights with creative excellence to deliver results that exceed expectations.</p>
-											<ul className='list-disc pl-5 space-y-2'>
-												<li>In-depth research and analysis</li>
-												<li>Collaborative strategy development</li>
-												<li>Creative concept exploration</li>
-												<li>Meticulous execution and delivery</li>
-												<li>Performance measurement and optimization</li>
-											</ul>
-										</div>
-									</div>
-									<div className='md:w-1/2'>
-										<div className='rounded-lg overflow-hidden'>
-											<Image src={selectedService.src} alt={selectedService.title} width={600} height={400} className='w-full h-auto' unoptimized style={{ objectFit: 'cover' }} />
-										</div>
-										<div className='mt-8 bg-white p-6 rounded-lg shadow-lg'>
-											<h2 className='text-2xl font-bold mb-4'>Our Expertise</h2>
-											<p>With years of experience in {selectedService.title.toLowerCase()}, our team brings unparalleled expertise to every project.</p>
-										</div>
-									</div>
-								</div>
+				{/* Right side with service list */}
+				<motion.div className='md:w-1/2' initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.3 }} ref={servicesRef}>
+					<div className='flex flex-col items-end text-right space-y-6'>
+						<h1>You name it - we do it!</h1>
+						{services.map((service, index) => (
+							<div
+								key={service}
+								className='text-2xl font-bold tracking-wide cursor-pointer hover:opacity-90 active:opacity-100'
+								onClick={() => setActiveServiceIndex(index)}
+								ref={(el) => {
+									serviceItemsRef.current[index] = el;
+								}}
+								style={{
+									opacity: index <= activeServiceIndex ? 1 : 0.6,
+									transform: index === activeServiceIndex ? 'scale(1.3)' : 'scale(1)', // Match the scale in GSAP animation
+									color: index === activeServiceIndex ? '#d142e2' : '#000000',
+									fontWeight: index === activeServiceIndex ? 800 : 700, // Match font weight in GSAP animation
+									transition: 'none', // Let GSAP handle the animations
+								}}
+							>
+								{service}
 							</div>
-						</motion.div>
-					)
-				)}
-			</Section>
-
-			<motion.div ref={modalContainerRef} variants={scaleAnimation} initial='initial' animate={modal.active ? 'enter' : 'closed'} className={styles.modalContainer}>
-				<div style={{ top: modal.index * -100 + '%' }} className={styles.modalSlider}>
-					{serviceDetails.map((service, index) => {
-						const { src, color } = service;
-						return (
-							<div className={styles.modal} style={{ backgroundColor: color }} key={`modal_${index}`}>
-								<Image src={src} width={300} height={225} alt={service.title} unoptimized style={{ objectFit: 'cover' }} />
-							</div>
-						);
-					})}
-				</div>
-			</motion.div>
-
-			<motion.div ref={cursorRef} className={styles.cursor} variants={scaleAnimation} initial='initial' animate={modal.active ? 'enter' : 'closed'} onClick={handleViewClick}></motion.div>
-
-			<motion.div ref={cursorLabelRef} className={styles.cursorLabel} variants={scaleAnimation} initial='initial' animate={modal.active ? 'enter' : 'closed'} onClick={handleViewClick}>
-				View
-			</motion.div>
-		</>
+						))}
+					</div>
+				</motion.div>
+			</div>
+		</Section>
 	);
 }
