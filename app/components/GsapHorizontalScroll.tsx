@@ -95,7 +95,7 @@ export default function GsapHorizontalScroll({ children }: GsapHorizontalScrollP
 			</div>
 
 			{/* Navigation components */}
-			<ScrollNavigation prevPanel={prevPanel} nextPanel={nextPanel} />
+			<ScrollNavigation />
 
 			{/* Fallback message - will only show if initialization fails */}
 			{!isInitialized && (

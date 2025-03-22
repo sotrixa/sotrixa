@@ -1,92 +1,26 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 export default function ScrollGuide() {
-	const [currentSection, setCurrentSection] = useState(0);
-	const [maxSections, setMaxSections] = useState(0);
-	const [isAtStart, setIsAtStart] = useState(true);
-
 	useEffect(() => {
 		// Find the container and sections
 		const container = document.querySelector('.overflow-x-auto');
-		const sections = document.querySelectorAll('section');
-
-		// Set the maximum number of sections
-		setMaxSections(sections.length);
-
-		// Function to determine approximate current section and check if at start
-		const updateScrollPosition = () => {
-			if (container) {
-				const scrollPosition = container.scrollLeft;
-				const sectionWidth = window.innerWidth;
-				const newIndex = Math.floor(scrollPosition / sectionWidth);
-
-				setCurrentSection(newIndex);
-				setIsAtStart(scrollPosition <= 10); // Consider "at start" if scrolled less than 10px
-			}
-		};
 
 		// Listen for scroll events
 		if (container) {
-			container.addEventListener('scroll', updateScrollPosition);
-
-			// Initial update
-			updateScrollPosition();
+			// Initial set up only - no need to track scroll position anymore
 		}
 
 		return () => {
-			if (container) {
-				container.removeEventListener('scroll', updateScrollPosition);
-			}
+			// Clean up
 		};
 	}, []);
 
-	// Ultra fast scroll in the right direction
-	const scrollRight = () => {
-		const container = document.querySelector('.overflow-x-auto');
-		if (container) {
-			// Instant scroll - full screen width for maximum speed
-			container.scrollLeft += window.innerWidth;
-		}
-	};
-
-	// Ultra fast scroll in the left direction
-	const scrollLeft = () => {
-		const container = document.querySelector('.overflow-x-auto');
-		if (container) {
-			// Instant scroll - full screen width for maximum speed
-			container.scrollLeft -= window.innerWidth;
-		}
-	};
-
 	return (
 		<>
-			{/* Navigation buttons */}
-			<div className='fixed z-50 bottom-10 right-10 flex gap-4'>
-				<button
-					onClick={scrollLeft}
-					className={`p-3 rounded-full bg-white bg-opacity-30 backdrop-blur-md hover:bg-opacity-60 transition-all transform hover:scale-110 
-            ${isAtStart ? 'opacity-30' : 'opacity-100'}`}
-					disabled={isAtStart}
-				>
-					<svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
-						<path d='M15 19L8 12L15 5' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round' />
-					</svg>
-				</button>
-
-				<button
-					onClick={scrollRight}
-					className={`p-3 rounded-full bg-white bg-opacity-30 backdrop-blur-md hover:bg-opacity-60 transition-all transform hover:scale-110
-            ${currentSection >= maxSections - 1 ? 'opacity-30' : 'opacity-100'}`}
-					disabled={currentSection >= maxSections - 1}
-				>
-					<svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
-						<path d='M9 5L16 12L9 19' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round' />
-					</svg>
-				</button>
-			</div>
+			{/* Navigation buttons removed as requested */}
 
 			{/* Keyboard shortcut hint at bottom left */}
 			<div className='fixed z-50 bottom-10 left-10'>

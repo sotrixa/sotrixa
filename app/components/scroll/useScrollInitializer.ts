@@ -59,31 +59,7 @@ export function useScrollInitializer({ containerRef, wrapperRef, sectionsRef, na
 			// Clear any existing ScrollTriggers to prevent duplicates
 			ScrollTrigger.getAll().forEach((st) => st.kill());
 
-			// Create navigation dots
-			const createNavMarkers = () => {
-				const navMarkerContainer = document.createElement('div');
-				navMarkerContainer.className = 'fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 flex space-x-2';
-
-				sections.forEach((section, index) => {
-					const marker = document.createElement('button');
-					marker.className = 'w-2 h-2 rounded-full bg-white bg-opacity-50 transition-all duration-300 hover:bg-opacity-100';
-					marker.setAttribute('aria-label', `Navigate to section ${index + 1}`);
-
-					// Add active class to current section
-					if (index === activeIndex.current) {
-						marker.classList.add('w-6', 'bg-opacity-100');
-					}
-
-					marker.addEventListener('click', () => navigateToPanel(index));
-					navMarkerContainer.appendChild(marker);
-				});
-
-				document.body.appendChild(navMarkerContainer);
-				return navMarkerContainer;
-			};
-
-			// Initialize
-			const navMarkers = createNavMarkers();
+			// Navigation dots removed as requested
 
 			// Set initial state
 			gsap.set(wrapper, { x: 0 });
@@ -91,10 +67,7 @@ export function useScrollInitializer({ containerRef, wrapperRef, sectionsRef, na
 			setIsInitialized(true);
 
 			return () => {
-				// Remove markers
-				if (navMarkers.parentNode) {
-					navMarkers.parentNode.removeChild(navMarkers);
-				}
+				// Clean up code
 				document.body.style.overflow = '';
 			};
 		}

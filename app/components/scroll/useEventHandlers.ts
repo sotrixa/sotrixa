@@ -61,37 +61,6 @@ export function useEventHandlers({ containerRef, sectionsRef, activeIndex, isAni
 			}
 		};
 
-		// Initialize touch/mouse drag detection
-		let startX = 0;
-		let isDragging = false;
-
-		const handleDragStart = (e: MouseEvent | TouchEvent) => {
-			const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-			startX = clientX;
-			isDragging = true;
-		};
-
-		const handleDragMove = (e: MouseEvent | TouchEvent) => {
-			if (!isDragging) return;
-
-			const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-			const diff = startX - clientX;
-
-			// Detect direction and minimum movement threshold
-			if (Math.abs(diff) > 50) {
-				if (diff > 0) {
-					nextPanel();
-				} else {
-					prevPanel();
-				}
-				isDragging = false;
-			}
-		};
-
-		const handleDragEnd = () => {
-			isDragging = false;
-		};
-
 		// Handle anchor clicks for navigation
 		const handleAnchorClick = (e: MouseEvent) => {
 			const target = e.target as HTMLElement;
@@ -117,13 +86,42 @@ export function useEventHandlers({ containerRef, sectionsRef, activeIndex, isAni
 		window.addEventListener('keydown', handleKeyDown);
 		document.body.addEventListener('click', handleAnchorClick);
 
-		// Add touch and mouse events
-		container.addEventListener('mousedown', handleDragStart as EventListener);
-		container.addEventListener('mousemove', handleDragMove as EventListener);
-		container.addEventListener('mouseup', handleDragEnd);
-		container.addEventListener('touchstart', handleDragStart as EventListener, { passive: false });
-		container.addEventListener('touchmove', handleDragMove as EventListener, { passive: false });
-		container.addEventListener('touchend', handleDragEnd);
+		// Only keeping touch events for mobile functionality
+		const handleTouchStart = (e: TouchEvent) => {
+			if (isAnimating.current) return;
+			startX = e.touches[0].clientX;
+			isDragging = true;
+		};
+
+		const handleTouchMove = (e: TouchEvent) => {
+			if (!isDragging) return;
+
+			const clientX = e.touches[0].clientX;
+			const diff = startX - clientX;
+
+			// Detect direction and minimum movement threshold
+			if (Math.abs(diff) > 50) {
+				if (diff > 0) {
+					nextPanel();
+				} else {
+					prevPanel();
+				}
+				isDragging = false;
+			}
+		};
+
+		const handleTouchEnd = () => {
+			isDragging = false;
+		};
+
+		// Initialize variables for touch events
+		let startX = 0;
+		let isDragging = false;
+
+		// Add touch events only
+		container.addEventListener('touchstart', handleTouchStart, { passive: false });
+		container.addEventListener('touchmove', handleTouchMove, { passive: false });
+		container.addEventListener('touchend', handleTouchEnd);
 
 		return () => {
 			// Remove event listeners
@@ -131,13 +129,10 @@ export function useEventHandlers({ containerRef, sectionsRef, activeIndex, isAni
 			window.removeEventListener('keydown', handleKeyDown);
 			document.body.removeEventListener('click', handleAnchorClick);
 
-			// Remove touch and mouse events
-			container.removeEventListener('mousedown', handleDragStart as EventListener);
-			container.removeEventListener('mousemove', handleDragMove as EventListener);
-			container.removeEventListener('mouseup', handleDragEnd);
-			container.removeEventListener('touchstart', handleDragStart as EventListener);
-			container.removeEventListener('touchmove', handleDragMove as EventListener);
-			container.removeEventListener('touchend', handleDragEnd);
+			// Remove touch events
+			container.removeEventListener('touchstart', handleTouchStart);
+			container.removeEventListener('touchmove', handleTouchMove);
+			container.removeEventListener('touchend', handleTouchEnd);
 		};
 	}, [containerRef, sectionsRef, activeIndex, isAnimating, nextPanel, prevPanel, navigateToPanel]);
 }

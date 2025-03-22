@@ -7,7 +7,6 @@ import { useScrollHandler } from './hooks/useScrollHandler';
 import { useAnimations } from './hooks/useAnimations';
 import { ServicesList } from './components/ServicesList';
 import { ProgressIndicator } from './components/ProgressIndicator';
-import { NavigationDots } from './components/NavigationDots';
 import { SectionTitle } from './components/SectionTitle';
 
 export default function ServicesSection() {
@@ -89,9 +88,6 @@ export default function ServicesSection() {
 
 						{/* Services list */}
 						<ServicesList services={services} activeServiceIndex={activeServiceIndex} setActiveServiceIndex={setActiveServiceIndex} serviceItemsRef={serviceItemsRef} isDetailView={isDetailView} setIsDetailView={setIsDetailView} />
-
-						{/* Navigation dots */}
-						<NavigationDots items={services} activeIndex={activeServiceIndex} onDotClick={setActiveServiceIndex} />
 					</div>
 				</motion.div>
 			</div>
