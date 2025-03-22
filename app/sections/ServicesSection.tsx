@@ -13,6 +13,7 @@ export default function ServicesSection() {
 	const serviceItemsRef = useRef<(HTMLDivElement | null)[]>([]);
 	const gifRef = useRef<HTMLDivElement>(null);
 	const sectionContainerRef = useRef<HTMLDivElement>(null);
+	const backgroundRef = useRef<HTMLDivElement>(null);
 	const [activeServiceIndex, setActiveServiceIndex] = useState(0);
 	const services = ['RESEARCH', 'BRANDING', 'BUSINESS PLANNING', 'BESOKE STRATEGY', 'MARKETING', 'WEBSITE DEVELOPMENT'];
 	const sectionIndex = 2; // Position of services section in the page layout
@@ -115,10 +116,69 @@ export default function ServicesSection() {
 		};
 	}, [activeServiceIndex]);
 
+	// Animate the background grid
+	useEffect(() => {
+		if (!backgroundRef.current) return;
+
+		gsap.fromTo(
+			backgroundRef.current,
+			{
+				opacity: 0,
+				scale: 0.95,
+			},
+			{
+				opacity: 1,
+				scale: 1,
+				duration: 1.5,
+				ease: 'power2.out',
+			}
+		);
+
+		// Subtle continuous movement
+		gsap.to(backgroundRef.current, {
+			backgroundPosition: '100% 100%',
+			duration: 120,
+			ease: 'none',
+			repeat: -1,
+		});
+	}, []);
+
 	return (
-		<Section id='services' className='bg-white text-black p-25 relative overflow-hidden'>
+		<Section id='services' className='bg-[#FAFAFA] text-black p-25 relative overflow-hidden'>
+			{/* Minimalist grid background */}
+			<div
+				ref={backgroundRef}
+				className='absolute inset-0 z-0'
+				style={{
+					backgroundImage: `
+						linear-gradient(to right, rgba(150,150,150,0.3) 1px, transparent 1px),
+						linear-gradient(to bottom, rgba(150,150,150,0.3) 1px, transparent 1px)
+					`,
+					backgroundSize: '40px 40px',
+					backgroundPosition: '0 0',
+				}}
+			>
+				{/* Gear-like decorative elements */}
+				<div className='absolute top-[20%] left-[15%] w-[150px] h-[150px] border-2 border-gray-300 rounded-full opacity-50 transform rotate-45'></div>
+				<div className='absolute top-[15%] left-[12%] w-[100px] h-[100px] border-2 border-gray-300 rounded-full opacity-40'></div>
+				<div className='absolute bottom-[25%] right-[10%] w-[200px] h-[200px] border-2 border-gray-300 rounded-full opacity-50 transform -rotate-12'></div>
+
+				{/* Abstract lines */}
+				<div className='absolute top-[30%] left-0 w-[25%] h-[2px] bg-gradient-to-r from-transparent via-gray-400 to-transparent opacity-60'></div>
+				<div className='absolute bottom-[40%] right-0 w-[30%] h-[2px] bg-gradient-to-l from-transparent via-gray-400 to-transparent opacity-60'></div>
+
+				{/* Dots grid in one corner */}
+				<div
+					className='absolute top-0 right-0 w-[300px] h-[300px] opacity-40'
+					style={{
+						backgroundImage: 'radial-gradient(circle, rgba(100,100,100,0.7) 2px, transparent 2px)',
+						backgroundSize: '20px 20px',
+					}}
+				></div>
+			</div>
+
 			{/* Container div with ref */}
-			<div ref={sectionContainerRef} className='relative w-full h-full'>
+			<div ref={sectionContainerRef} className='relative w-full h-full' style={{ zIndex: 2 }}>
 				{/* Floating GIF - positioned randomly */}
 				<div ref={gifRef} className='absolute w-[300px] h-[200px] z-10 drop-shadow-2xl transform-gpu pointer-events-none' style={{ filter: 'drop-shadow(0 15px 15px rgba(0,0,0,0.2))' }}>
 					<motion.div key={activeServiceIndex} initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.7 }} className='w-full h-full relative'>
