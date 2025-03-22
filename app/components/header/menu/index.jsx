@@ -6,23 +6,45 @@ import { useState } from 'react';
 
 const menu = [
 	{
-		title: 'Projects',
-		description: 'To See Everything',
-		images: ['projects1.jpg', 'projects2.jpg'],
+		title: 'ABOUT US',
+		description: 'Our Story & Vision',
+		images: ['about1.jpg', 'about2.jpg'],
+		sectionIndex: 3, // Index position in the page (0-indexed)
 	},
 	{
-		title: 'Agence',
-		description: 'To Learn Everything',
-		images: ['agence1.jpg', 'agence2.jpg'],
+		title: 'SERVICES',
+		description: 'What We Offer',
+		images: ['services1.jpg', 'services2.jpg'],
+		sectionIndex: 2, // Index position in the page (0-indexed)
 	},
 	{
-		title: 'Contact',
-		description: 'To Send a FAX',
-		images: ['contact1.jpg', 'contact2.jpg'],
+		title: 'CASE STUDY',
+		description: 'Our Work & Results',
+		images: ['case1.jpg', 'case2.jpg'],
+		sectionIndex: 4, // Index position in the page (0-indexed)
 	},
 ];
 
 export default function index({ closeMenu }) {
+	const handleNavigation = (sectionIndex) => {
+		// Close menu first
+		closeMenu();
+
+		// Navigate to the section using the window.horizontalScrollControls
+		setTimeout(() => {
+			// Use the global navigation if available
+			if (window.horizontalScrollControls) {
+				window.horizontalScrollControls.navigateToPanel(sectionIndex);
+			} else {
+				// Fallback - try to find the element directly
+				const sections = document.querySelectorAll('section');
+				if (sections[sectionIndex]) {
+					sections[sectionIndex].scrollIntoView({ behavior: 'smooth' });
+				}
+			}
+		}, 300); // Small delay to allow menu closing animation
+	};
+
 	return (
 		<motion.div className={styles.menu} variants={opacity} initial='initial' animate='enter' exit='exit'>
 			<div className={styles.header}>
@@ -45,7 +67,7 @@ export default function index({ closeMenu }) {
 
 			<div className={styles.body}>
 				{menu.map((el, index) => {
-					return <Link data={el} index={index} key={index} />;
+					return <Link data={el} index={index} key={index} onClick={() => handleNavigation(el.sectionIndex)} />;
 				})}
 			</div>
 

@@ -5,9 +5,8 @@ import { mountAnim, rotateX } from '../../anim';
 import Image from 'next/image';
 import { useRef } from 'react';
 import gsap from 'gsap';
-import Link from 'next/link';
 
-export default function link({ data, index }) {
+export default function link({ data, index, onClick }) {
 	const { title, description, images } = data;
 	const outer = useRef(null);
 	const inner = useRef(null);
@@ -49,7 +48,15 @@ export default function link({ data, index }) {
 			custom={index}
 			className={styles.el}
 		>
-			<Link href='/'>{title}</Link>
+			<a
+				href='#'
+				onClick={(e) => {
+					e.preventDefault();
+					if (onClick) onClick();
+				}}
+			>
+				{title}
+			</a>
 			<div ref={outer} className={styles.outer}>
 				<div ref={inner} className={styles.inner}>
 					{[...Array(2)].map((_, index) => {

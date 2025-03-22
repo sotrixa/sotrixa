@@ -6,6 +6,7 @@ import HomeSection from './sections/HomeSection';
 import IntroSection from './sections/IntroSection';
 import ServicesSection from './sections/ServicesSection';
 import AboutSection from './sections/AboutSection';
+import CaseStudySection from './sections/CaseStudySection';
 import ContactSection from './sections/ContactSection';
 import Navigation from './components/Navigation';
 
@@ -20,6 +21,7 @@ export default function Home() {
 				<IntroSection />
 				<ServicesSection />
 				<AboutSection />
+				<CaseStudySection />
 				<ContactSection />
 			</GsapHorizontalScroll>
 		</main>
