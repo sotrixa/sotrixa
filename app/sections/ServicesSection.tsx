@@ -1,289 +1,101 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Section from '../components/Section';
 import { motion } from 'framer-motion';
+import { useScrollHandler } from './ServicesSection/hooks/useScrollHandler';
+import { useAnimations } from './ServicesSection/hooks/useAnimations';
+import Image from 'next/image';
 import { gsap } from 'gsap';
-
-// Define type for horizontal scroll controls
-interface HorizontalScrollControls {
-	nextPanel: () => void;
-	prevPanel: () => void;
-	navigateToPanel: (index: number) => void;
-	activeIndex: number;
-}
-
-// Extend Window interface
-declare global {
-	interface Window {
-		horizontalScrollControls?: HorizontalScrollControls;
-		isServicesActive?: boolean;
-		servicesHasControl?: boolean;
-	}
-}
 
 export default function ServicesSection() {
 	const servicesRef = useRef<HTMLDivElement>(null);
 	const serviceItemsRef = useRef<(HTMLDivElement | null)[]>([]);
+	const gifRef = useRef<HTMLDivElement>(null);
 	const [activeServiceIndex, setActiveServiceIndex] = useState(0);
 	const services = ['RESEARCH', 'BRANDING', 'BUSINESS PLANNING', 'BESOKE STRATEGY', 'MARKETING', 'WEBSITE DEVELOPMENT'];
 	const sectionIndex = 2; // Position of services section in the page layout
 	const hasCompletedServices = useRef(false);
 	const isAnimating = useRef(false);
-	const tl = useRef<gsap.core.Timeline | null>(null);
-	const lastScrollTime = useRef<number>(0);
 
-	// GSAP animation for changing active service
+	// Use custom hooks for scroll handling and animations
+	const { handleManualNav } = useScrollHandler({
+		activeServiceIndex,
+		setActiveServiceIndex,
+		services,
+		sectionIndex,
+		isAnimating,
+		hasCompletedServices,
+	});
+
+	// Initialize animations
+	useAnimations({
+		activeServiceIndex,
+		serviceItemsRef,
+		servicesRef,
+		services,
+		isAnimating,
+	});
+
+	// GSAP Floating Animation for GIF
 	useEffect(() => {
-		if (!servicesRef.current) return;
+		if (!gifRef.current) return;
 
-		// Kill any existing timeline
-		if (tl.current) {
-			tl.current.kill();
-		}
+		// Kill any existing animations
+		gsap.killTweensOf(gifRef.current);
 
-		// Create new timeline for the transition
-		const timeline = gsap.timeline({
-			onStart: () => {
-				isAnimating.current = true;
-			},
-			onComplete: () => {
-				isAnimating.current = false;
-				// Ensure we clear the debounce status when animation completes
-				lastScrollTime.current = Date.now();
-			},
+		// Random starting position
+		const startX = Math.random() * 20 - 10;
+		const startY = Math.random() * 20 - 10;
+
+		// Create floating animation
+		const tl = gsap.timeline({
+			repeat: -1,
+			yoyo: true,
+			ease: 'power1.inOut',
 		});
 
-		// Animate all service items with staggered timing for better effect
-		serviceItemsRef.current.forEach((item, index) => {
-			if (!item) return;
-
-			// Calculate stagger timing based on distance from active item
-			const staggerDelay = Math.min(Math.abs(index - activeServiceIndex) * 0.03, 0.1);
-
-			// Scale and highlight active item
-			if (index === activeServiceIndex) {
-				timeline.to(
-					item,
-					{
-						color: '#d142e2',
-						scale: 1.3, // Bigger scale for active item
-						opacity: 1,
-						fontWeight: 800, // Make it bolder
-						letterSpacing: '0.05em', // Slightly increase letter spacing
-						duration: 0.3, // Faster animation
-						ease: 'back.out(1.2)', // Improved elastic effect
-					},
-					staggerDelay
-				);
-			}
-			// Show previous items with full opacity
-			else if (index < activeServiceIndex) {
-				timeline.to(
-					item,
-					{
-						color: '#000000',
-						scale: 1,
-						opacity: 1,
-						fontWeight: 700, // Return to normal weight
-						letterSpacing: 'normal',
-						duration: 0.25, // Faster animation
-						ease: 'power3.out', // Smoother deceleration
-					},
-					staggerDelay
-				);
-			}
-			// Dim future items
-			else {
-				timeline.to(
-					item,
-					{
-						color: '#000000',
-						scale: 1,
-						opacity: 0.6,
-						fontWeight: 700, // Return to normal weight
-						letterSpacing: 'normal',
-						duration: 0.25, // Faster animation
-						ease: 'power2.out',
-					},
-					staggerDelay
-				);
-			}
+		// Set initial position
+		gsap.set(gifRef.current, {
+			x: startX,
+			y: startY,
+			rotate: -5,
 		});
 
-		// Add enhanced bounce effect to the active item
-		const activeItem = serviceItemsRef.current[activeServiceIndex];
-		if (activeItem) {
-			timeline
-				.to(
-					activeItem,
-					{
-						y: -8, // Slightly more pronounced bounce
-						duration: 0.15,
-						ease: 'power1.out',
-					},
-					0.15 // Start bounce after initial scale
-				)
-				.to(
-					activeItem,
-					{
-						y: 0, // Return to original position
-						duration: 0.15,
-						ease: 'bounce.out', // Add bounce effect on return
-					},
-					0.3
-				);
-		}
-
-		tl.current = timeline;
-
-		// Log the current active service for debugging
-		console.log(`Active service changed to: ${activeServiceIndex + 1} of ${services.length}`);
-	}, [activeServiceIndex, services.length]);
-
-	// Take control of scrolling and implement GSAP-based service navigation
-	useEffect(() => {
-		if (typeof window === 'undefined') return;
-
-		// Function to check if we're currently on the services section
-		const isOnServicesSection = () => {
-			const activeSection = document.documentElement.getAttribute('data-active-section');
-			return activeSection === sectionIndex.toString();
-		};
-
-		// Track active status in the window for other components to check
-		const updateActiveStatus = () => {
-			const isActive = isOnServicesSection();
-			window.isServicesActive = isActive;
-			window.servicesHasControl = isActive;
-		};
-
-		// Run immediately and on section changes
-		updateActiveStatus();
-
-		// Handle section change events
-		const handleSectionChange = () => {
-			updateActiveStatus();
-
-			// If we're now on services section, reset the service index
-			if (isOnServicesSection()) {
-				setActiveServiceIndex(0);
-				hasCompletedServices.current = false;
-				isAnimating.current = false; // Reset animation state
-			}
-		};
-
-		// Faster throttling for scroll events
-		const SCROLL_COOLDOWN = 25; // ms between scroll events (reduced for faster response)
-
-		// Go to next service with GSAP animation - with improved throttling
-		const goToNextService = () => {
-			const now = Date.now();
-			const timeSinceLastScroll = now - lastScrollTime.current;
-
-			// Exit if animation is running or not enough time has passed since last scroll
-			if (isAnimating.current || timeSinceLastScroll < SCROLL_COOLDOWN) {
-				return;
-			}
-
-			// Update last scroll time
-			lastScrollTime.current = now;
-
-			if (activeServiceIndex < services.length - 1) {
-				// Move to next service
-				setActiveServiceIndex((prev) => prev + 1);
-				console.log(`Moving to next service: ${activeServiceIndex + 2}`);
-			} else if (!hasCompletedServices.current) {
-				hasCompletedServices.current = true;
-				console.log('Completed all services, scroll down again to continue');
-			} else {
-				const nextPanel = window.horizontalScrollControls?.nextPanel;
-				if (nextPanel) {
-					console.log('Moving to next panel');
-					nextPanel();
-					hasCompletedServices.current = false;
-					setActiveServiceIndex(0);
-				}
-			}
-		};
-
-		// Go to previous service with GSAP animation - with improved throttling
-		const goToPrevService = () => {
-			const now = Date.now();
-			const timeSinceLastScroll = now - lastScrollTime.current;
-
-			// Exit if animation is running or not enough time has passed since last scroll
-			if (isAnimating.current || timeSinceLastScroll < SCROLL_COOLDOWN) {
-				return;
-			}
-
-			// Update last scroll time
-			lastScrollTime.current = now;
-
-			if (activeServiceIndex > 0) {
-				// Move to previous service
-				setActiveServiceIndex((prev) => prev - 1);
-				console.log(`Moving to previous service: ${activeServiceIndex}`);
-				hasCompletedServices.current = false;
-			} else {
-				const prevPanel = window.horizontalScrollControls?.prevPanel;
-				if (prevPanel) {
-					console.log('Moving to previous panel');
-					prevPanel();
-				}
-			}
-		};
-
-		// More responsive wheel event handling with higher sensitivity
-		const handleWheel = (e: WheelEvent) => {
-			// Only handle wheel events when on services section
-			if (!isOnServicesSection()) return;
-
-			// Always prevent default behavior when on services section
-			e.preventDefault();
-			e.stopPropagation();
-
-			// Determine scroll direction with a small threshold for better responsiveness
-			const minWheelDelta = 2; // Lower threshold for faster response
-			if (e.deltaY > minWheelDelta) {
-				goToNextService();
-			} else if (e.deltaY < -minWheelDelta) {
-				goToPrevService();
-			}
-
-			return false;
-		};
-
-		// Register event listeners
-		window.addEventListener('wheel', handleWheel, { passive: false, capture: true });
-		document.addEventListener('sectionChange', handleSectionChange as EventListener);
-
-		// Add keyboard support
-		const handleKeyDown = (e: KeyboardEvent) => {
-			if (!isOnServicesSection()) return;
-
-			if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
-				e.preventDefault();
-				goToNextService();
-			} else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
-				e.preventDefault();
-				goToPrevService();
-			}
-		};
-
-		window.addEventListener('keydown', handleKeyDown);
+		// Floating animation
+		tl.to(gifRef.current, {
+			x: '+=20',
+			y: '-=15',
+			rotate: 5,
+			duration: 3.5,
+		})
+			.to(gifRef.current, {
+				x: '-=15',
+				y: '+=25',
+				rotate: -3,
+				duration: 4.2,
+			})
+			.to(gifRef.current, {
+				x: '-=10',
+				y: '-=10',
+				rotate: 2,
+				duration: 3.8,
+			});
 
 		return () => {
-			window.removeEventListener('wheel', handleWheel, { capture: true });
-			document.removeEventListener('sectionChange', handleSectionChange as EventListener);
-			window.removeEventListener('keydown', handleKeyDown);
-			window.isServicesActive = false;
-			window.servicesHasControl = false;
+			tl.kill();
 		};
-	}, [activeServiceIndex, services.length, sectionIndex]);
+	}, [activeServiceIndex]);
 
 	return (
-		<Section id='services' className='bg-white text-black p-25'>
+		<Section id='services' className='bg-white text-black p-25 relative overflow-hidden'>
+			{/* Floating GIF - positioned bottom right */}
+			<div ref={gifRef} className='absolute w-[300px] h-[200px] right-[10%] bottom-[15%] z-10 drop-shadow-2xl transform-gpu' style={{ filter: 'drop-shadow(0 15px 15px rgba(0,0,0,0.2))' }}>
+				<motion.div key={activeServiceIndex} initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.7 }} className='w-full h-full relative'>
+					<Image src='/gif/service1.gif' alt={`${services[activeServiceIndex]} visualization`} fill style={{ objectFit: 'cover' }} className='rounded-2xl border-4 border-white' priority />
+				</motion.div>
+			</div>
+
 			<div className='flex flex-col md:flex-row items-center justify-between gap-12 py-12'>
 				{/* Left side with colored text */}
 				<motion.div className='md:w-1/2' initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.1 }}>
@@ -300,31 +112,43 @@ export default function ServicesSection() {
 						<br />
 						<span className='text-[#70DFC6]'>research</span>
 					</div>
+
+					{/* Navigation buttons */}
+					<div className='mt-8 flex items-center'>
+						<div className='text-gray-500 mr-4'>{activeServiceIndex === services.length - 1 && hasCompletedServices.current ? 'Scroll down to continue' : `Viewing service ${activeServiceIndex + 1} of ${services.length}`}</div>
+
+						<div className='flex gap-2'>
+							<button onClick={() => handleManualNav('prev')} disabled={activeServiceIndex === 0 && !window.horizontalScrollControls?.prevPanel} className='px-3 py-1 bg-gray-200 rounded-md text-sm disabled:opacity-50 hover:bg-gray-300 active:bg-gray-400 transition-colors'>
+								Prev
+							</button>
+							<button onClick={() => handleManualNav('next')} className='px-3 py-1 bg-gray-200 rounded-md text-sm hover:bg-gray-300 active:bg-gray-400 transition-colors'>
+								Next
+							</button>
+						</div>
+					</div>
 				</motion.div>
 
-				{/* Right side with service list */}
+				{/* Right side with service list - Left-aligned Bold Black Text */}
 				<motion.div className='md:w-1/2' initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.3 }} ref={servicesRef}>
-					<div className='flex flex-col items-end text-right space-y-6'>
-						<h1>You name it - we do it!</h1>
-						{services.map((service, index) => (
-							<div
-								key={service}
-								className='text-2xl font-bold tracking-wide cursor-pointer hover:opacity-90 active:opacity-100'
-								onClick={() => setActiveServiceIndex(index)}
-								ref={(el) => {
-									serviceItemsRef.current[index] = el;
-								}}
-								style={{
-									opacity: index <= activeServiceIndex ? 1 : 0.6,
-									transform: index === activeServiceIndex ? 'scale(1.3)' : 'scale(1)', // Match the scale in GSAP animation
-									color: index === activeServiceIndex ? '#d142e2' : '#000000',
-									fontWeight: index === activeServiceIndex ? 800 : 700, // Match font weight in GSAP animation
-									transition: 'none', // Let GSAP handle the animations
-								}}
-							>
-								{service}
-							</div>
-						))}
+					<div className='flex flex-col items-start text-left space-y-8 p-10'>
+						{/* Ultra Bold Black Title */}
+						<h2 className='text-3xl font-black uppercase tracking-tight'>OUR SERVICES</h2>
+
+						{/* Services list - direct implementation instead of using components */}
+						<div className='w-full space-y-8'>
+							{services.map((service, index) => (
+								<div
+									key={service}
+									className={`cursor-pointer transform transition-all duration-300 ${index === activeServiceIndex ? 'text-black font-black text-6xl -translate-y-2' : 'text-gray-500 font-bold text-3xl'}`}
+									onClick={() => setActiveServiceIndex(index)}
+									ref={(el) => {
+										if (el) serviceItemsRef.current[index] = el;
+									}}
+								>
+									<span>{service}</span>
+								</div>
+							))}
+						</div>
 					</div>
 				</motion.div>
 			</div>
