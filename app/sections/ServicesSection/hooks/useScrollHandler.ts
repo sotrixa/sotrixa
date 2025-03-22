@@ -7,9 +7,10 @@ interface ScrollHandlerOptions {
 	sectionIndex: number;
 	isAnimating: React.MutableRefObject<boolean>;
 	hasCompletedServices: React.MutableRefObject<boolean>;
+	isDetailView: boolean;
 }
 
-export const useScrollHandler = ({ activeServiceIndex, setActiveServiceIndex, services, sectionIndex, isAnimating, hasCompletedServices }: ScrollHandlerOptions) => {
+export const useScrollHandler = ({ activeServiceIndex, setActiveServiceIndex, services, sectionIndex, isAnimating, hasCompletedServices, isDetailView }: ScrollHandlerOptions) => {
 	const lastScrollTime = useRef<number>(0);
 
 	useEffect(() => {
@@ -44,10 +45,13 @@ export const useScrollHandler = ({ activeServiceIndex, setActiveServiceIndex, se
 		};
 
 		// Faster throttling for scroll events
-		const SCROLL_COOLDOWN = 25; // ms between scroll events (reduced for faster response)
+		const SCROLL_COOLDOWN = 120; // ms between scroll events (reduced for faster scrolling)
 
 		// Go to next service with GSAP animation - with improved throttling
 		const goToNextService = () => {
+			// Don't allow scrolling in detail view
+			if (isDetailView) return;
+
 			const now = Date.now();
 			const timeSinceLastScroll = now - lastScrollTime.current;
 
@@ -79,6 +83,9 @@ export const useScrollHandler = ({ activeServiceIndex, setActiveServiceIndex, se
 
 		// Go to previous service with GSAP animation - with improved throttling
 		const goToPrevService = () => {
+			// Don't allow scrolling in detail view
+			if (isDetailView) return;
+
 			const now = Date.now();
 			const timeSinceLastScroll = now - lastScrollTime.current;
 
@@ -106,15 +113,15 @@ export const useScrollHandler = ({ activeServiceIndex, setActiveServiceIndex, se
 
 		// More responsive wheel event handling with higher sensitivity
 		const handleWheel = (e: WheelEvent) => {
-			// Only handle wheel events when on services section
-			if (!isOnServicesSection()) return;
+			// Only handle wheel events when on services section and not in detail view
+			if (!isOnServicesSection() || isDetailView) return;
 
 			// Always prevent default behavior when on services section
 			e.preventDefault();
 			e.stopPropagation();
 
 			// Determine scroll direction with a small threshold for better responsiveness
-			const minWheelDelta = 2; // Lower threshold for faster response
+			const minWheelDelta = 5; // Reduced threshold for faster response to scroll events
 			if (e.deltaY > minWheelDelta) {
 				goToNextService();
 			} else if (e.deltaY < -minWheelDelta) {
@@ -130,7 +137,8 @@ export const useScrollHandler = ({ activeServiceIndex, setActiveServiceIndex, se
 
 		// Add keyboard support
 		const handleKeyDown = (e: KeyboardEvent) => {
-			if (!isOnServicesSection()) return;
+			// Don't handle keyboard navigation in detail view
+			if (!isOnServicesSection() || isDetailView) return;
 
 			if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
 				e.preventDefault();
@@ -150,10 +158,13 @@ export const useScrollHandler = ({ activeServiceIndex, setActiveServiceIndex, se
 			window.isServicesActive = false;
 			window.servicesHasControl = false;
 		};
-	}, [activeServiceIndex, services.length, sectionIndex, setActiveServiceIndex, isAnimating, hasCompletedServices]);
+	}, [activeServiceIndex, services.length, sectionIndex, setActiveServiceIndex, isAnimating, hasCompletedServices, isDetailView]);
 
 	// Provide helper functions for manual navigation
 	const handleManualNav = (direction: 'next' | 'prev') => {
+		// Don't allow manual navigation in detail view
+		if (isDetailView) return;
+
 		if (direction === 'next') {
 			if (activeServiceIndex < services.length - 1) {
 				setActiveServiceIndex((prev) => prev + 1);

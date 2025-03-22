@@ -14,6 +14,7 @@ export default function ServicesSection() {
 	const servicesRef = useRef<HTMLDivElement>(null);
 	const serviceItemsRef = useRef<(HTMLDivElement | null)[]>([]);
 	const [activeServiceIndex, setActiveServiceIndex] = useState(0);
+	const [isDetailView, setIsDetailView] = useState(false);
 	const services = ['RESEARCH', 'BRANDING', 'BUSINESS PLANNING', 'BESOKE STRATEGY', 'MARKETING', 'WEBSITE DEVELOPMENT'];
 	const sectionIndex = 2; // Position of services section in the page layout
 	const hasCompletedServices = useRef(false);
@@ -27,6 +28,7 @@ export default function ServicesSection() {
 		sectionIndex,
 		isAnimating,
 		hasCompletedServices,
+		isDetailView,
 	});
 
 	// Initialize animations
@@ -86,7 +88,7 @@ export default function ServicesSection() {
 						<ProgressIndicator activeIndex={activeServiceIndex} totalItems={services.length} />
 
 						{/* Services list */}
-						<ServicesList services={services} activeServiceIndex={activeServiceIndex} setActiveServiceIndex={setActiveServiceIndex} serviceItemsRef={serviceItemsRef} />
+						<ServicesList services={services} activeServiceIndex={activeServiceIndex} setActiveServiceIndex={setActiveServiceIndex} serviceItemsRef={serviceItemsRef} isDetailView={isDetailView} setIsDetailView={setIsDetailView} />
 
 						{/* Navigation dots */}
 						<NavigationDots items={services} activeIndex={activeServiceIndex} onDotClick={setActiveServiceIndex} />

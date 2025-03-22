@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from 'react';
 import Section from '../components/Section';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useScrollHandler } from './ServicesSection/hooks/useScrollHandler';
 import { useAnimations } from './ServicesSection/hooks/useAnimations';
 import Image from 'next/image';
@@ -15,7 +15,12 @@ export default function ServicesSection() {
 	const sectionContainerRef = useRef<HTMLDivElement>(null);
 	const backgroundRef = useRef<HTMLDivElement>(null);
 	const [activeServiceIndex, setActiveServiceIndex] = useState(0);
+	const [isDetailView, setIsDetailView] = useState(false);
 	const services = ['RESEARCH', 'BRANDING', 'BUSINESS PLANNING', 'BESOKE STRATEGY', 'MARKETING', 'WEBSITE DEVELOPMENT'];
+
+	// Service descriptions
+	const serviceDescriptions = ['We dive deep into market trends, consumer behavior, and competitive landscapes to provide actionable insights that drive strategic decisions.', 'From logo design to brand voice, we craft cohesive identities that resonate with your target audience and create lasting impressions.', 'Our comprehensive business planning services help startups and established companies define clear paths to sustainable growth and profitability.', 'Tailored strategies developed specifically for your business challenges, market position, and growth objectives.', 'Data-driven marketing campaigns that increase visibility, engage prospects, and convert leads into loyal customers.', 'Custom digital solutions with intuitive interfaces and robust functionality, designed to elevate your online presence.'];
+
 	const sectionIndex = 2; // Position of services section in the page layout
 	const hasCompletedServices = useRef(false);
 	const isAnimating = useRef(false);
@@ -28,6 +33,7 @@ export default function ServicesSection() {
 		sectionIndex,
 		isAnimating,
 		hasCompletedServices,
+		isDetailView,
 	});
 
 	// Initialize animations
@@ -127,7 +133,7 @@ export default function ServicesSection() {
 				scale: 0.95,
 			},
 			{
-				opacity: 1,
+				opacity: 0.5,
 				scale: 1,
 				duration: 1.5,
 				ease: 'power2.out',
@@ -143,6 +149,38 @@ export default function ServicesSection() {
 		});
 	}, []);
 
+	// Handle service selection
+	const handleServiceClick = (index: number) => {
+		setActiveServiceIndex(index);
+
+		// Smooth transition without flash
+		const tl = gsap.timeline();
+		tl.to(gifRef.current, {
+			opacity: 0,
+			scale: 0.8,
+			duration: 0.3,
+			ease: 'power1.out',
+			onComplete: () => {
+				setIsDetailView(true);
+			},
+		});
+	};
+
+	// Handle back button click
+	const handleBackClick = () => {
+		// Smooth transition without flash
+		setIsDetailView(false);
+		// Restore GIF animation after switching back to list view
+		if (gifRef.current) {
+			gsap.to(gifRef.current, {
+				opacity: 1,
+				scale: 1,
+				duration: 0.5,
+				ease: 'power2.out',
+			});
+		}
+	};
+
 	return (
 		<Section id='services' className='bg-[#FAFAFA] text-black p-25 relative overflow-hidden'>
 			{/* Minimalist grid background */}
@@ -151,25 +189,25 @@ export default function ServicesSection() {
 				className='absolute inset-0 z-0'
 				style={{
 					backgroundImage: `
-						linear-gradient(to right, rgba(150,150,150,0.3) 1px, transparent 1px),
-						linear-gradient(to bottom, rgba(150,150,150,0.3) 1px, transparent 1px)
+						linear-gradient(to right, rgba(150,150,150,0.15) 1px, transparent 1px),
+						linear-gradient(to bottom, rgba(150,150,150,0.15) 1px, transparent 1px)
 					`,
 					backgroundSize: '40px 40px',
 					backgroundPosition: '0 0',
 				}}
 			>
 				{/* Gear-like decorative elements */}
-				<div className='absolute top-[20%] left-[15%] w-[150px] h-[150px] border-2 border-gray-300 rounded-full opacity-50 transform rotate-45'></div>
-				<div className='absolute top-[15%] left-[12%] w-[100px] h-[100px] border-2 border-gray-300 rounded-full opacity-40'></div>
-				<div className='absolute bottom-[25%] right-[10%] w-[200px] h-[200px] border-2 border-gray-300 rounded-full opacity-50 transform -rotate-12'></div>
+				<div className='absolute top-[20%] left-[15%] w-[150px] h-[150px] border-2 border-gray-300 rounded-full opacity-25 transform rotate-45'></div>
+				<div className='absolute top-[15%] left-[12%] w-[100px] h-[100px] border-2 border-gray-300 rounded-full opacity-20'></div>
+				<div className='absolute bottom-[25%] right-[10%] w-[200px] h-[200px] border-2 border-gray-300 rounded-full opacity-25 transform -rotate-12'></div>
 
 				{/* Abstract lines */}
-				<div className='absolute top-[30%] left-0 w-[25%] h-[2px] bg-gradient-to-r from-transparent via-gray-400 to-transparent opacity-60'></div>
-				<div className='absolute bottom-[40%] right-0 w-[30%] h-[2px] bg-gradient-to-l from-transparent via-gray-400 to-transparent opacity-60'></div>
+				<div className='absolute top-[30%] left-0 w-[25%] h-[2px] bg-gradient-to-r from-transparent via-gray-400 to-transparent opacity-30'></div>
+				<div className='absolute bottom-[40%] right-0 w-[30%] h-[2px] bg-gradient-to-l from-transparent via-gray-400 to-transparent opacity-30'></div>
 
 				{/* Dots grid in one corner */}
 				<div
-					className='absolute top-0 right-0 w-[300px] h-[300px] opacity-40'
+					className='absolute top-0 right-0 w-[300px] h-[300px] opacity-20'
 					style={{
 						backgroundImage: 'radial-gradient(circle, rgba(100,100,100,0.7) 2px, transparent 2px)',
 						backgroundSize: '20px 20px',
@@ -179,8 +217,15 @@ export default function ServicesSection() {
 
 			{/* Container div with ref */}
 			<div ref={sectionContainerRef} className='relative w-full h-full' style={{ zIndex: 2 }}>
-				{/* Floating GIF - positioned randomly */}
-				<div ref={gifRef} className='absolute w-[300px] h-[200px] z-10 drop-shadow-2xl transform-gpu pointer-events-none' style={{ filter: 'drop-shadow(0 15px 15px rgba(0,0,0,0.2))' }}>
+				{/* Floating GIF - positioned randomly and hidden in detail view */}
+				<div
+					ref={gifRef}
+					className='absolute w-[300px] h-[200px] z-10 drop-shadow-2xl transform-gpu pointer-events-none'
+					style={{
+						filter: 'drop-shadow(0 15px 15px rgba(0,0,0,0.2))',
+						visibility: isDetailView ? 'hidden' : 'visible',
+					}}
+				>
 					<motion.div key={activeServiceIndex} initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.7 }} className='w-full h-full relative'>
 						<Image src={`/gif/service${activeServiceIndex + 1}.gif`} alt={`${services[activeServiceIndex]} visualization`} fill style={{ objectFit: 'cover' }} className='rounded-2xl border-4 border-white' priority />
 					</motion.div>
@@ -204,34 +249,84 @@ export default function ServicesSection() {
 						</div>
 					</motion.div>
 
-					{/* Right side with service list - Left-aligned Bold Black Text */}
-					<motion.div className='md:w-full' initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.3 }} ref={servicesRef}>
-						<div className='flex flex-col items-start text-left space-y-8 p-10 ml-10'>
-							{/* Cool gradient title with slogan */}
-							<div className='space-y-2'>
-								<h2 className='text-4xl font-black tracking-tight relative overflow-hidden'>
-									<span className='bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] text-transparent bg-clip-text animate-pulse'>You need it - we do it!</span>
-								</h2>
-								<div className='h-1 w-full bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] rounded-full'></div>
-							</div>
-
-							{/* Services list - direct implementation instead of using components */}
-							<div className='w-full space-y-8'>
-								{services.map((service, index) => (
-									<div
-										key={service}
-										className={`cursor-pointer transform transition-all duration-300 ${index === activeServiceIndex ? 'text-black font-black text-6xl -translate-y-2' : 'text-gray-500 font-bold text-3xl'}`}
-										onClick={() => setActiveServiceIndex(index)}
-										ref={(el) => {
-											if (el) serviceItemsRef.current[index] = el;
-										}}
-									>
-										<span>{service}</span>
+					{/* Right side with service list or detail view */}
+					<AnimatePresence mode='wait'>
+						{!isDetailView ? (
+							/* Services List View */
+							<motion.div key='services-list' className='md:w-full' initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{ duration: 0.5 }} ref={servicesRef}>
+								<div className='flex flex-col items-start text-left space-y-8 p-10 ml-10'>
+									{/* Cool gradient title with slogan */}
+									<div className='space-y-2'>
+										<h2 className='text-4xl font-black tracking-tight relative overflow-hidden'>
+											<span className='bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] text-transparent bg-clip-text animate-pulse'>You need it - we do it!</span>
+										</h2>
+										<div className='h-1 w-full bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] rounded-full'></div>
 									</div>
-								))}
-							</div>
-						</div>
-					</motion.div>
+
+									{/* Services list - direct implementation instead of using components */}
+									<div className='w-full space-y-8'>
+										{services.map((service, index) => (
+											<div
+												key={service}
+												className={`cursor-pointer transform transition-all duration-300 ${index === activeServiceIndex ? 'text-black font-black text-6xl -translate-y-2' : 'text-gray-500 font-bold text-3xl'}`}
+												onClick={() => handleServiceClick(index)}
+												ref={(el) => {
+													if (el) serviceItemsRef.current[index] = el;
+												}}
+											>
+												<span>{service}</span>
+											</div>
+										))}
+									</div>
+								</div>
+							</motion.div>
+						) : (
+							/* Service Detail View */
+							<motion.div key='service-detail' className='md:w-full' initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 50 }} transition={{ duration: 0.5 }}>
+								<div className='flex flex-col items-start text-left space-y-8 p-10 ml-10'>
+									{/* Back button */}
+									<button onClick={handleBackClick} className='text-gray-500 hover:text-black transition-colors flex items-center space-x-2 mb-6'>
+										<svg xmlns='http://www.w3.org/2000/svg' className='h-5 w-5' viewBox='0 0 20 20' fill='currentColor'>
+											<path fillRule='evenodd' d='M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z' clipRule='evenodd' />
+										</svg>
+										<span>Back to services</span>
+									</button>
+
+									{/* Service title with gradient */}
+									<div className='space-y-2'>
+										<motion.h1 className='text-7xl font-black tracking-tight' initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.5 }}>
+											<span className='bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] text-transparent bg-clip-text'>{services[activeServiceIndex]}</span>
+										</motion.h1>
+										<div className='h-1 w-1/2 bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] rounded-full'></div>
+									</div>
+
+									{/* Service description */}
+									<motion.p className='text-lg text-gray-700 max-w-xl' initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.5 }}>
+										{serviceDescriptions[activeServiceIndex]}
+									</motion.p>
+
+									{/* Links section */}
+									<motion.div className='flex flex-col space-y-4 mt-8 pt-4 border-t border-gray-200' initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.5 }}>
+										<h3 className='text-sm uppercase tracking-widest text-gray-400'>Explore More</h3>
+										<div className='flex space-x-6'>
+											<a href='#' className='group flex items-center space-x-2 text-lg font-bold text-black'>
+												<span>Case Studies</span>
+												<svg xmlns='http://www.w3.org/2000/svg' className='h-5 w-5 transform transition-transform group-hover:translate-x-1' viewBox='0 0 20 20' fill='currentColor'>
+													<path fillRule='evenodd' d='M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z' clipRule='evenodd' />
+												</svg>
+											</a>
+											<a href='#' className='group flex items-center space-x-2 text-lg font-bold text-black'>
+												<span>Services</span>
+												<svg xmlns='http://www.w3.org/2000/svg' className='h-5 w-5 transform transition-transform group-hover:translate-x-1' viewBox='0 0 20 20' fill='currentColor'>
+													<path fillRule='evenodd' d='M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z' clipRule='evenodd' />
+												</svg>
+											</a>
+										</div>
+									</motion.div>
+								</div>
+							</motion.div>
+						)}
+					</AnimatePresence>
 				</div>
 			</div>
 		</Section>

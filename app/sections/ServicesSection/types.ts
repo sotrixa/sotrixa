@@ -21,6 +21,8 @@ export interface ServicesListProps {
 	activeServiceIndex: number;
 	setActiveServiceIndex: (index: number) => void;
 	serviceItemsRef: React.MutableRefObject<(HTMLDivElement | null)[]>;
+	isDetailView?: boolean;
+	setIsDetailView?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 // Types for ProgressIndicator props
