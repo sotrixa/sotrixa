@@ -38,6 +38,7 @@ export const useScrollHandler = ({ activeServiceIndex, setActiveServiceIndex, se
 
 			// If we're now on services section, reset the service index
 			if (isOnServicesSection()) {
+				// Explicitly set service index to 0 when entering the section
 				setActiveServiceIndex(0);
 				hasCompletedServices.current = false;
 				isAnimating.current = false; // Reset animation state
@@ -45,7 +46,7 @@ export const useScrollHandler = ({ activeServiceIndex, setActiveServiceIndex, se
 		};
 
 		// Faster throttling for scroll events
-		const SCROLL_COOLDOWN = 120; // ms between scroll events (reduced for faster scrolling)
+		const SCROLL_COOLDOWN = 650; // Increased cooldown to ensure complete animations
 
 		// Go to next service with GSAP animation - with improved throttling
 		const goToNextService = () => {
@@ -120,8 +121,8 @@ export const useScrollHandler = ({ activeServiceIndex, setActiveServiceIndex, se
 			e.preventDefault();
 			e.stopPropagation();
 
-			// Determine scroll direction with a small threshold for better responsiveness
-			const minWheelDelta = 5; // Reduced threshold for faster response to scroll events
+			// Determine scroll direction with a larger threshold for more deliberate scrolling
+			const minWheelDelta = 15; // Increased threshold to prevent accidental scrolling
 			if (e.deltaY > minWheelDelta) {
 				goToNextService();
 			} else if (e.deltaY < -minWheelDelta) {

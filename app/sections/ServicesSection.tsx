@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import Section from '../components/Section';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useScrollHandler } from './ServicesSection/hooks/useScrollHandler';
@@ -24,11 +24,30 @@ export default function ServicesSection() {
 	const sectionIndex = 2; // Position of services section in the page layout
 	const hasCompletedServices = useRef(false);
 	const isAnimating = useRef(false);
+	const isScrolling = useRef(false);
+
+	// Debounced service index setter to prevent rapid changes
+	const debouncedSetActiveServiceIndex = useCallback((value: React.SetStateAction<number>) => {
+		if (isScrolling.current) return;
+
+		isScrolling.current = true;
+		setActiveServiceIndex(value);
+
+		// Reset scrolling flag after animation completes
+		setTimeout(() => {
+			isScrolling.current = false;
+		}, 700); // Slightly longer than animation duration
+	}, []);
+
+	// Ensure first service is active when component mounts or section changes
+	useEffect(() => {
+		setActiveServiceIndex(0);
+	}, []);
 
 	// Use custom hooks for scroll handling and animations
 	useScrollHandler({
 		activeServiceIndex,
-		setActiveServiceIndex,
+		setActiveServiceIndex: debouncedSetActiveServiceIndex,
 		services,
 		sectionIndex,
 		isAnimating,
@@ -151,7 +170,7 @@ export default function ServicesSection() {
 
 	// Handle service selection
 	const handleServiceClick = (index: number) => {
-		setActiveServiceIndex(index);
+		debouncedSetActiveServiceIndex(index);
 
 		// Smooth transition without flash
 		const tl = gsap.timeline();
