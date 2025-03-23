@@ -244,7 +244,7 @@ export default function ServicesSection() {
 		<>
 			{showServiceInfo ? (
 				<div className='relative'>
-					<ServiceInfoSection onBackClick={handleBackFromServiceInfo} />
+					<ServiceInfoSection onBackClick={handleBackFromServiceInfo} activeService={services[activeServiceIndex]} />
 				</div>
 			) : (
 				<Section id='services' className='bg-[#FAFAFA] text-black p-25 relative overflow-hidden'>
