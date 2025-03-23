@@ -9,6 +9,18 @@ import Image from 'next/image';
 import { gsap } from 'gsap';
 import ServiceInfoSection from './ServiceInfoSection';
 
+// Get Timeline type from gsap
+type Timeline = ReturnType<typeof gsap.timeline>;
+
+// Declare global window properties
+declare global {
+	interface Window {
+		servicesHasControl?: boolean;
+		navigateToPanel?: (index: number) => void;
+		playServiceInfoExitAnimation?: () => Timeline | undefined;
+	}
+}
+
 export default function ServicesSection() {
 	const servicesRef = useRef<HTMLDivElement>(null);
 	const serviceItemsRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -374,12 +386,6 @@ export default function ServicesSection() {
 											<motion.div className='flex flex-col space-y-4 mt-8 pt-4 border-t border-gray-200' initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.5 }}>
 												<h3 className='text-sm uppercase tracking-widest text-gray-400'>Explore More</h3>
 												<div className='flex space-x-6'>
-													<a href='#' className='group flex items-center space-x-2 text-lg font-bold text-black'>
-														<span>Case Studies</span>
-														<svg xmlns='http://www.w3.org/2000/svg' className='h-5 w-5 transform transition-transform group-hover:translate-x-1' viewBox='0 0 20 20' fill='currentColor'>
-															<path fillRule='evenodd' d='M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z' clipRule='evenodd' />
-														</svg>
-													</a>
 													<a href='#' className='group flex items-center space-x-2 text-lg font-bold text-black' onClick={handleServiceInfoClick}>
 														<span>Services</span>
 														<svg xmlns='http://www.w3.org/2000/svg' className='h-5 w-5 transform transition-transform group-hover:translate-x-1' viewBox='0 0 20 20' fill='currentColor'>
