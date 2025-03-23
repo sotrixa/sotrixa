@@ -59,7 +59,7 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 		// Initial setup for gear icon
 		gsap.set(gear, {
 			opacity: 0,
-			transformOrigin: 'center center',
+			transformOrigin: '50% 50%',
 		});
 
 		// Setup rotation for gear
@@ -68,20 +68,21 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 			repeat: -1,
 			duration: 8,
 			ease: 'none',
+			transformOrigin: '50% 50%',
 		});
 
 		// Capture dotsRef.current at the time the effect runs
 		const dots = dotsRef.current;
 
 		// Setup initial dot states
-		dots.forEach((dot, i) => {
+		dots.forEach((dot) => {
 			if (!dot) return;
 			gsap.set(dot, {
-				opacity: i === 0 ? 1 : 0,
-				fill: i === 0 ? '#000000' : '#333333',
-				scale: i === 0 ? 1.5 : 1,
-				stroke: i === 0 ? '#000000' : '#555555',
-				strokeWidth: i === 0 ? 2 : 1,
+				opacity: 0, // Hide ALL dots initially
+				fill: '#000000',
+				scale: 1,
+				stroke: '#000000',
+				strokeWidth: 1,
 			});
 		});
 
@@ -93,67 +94,51 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 			// Make sure progress is between 0 and 1
 			progress = Math.max(0, Math.min(1, progress));
 
-			// Update path drawing
-			gsap.to(path, {
-				strokeDashoffset: pathLength * (1 - progress),
+			// Calculate the current drawn length of the path
+			const drawnLength = pathLength * progress;
+
+			// Update path drawing WITHOUT animation for exact sync
+			gsap.set(path, {
+				strokeDashoffset: pathLength - drawnLength,
 				opacity: 1,
-				duration: 0.3,
-				overwrite: 'auto',
 			});
 
-			// Calculate the nearest dot index and distance to it
-			const nearestDotIndex = Math.round(progress * (numSections - 1));
-			const distanceToNearestDot = Math.abs(progress * (numSections - 1) - nearestDotIndex);
+			// Calculate the current section index
+			const currentSectionIndex = Math.floor(progress * (numSections - 1));
 
-			// Always calculate position along the path - don't snap to dots
-			const pathPoint = path.getPointAtLength(pathLength * progress);
+			// Get the point at the current drawn position of the path
+			const pathPoint = path.getPointAtLength(drawnLength);
 
-			// Position gear - always stay on the path
+			// Position gear - ALWAYS at the end of the drawn line
 			if (progress > 0) {
-				// Update gear position with animation
-				gsap.to(gear, {
+				// Position the gear IMMEDIATELY at the exact end of the currently drawn path
+				gsap.set(gear, {
 					x: pathPoint.x,
 					y: pathPoint.y,
-					// Scale up when near dots but don't change position
-					scale: distanceToNearestDot < 0.05 && nearestDotIndex > 0 ? 1.5 : 1,
+					scale: 1.2,
 					opacity: 1,
-					duration: 0.3,
-					ease: 'power1.out',
-					overwrite: 'auto',
 				});
-
-				// Use dotPositions for dot-specific animations if needed
-				if (nearestDotIndex > 0 && distanceToNearestDot < 0.05) {
-					// We're near a dot - could do additional animations with dotPositions[nearestDotIndex]
-				}
 			} else {
 				// Hide gear at the very beginning (progress = 0)
-				gsap.to(gear, {
+				gsap.set(gear, {
 					opacity: 0,
-					duration: 0.2,
-					overwrite: 'auto',
 				});
 			}
 
-			// Update dots visibility
-			const currentSectionIndex = Math.floor(progress * (numSections - 1));
-
-			// Update dot states based on current progress
+			// Update dots visibility - STRICTLY ONLY SHOW DOTS WE'VE PASSED COMPLETELY
 			dots.forEach((dot, i) => {
 				if (!dot) return;
 
-				// Show dots up to current section
-				const isVisible = i === 0 || i <= currentSectionIndex + 1;
-				const isActive = i <= currentSectionIndex;
-				const isCurrent = i === currentSectionIndex;
+				// Only show dots up to PREVIOUS section (not current)
+				// This means dots only appear AFTER we've passed their section
+				const isAlreadyPassed = i < currentSectionIndex;
 
-				gsap.to(dot, {
-					opacity: isVisible ? 1 : 0,
-					scale: isCurrent ? 1.5 : isActive ? 1.2 : 1,
-					fill: isActive ? (isCurrent ? '#000000' : '#333333') : '#555555',
-					stroke: isActive ? '#000000' : '#555555',
-					strokeWidth: isActive ? 2 : 1,
-					duration: 0.2,
+				gsap.set(dot, {
+					opacity: isAlreadyPassed ? 1 : 0,
+					scale: 1.2,
+					fill: '#000000',
+					stroke: '#000000',
+					strokeWidth: 1,
 				});
 			});
 		};
@@ -316,9 +301,9 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 
 				{/* Gear icon */}
 				<g ref={gearRef} className='pointer-events-none'>
-					<foreignObject width='30' height='30' x='-15' y='-15'>
+					<foreignObject width='40' height='40' x='-20' y='-20'>
 						<div className='w-full h-full flex items-center justify-center'>
-							<Image src='/Gear-Icon.svg' alt='Gear Icon' width={30} height={30} className='w-full scale-150 h-full object-contain' priority />
+							<Image src='/Gear-Icon.svg' alt='Gear Icon' width={32} height={32} className='w-full h-full object-contain' style={{ transformOrigin: 'center' }} priority />
 						</div>
 					</foreignObject>
 				</g>
