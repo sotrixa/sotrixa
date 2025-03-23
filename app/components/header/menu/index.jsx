@@ -9,7 +9,7 @@ const menu = [
 		title: 'ABOUT US',
 		description: 'Our Story & Vision',
 		images: ['about1.jpg', 'about2.jpg'],
-		sectionIndex: 3, // Index position in the page (0-indexed)
+		sectionIndex: 1, // Changed from 3 to 0 to navigate to the intro section
 	},
 	{
 		title: 'SERVICES',
@@ -21,7 +21,7 @@ const menu = [
 		title: 'CASE STUDY',
 		description: 'Our Work & Results',
 		images: ['case1.jpg', 'case2.jpg'],
-		sectionIndex: 4, // Index position in the page (0-indexed)
+		sectionIndex: 3, // Index position in the page (0-indexed)
 	},
 ];
 
