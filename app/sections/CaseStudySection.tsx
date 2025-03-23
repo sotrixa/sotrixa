@@ -355,7 +355,7 @@ export default function CaseStudySection() {
 				{/* Detail view - always render but control visibility with CSS */}
 				{selectedStudy && (
 					<div className='px-20 py-10 case-study-detail-container' style={{ display: showDetail ? 'block' : 'none' }}>
-						<CaseStudyDetail study={selectedStudy} onClose={handleCloseDetail} />
+						<CaseStudyDetail study={selectedStudy} activeService={activeService} onClose={handleCloseDetail} />
 					</div>
 				)}
 			</div>
