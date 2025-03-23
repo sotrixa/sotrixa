@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Image from 'next/image';
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger);
@@ -37,14 +38,6 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 
 		// Calculate positions
 		const numSections = sections.length;
-		const width = 300;
-		const dotSpacing = width / (numSections - 1);
-
-		// Generate dot positions
-		const dotPositions = sections.map((_, i) => ({
-			x: i * dotSpacing + 10,
-			y: 30,
-		}));
 
 		// Create main timeline
 		const tl = gsap.timeline({
@@ -63,12 +56,18 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 			opacity: 1,
 		});
 
-		// Initial setup for gear icon - start at first dot position
+		// Initial setup for gear icon
 		gsap.set(gear, {
-			x: dotPositions[0].x,
-			y: dotPositions[0].y,
 			opacity: 0,
-			scale: 1.5,
+			transformOrigin: 'center center',
+		});
+
+		// Setup rotation for gear
+		gsap.to(gear, {
+			rotation: 360,
+			repeat: -1,
+			duration: 8,
+			ease: 'none',
 		});
 
 		// Capture dotsRef.current at the time the effect runs
@@ -79,9 +78,9 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 			if (!dot) return;
 			gsap.set(dot, {
 				opacity: i === 0 ? 1 : 0,
-				fill: i === 0 ? '#ff9500' : '#ffffff',
+				fill: i === 0 ? '#000000' : '#333333',
 				scale: i === 0 ? 1.5 : 1,
-				stroke: i === 0 ? '#ffffff' : '#777777',
+				stroke: i === 0 ? '#000000' : '#555555',
 				strokeWidth: i === 0 ? 2 : 1,
 			});
 		});
@@ -95,38 +94,45 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 			progress = Math.max(0, Math.min(1, progress));
 
 			// Update path drawing
-			gsap.set(path, {
+			gsap.to(path, {
 				strokeDashoffset: pathLength * (1 - progress),
 				opacity: 1,
+				duration: 0.3,
+				overwrite: 'auto',
 			});
 
 			// Calculate the nearest dot index and distance to it
 			const nearestDotIndex = Math.round(progress * (numSections - 1));
 			const distanceToNearestDot = Math.abs(progress * (numSections - 1) - nearestDotIndex);
 
-			// Position gear based on whether it's close to a dot or on the path
-			if (nearestDotIndex > 0 && distanceToNearestDot < 0.05 && nearestDotIndex < dotPositions.length) {
-				// Snap to the exact dot position when very close
-				gsap.set(gear, {
-					x: dotPositions[nearestDotIndex].x,
-					y: dotPositions[nearestDotIndex].y,
-					scale: 1.5,
-					opacity: progress > 0 ? 1 : 0, // Only show after scrolling starts
-				});
-			} else if (progress > 0) {
-				// Calculate gear position along the path
-				const pathPoint = path.getPointAtLength(pathLength * progress);
+			// Always calculate position along the path - don't snap to dots
+			const pathPoint = path.getPointAtLength(pathLength * progress);
 
-				// Update gear position immediately without animation
-				gsap.set(gear, {
+			// Position gear - always stay on the path
+			if (progress > 0) {
+				// Update gear position with animation
+				gsap.to(gear, {
 					x: pathPoint.x,
 					y: pathPoint.y,
-					scale: 1,
+					// Scale up when near dots but don't change position
+					scale: distanceToNearestDot < 0.05 && nearestDotIndex > 0 ? 1.5 : 1,
 					opacity: 1,
+					duration: 0.3,
+					ease: 'power1.out',
+					overwrite: 'auto',
 				});
+
+				// Use dotPositions for dot-specific animations if needed
+				if (nearestDotIndex > 0 && distanceToNearestDot < 0.05) {
+					// We're near a dot - could do additional animations with dotPositions[nearestDotIndex]
+				}
 			} else {
 				// Hide gear at the very beginning (progress = 0)
-				gsap.set(gear, { opacity: 0 });
+				gsap.to(gear, {
+					opacity: 0,
+					duration: 0.2,
+					overwrite: 'auto',
+				});
 			}
 
 			// Update dots visibility
@@ -144,8 +150,8 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 				gsap.to(dot, {
 					opacity: isVisible ? 1 : 0,
 					scale: isCurrent ? 1.5 : isActive ? 1.2 : 1,
-					fill: isActive ? (isCurrent ? '#ff9500' : '#ffb74d') : '#ffffff',
-					stroke: isActive ? '#ffffff' : '#777777',
+					fill: isActive ? (isCurrent ? '#000000' : '#333333') : '#555555',
+					stroke: isActive ? '#000000' : '#555555',
 					strokeWidth: isActive ? 2 : 1,
 					duration: 0.2,
 				});
@@ -303,20 +309,18 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 		<div ref={containerRef} className='fixed bottom-10 left-1/2 transform -translate-x-1/2 z-[1000] pointer-events-auto' style={{ opacity: 1 }}>
 			<svg ref={svgRef} width='320' height='60' viewBox='0 0 320 60' fill='none' xmlns='http://www.w3.org/2000/svg' style={{ filter: 'drop-shadow(0px 0px 5px rgba(0,0,0,0.2))', opacity: 1 }}>
 				{/* Background glow */}
-				<path d={pathData} stroke='rgba(255,165,0,0.2)' strokeWidth='8' strokeLinecap='round' fill='none' />
+				<path d={pathData} stroke='rgba(0,0,0,0.2)' strokeWidth='8' strokeLinecap='round' fill='none' />
 
 				{/* Main path */}
-				<path ref={pathRef} d={pathData} stroke='#ffffff' strokeWidth='2' strokeLinecap='round' fill='none' style={{ opacity: 1 }} />
+				<path ref={pathRef} d={pathData} stroke='#000000' strokeWidth='2' strokeLinecap='round' fill='none' style={{ opacity: 1 }} />
 
 				{/* Gear icon */}
-				<g ref={gearRef} className='pointer-events-none' style={{ transformOrigin: '0 0', opacity: 1 }}>
-					<path d='M0,0 m-10,-10 L-10,-4 L-4,-4 L-4,-10 L-10,-10 M0,0 m4,-10 L4,-4 L10,-4 L10,-10 L4,-10 M0,0 m-10,4 L-10,10 L-4,10 L-4,4 L-10,4 M0,0 m4,4 L4,10 L10,10 L10,4 L4,4 M0,0 m-4,-10 L-4,-13 L4,-13 L4,-10 L-4,-10 M0,0 m-4,10 L-4,13 L4,13 L4,10 L-4,10 M0,0 m-13,-4 L-13,4 L-10,4 L-10,-4 L-13,-4 M0,0 m10,-4 L10,4 L13,4 L13,-4 L10,-4' fill='#ff9500' stroke='#ffffff' strokeWidth='1' />
-					<circle cx='0' cy='0' r='6' fill='#ff9500' stroke='#ffffff' strokeWidth='1' />
-					<circle cx='0' cy='0' r='3' fill='#ffffff' />
-					<circle cx='0' cy='0' r='12' fill='none' stroke='#ffffff' strokeWidth='1' opacity='0.6' />
-
-					{/* Rotation animation */}
-					<animateTransform attributeName='transform' attributeType='XML' type='rotate' from='0 0 0' to='360 0 0' dur='12s' repeatCount='indefinite' />
+				<g ref={gearRef} className='pointer-events-none'>
+					<foreignObject width='30' height='30' x='-15' y='-15'>
+						<div className='w-full h-full flex items-center justify-center'>
+							<Image src='/Gear-Icon.svg' alt='Gear Icon' width={30} height={30} className='w-full scale-150 h-full object-contain' priority />
+						</div>
+					</foreignObject>
 				</g>
 
 				{/* Section dots */}
@@ -329,8 +333,8 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 							cx={pos.x}
 							cy={pos.y}
 							r='6'
-							fill='#ffffff'
-							stroke='#777777'
+							fill='#333333'
+							stroke='#000000'
 							strokeWidth='1'
 						/>
 
