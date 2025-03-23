@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
@@ -31,6 +31,20 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 	const dotsRef = useRef<Array<SVGCircleElement | null>>([]);
 	const gearRef = useRef<SVGGElement>(null);
 	const timelineRef = useRef<gsap.core.Timeline | null>(null);
+	const [svgWidth, setSvgWidth] = useState(1000); // Default width until client-side hydration
+
+	// Update SVG width after component mounts (client-side only)
+	useEffect(() => {
+		// Safe to access window here (client-side only)
+		setSvgWidth(window.innerWidth - 80); // Increased padding for better visibility
+
+		const handleResize = () => {
+			setSvgWidth(window.innerWidth - 80);
+		};
+
+		window.addEventListener('resize', handleResize);
+		return () => window.removeEventListener('resize', handleResize);
+	}, []);
 
 	// Setup all animations when component mounts
 	useEffect(() => {
@@ -204,7 +218,7 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 				}
 			});
 		};
-	}, [sections]);
+	}, [sections, svgWidth]);
 
 	// Listen for custom events from the horizontal scroll component
 	useEffect(() => {
@@ -255,14 +269,14 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 		};
 	}, [sections.length]);
 
-	// Generate a horizontal curved path
+	// Generate a horizontal curved path that spans the full width
 	const generateSVGPath = () => {
-		const width = 300;
+		const width = svgWidth - 120; // Significant padding to ensure rightmost elements are visible
 		const spacing = width / (sections.length - 1);
-		let path = `M10 30`;
+		let path = `M60 30`; // Start further from left edge
 
 		for (let i = 1; i < sections.length; i++) {
-			const x = i * spacing + 10;
+			const x = i * spacing + 60; // Adjust x position with new starting point
 			const controlX1 = x - spacing * 0.6;
 			const controlX2 = x - spacing * 0.4;
 
@@ -276,13 +290,13 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 		return path;
 	};
 
-	// Calculate dot positions
+	// Calculate dot positions across the full width
 	const calculateDotPositions = () => {
-		const width = 300;
+		const width = svgWidth - 120; // Match padding from path generation
 		const spacing = width / (sections.length - 1);
 
 		return sections.map((_, i) => ({
-			x: i * spacing + 10,
+			x: i * spacing + 60, // Adjust x position with new starting point
 			y: 30,
 		}));
 	};
@@ -291,8 +305,8 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 	const dotPositions = calculateDotPositions();
 
 	return (
-		<div ref={containerRef} className='fixed bottom-10 left-1/2 transform -translate-x-1/2 z-[1000] pointer-events-auto' style={{ opacity: 1 }}>
-			<svg ref={svgRef} width='320' height='60' viewBox='0 0 320 60' fill='none' xmlns='http://www.w3.org/2000/svg' style={{ filter: 'drop-shadow(0px 0px 5px rgba(0,0,0,0.2))', opacity: 1 }}>
+		<div ref={containerRef} className='fixed bottom-10 left-1/2 transform -translate-x-1/2 z-[1000] pointer-events-auto w-[calc(100%-80px)] max-w-[1600px]' style={{ opacity: 1 }}>
+			<svg ref={svgRef} width={svgWidth} height='60' viewBox={`0 0 ${svgWidth} 60`} fill='none' xmlns='http://www.w3.org/2000/svg' style={{ filter: 'drop-shadow(0px 0px 5px rgba(0,0,0,0.2))', opacity: 1 }}>
 				{/* Background glow */}
 				<path d={pathData} stroke='rgba(0,0,0,0.2)' strokeWidth='8' strokeLinecap='round' fill='none' />
 
