@@ -4,12 +4,17 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
 import Image from 'next/image';
 import Section from '../components/Section';
+import CaseStudyDetail from '../components/CaseStudyDetail';
 
 // Define case study data type
 type CaseStudy = {
 	title: string;
 	subtitle: string;
 	image: string;
+	description?: string;
+	challenge?: string;
+	solution?: string;
+	results?: string;
 };
 
 type CaseStudiesData = {
@@ -23,11 +28,19 @@ const caseStudies: CaseStudiesData = {
 			title: 'Sports Direct',
 			subtitle: 'Getting in touch with Gen Z',
 			image: '/case-studies/sports-direct-1.jpg',
+			description: 'A comprehensive research project to understand Gen Z consumer behavior and preferences for Sports Direct, leading to a strategic marketing overhaul.',
+			challenge: 'Sports Direct needed to reconnect with younger consumers who were gravitating toward more trendy athletic brands.',
+			solution: 'We conducted extensive interviews, surveys, and social media analysis to develop detailed customer personas and journey maps specifically for Gen Z shoppers.',
+			results: 'Our insights led to a 28% increase in Gen Z engagement and a 15% boost in sales among the 18-24 demographic within six months of implementation.',
 		},
 		{
 			title: 'Sports Direct',
 			subtitle: 'Getting in touch with Gen Z',
 			image: '/case-studies/sports-direct-2.jpg',
+			description: 'A follow-up campaign that built on our initial research to create targeted digital experiences for the Gen Z audience.',
+			challenge: 'Converting initial engagement into long-term brand loyalty with a demographic known for constantly shifting preferences.',
+			solution: 'We developed an omnichannel approach that integrated social media, influencer partnerships, and in-store experiences tailored to Gen Z values and shopping habits.',
+			results: 'The campaign achieved a 32% increase in repeat purchases and boosted social media following by 45% among the target demographic.',
 		},
 	],
 	Branding: [
@@ -35,6 +48,9 @@ const caseStudies: CaseStudiesData = {
 			title: 'Brand A',
 			subtitle: 'Brand strategy development',
 			image: '/case-studies/brand-a.jpg',
+			description: 'A complete brand transformation for a legacy company looking to modernize while maintaining their core values and customer base.',
+			challenge: 'Brand A struggled with an outdated image despite having quality products, leading to declining market share among younger consumers.',
+			solution: 'We developed a refreshed brand identity with new visual language, messaging, and positioning that honored their heritage while signaling innovation.',
 		},
 	],
 	'Bespoke Strategy': [
@@ -42,6 +58,10 @@ const caseStudies: CaseStudiesData = {
 			title: 'Strategy Client',
 			subtitle: 'Custom strategy development',
 			image: '/case-studies/strategy.jpg',
+			description: 'A tailored business strategy to help a mid-sized company expand into new markets while maintaining their unique value proposition.',
+			challenge: 'The client needed to grow without compromising their specialized approach or diluting their brand in highly competitive new territories.',
+			solution: 'We created a phased expansion strategy with careful market analysis and positioning that protected their core differentiation.',
+			results: 'Successful entry into three new markets with 22% year-over-year growth while maintaining customer satisfaction ratings.',
 		},
 	],
 	'Business Planning': [
@@ -49,6 +69,10 @@ const caseStudies: CaseStudiesData = {
 			title: 'Business Client',
 			subtitle: 'Planning for success',
 			image: '/case-studies/business.jpg',
+			description: 'Comprehensive business planning for a startup at a critical growth stage, helping them secure funding and scale operations.',
+			challenge: 'The client needed a robust business plan that would satisfy investors while creating a practical roadmap for sustainable growth.',
+			solution: 'We developed a detailed 3-year business plan with financial projections, operational structures, and market analysis.',
+			results: 'The client secured £2.5M in Series A funding and achieved their 18-month goals within 12 months.',
 		},
 	],
 	Marketing: [
@@ -56,6 +80,10 @@ const caseStudies: CaseStudiesData = {
 			title: 'Marketing Client',
 			subtitle: 'Reaching new audiences',
 			image: '/case-studies/marketing.jpg',
+			description: 'An integrated marketing campaign that helped an established B2B company successfully pivot to reach B2C customers.',
+			challenge: 'The client had strong industry reputation but no recognition among consumers, requiring a complete marketing approach shift.',
+			solution: 'We designed a multi-channel marketing strategy that leveraged their existing credibility while building consumer-focused messaging and touchpoints.',
+			results: 'Achieved 85% brand awareness in target consumer segments within 12 months and exceeded new revenue targets by 30%.',
 		},
 	],
 };
@@ -66,8 +94,14 @@ export default function CaseStudySection() {
 	const [activeService, setActiveService] = useState<string>('Research');
 	const [currentSlide, setCurrentSlide] = useState(0);
 	const sliderRef = useRef<HTMLDivElement>(null);
+	const [selectedStudy, setSelectedStudy] = useState<CaseStudy | null>(null);
+	// New state to control visibility of detail view
+	const [showDetail, setShowDetail] = useState(false);
 
 	const handleServiceClick = (service: string) => {
+		// Reset selected study when changing service
+		setSelectedStudy(null);
+
 		// Prevent animation if the service is already active
 		if (service === activeService) return;
 
@@ -111,6 +145,22 @@ export default function CaseStudySection() {
 		if (caseStudies[activeService]?.length) {
 			setCurrentSlide((prev) => (prev - 1 + caseStudies[activeService].length) % caseStudies[activeService].length);
 		}
+	};
+
+	const handleStudyClick = (study: CaseStudy) => {
+		// First set the selected study data
+		setSelectedStudy(study);
+		// Then show the detail view
+		setShowDetail(true);
+	};
+
+	const handleCloseDetail = () => {
+		// First hide the detail view
+		setShowDetail(false);
+		// After a delay, clear the selected study
+		setTimeout(() => {
+			setSelectedStudy(null);
+		}, 400); // Match this with animation duration
 	};
 
 	// Use GSAP for animations
@@ -186,10 +236,40 @@ export default function CaseStudySection() {
 		}
 	}, [currentSlide, activeService, getVisibleSlides]);
 
+	// After initial render, apply GSAP animations based on showDetail state
+	useEffect(() => {
+		if (!sectionRef.current) return;
+
+		if (showDetail) {
+			// Hide grid view and show detail view
+			gsap.to('.case-studies-grid', {
+				opacity: 0,
+				y: -20,
+				duration: 0.3,
+				ease: 'power2.in',
+				display: 'none',
+			});
+
+			gsap.fromTo('.case-study-detail-container', { opacity: 0, y: 20, display: 'block' }, { opacity: 1, y: 0, duration: 0.4, delay: 0.1, ease: 'power2.out' });
+		} else {
+			// Hide detail view and show grid view
+			gsap.to('.case-study-detail-container', {
+				opacity: 0,
+				y: 20,
+				duration: 0.3,
+				ease: 'power2.in',
+				display: 'none',
+			});
+
+			gsap.fromTo('.case-studies-grid', { opacity: 0, y: 0, display: 'grid' }, { opacity: 1, y: 0, duration: 0.4, delay: 0.1, ease: 'power2.out' });
+		}
+	}, [showDetail]);
+
 	return (
 		<Section id='case-study' className='bg-white text-black pt-16 overflow-visible'>
 			<div ref={sectionRef} className='w-full max-w-none'>
-				<div className='grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-6'>
+				{/* Grid view - set initial display style based on selected study */}
+				<div className='grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-6 case-studies-grid' style={{ display: showDetail ? 'none' : 'grid' }}>
 					{/* Left column - 5/12 width */}
 					<div className='lg:col-span-5 pl-20 pr-4 pb-20 space-y-6'>
 						<h2 className='case-studies-title text-5xl font-bold text-black'>Case Studies</h2>
@@ -244,11 +324,16 @@ export default function CaseStudySection() {
 						<div className='absolute inset-0 overflow-hidden'>
 							<div ref={sliderRef} className='slider-container grid grid-cols-2 gap-4 gap-y-8 h-auto w-full'>
 								{getVisibleSlides().map((study, index) => (
-									<div key={index} className='slider-item space-y-4'>
+									<div key={index} className='slider-item space-y-4 cursor-pointer transition-transform duration-300 hover:-translate-y-2' onClick={() => handleStudyClick(study)}>
 										{/* Image container */}
 										<div className='h-[500px] rounded-lg border border-gray-200 shadow-md overflow-hidden'>
 											<div className='relative w-full h-full'>
 												<Image src={study.image} alt={study.title} className='object-cover hover:scale-105 transition-transform duration-300' fill style={{ objectFit: 'cover' }} />
+
+												{/* Overlay with view details button */}
+												<div className='absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center opacity-0 hover:opacity-100'>
+													<span className='px-6 py-3 bg-white text-black font-bold rounded-lg transform scale-95 hover:scale-100 transition-transform'>View Details</span>
+												</div>
 											</div>
 										</div>
 
@@ -266,6 +351,13 @@ export default function CaseStudySection() {
 						</div>
 					</div>
 				</div>
+
+				{/* Detail view - always render but control visibility with CSS */}
+				{selectedStudy && (
+					<div className='px-20 py-10 case-study-detail-container' style={{ display: showDetail ? 'block' : 'none' }}>
+						<CaseStudyDetail study={selectedStudy} onClose={handleCloseDetail} />
+					</div>
+				)}
 			</div>
 		</Section>
 	);
