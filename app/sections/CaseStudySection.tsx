@@ -187,10 +187,11 @@ export default function CaseStudySection() {
 	}, [currentSlide, activeService, getVisibleSlides]);
 
 	return (
-		<Section id='case-study' className='bg-white text-black pt-16'>
-			<div ref={sectionRef} className='container mx-auto px-4 pb-20'>
-				<div className='grid grid-cols-1 lg:grid-cols-2 gap-12'>
-					<div className='space-y-6'>
+		<Section id='case-study' className='bg-white text-black pt-16 overflow-visible'>
+			<div ref={sectionRef} className='w-full max-w-none'>
+				<div className='grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-6'>
+					{/* Left column - 5/12 width */}
+					<div className='lg:col-span-5 pl-20 pr-4 pb-20 space-y-6'>
 						<h2 className='case-studies-title text-5xl font-bold text-black'>Case Studies</h2>
 						<p className='case-studies-description'>
 							<span className='text-[#3ecca7] text-xl font-semibold'>Research</span>
@@ -205,8 +206,6 @@ export default function CaseStudySection() {
 						</p>
 
 						<div ref={serviceRef} className='mt-16'>
-							<div className='space-y-2 mb-10'></div>
-
 							{/* Services list styled like ServicesSection */}
 							<div className='w-full space-y-8 pl-4'>
 								{Object.keys(caseStudies).map((service) => (
@@ -230,34 +229,40 @@ export default function CaseStudySection() {
 						</div>
 					</div>
 
-					<div className='relative'>
-						{/* Two case studies side by side */}
-						<div ref={sliderRef} className='slider-container grid grid-cols-2 gap-4 h-[450px]'>
-							{getVisibleSlides().map((study, index) => (
-								<div key={index} className='slider-item h-full flex flex-col rounded-lg border border-gray-200 shadow-md overflow-hidden'>
-									<div className='relative flex-1 overflow-hidden'>
-										<Image src={study.image} alt={study.title} className='object-cover hover:scale-105 transition-transform duration-300' fill style={{ objectFit: 'cover' }} />
-									</div>
-									<div className='bg-white p-4'>
-										<h3 className='text-xl font-bold mb-2'>{study.title}</h3>
-										<p className='text-gray-600'>{study.subtitle}</p>
-									</div>
-								</div>
-							))}
-						</div>
-
-						{/* Navigation controls */}
-						<div className='nav-controls absolute bottom-4 right-4 flex items-center space-x-2'>
-							<button onClick={prevSlide} className='bg-black bg-opacity-80 text-white p-2 rounded-full hover:bg-opacity-100 transition-opacity' disabled={currentSlide === 0}>
-								<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
+					{/* Right column - 7/12 width, extending to the right edge */}
+					<div className='lg:col-span-7 relative pr-0'>
+						{/* Navigation control - positioned over both case studies */}
+						<div className='nav-controls absolute -left-16 top-1/2 transform -translate-y-1/2 z-30'>
+							<button onClick={prevSlide} className=' bg-opacity-80 text-black p-3 rounded-full hover:bg-opacity-100 transition-opacity shadow-lg flex items-center justify-center' disabled={currentSlide === 0}>
+								<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
 									<path d='m15 18-6-6 6-6' />
 								</svg>
 							</button>
-							<button onClick={nextSlide} className='bg-black bg-opacity-80 text-white p-2 rounded-full hover:bg-opacity-100 transition-opacity' disabled={currentSlide >= (caseStudies[activeService]?.length || 1) - 1}>
-								<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
-									<path d='m9 18 6-6-6-6' />
-								</svg>
-							</button>
+						</div>
+
+						{/* Case studies container with no right padding */}
+						<div className='absolute inset-0 overflow-hidden'>
+							<div ref={sliderRef} className='slider-container grid grid-cols-2 gap-4 gap-y-8 h-auto w-full'>
+								{getVisibleSlides().map((study, index) => (
+									<div key={index} className='slider-item space-y-4'>
+										{/* Image container */}
+										<div className='h-[500px] rounded-lg border border-gray-200 shadow-md overflow-hidden'>
+											<div className='relative w-full h-full'>
+												<Image src={study.image} alt={study.title} className='object-cover hover:scale-105 transition-transform duration-300' fill style={{ objectFit: 'cover' }} />
+											</div>
+										</div>
+
+										{/* Title and description below the image */}
+										<div className='space-y-2'>
+											<h3 className='text-xl font-bold'>{study.title}</h3>
+											<p className='text-gray-600'>{study.subtitle}</p>
+										</div>
+									</div>
+								))}
+							</div>
+
+							{/* Single click area on the right side to advance slides */}
+							<div onClick={nextSlide} className='absolute right-0 top-0 h-[500px] w-1/2 cursor-pointer z-10' style={{ display: currentSlide >= (caseStudies[activeService]?.length || 1) - 1 ? 'none' : 'block' }}></div>
 						</div>
 					</div>
 				</div>
