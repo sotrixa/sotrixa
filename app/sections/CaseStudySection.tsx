@@ -52,6 +52,14 @@ const caseStudies: CaseStudiesData = {
 			challenge: 'Brand A struggled with an outdated image despite having quality products, leading to declining market share among younger consumers.',
 			solution: 'We developed a refreshed brand identity with new visual language, messaging, and positioning that honored their heritage while signaling innovation.',
 		},
+		{
+			title: 'Brand Z',
+			subtitle: 'Brand strategy development',
+			image: '/case-studies/brand-a.jpg',
+			description: 'A complete brand transformation for a legacy company looking to modernize while maintaining their core values and customer base.',
+			challenge: 'Brand A struggled with an outdated image despite having quality products, leading to declining market share among younger consumers.',
+			solution: 'We developed a refreshed brand identity with new visual language, messaging, and positioning that honored their heritage while signaling innovation.',
+		},
 	],
 	'Bespoke Strategy': [
 		{
@@ -78,6 +86,15 @@ const caseStudies: CaseStudiesData = {
 	Marketing: [
 		{
 			title: 'Marketing Client',
+			subtitle: 'Reaching new audiences',
+			image: '/case-studies/marketing.jpg',
+			description: 'An integrated marketing campaign that helped an established B2B company successfully pivot to reach B2C customers.',
+			challenge: 'The client had strong industry reputation but no recognition among consumers, requiring a complete marketing approach shift.',
+			solution: 'We designed a multi-channel marketing strategy that leveraged their existing credibility while building consumer-focused messaging and touchpoints.',
+			results: 'Achieved 85% brand awareness in target consumer segments within 12 months and exceeded new revenue targets by 30%.',
+		},
+		{
+			title: 'Marketing Client 2',
 			subtitle: 'Reaching new audiences',
 			image: '/case-studies/marketing.jpg',
 			description: 'An integrated marketing campaign that helped an established B2B company successfully pivot to reach B2C customers.',
@@ -355,7 +372,19 @@ export default function CaseStudySection() {
 				{/* Detail view - always render but control visibility with CSS */}
 				{selectedStudy && (
 					<div className='px-20 py-10 case-study-detail-container' style={{ display: showDetail ? 'block' : 'none' }}>
-						<CaseStudyDetail study={selectedStudy} activeService={activeService} onClose={handleCloseDetail} />
+						<CaseStudyDetail
+							study={selectedStudy}
+							activeService={activeService}
+							caseStudies={caseStudies}
+							onClose={handleCloseDetail}
+							onServiceChange={(service) => {
+								setActiveService(service);
+								// Select the first case study of the new service
+								if (caseStudies[service]?.length > 0) {
+									setSelectedStudy(caseStudies[service][0]);
+								}
+							}}
+						/>
 					</div>
 				)}
 			</div>
