@@ -3,9 +3,13 @@
 import { useState, useEffect, useRef } from 'react';
 import styles from './HomeSection.module.css';
 import { gsap } from 'gsap';
+import { useLanguage } from '../data/LanguageContext';
+import { getText } from '../data/translations';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 
 export default function HomeSection() {
 	const [windowWidth, setWindowWidth] = useState(0);
+	const { language } = useLanguage();
 	const containerRef = useRef<HTMLDivElement>(null);
 	const bodyRef = useRef<HTMLDivElement>(null);
 	const headingRef = useRef<HTMLHeadingElement>(null);
@@ -14,10 +18,18 @@ export default function HomeSection() {
 	const buttonsRef = useRef<HTMLDivElement>(null);
 	const videoContainerRef = useRef<HTMLDivElement>(null);
 	const gridRef = useRef<HTMLDivElement>(null);
+	const [isMobile, setIsMobile] = useState(false);
 
 	useEffect(() => {
-		setWindowWidth(window.innerWidth);
-		const handleResize = () => setWindowWidth(window.innerWidth);
+		const handleResize = () => {
+			const width = window.innerWidth;
+			setWindowWidth(width);
+			setIsMobile(width <= 768);
+		};
+
+		// Initial call
+		handleResize();
+
 		window.addEventListener('resize', handleResize);
 		return () => window.removeEventListener('resize', handleResize);
 	}, []);
@@ -40,8 +52,10 @@ export default function HomeSection() {
 				// Grid animation
 				if (gridRef.current) {
 					const columns = gridRef.current.querySelectorAll(`.${styles.column}`);
-					// Do not hide grid columns initially - just animate them in
-					tl.fromTo(columns, { autoAlpha: 0 }, { autoAlpha: 1, stagger: 0.03, duration: 0.5 });
+					// Use fewer columns on mobile for better performance
+					const visibleColumns = isMobile ? Array.from(columns).slice(0, isMobile ? 10 : 20) : columns;
+
+					tl.fromTo(visibleColumns, { autoAlpha: 0 }, { autoAlpha: 1, stagger: 0.03, duration: 0.5 });
 				}
 
 				// Heading parts animation without hiding content first
@@ -52,7 +66,9 @@ export default function HomeSection() {
 				}
 
 				// Subheading animation - start from visible but slightly offset
-				tl.fromTo(subheadingRef.current, { y: 10 }, { y: 0, duration: 0.7 }, '-=0.4');
+				if (subheadingRef.current) {
+					tl.fromTo(subheadingRef.current, { y: 10 }, { y: 0, duration: 0.7 }, '-=0.4');
+				}
 
 				// Paragraph animation - start from visible but slightly offset
 				tl.fromTo(paragraphRef.current, { y: 10 }, { y: 0, duration: 0.6 }, '-=0.3');
@@ -61,14 +77,20 @@ export default function HomeSection() {
 				tl.fromTo(buttonsRef.current, { y: 10 }, { y: 0, duration: 0.5 }, '-=0.2');
 
 				// Video container animation - start from visible but slightly offset
-				tl.fromTo(videoContainerRef.current, { x: 30 }, { x: 0, duration: 1 }, '-=0.8');
+				// Only do horizontal animation on desktop
+				if (!isMobile) {
+					tl.fromTo(videoContainerRef.current, { x: 30 }, { x: 0, duration: 1 }, '-=0.8');
+				} else {
+					// For mobile, fade in the background video with a slight scale effect
+					tl.fromTo(videoContainerRef.current, { autoAlpha: 0.7, scale: 1.05 }, { autoAlpha: 1, scale: 1, duration: 1 }, '-=0.8');
+				}
 
 				// Add a cool scale effect to the whole container
 				tl.from(
 					containerRef.current,
 					{
-						scale: 1.05,
-						duration: 1.5,
+						scale: isMobile ? 1.02 : 1.05, // Smaller scale effect on mobile
+						duration: isMobile ? 1 : 1.5,
 						ease: 'power2.out',
 					},
 					0
@@ -82,12 +104,15 @@ export default function HomeSection() {
 		}, 100);
 
 		return () => clearTimeout(animationTimeout);
-	}, []);
+	}, [isMobile]);
 
 	const getBlocks = () => {
-		const blockSize = windowWidth * 0.02;
+		// Fewer blocks on mobile for better performance
+		const blockSize = isMobile ? windowWidth * 0.03 : windowWidth * 0.02;
 		const nbOfBlocks = Math.ceil(window.innerHeight / blockSize);
-		return [...Array(nbOfBlocks).keys()].map((_, index) => {
+		const limitedBlocks = isMobile ? Math.min(nbOfBlocks, 15) : nbOfBlocks;
+
+		return [...Array(limitedBlocks).keys()].map((_, index) => {
 			return <div key={index} onMouseEnter={(e) => colorize(e.target as HTMLDivElement)} />;
 		});
 	};
@@ -101,33 +126,58 @@ export default function HomeSection() {
 
 	return (
 		<div id='home' ref={containerRef} className={styles.container}>
+			<LanguageSwitcher />
+
 			<div ref={bodyRef} className={styles.body}>
 				<h1 ref={headingRef} className={styles.heading}>
-					<span className={styles.teal}>People</span> <span className={styles.white}>are</span> <span className={styles.yellow}>fascinating</span>
-					<span className={styles.black}>.</span>
+					{isMobile ? (
+						// Simplified layout for mobile
+						<>
+							<span className={styles.white}>We are a </span>
+							<span className={styles.teal}>strategy lab</span>
+							<span className={styles.white}> for </span>
+							<span className={styles.yellow}>visionary thinkers</span>
+							<span className={styles.white}>.</span>
+						</>
+					) : (
+						// Original layout for desktop
+						<>
+							<span>We are a </span>
+							<span className={styles.teal}>strategy</span>
+							<span> lab for visionary </span>
+							<span className={styles.yellow}>thinkers</span>
+							<span className={styles.black}>.</span>
+						</>
+					)}
 				</h1>
-				<h2 ref={subheadingRef} className={styles.subheading}>
-					Research should be too.
-				</h2>
+
 				<p ref={paragraphRef} className={styles.paragraph}>
-					We transform complex data into meaningful insights through meticulous, human-centered research
+					{getText('homeSection.paragraph', language)}
 				</p>
 				<div ref={buttonsRef} className={styles.buttons}>
-					<button className={styles.button}>Talk to us</button>
-					<button className={styles.button}>See our work</button>
+					<button className={styles.button}>{getText('homeSection.talkToUs', language)}</button>
+					<button className={styles.button}>{getText('homeSection.seeOurWork', language)}</button>
 				</div>
 			</div>
 
 			<div ref={videoContainerRef} className={styles.videoContainer}>
-				<video className={styles.video} autoPlay loop muted playsInline>
-					<source src='/video/home-page-video.mp4' type='video/mp4' />
+				<video
+					className={styles.video}
+					autoPlay
+					loop
+					muted
+					playsInline
+					// Lower video quality on mobile devices for better performance
+					poster={isMobile ? '/video/home-page-poster.jpg' : undefined}
+				>
+					<source src={isMobile ? '/video/home-page-video-mobile.mp4' : '/video/home-page-video.mp4'} type='video/mp4' />
 					Your browser does not support the video tag.
 				</video>
 			</div>
 
 			<div ref={gridRef} className={styles.grid}>
 				{windowWidth > 0 &&
-					[...Array(40).keys()].map((_, index) => (
+					[...Array(isMobile ? 10 : 40).keys()].map((_, index) => (
 						<div key={'b_' + index} className={styles.column}>
 							{getBlocks()}
 						</div>
