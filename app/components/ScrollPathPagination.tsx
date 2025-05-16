@@ -308,7 +308,7 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 	const dotPositions = calculateDotPositions();
 
 	return (
-		<div ref={containerRef} className='fixed bottom-10 left-1/2 z-[1000] pointer-events-auto' style={{ opacity: 1 }}>
+		<div ref={containerRef} className='fixed bottom-10 left-1/2 -translate-x-1/2 md:translate-x-0 z-[1000] pointer-events-auto' style={{ opacity: 1 }}>
 			<svg ref={svgRef} width={svgWidth} height='60' viewBox={`0 0 ${svgWidth} 60`} fill='none' xmlns='http://www.w3.org/2000/svg' style={{ filter: 'drop-shadow(0px 0px 5px rgba(0,0,0,0.2))', opacity: 1 }}>
 				{/* Background glow */}
 				<path d={pathData} stroke='rgba(0,0,0,0.2)' strokeWidth='8' strokeLinecap='round' fill='none' />
