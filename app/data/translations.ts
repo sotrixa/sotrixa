@@ -1,6 +1,6 @@
 export type Language = 'en' | 'bg';
 
-type TranslationKey = 'homeSection.title' | 'homeSection.paragraph' | 'homeSection.talkToUs' | 'homeSection.seeOurWork' | 'homeSection.researchSubheading' | 'introSection.title' | 'introSection.subheading' | 'introSection.testimonial';
+type TranslationKey = 'homeSection.title' | 'homeSection.paragraph' | 'homeSection.talkToUs' | 'homeSection.seeOurWork' | 'homeSection.researchSubheading' | 'introSection.title' | 'introSection.subheading' | 'introSection.testimonial' | 'servicesSection.title' | 'servicesSection.subtitle';
 
 export type Translations = {
 	[key in TranslationKey]: {
@@ -15,7 +15,7 @@ export const translations: Translations = {
 	},
 	'homeSection.paragraph': {
 		en: 'Through deep analysis and creative design, we shape strategic direction that moves ideas forward.',
-		bg: 'Чрез задълбочен анализ и креативен дизайн, ние формираме стратегическа посока, която придвижва идеите напред.',
+		bg: 'Чрез задълбочен анализ и креативен дизайн, ниеформираме стратегическа посока, която придвижва идеите напред.',
 	},
 	'homeSection.talkToUs': {
 		en: 'Talk to us',
@@ -39,10 +39,35 @@ export const translations: Translations = {
 	},
 	'introSection.testimonial': {
 		en: "Each project becomes a living story, unfolding through research, structure, strategy, and design - shaping everything from your foundation to how you're seen and remembered.",
-		bg: 'Всеки проект се превръща в жива история, разгръщаща се чрез изследване, структура, стратегия и дизайн - формираща всичко от вашата основа до това как сте възприемани и запомнени.',
+		bg: 'Всеки проект се превръща в жива история, разгръщаща се чрез изследване, структура, стратегия и дизайн -формираща всичко от вашата основа до това как сте възприемани и запомнени.',
+	},
+	'servicesSection.title': {
+		en: 'The way we work is {{layered:#F4DD65}}, {{intentional:#D142E2}}, and deeply {{aligned:#71DEC6}}.',
+		bg: 'Начинът, по който работим, е {{layered:#F4DD65}}, {{intentional:#D142E2}} и дълбоко {{aligned:#71DEC6}}.',
+	},
+	'servicesSection.subtitle': {
+		en: 'We move from insight to structure, strategy to story—building identities and experiences that hold together and move forward.',
+		bg: 'Преминаваме от прозрение към структура, от стратегия към история—изграждайки идентичности и преживявания, които се свързват и вървят напред.',
 	},
 };
 
 export function getText(key: TranslationKey, language: Language): string {
 	return translations[key][language];
+}
+
+// Helper function to parse colored text with format {{text:#HEX}}
+export function parseColoredText(text: string): { text: string; coloredWords: { word: string; color: string }[] } {
+	const colorPattern = /\{\{([^:]+):([^}]+)\}\}/g;
+	const coloredWords: { word: string; color: string }[] = [];
+
+	let match;
+	let plainText = text;
+
+	while ((match = colorPattern.exec(text)) !== null) {
+		const [fullMatch, word, color] = match;
+		coloredWords.push({ word, color });
+		plainText = plainText.replace(fullMatch, word);
+	}
+
+	return { text: plainText, coloredWords };
 }
