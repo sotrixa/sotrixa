@@ -25,7 +25,7 @@ const menu = [
 	},
 ];
 
-export default function index({ closeMenu }) {
+export default function index({ closeMenu, isMobile = false }) {
 	const handleNavigation = (sectionIndex) => {
 		// Close menu first
 		closeMenu();
@@ -46,7 +46,7 @@ export default function index({ closeMenu }) {
 	};
 
 	return (
-		<motion.div className={styles.menu} variants={opacity} initial='initial' animate='enter' exit='exit'>
+		<motion.div className={`${styles.menu} ${isMobile ? styles.mobileMenu : ''}`} variants={opacity} initial='initial' animate='enter' exit='exit'>
 			<div className={styles.header}>
 				<motion.svg
 					variants={slideLeft}
@@ -54,11 +54,12 @@ export default function index({ closeMenu }) {
 					onClick={() => {
 						closeMenu();
 					}}
-					width='68'
-					height='68'
+					width={isMobile ? '48' : '68'}
+					height={isMobile ? '48' : '68'}
 					viewBox='0 0 68 68'
 					fill='none'
 					xmlns='http://www.w3.org/2000/svg'
+					className={styles.closeButton}
 				>
 					<path d='M1.5 1.5L67 67' stroke='white' />
 					<path d='M66.5 1L0.999997 66.5' stroke='white' />
@@ -67,7 +68,7 @@ export default function index({ closeMenu }) {
 
 			<div className={styles.body}>
 				{menu.map((el, index) => {
-					return <Link data={el} index={index} key={index} onClick={() => handleNavigation(el.sectionIndex)} />;
+					return <Link data={el} index={index} key={index} onClick={() => handleNavigation(el.sectionIndex)} isMobile={isMobile} />;
 				})}
 			</div>
 
