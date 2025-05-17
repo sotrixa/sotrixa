@@ -1,7 +1,9 @@
 @import 'tailwindcss';
 
-* {
-	cursor: none !important;
+@media (min-width: 768px) {
+	* {
+		cursor: none !important;
+	}
 }
 
 :root {
@@ -38,4 +40,17 @@ body {
 .scrollbar-hide {
 	-ms-overflow-style: none; /* IE and Edge */
 	scrollbar-width: none; /* Firefox */
+}
+
+/* Mobile optimization styles */
+@media (max-width: 767px) {
+	html,
+	body {
+		overflow-x: hidden;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.custom-cursor {
+		display: none !important;
+	}
 }

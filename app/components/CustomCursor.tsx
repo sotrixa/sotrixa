@@ -6,9 +6,18 @@ export default function CustomCursor() {
 	const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 	const [isVisible, setIsVisible] = useState(true);
 	const [showBubble, setShowBubble] = useState(true);
+	const [isMobile, setIsMobile] = useState(false);
 	const hasScrolled = useRef(false);
 
 	useEffect(() => {
+		// Check if device is mobile
+		const checkMobile = () => {
+			setIsMobile(window.innerWidth < 768);
+		};
+
+		// Initial check
+		checkMobile();
+
 		// Mouse position tracking for custom cursor
 		const handleMouseMove = (e: MouseEvent) => {
 			setMousePosition({ x: e.clientX, y: e.clientY });
@@ -35,17 +44,22 @@ export default function CustomCursor() {
 			setIsVisible(true);
 		};
 
-		// Hide default cursor
-		if (document.body) {
+		// Hide default cursor on desktop only
+		if (document.body && !isMobile) {
 			document.body.style.cursor = 'none';
 		}
 
-		// Add event listeners
-		window.addEventListener('mousemove', handleMouseMove);
-		window.addEventListener('scroll', handleScroll);
-		window.addEventListener('wheel', handleScroll);
-		document.addEventListener('mouseleave', handleMouseLeave);
-		document.addEventListener('mouseenter', handleMouseEnter);
+		// Add event listeners for desktop only
+		if (!isMobile) {
+			window.addEventListener('mousemove', handleMouseMove);
+			window.addEventListener('scroll', handleScroll);
+			window.addEventListener('wheel', handleScroll);
+			document.addEventListener('mouseleave', handleMouseLeave);
+			document.addEventListener('mouseenter', handleMouseEnter);
+		}
+
+		// Add resize listener to detect screen size changes
+		window.addEventListener('resize', checkMobile);
 
 		return () => {
 			window.removeEventListener('mousemove', handleMouseMove);
@@ -53,19 +67,21 @@ export default function CustomCursor() {
 			window.removeEventListener('wheel', handleScroll);
 			document.removeEventListener('mouseleave', handleMouseLeave);
 			document.removeEventListener('mouseenter', handleMouseEnter);
+			window.removeEventListener('resize', checkMobile);
 
 			// Reset cursor style on component unmount
 			if (document.body) {
 				document.body.style.cursor = 'auto';
 			}
 		};
-	}, []);
+	}, [isMobile]);
 
-	// Don't render anything if cursor is outside window
-	if (!isVisible) return null;
+	// Don't render cursor on mobile or if cursor is outside window
+	if (isMobile || !isVisible) return null;
 
 	return (
 		<div
+			className='custom-cursor'
 			style={{
 				position: 'fixed',
 				left: mousePosition.x,
