@@ -71,46 +71,115 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 
 	// Service content definitions
 	const serviceContents: Record<string, ServiceContent> = {
+		'CREATED TO MATTER': {
+			title: 'Empowering bold ideas with strategies that align vision, purpose, and growth.',
+			description: ['Sotrixa partners with visionary entrepreneurs, creatives, and changemakers—those building with purpose and seeking clarity along the way.​', 'We work closely to translate bold ideas into aligned, authentic strategies that are ready for real-world growth.​'],
+			approachTitle: 'Turning vision into structure, potential into direction',
+			values: [
+				{
+					title: 'Impact',
+					content: 'Through deep research, sharp analysis, and strategic design, vision becomes structure—turning potential into direction, and ambition into action.​',
+				},
+				{
+					title: 'Meaning',
+					content: 'Beyond client work, Sotrixa invests in artistic and educational initiatives, giving under-resourced children access to imagination, learning, and creative self-expression. Because the future needs more creators—and every child deserves a space to dream.',
+				},
+			],
+		},
 		RESEARCH: {
-			title: 'A full-service agency specialising in brand, audience, and creative research',
-			description: ['We use quantitative, qualitative, and AI-enhanced methodologies to dive deep into the complexities of human life.', 'We start by understanding why you want to segment - is it long term growth strategy, is it to drive innovation in new markets or new audiences, or is it about finding efficiencies in your marketing strategy?', 'Whether uncovering attitudinal nuances to refine messaging or identifying behavioural patterns to optimise retention, our segmentation strategies lead to smarter business decisions.'],
-			approachTitle: 'Our Research Approach',
-			values: [{ title: 'Curiosity' }, { title: 'Conscience' }],
+			title: 'Deep research, nuanced insight, and future-facing signals that shape powerful strategies.',
+			description: ['At Sotrixa, research is a journey of co-discovery—driven by curiosity, shaped by context, and grounded in your vision.​', 'Together, we listen between the lines, observe subtle patterns, and trace emerging signals that guide strategic decisions.​'],
+			approachTitle: 'A living compass for everything we build together',
+			values: [
+				{
+					title: 'Curiosity',
+					content: 'By blending human stories with data-driven insights, we craft nuanced research journeys—through in-depth interviews, thoughtful surveys, cultural listening, and pattern-sensing.​',
+				},
+				{
+					title: 'Conscience',
+					content: 'What we uncover together: Category Analysis, Competitive Analysis, Consumer Behavior Insights, Trend Scanning & Forecasting, and Audience Segmentation—mapping real people with real stories and needs, not just numbers.​',
+				},
+			],
+		},
+		'BUSINESS ARCHITECTURE': {
+			title: 'Turning vision into a structured, evolving business—ready for real-world growth.',
+			description: ['Every idea holds immense potential, but to thrive, it needs form, coherence, and a structure that sustains growth.​', 'At Sotrixa, we shape the fundamental elements of your business—what you offer, how you function, and the role you are meant to play.​'],
+			approachTitle: 'An aligned, living structure—ready for strategy and movement',
+			values: [
+				{
+					title: 'Structure',
+					content: 'Through co-creation, we translate concepts into frameworks and possibilities into actionable plans.​ What we shape together: Business Model Design, Offer Design & Positioning, and Operational Frameworks that map systems and processes for consistency and focus.​',
+				},
+				{
+					title: 'Scalability',
+					content: 'We help define Mission, Vision & Values—the deeper truths that guide your evolution, while creating Growth Pathways to strategize how to expand, shift, or scale intentionally over time.​',
+				},
+			],
+		},
+		'BESPOKE STRATEGY CREATION': {
+			title: 'Precision-crafted roadmaps that move your vision forward with clarity, coherence, and purpose.',
+			description: ['No two businesses move at the same rhythm.​', 'At Sotrixa, strategy honors your unique goals, capacity, and context—designing roadmaps that are intelligent, flexible, and fully aligned with your evolution.​'],
+			approachTitle: 'Structured, sustainable momentum',
+			values: [
+				{
+					title: 'Precision',
+					content: 'Whether you are launching something new, expanding reach, refining an offer, or exploring partnerships, each strategic layer moves vision into structured, sustainable momentum.​',
+				},
+				{
+					title: 'Adaptability',
+					content: 'From go-to-market approaches and visibility plans to audience engagement, growth models, and positioning strategies—every element is crafted to create meaningful forward motion.',
+				},
+			],
 		},
 		BRANDING: {
-			title: 'Building memorable brands that stand out in crowded markets',
-			description: ['Our branding services create cohesive visual and verbal identities that resonate with your target audience.', 'We blend strategic thinking with creative execution to develop brands that are both distinctive and authentic.', 'From logo design to brand guidelines, we ensure your brand communicates consistently across all touchpoints.'],
-			approachTitle: 'Our Branding Philosophy',
-			values: [{ title: 'Authenticity' }, { title: 'Distinction' }],
-		},
-		'BESPOKE STRATEGY': {
-			title: 'Custom strategies tailored to your unique business challenges',
-			description: ['We develop bespoke strategies that address your specific business needs and market position.', 'Our strategic frameworks are built on deep market analysis and competitive insights.', 'We collaborate closely with your team to ensure strategies are both ambitious and achievable.'],
-			approachTitle: 'Strategic Development Process',
-			values: [{ title: 'Precision' }, { title: 'Adaptability' }],
-		},
-		'WEBSITE DEVELOPMENT': {
-			title: 'Creating digital experiences that engage and convert',
-			description: ['Our website development combines beautiful design with robust functionality.', 'We build responsive, accessible websites optimized for performance and search engines.', 'From e-commerce to content platforms, we create digital solutions that drive real business results.'],
-			approachTitle: 'Our Development Methodology',
-			values: [{ title: 'Usability' }, { title: 'Performance' }],
-		},
-		'BUSINESS PLANNING': {
-			title: 'Comprehensive business planning for sustainable growth',
-			description: ['We help businesses define clear paths to growth through detailed, actionable planning.', 'Our business plans incorporate market analysis, competitive positioning, and financial projections.', 'We focus on creating realistic roadmaps that can guide decision-making and attract investment.'],
-			approachTitle: 'Business Planning Framework',
-			values: [{ title: 'Clarity' }, { title: 'Foresight' }],
+			title: "Bringing your business's true story to life—visually, verbally, and emotionally.",
+			description: ['A brand is the memory, the feeling, the story people carry after they meet you.​', 'At Sotrixa, branding is an act of alignment: we listen deeply to what your business is becoming and translate that into visual and verbal identities that feel alive and true.​'],
+			approachTitle: 'More than an aesthetic, an invitation',
+			values: [
+				{
+					title: 'Authenticity',
+					content: 'We create logos, color palettes, typography, design elements, and voice and tone guidelines—crafted with precision and emotional resonance.​',
+				},
+				{
+					title: 'Distinction',
+					content: 'Your brand becomes an invitation: a true reflection of your story, ready to connect and inspire.',
+				},
+			],
 		},
 		MARKETING: {
-			title: 'Data-driven marketing that delivers measurable results',
-			description: ['Our marketing services combine creative campaigns with analytical rigor.', 'We develop integrated marketing strategies across digital and traditional channels.', 'From social media to content marketing, we focus on connecting with audiences and driving conversions.'],
-			approachTitle: 'Marketing Strategy Principles',
-			values: [{ title: 'Creativity' }, { title: 'Measurement' }],
+			title: 'Expanding your presence with soulful marketing strategies that resonate and move.',
+			description: ['Marketing is the movement of your story into the world—the choreography of voice, vision, and presence.​', 'At Sotrixa, we craft marketing strategies that are intelligent, soulful, and grounded in authenticity.​'],
+			approachTitle: "Your story doesn't just travel—it moves, it resonates",
+			values: [
+				{
+					title: 'Creativity',
+					content: 'From channel strategies and campaign direction to content pillars and creative activations, every element amplifies your voice with coherence and clarity.',
+				},
+				{
+					title: 'Measurement',
+					content: 'We design collaborations and strategic initiatives that expand your reach with purpose and impact, building sustainable momentum for your brand.',
+				},
+			],
+		},
+		'WEBSITE DEVELOPMENT': {
+			title: 'Crafting websites where form meets feeling, and strategy becomes tangible experience.',
+			description: ['Your website is the home of your vision—where strategy meets experience and form meets feeling.​', "At Sotrixa, we design digital spaces that are not only beautiful but deeply functional—reflecting your brand's essence while guiding your audience into connection and action.​"],
+			approachTitle: 'Where presence becomes tangible—and impact begins',
+			values: [
+				{
+					title: 'Usability',
+					content: 'Rooted in clarity, crafted with care, your website becomes a living, evolving expression of everything you stand for.​',
+				},
+				{
+					title: 'Performance',
+					content: 'We build responsive, accessible experiences optimized to deliver your message with impact, creating seamless journeys that engage and convert.',
+				},
+			],
 		},
 	};
 
-	// Get content based on active service or default to Research
-	const currentContent = activeService && serviceContents[activeService] ? serviceContents[activeService] : serviceContents['RESEARCH'];
+	// Get content based on active service or default to Created to Matter
+	const currentContent = activeService && serviceContents[activeService] ? serviceContents[activeService] : serviceContents['CREATED TO MATTER'];
 
 	// Create particles animation
 	const createParticles = () => {
@@ -273,7 +342,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 		setActiveService(service);
 
 		// Find the index of the previously active service
-		const prevIndex = ['RESEARCH', 'BRANDING', 'BESPOKE STRATEGY', 'WEBSITE DEVELOPMENT', 'BUSINESS PLANNING', 'MARKETING'].findIndex((s) => s === prevServiceRef.current);
+		const prevIndex = ['CREATED TO MATTER', 'RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRANDING', 'MARKETING', 'WEBSITE DEVELOPMENT'].findIndex((s) => s === prevServiceRef.current);
 
 		// Reset the previous service animation
 		if (prevIndex >= 0 && serviceTitleRefs.current[prevIndex]) {
@@ -404,7 +473,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 				const serviceItem = titleRef.closest('.service-item');
 				if (serviceItem) {
 					serviceItem.addEventListener('mouseenter', () => {
-						if (activeService === ['RESEARCH', 'BRANDING', 'BESPOKE STRATEGY', 'WEBSITE DEVELOPMENT', 'BUSINESS PLANNING', 'MARKETING'][index]) return;
+						if (activeService === ['CREATED TO MATTER', 'RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRANDING', 'MARKETING', 'WEBSITE DEVELOPMENT'][index]) return;
 
 						gsap.to(chars, {
 							y: -15,
@@ -417,7 +486,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 					});
 
 					serviceItem.addEventListener('mouseleave', () => {
-						if (activeService === ['RESEARCH', 'BRANDING', 'BESPOKE STRATEGY', 'WEBSITE DEVELOPMENT', 'BUSINESS PLANNING', 'MARKETING'][index]) return;
+						if (activeService === ['CREATED TO MATTER', 'RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRANDING', 'MARKETING', 'WEBSITE DEVELOPMENT'][index]) return;
 
 						gsap.to(chars, {
 							y: 0,
@@ -440,7 +509,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 		// Initialize text styles for service titles based on current activeService
 		serviceTitleRefs.current.forEach((titleRef, index) => {
 			if (titleRef) {
-				const service = ['RESEARCH', 'BRANDING', 'BESPOKE STRATEGY', 'WEBSITE DEVELOPMENT', 'BUSINESS PLANNING', 'MARKETING'][index];
+				const service = ['CREATED TO MATTER', 'RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRANDING', 'MARKETING', 'WEBSITE DEVELOPMENT'][index];
 
 				// Set initial styles
 				gsap.set(titleRef, {
@@ -472,7 +541,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 				});
 
 				// If there's an active service on initial load, tie its knot
-				if (activeService === ['RESEARCH', 'BRANDING', 'BESPOKE STRATEGY', 'WEBSITE DEVELOPMENT', 'BUSINESS PLANNING', 'MARKETING'][index]) {
+				if (activeService === ['CREATED TO MATTER', 'RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRANDING', 'MARKETING', 'WEBSITE DEVELOPMENT'][index]) {
 					gsap.to(paths, {
 						strokeDashoffset: 0,
 						opacity: 1,
@@ -636,9 +705,9 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 					</div>
 
 					<div className='grid grid-cols-2 gap-8 mt-10' ref={servicesGridRef}>
-						{['RESEARCH', 'BRANDING', 'BESPOKE STRATEGY', 'WEBSITE DEVELOPMENT', 'BUSINESS PLANNING', 'MARKETING'].map((service, index) => (
+						{['CREATED TO MATTER', 'RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRANDING', 'MARKETING', 'WEBSITE DEVELOPMENT'].map((service, index) => (
 							<div key={service} className={`mb-6 service-item ${activeService === service ? 'active-service' : ''}`} onClick={() => handleServiceClick(service, index)} style={{ cursor: 'pointer' }}>
-								{service === 'BESPOKE STRATEGY' ? (
+								{service === 'BESPOKE STRATEGY CREATION' ? (
 									<div>
 										<h3
 											ref={(el) => {
@@ -646,7 +715,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 											}}
 											className={`text-xl uppercase font-bold tracking-widest mb-2 ${activeService === service ? 'text-blue-600' : ''}`}
 										>
-											BESPOKE STRATEGY
+											BESPOKE STRATEGY CREATION
 										</h3>
 									</div>
 								) : (
@@ -674,7 +743,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 					<AnimatePresence mode='wait'>
 						<motion.div ref={rightContentRef} key={activeService} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }}>
 							<h3 ref={servicesTitleRef} className='text-xl font-bold mb-4'>
-								Services
+								{activeService || 'Serives'}
 							</h3>
 
 							<p ref={approachTitleRef} className='text-lg mb-10'>

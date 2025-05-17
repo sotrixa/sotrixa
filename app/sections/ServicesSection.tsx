@@ -32,10 +32,10 @@ export default function ServicesSection() {
 	const [isDetailView, setIsDetailView] = useState(false);
 	const [showServiceInfo, setShowServiceInfo] = useState(false);
 	const [language] = useState<Language>('en');
-	const services = ['RESEARCH', 'BRANDING', 'BUSINESS PLANNING', 'BESOKE STRATEGY', 'MARKETING', 'WEBSITE DEVELOPMENT'];
+	const services = ['CREATED TO MATTER', 'RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRANDING', 'MARKETING', 'WEBSITE DEVELOPMENT'];
 
 	// Service descriptions
-	const serviceDescriptions = ['We dive deep into market trends, consumer behavior, and competitive landscapes to provide actionable insights that drive strategic decisions.', 'From logo design to brand voice, we craft cohesive identities that resonate with your target audience and create lasting impressions.', 'Our comprehensive business planning services help startups and established companies define clear paths to sustainable growth and profitability.', 'Tailored strategies developed specifically for your business challenges, market position, and growth objectives.', 'Data-driven marketing campaigns that increase visibility, engage prospects, and convert leads into loyal customers.', 'Custom digital solutions with intuitive interfaces and robust functionality, designed to elevate your online presence.'];
+	const serviceDescriptions = ['Empowering bold ideas with strategies that align vision, purpose, and growth.', 'Deep research, nuanced insight, and future-facing signals that shape powerful strategies.', 'Turning vision into a structured, evolving business—ready for real-world growth.', 'Precision-crafted roadmaps that move your vision forward with clarity, coherence, and purpose.', 'Bringing your business’s true story to life—visually, verbally, and emotionally.', 'Expanding your presence with soulful marketing strategies that resonate and move.', 'Crafting websites where form meets feeling, and strategy becomes tangible experience. '];
 
 	const sectionIndex = 2; // Position of services section in the page layout
 	const hasCompletedServices = useRef(false);

@@ -5,6 +5,7 @@ import gsap from 'gsap';
 import Image from 'next/image';
 import Section from '../components/Section';
 import CaseStudyDetail from '../components/CaseStudyDetail';
+import { getText, parseColoredText, Language } from '../data/translations';
 
 // Define case study data type
 type CaseStudy = {
@@ -114,6 +115,14 @@ export default function CaseStudySection() {
 	const [selectedStudy, setSelectedStudy] = useState<CaseStudy | null>(null);
 	// New state to control visibility of detail view
 	const [showDetail, setShowDetail] = useState(false);
+	const [language] = useState<Language>('en');
+
+	// Get title and subtitle from translations
+	const titleTranslation = getText('caseStudySection.title', language);
+	const subtitleTranslation = getText('caseStudySection.subtitle', language);
+
+	// Parse the colored text in title
+	const { text: rawTitleText, coloredWords } = parseColoredText(titleTranslation);
 
 	const handleServiceClick = (service: string) => {
 		// Reset selected study when changing service
@@ -289,18 +298,43 @@ export default function CaseStudySection() {
 				<div className='grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-6 case-studies-grid' style={{ display: showDetail ? 'none' : 'grid' }}>
 					{/* Left column - 5/12 width */}
 					<div className='lg:col-span-5 pl-20 pr-4 pb-20 space-y-6'>
-						<h2 className='case-studies-title text-5xl font-bold text-black'>Case Studies</h2>
-						<p className='case-studies-description'>
-							<span className='text-[#3ecca7] text-xl font-semibold'>Research</span>
-							<span className='text-black text-xl'>
-								{' '}
-								is about people. Identifying and understanding<br></br> your{' '}
-							</span>
-							<span className='text-[#ff69b4] text-xl font-semibold'>audience</span>
-							<span className='text-black text-xl'> is in the </span>
-							<span className='text-[#f4dd65] text-xl font-semibold'>lifeblood</span>
-							<span className='text-black text-xl'> of what research should offer.</span>
-						</p>
+						<h2 className='mt-10 case-studies-title text-xl md:text-4xl font-bold text-black'>
+							{/* Render title with colored words */}
+							{(() => {
+								let lastIndex = 0;
+								const elements = [];
+
+								// Sort colored words by their position in the original text
+								const sortedWords = [...coloredWords].sort((a, b) => rawTitleText.indexOf(a.word) - rawTitleText.indexOf(b.word));
+
+								// Process each colored word
+								sortedWords.forEach(({ word, color }, i) => {
+									const wordIndex = rawTitleText.indexOf(word, lastIndex);
+
+									// Add text before the colored word
+									if (wordIndex > lastIndex) {
+										elements.push(<span key={`text-${i}`}>{rawTitleText.substring(lastIndex, wordIndex)}</span>);
+									}
+
+									// Add the colored word
+									elements.push(
+										<span key={`colored-${i}`} style={{ color }}>
+											{word}
+										</span>
+									);
+
+									lastIndex = wordIndex + word.length;
+								});
+
+								// Add any remaining text
+								if (lastIndex < rawTitleText.length) {
+									elements.push(<span key='text-end'>{rawTitleText.substring(lastIndex)}</span>);
+								}
+
+								return elements;
+							})()}
+						</h2>
+						<p className='case-studies-description text-xl'>{subtitleTranslation}</p>
 
 						<div ref={serviceRef} className='mt-16'>
 							{/* Services list styled like ServicesSection */}

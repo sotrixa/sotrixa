@@ -1,6 +1,6 @@
 export type Language = 'en' | 'bg';
 
-type TranslationKey = 'homeSection.title' | 'homeSection.paragraph' | 'homeSection.talkToUs' | 'homeSection.seeOurWork' | 'homeSection.researchSubheading' | 'introSection.title' | 'introSection.subheading' | 'introSection.testimonial' | 'servicesSection.title' | 'servicesSection.subtitle';
+type TranslationKey = 'homeSection.title' | 'homeSection.paragraph' | 'homeSection.talkToUs' | 'homeSection.seeOurWork' | 'homeSection.researchSubheading' | 'introSection.title' | 'introSection.subheading' | 'introSection.testimonial' | 'servicesSection.title' | 'servicesSection.subtitle' | 'caseStudySection.title' | 'caseStudySection.subtitle';
 
 export type Translations = {
 	[key in TranslationKey]: {
@@ -48,6 +48,14 @@ export const translations: Translations = {
 	'servicesSection.subtitle': {
 		en: 'We move from insight to structure, strategy to story—building identities and experiences that hold together and move forward.',
 		bg: 'Преминаваме от прозрение към структура, от стратегия към история—изграждайки идентичности и преживявания, които се свързват и вървят напред.',
+	},
+	'caseStudySection.title': {
+		en: 'We {{build:#3ecca7}} with {{purpose:#ff69b4}}—and every outcome reflects the {{thinking:#f4dd65}} behind it.',
+		bg: 'Ние {{build:#3ecca7}} с {{purpose:#ff69b4}}—и всеки резултат отразява {{thinking:#f4dd65}} зад него.',
+	},
+	'caseStudySection.subtitle': {
+		en: 'A glimpse into how we shape strategy, identity, and experience with intention.',
+		bg: 'Поглед към това как оформяме стратегия, идентичност и преживяване с намерение.',
 	},
 };
 
