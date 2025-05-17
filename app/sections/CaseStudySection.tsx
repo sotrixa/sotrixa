@@ -24,7 +24,18 @@ type CaseStudiesData = {
 
 // Define case study data
 const caseStudies: CaseStudiesData = {
-	Research: [
+	'CREATED TO MATTER': [
+		{
+			title: 'Created to Matter',
+			subtitle: 'Strategic foundation',
+			image: '/case-studies/created-to-matter.jpg',
+			description: 'Empowering bold ideas with strategies that align vision, purpose, and growth.',
+			challenge: 'Connecting business objectives with meaningful market impact in a saturated landscape.',
+			solution: 'We developed a purpose-driven approach that unified business goals with genuine market needs.',
+			results: 'Established a foundation for sustainable growth with clear purpose and direction.',
+		},
+	],
+	RESEARCH: [
 		{
 			title: 'Sports Direct',
 			subtitle: 'Getting in touch with Gen Z',
@@ -44,7 +55,29 @@ const caseStudies: CaseStudiesData = {
 			results: 'The campaign achieved a 32% increase in repeat purchases and boosted social media following by 45% among the target demographic.',
 		},
 	],
-	Branding: [
+	'BUSINESS ARCHITECTURE': [
+		{
+			title: 'Business Client',
+			subtitle: 'Planning for success',
+			image: '/case-studies/business.jpg',
+			description: 'Turning vision into a structured, evolving business—ready for real-world growth.',
+			challenge: 'The client needed a robust business architecture that would create a foundation for sustainable growth.',
+			solution: 'We developed a detailed business architecture with operational structures and organizational frameworks.',
+			results: 'The client achieved their 18-month goals within 12 months with a scalable business model.',
+		},
+	],
+	'BESPOKE STRATEGY CREATION': [
+		{
+			title: 'Strategy Client',
+			subtitle: 'Custom strategy development',
+			image: '/case-studies/strategy.jpg',
+			description: 'A tailored business strategy to help a mid-sized company expand into new markets while maintaining their unique value proposition.',
+			challenge: 'The client needed to grow without compromising their specialized approach or diluting their brand in highly competitive new territories.',
+			solution: 'We created a phased expansion strategy with careful market analysis and positioning that protected their core differentiation.',
+			results: 'Successful entry into three new markets with 22% year-over-year growth while maintaining customer satisfaction ratings.',
+		},
+	],
+	BRANDING: [
 		{
 			title: 'Brand A',
 			subtitle: 'Brand strategy development',
@@ -62,29 +95,7 @@ const caseStudies: CaseStudiesData = {
 			solution: 'We developed a refreshed brand identity with new visual language, messaging, and positioning that honored their heritage while signaling innovation.',
 		},
 	],
-	'Bespoke Strategy': [
-		{
-			title: 'Strategy Client',
-			subtitle: 'Custom strategy development',
-			image: '/case-studies/strategy.jpg',
-			description: 'A tailored business strategy to help a mid-sized company expand into new markets while maintaining their unique value proposition.',
-			challenge: 'The client needed to grow without compromising their specialized approach or diluting their brand in highly competitive new territories.',
-			solution: 'We created a phased expansion strategy with careful market analysis and positioning that protected their core differentiation.',
-			results: 'Successful entry into three new markets with 22% year-over-year growth while maintaining customer satisfaction ratings.',
-		},
-	],
-	'Business Planning': [
-		{
-			title: 'Business Client',
-			subtitle: 'Planning for success',
-			image: '/case-studies/business.jpg',
-			description: 'Comprehensive business planning for a startup at a critical growth stage, helping them secure funding and scale operations.',
-			challenge: 'The client needed a robust business plan that would satisfy investors while creating a practical roadmap for sustainable growth.',
-			solution: 'We developed a detailed 3-year business plan with financial projections, operational structures, and market analysis.',
-			results: 'The client secured £2.5M in Series A funding and achieved their 18-month goals within 12 months.',
-		},
-	],
-	Marketing: [
+	MARKETING: [
 		{
 			title: 'Marketing Client',
 			subtitle: 'Reaching new audiences',
@@ -104,12 +115,23 @@ const caseStudies: CaseStudiesData = {
 			results: 'Achieved 85% brand awareness in target consumer segments within 12 months and exceeded new revenue targets by 30%.',
 		},
 	],
+	'WEBSITE DEVELOPMENT': [
+		{
+			title: 'Web Client',
+			subtitle: 'Digital experience',
+			image: '/case-studies/website.jpg',
+			description: 'Crafting websites where form meets feeling, and strategy becomes tangible experience.',
+			challenge: 'Creating a website that not only looks beautiful but effectively communicates the brand story and drives conversions.',
+			solution: 'We developed a custom website with seamless UX, interactive elements, and strategic content placement.',
+			results: 'The new website increased user engagement by 40% and conversion rates by 25% within the first quarter.',
+		},
+	],
 };
 
 export default function CaseStudySection() {
 	const sectionRef = useRef<HTMLDivElement>(null);
 	const serviceRef = useRef<HTMLDivElement>(null);
-	const [activeService, setActiveService] = useState<string>('Research');
+	const [activeService, setActiveService] = useState<string>('CREATED TO MATTER');
 	const [currentSlide, setCurrentSlide] = useState(0);
 	const sliderRef = useRef<HTMLDivElement>(null);
 	const [selectedStudy, setSelectedStudy] = useState<CaseStudy | null>(null);
@@ -161,17 +183,23 @@ export default function CaseStudySection() {
 		return () => ctx.revert();
 	};
 
-	const nextSlide = () => {
-		if (caseStudies[activeService]?.length) {
-			setCurrentSlide((prev) => (prev + 1) % caseStudies[activeService].length);
+	const nextSlide = useCallback(() => {
+		if (sliderRef.current) {
+			sliderRef.current.scrollBy({
+				left: 300,
+				behavior: 'smooth',
+			});
 		}
-	};
+	}, []);
 
-	const prevSlide = () => {
-		if (caseStudies[activeService]?.length) {
-			setCurrentSlide((prev) => (prev - 1 + caseStudies[activeService].length) % caseStudies[activeService].length);
+	const prevSlide = useCallback(() => {
+		if (sliderRef.current) {
+			sliderRef.current.scrollBy({
+				left: -300,
+				behavior: 'smooth',
+			});
 		}
-	};
+	}, []);
 
 	const handleStudyClick = (study: CaseStudy) => {
 		// First set the selected study data
@@ -215,24 +243,11 @@ export default function CaseStudySection() {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [caseStudies]);
 
-	// Calculate which two slides to display - memoized to prevent recreation on each render
+	// Calculate all slides to display for the active service instead of just two
 	const getVisibleSlides = useCallback(() => {
 		const slides = caseStudies[activeService] || [];
-
-		// If we have no slides, return an empty array
-		if (slides.length === 0) return [];
-
-		// If there's only one slide, show it twice
-		if (slides.length === 1) {
-			return [slides[0], slides[0]];
-		}
-
-		// Get current and next slide (or wrap around to first)
-		const currentIdx = currentSlide;
-		const nextIdx = (currentSlide + 1) % slides.length;
-
-		return [slides[currentIdx], slides[nextIdx]];
-	}, [activeService, currentSlide]);
+		return slides; // Return all slides for the active service
+	}, [activeService]);
 
 	// Handle slide changes with GSAP
 	useEffect(() => {
@@ -337,19 +352,19 @@ export default function CaseStudySection() {
 						<p className='case-studies-description text-xl'>{subtitleTranslation}</p>
 
 						<div ref={serviceRef} className='mt-16'>
-							{/* Services list styled like ServicesSection */}
-							<div className='w-full space-y-8 pl-4'>
+							{/* Services list styled like ServicesSection but with smaller font */}
+							<div className='w-full space-y-5 pl-4'>
 								{Object.keys(caseStudies).map((service) => (
 									<div
 										key={service}
 										className={`service-item cursor-pointer transform transition-all duration-300 
-											${activeService === service ? 'text-black font-black text-6xl -translate-y-2' : 'text-gray-500 font-bold text-3xl hover:text-gray-800 hover:-translate-y-1'}`}
+											${activeService === service ? 'text-black font-black text-2xl sm:text-3xl md:text-4xl -translate-y-1' : 'text-gray-500 font-medium text-lg sm:text-xl hover:text-gray-800 hover:-translate-y-1'}`}
 										onClick={() => handleServiceClick(service)}
 									>
 										{activeService === service ? (
 											<span className='relative'>
 												{service}
-												<span className='absolute bottom-2 left-0 w-full h-2 bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] rounded-full opacity-40'></span>
+												<span className='absolute bottom-1 left-0 w-full h-1 bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] rounded-full opacity-40'></span>
 											</span>
 										) : (
 											<span>{service}</span>
@@ -362,24 +377,29 @@ export default function CaseStudySection() {
 
 					{/* Right column - 7/12 width, extending to the right edge */}
 					<div className='lg:col-span-7 relative pr-0'>
-						{/* Navigation control - positioned over both case studies */}
-						<div className='nav-controls absolute -left-16 top-1/2 transform -translate-y-1/2 z-30'>
-							<button onClick={prevSlide} className=' bg-opacity-80 text-black p-3 rounded-full hover:bg-opacity-100 transition-opacity shadow-lg flex items-center justify-center' disabled={currentSlide === 0}>
+						{/* Navigation controls - positioned for better visibility */}
+						<div className='nav-controls absolute -left-16 top-1/2 transform -translate-y-1/2 z-30 flex flex-col space-y-4'>
+							<button onClick={prevSlide} className='bg-white bg-opacity-80 text-black p-3 rounded-full hover:bg-opacity-100 transition-all shadow-lg flex items-center justify-center'>
 								<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
 									<path d='m15 18-6-6 6-6' />
 								</svg>
 							</button>
+							<button onClick={nextSlide} className='bg-white bg-opacity-80 text-black p-3 rounded-full hover:bg-opacity-100 transition-all shadow-lg flex items-center justify-center'>
+								<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
+									<path d='m9 6 6 6-6 6' />
+								</svg>
+							</button>
 						</div>
 
-						{/* Case studies container with no right padding */}
-						<div className='absolute inset-0 overflow-hidden'>
-							<div ref={sliderRef} className='slider-container grid grid-cols-2 gap-4 gap-y-8 h-auto w-full'>
+						{/* Case studies container with no right padding - now shows all active service case studies */}
+						<div className='absolute inset-0 overflow-x-auto overflow-y-hidden'>
+							<div ref={sliderRef} className='slider-container flex flex-nowrap gap-6 h-full w-max px-4 pb-8 pt-4' style={{ scrollBehavior: 'smooth' }}>
 								{getVisibleSlides().map((study, index) => (
-									<div key={index} className='slider-item space-y-4 cursor-pointer transition-transform duration-300 hover:-translate-y-2' onClick={() => handleStudyClick(study)}>
-										{/* Image container */}
-										<div className='h-[500px] rounded-lg border border-gray-200 shadow-md overflow-hidden'>
+									<div key={index} className='slider-item flex-shrink-0 w-[420px] space-y-4 cursor-pointer transition-transform duration-300 hover:-translate-y-2' onClick={() => handleStudyClick(study)}>
+										{/* Image container - bigger size */}
+										<div className='h-[480px] md:h-[500px] rounded-lg border border-gray-200 shadow-md overflow-hidden'>
 											<div className='relative w-full h-full'>
-												<Image src={study.image} alt={study.title} className='object-cover hover:scale-105 transition-transform duration-300' fill style={{ objectFit: 'cover' }} />
+												<Image src={study.image} alt={study.title} className='object-cover hover:scale-105 transition-transform duration-300' fill style={{ objectFit: 'cover' }} priority={index === 0} />
 
 												{/* Overlay with view details button */}
 												<div className='absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center opacity-0 hover:opacity-100'>
@@ -389,16 +409,13 @@ export default function CaseStudySection() {
 										</div>
 
 										{/* Title and description below the image */}
-										<div className='space-y-2'>
+										<div className='space-y-2 px-2'>
 											<h3 className='text-xl font-bold'>{study.title}</h3>
 											<p className='text-gray-600'>{study.subtitle}</p>
 										</div>
 									</div>
 								))}
 							</div>
-
-							{/* Single click area on the right side to advance slides */}
-							<div onClick={nextSlide} className='absolute right-0 top-0 h-[500px] w-1/2 cursor-pointer z-10' style={{ display: currentSlide >= (caseStudies[activeService]?.length || 1) - 1 ? 'none' : 'block' }}></div>
 						</div>
 					</div>
 				</div>
