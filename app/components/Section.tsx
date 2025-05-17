@@ -1,14 +1,17 @@
 'use client';
 
-import { ReactNode } from 'react';
+import React from 'react';
 
 interface SectionProps {
-	children: ReactNode;
+	children: React.ReactNode;
 	className?: string;
-	id: string;
+	id?: string;
 }
 
 export default function Section({ children, className = '', id }: SectionProps) {
+	// Check if device is mobile
+	const isMobile = typeof window !== 'undefined' && (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768);
+
 	return (
 		<section
 			id={id}
@@ -16,7 +19,8 @@ export default function Section({ children, className = '', id }: SectionProps) 
 			style={{
 				width: '100vw',
 				scrollSnapAlign: 'start',
-				overflowY: 'hidden',
+				// Only hide overflow on desktop, allow scrolling on mobile
+				overflowY: isMobile ? 'visible' : 'hidden',
 			}}
 		>
 			<div className='w-full'>{children}</div>

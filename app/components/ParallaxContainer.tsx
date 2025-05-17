@@ -13,6 +13,9 @@ export default function ParallaxContainer({ children }: ParallaxContainerProps) 
 	const [startX, setStartX] = useState(0);
 	const [scrollLeft, setScrollLeft] = useState(0);
 
+	// Add this near the top of the useEffect
+	const isMobile = typeof window !== 'undefined' && (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768);
+
 	// Set up horizontal scrolling
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
@@ -203,8 +206,10 @@ export default function ParallaxContainer({ children }: ParallaxContainerProps) 
 				}, 100);
 			}
 
-			// Make scrollbar disappear but still allow scrolling
-			document.body.style.overflow = 'hidden';
+			// Make scrollbar disappear but still allow scrolling on mobile
+			if (!isMobile) {
+				document.body.style.overflow = 'hidden';
+			}
 
 			return () => {
 				if (container) {
@@ -226,7 +231,9 @@ export default function ParallaxContainer({ children }: ParallaxContainerProps) 
 					// Remove keyboard events
 					window.removeEventListener('keydown', handleKeyDown);
 				}
-				document.body.style.overflow = '';
+				if (!isMobile) {
+					document.body.style.overflow = '';
+				}
 			};
 		}
 	}, [isDragging, startX, scrollLeft]);
@@ -234,7 +241,7 @@ export default function ParallaxContainer({ children }: ParallaxContainerProps) 
 	return (
 		<div
 			ref={containerRef}
-			className='fixed inset-0 overflow-x-auto overflow-y-hidden scrollbar-hide parallax-container'
+			className={`fixed inset-0 overflow-x-auto ${isMobile ? 'overflow-y-auto' : 'overflow-y-hidden'} scrollbar-hide parallax-container`}
 			style={{
 				WebkitOverflowScrolling: 'touch',
 				msOverflowStyle: 'none',

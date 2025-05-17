@@ -17,6 +17,43 @@ export function useEventHandlers({ containerRef, sectionsRef, activeIndex, isAni
 		const container = containerRef.current;
 		if (!container || !sectionsRef.current) return;
 
+		// Check if the device is mobile
+		const isMobile = () => {
+			return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+		};
+
+		// If mobile, don't apply custom scroll handlers and let native scrolling work
+		if (isMobile()) {
+			// For mobile, we only handle anchor clicks
+			const handleAnchorClick = (e: MouseEvent) => {
+				const target = e.target as HTMLElement;
+				const anchor = target.closest('a');
+
+				if (anchor && anchor.getAttribute('href')?.startsWith('#')) {
+					// Allow default behavior for anchor links
+					const targetId = anchor.getAttribute('href')?.substring(1);
+					if (!targetId) return;
+
+					// Only prevent default if we're handling navigation programmatically
+					const sections = Array.from(sectionsRef.current!.children);
+					const targetSection = sections.find((section) => section.id === targetId);
+					if (targetSection) {
+						e.preventDefault();
+						// Scroll to element naturally
+						targetSection.scrollIntoView({ behavior: 'smooth' });
+					}
+				}
+			};
+
+			document.body.addEventListener('click', handleAnchorClick);
+
+			return () => {
+				document.body.removeEventListener('click', handleAnchorClick);
+			};
+		}
+
+		// Desktop scrolling behavior - everything below only applies to desktop
+
 		// Handle wheel events for snapping navigation
 		const handleWheel = (e: WheelEvent) => {
 			// IMPORTANT: Skip handling if the services section is active and has control
@@ -81,58 +118,16 @@ export function useEventHandlers({ containerRef, sectionsRef, activeIndex, isAni
 			}
 		};
 
-		// Add event listeners
+		// Add event listeners for desktop only
 		container.addEventListener('wheel', handleWheel, { passive: false });
 		window.addEventListener('keydown', handleKeyDown);
 		document.body.addEventListener('click', handleAnchorClick);
-
-		// Only keeping touch events for mobile functionality
-		const handleTouchStart = (e: TouchEvent) => {
-			if (isAnimating.current) return;
-			startX = e.touches[0].clientX;
-			isDragging = true;
-		};
-
-		const handleTouchMove = (e: TouchEvent) => {
-			if (!isDragging) return;
-
-			const clientX = e.touches[0].clientX;
-			const diff = startX - clientX;
-
-			// Detect direction and minimum movement threshold
-			if (Math.abs(diff) > 50) {
-				if (diff > 0) {
-					nextPanel();
-				} else {
-					prevPanel();
-				}
-				isDragging = false;
-			}
-		};
-
-		const handleTouchEnd = () => {
-			isDragging = false;
-		};
-
-		// Initialize variables for touch events
-		let startX = 0;
-		let isDragging = false;
-
-		// Add touch events only
-		container.addEventListener('touchstart', handleTouchStart, { passive: false });
-		container.addEventListener('touchmove', handleTouchMove, { passive: false });
-		container.addEventListener('touchend', handleTouchEnd);
 
 		return () => {
 			// Remove event listeners
 			container.removeEventListener('wheel', handleWheel);
 			window.removeEventListener('keydown', handleKeyDown);
 			document.body.removeEventListener('click', handleAnchorClick);
-
-			// Remove touch events
-			container.removeEventListener('touchstart', handleTouchStart);
-			container.removeEventListener('touchmove', handleTouchMove);
-			container.removeEventListener('touchend', handleTouchEnd);
 		};
 	}, [containerRef, sectionsRef, activeIndex, isAnimating, nextPanel, prevPanel, navigateToPanel]);
 }

@@ -26,6 +26,9 @@ export function useScrollInitializer({ containerRef, wrapperRef, sectionsRef, na
 			gsap.registerPlugin(ScrollTrigger);
 		}
 
+		// Check if device is mobile
+		const isMobile = typeof window !== 'undefined' && (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768);
+
 		// Fix for Next.js hydration issues - short delay before initializing
 		const initTimeout = setTimeout(() => {
 			initScrolling();
@@ -39,8 +42,13 @@ export function useScrollInitializer({ containerRef, wrapperRef, sectionsRef, na
 
 			const sections = Array.from(sectionsRef.current.children);
 
-			// Make sure the body doesn't scroll
-			document.body.style.overflow = 'hidden';
+			// Make sure the body doesn't scroll - ONLY ON DESKTOP
+			if (!isMobile) {
+				document.body.style.overflow = 'hidden';
+			} else {
+				// For mobile, ensure scrolling is enabled
+				document.body.style.overflow = '';
+			}
 
 			// Set initial dimensions
 			gsap.set(wrapper, {
