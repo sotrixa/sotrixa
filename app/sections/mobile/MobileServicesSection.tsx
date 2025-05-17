@@ -43,6 +43,30 @@ function MobileServicesSectionComponent() {
 		serviceItemsRef.current = serviceItemsRef.current.slice(0, services.length);
 	}, [services.length]);
 
+	// Function to animate detail view entrance when returning from service info
+	const animateDetailViewEntrance = useCallback(() => {
+		if (!isDetailView) return;
+
+		// Get the detail view container
+		const detailViewContainer = document.querySelector('.detail-view-container');
+		if (!detailViewContainer) return;
+
+		// Create entrance animation
+		gsap.fromTo(
+			detailViewContainer,
+			{
+				opacity: 0.8,
+				y: 10,
+			},
+			{
+				opacity: 1,
+				y: 0,
+				duration: 0.4,
+				ease: 'power2.out',
+			}
+		);
+	}, [isDetailView]);
+
 	// Track state changes between service info and detail view
 	useEffect(() => {
 		// When returning from service info, ensure detail view is visible if we came from detail view
@@ -59,7 +83,7 @@ function MobileServicesSectionComponent() {
 			// Reset navigation path
 			navigationHistory.current.fromListToDetail = false;
 		}
-	}, [showServiceInfo, isDetailView]);
+	}, [showServiceInfo, isDetailView, animateDetailViewEntrance]);
 
 	// Effect to handle scrolling prevention
 	useEffect(() => {
@@ -97,31 +121,7 @@ function MobileServicesSectionComponent() {
 			body.style.width = '';
 			body.style.overflowY = '';
 		};
-	}, [showServiceInfo, isDetailView]);
-
-	// Function to animate detail view entrance when returning from service info
-	const animateDetailViewEntrance = () => {
-		if (!isDetailView) return;
-
-		// Get the detail view container
-		const detailViewContainer = document.querySelector('.detail-view-container');
-		if (!detailViewContainer) return;
-
-		// Create entrance animation
-		gsap.fromTo(
-			detailViewContainer,
-			{
-				opacity: 0.8,
-				y: 10,
-			},
-			{
-				opacity: 1,
-				y: 0,
-				duration: 0.4,
-				ease: 'power2.out',
-			}
-		);
-	};
+	}, [showServiceInfo, isDetailView, animateDetailViewEntrance]);
 
 	// Debounced service index setter to prevent rapid changes
 	const debouncedSetActiveServiceIndex = useCallback((value: React.SetStateAction<number>) => {
