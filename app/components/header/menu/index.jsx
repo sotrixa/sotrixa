@@ -4,6 +4,11 @@ import styles from './style.module.scss';
 import Link from './link';
 import { useState } from 'react';
 
+// Type guard for horizontalScrollControls
+const hasHorizontalScrollControls = (win) => {
+	return 'horizontalScrollControls' in win && win.horizontalScrollControls !== undefined && typeof win.horizontalScrollControls.navigateToPanel === 'function';
+};
+
 const menu = [
 	{
 		title: 'ABOUT US',
@@ -25,7 +30,7 @@ const menu = [
 	},
 ];
 
-export default function index({ closeMenu, isMobile = false }) {
+export default function index({ closeMenu }) {
 	const handleNavigation = (sectionIndex) => {
 		// Close menu first
 		closeMenu();
@@ -33,7 +38,7 @@ export default function index({ closeMenu, isMobile = false }) {
 		// Navigate to the section using the window.horizontalScrollControls
 		setTimeout(() => {
 			// Use the global navigation if available
-			if (window.horizontalScrollControls) {
+			if (hasHorizontalScrollControls(window)) {
 				window.horizontalScrollControls.navigateToPanel(sectionIndex);
 			} else {
 				// Fallback - try to find the element directly
@@ -46,7 +51,7 @@ export default function index({ closeMenu, isMobile = false }) {
 	};
 
 	return (
-		<motion.div className={`${styles.menu} ${isMobile ? styles.mobileMenu : ''}`} variants={opacity} initial='initial' animate='enter' exit='exit'>
+		<motion.div className={styles.menu} variants={opacity} initial='initial' animate='enter' exit='exit'>
 			<div className={styles.header}>
 				<motion.svg
 					variants={slideLeft}
@@ -54,8 +59,8 @@ export default function index({ closeMenu, isMobile = false }) {
 					onClick={() => {
 						closeMenu();
 					}}
-					width={isMobile ? '48' : '68'}
-					height={isMobile ? '48' : '68'}
+					width='68'
+					height='68'
 					viewBox='0 0 68 68'
 					fill='none'
 					xmlns='http://www.w3.org/2000/svg'
@@ -68,7 +73,7 @@ export default function index({ closeMenu, isMobile = false }) {
 
 			<div className={styles.body}>
 				{menu.map((el, index) => {
-					return <Link data={el} index={index} key={index} onClick={() => handleNavigation(el.sectionIndex)} isMobile={isMobile} />;
+					return <Link data={el} index={index} key={index} onClick={() => handleNavigation(el.sectionIndex)} />;
 				})}
 			</div>
 

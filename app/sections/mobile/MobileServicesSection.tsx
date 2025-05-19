@@ -5,7 +5,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import ServiceInfoSection from '../../sections/ServiceInfoSection';
+import MobileServiceInfoSection from './MobileServiceInfoSection';
 
 // Register ScrollTrigger plugin
 if (typeof window !== 'undefined') {
@@ -337,42 +337,18 @@ function MobileServicesSectionComponent() {
 
 	// Handle back from service info
 	const handleBackFromServiceInfo = () => {
-		// Create animation sequence for smooth transition back
-		const tl = gsap.timeline();
+		setShowServiceInfo(false);
+		setIsDetailView(false);
+		navigationHistory.current.fromListToDetail = false;
+		navigationHistory.current.fromDetailToInfo = false;
 
-		// Fade out animation before returning to services
-		tl.to('.service-info-container', {
-			opacity: 0.8,
-			scale: 0.98,
-			duration: 0.4,
-			ease: 'power2.inOut',
-			onComplete: () => {
-				// Check navigation history to determine where to go back
-				if (navigationHistory.current.fromDetailToInfo) {
-					// Return to detail view
-					setShowServiceInfo(false);
-					setIsDetailView(true);
-
-					// Reset this part of navigation history
-					navigationHistory.current.fromDetailToInfo = false;
-
-					// Ensure we're animating the detail view entrance after state update
-					setTimeout(() => {
-						animateDetailViewEntrance();
-					}, 50);
-				} else {
-					// If we somehow got here directly, go back to list view
-					setShowServiceInfo(false);
-					setIsDetailView(false);
-
-					// Reset navigation history completely
-					navigationHistory.current.fromListToDetail = false;
-					navigationHistory.current.fromDetailToInfo = false;
-				}
-			},
-		});
-
-		return tl;
+		// Scroll to the services section after overlay closes
+		setTimeout(() => {
+			const section = document.getElementById('mobile-services');
+			if (section) {
+				section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			}
+		}, 100);
 	};
 
 	// Reset scroll position on view changes
@@ -386,11 +362,11 @@ function MobileServicesSectionComponent() {
 	return (
 		<>
 			{showServiceInfo ? (
-				<div className='fixed inset-0 z-50 w-full h-full bg-[#FAFAFA] overflow-auto service-info-container'>
-					<ServiceInfoSection onBackClick={handleBackFromServiceInfo} activeService={services[activeServiceIndex]} />
+				<div className='fixed inset-0 z-[200] w-full h-full bg-[#FAFAFA] overflow-auto service-info-container'>
+					<MobileServiceInfoSection onBackClick={handleBackFromServiceInfo} activeService={services[activeServiceIndex]} />
 				</div>
 			) : (
-				<section ref={sectionRef} id='mobile-services' className='relative min-h-screen py-10 overflow-hidden bg-[#FAFAFA] text-black'>
+				<section ref={sectionRef} id='mobile-services' className='relative min-h-screen py-10 pt-[100px] overflow-hidden bg-[#FAFAFA] text-black'>
 					{/* Minimalist grid background */}
 					<div
 						ref={backgroundRef}

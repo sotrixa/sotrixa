@@ -6,6 +6,7 @@
 	width: 100%;
 	flex-direction: column;
 	justify-content: space-between;
+	background-color: black;
 
 	.header {
 		display: flex;
@@ -145,6 +146,48 @@
 			padding: 0px 10px 0px 10px;
 			border-radius: 30px;
 			cursor: pointer;
+		}
+	}
+}
+
+/* Mobile-specific adjustments */
+@media screen and (max-width: 768px) {
+	.menu {
+		.header {
+			padding: 15px;
+
+			svg {
+				width: 60px;
+				height: 60px;
+			}
+		}
+
+		.body {
+			a,
+			p {
+				font-size: 2rem; /* Fixed size for better readability */
+				line-height: 2.2rem;
+			}
+
+			.outer {
+				.inner {
+					.container {
+						.imageContainer {
+							height: 10vw; /* Larger on mobile for better visibility */
+							width: 25vw;
+						}
+					}
+				}
+			}
+		}
+
+		.footer {
+			padding: 30px 0;
+
+			a {
+				font-size: 16px; /* Fixed size for better touch targets */
+				padding: 5px 15px;
+			}
 		}
 	}
 }
