@@ -32,6 +32,7 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 	const gearRef = useRef<SVGGElement>(null);
 	const timelineRef = useRef<gsap.core.Timeline | null>(null);
 	const [svgWidth, setSvgWidth] = useState(500); // Default width until client-side hydration
+	const [activeDotIndex, setActiveDotIndex] = useState(0); // Track active dot index
 
 	// Update SVG width after component mounts (client-side only)
 	useEffect(() => {
@@ -95,8 +96,8 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 		dots.forEach((dot) => {
 			if (!dot) return;
 			gsap.set(dot, {
-				opacity: 0, // Hide ALL dots initially
-				fill: '#000000',
+				opacity: 1, // Show all dots initially
+				fill: '#000000', // All dots are black initially
 				scale: 1,
 				stroke: '#000000',
 				strokeWidth: 1,
@@ -122,6 +123,7 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 
 			// Calculate the current section index
 			const currentSectionIndex = Math.floor(progress * (numSections - 1));
+			setActiveDotIndex(currentSectionIndex);
 
 			// Get the point at the current drawn position of the path
 			const pathPoint = path.getPointAtLength(drawnLength);
@@ -142,21 +144,31 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 				});
 			}
 
-			// Update dots visibility - STRICTLY ONLY SHOW DOTS WE'VE PASSED COMPLETELY
+			// Update dots visibility and style
 			dots.forEach((dot, i) => {
 				if (!dot) return;
 
-				// Only show dots up to PREVIOUS section (not current)
-				// This means dots only appear AFTER we've passed their section
-				const isAlreadyPassed = i < currentSectionIndex;
+				const isPassed = i < currentSectionIndex;
+				const isActive = i === currentSectionIndex;
 
 				gsap.set(dot, {
-					opacity: isAlreadyPassed ? 1 : 0,
-					scale: 1.2,
-					fill: '#000000',
+					opacity: 1, // Always show all dots
+					scale: 1,
+					fill: isPassed ? '#666666' : '#000000', // Past sections are gray, current and future are black
 					stroke: '#000000',
 					strokeWidth: 1,
 				});
+
+				// Find label for this dot and animate it if it's active
+				const label = document.getElementById(`label-${i}`);
+				if (label) {
+					gsap.to(label, {
+						scale: isActive ? 1.2 : 1,
+						duration: 0.3,
+						ease: 'power2.out',
+						transformOrigin: 'center center',
+					});
+				}
 			});
 		};
 
@@ -227,6 +239,7 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 	useEffect(() => {
 		const handleSectionChange = (event: CustomEvent) => {
 			const { currentSection } = event.detail;
+			setActiveDotIndex(currentSection);
 
 			// Calculate progress based on current section
 			const progress = currentSection / (sections.length - 1);
@@ -239,6 +252,19 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 			// Update elements directly
 			if (window.updateScrollPathFromProgress) {
 				window.updateScrollPathFromProgress(progress);
+			}
+
+			// Animate the active label
+			for (let i = 0; i < sections.length; i++) {
+				const label = document.getElementById(`label-${i}`);
+				if (label) {
+					gsap.to(label, {
+						scale: i === currentSection ? 1.2 : 1,
+						duration: 0.3,
+						ease: 'power2.out',
+						transformOrigin: 'center center',
+					});
+				}
 			}
 		};
 
@@ -261,6 +287,22 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 			// Update elements directly
 			if (window.updateScrollPathFromProgress) {
 				window.updateScrollPathFromProgress(currentProgress);
+			}
+
+			// Calculate the current section index from progress
+			const currentSectionIndex = Math.floor(currentProgress * (sections.length - 1));
+
+			// Animate the active label
+			for (let i = 0; i < sections.length; i++) {
+				const label = document.getElementById(`label-${i}`);
+				if (label) {
+					gsap.to(label, {
+						scale: i === currentSectionIndex ? 1.2 : 1,
+						duration: 0.3,
+						ease: 'power2.out',
+						transformOrigin: 'center center',
+					});
+				}
 			}
 		};
 
@@ -307,9 +349,12 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 	const pathData = generateSVGPath();
 	const dotPositions = calculateDotPositions();
 
+	// Adjust SVG height to accommodate the labels
+	const svgHeight = 80;
+
 	return (
 		<div ref={containerRef} className='fixed bottom-10 left-1/2 -translate-x-1/2 md:translate-x-0 z-[1000] pointer-events-auto' style={{ opacity: 1 }}>
-			<svg ref={svgRef} width={svgWidth} height='60' viewBox={`0 0 ${svgWidth} 60`} fill='none' xmlns='http://www.w3.org/2000/svg' style={{ filter: 'drop-shadow(0px 0px 5px rgba(0,0,0,0.2))', opacity: 1 }}>
+			<svg ref={svgRef} width={svgWidth} height={svgHeight} viewBox={`0 0 ${svgWidth} ${svgHeight}`} fill='none' xmlns='http://www.w3.org/2000/svg' style={{ filter: 'drop-shadow(0px 0px 5px rgba(0,0,0,0.2))', opacity: 1 }}>
 				{/* Background glow */}
 				<path d={pathData} stroke='rgba(0,0,0,0.2)' strokeWidth='8' strokeLinecap='round' fill='none' />
 
@@ -325,9 +370,18 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 					</foreignObject>
 				</g>
 
-				{/* Section dots */}
+				{/* Section dots and labels */}
 				{dotPositions.map((pos, index) => (
-					<g key={`dot-${index}`} className='cursor-pointer group'>
+					<g
+						key={`dot-${index}`}
+						className='cursor-pointer'
+						onClick={() => {
+							if (window.horizontalScrollControls) {
+								window.horizontalScrollControls.navigateToPanel(index);
+							}
+						}}
+					>
+						{/* The dot */}
 						<circle
 							ref={(el) => {
 								dotsRef.current[index] = el;
@@ -335,18 +389,16 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 							cx={pos.x}
 							cy={pos.y}
 							r='6'
-							fill='#333333'
+							fill={index < activeDotIndex ? '#666666' : '#000000'} // Past dots are gray, current and future are black
 							stroke='#000000'
 							strokeWidth='1'
+							className='transition-all duration-300'
 						/>
 
-						{/* Tooltip */}
-						<g className='opacity-0 group-hover:opacity-100 transition-opacity duration-200'>
-							<rect x={pos.x - 40} y='0' width='80' height='20' rx='4' fill='rgba(0,0,0,0.8)' />
-							<text x={pos.x} y='12' fill='white' fontSize='11' fontFamily='sans-serif' textAnchor='middle' dominantBaseline='middle'>
-								{sections[index]}
-							</text>
-						</g>
+						{/* Section label (always visible below the dot) */}
+						<text id={`label-${index}`} x={pos.x} y={pos.y + 25} fill='#000000' fontSize='11' fontFamily='sans-serif' textAnchor='middle' dominantBaseline='middle' className='transition-all duration-300' style={{ transformOrigin: 'center' }}>
+							{sections[index] || (index === 0 ? 'Home' : `Section ${index + 1}`)}
+						</text>
 					</g>
 				))}
 			</svg>
