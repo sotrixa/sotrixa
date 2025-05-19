@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
-import CaseStudyDetail from '../../components/CaseStudyDetail';
+import CaseStudyDetailMobile from './CaseStudyDetailMobile';
 import { getText, parseColoredText, Language } from '../../data/translations';
 
 // Register ScrollTrigger plugin
@@ -209,11 +209,15 @@ export default function MobileCaseStudySection() {
 		setSelectedStudy(study);
 		// Then show the detail view
 		setShowDetail(true);
+		// Hide the main page content
+		document.body.style.overflow = 'hidden';
 	};
 
 	const handleCloseDetail = () => {
 		// First hide the detail view
 		setShowDetail(false);
+		// Restore scroll
+		document.body.style.overflow = '';
 		// After a delay, clear the selected study
 		setTimeout(() => {
 			setSelectedStudy(null);
@@ -281,131 +285,134 @@ export default function MobileCaseStudySection() {
 	}, [showDetail]);
 
 	return (
-		<section ref={sectionRef} id='mobile-case-studies' className='min-h-screen py-10 px-4 bg-white text-black'>
-			<div className='max-w-lg mx-auto'>
-				{/* Grid view */}
-				<div className='case-studies-grid' style={{ display: showDetail ? 'none' : 'block' }}>
-					{/* Title Section */}
-					<h2 className='case-studies-title text-2xl font-bold text-black mb-2'>
-						{/* Render title with colored words */}
-						{(() => {
-							let lastIndex = 0;
-							const elements = [];
+		<>
+			{/* Full case study detail view - overlay over the entire page */}
+			{showDetail && selectedStudy && (
+				<div className='fixed inset-0 z-50 bg-white h-full'>
+					<CaseStudyDetailMobile
+						study={selectedStudy}
+						activeService={activeService}
+						caseStudies={caseStudies}
+						onClose={handleCloseDetail}
+						onServiceChange={(service) => {
+							setActiveService(service);
+							// Select the first case study of the new service
+							if (caseStudies[service]?.length > 0) {
+								setSelectedStudy(caseStudies[service][0]);
+							}
+						}}
+					/>
+				</div>
+			)}
 
-							// Sort colored words by their position in the original text
-							const sortedWords = [...coloredWords].sort((a, b) => rawTitleText.indexOf(a.word) - rawTitleText.indexOf(b.word));
+			{/* Main section content */}
+			<section ref={sectionRef} id='mobile-case-studies' className='min-h-screen py-10 px-4 bg-white text-black'>
+				<div className='max-w-lg mx-auto'>
+					{/* Grid view */}
+					<div className='case-studies-grid'>
+						{/* Title Section */}
+						<h2 className='case-studies-title text-2xl font-bold text-black mb-2'>
+							{/* Render title with colored words */}
+							{(() => {
+								let lastIndex = 0;
+								const elements = [];
 
-							// Process each colored word
-							sortedWords.forEach(({ word, color }, i) => {
-								const wordIndex = rawTitleText.indexOf(word, lastIndex);
+								// Sort colored words by their position in the original text
+								const sortedWords = [...coloredWords].sort((a, b) => rawTitleText.indexOf(a.word) - rawTitleText.indexOf(b.word));
 
-								// Add text before the colored word
-								if (wordIndex > lastIndex) {
-									elements.push(<span key={`text-${i}`}>{rawTitleText.substring(lastIndex, wordIndex)}</span>);
+								// Process each colored word
+								sortedWords.forEach(({ word, color }, i) => {
+									const wordIndex = rawTitleText.indexOf(word, lastIndex);
+
+									// Add text before the colored word
+									if (wordIndex > lastIndex) {
+										elements.push(<span key={`text-${i}`}>{rawTitleText.substring(lastIndex, wordIndex)}</span>);
+									}
+
+									// Add the colored word
+									elements.push(
+										<span key={`colored-${i}`} style={{ color }}>
+											{word}
+										</span>
+									);
+
+									lastIndex = wordIndex + word.length;
+								});
+
+								// Add any remaining text
+								if (lastIndex < rawTitleText.length) {
+									elements.push(<span key='text-end'>{rawTitleText.substring(lastIndex)}</span>);
 								}
 
-								// Add the colored word
-								elements.push(
-									<span key={`colored-${i}`} style={{ color }}>
-										{word}
-									</span>
-								);
+								return elements;
+							})()}
+						</h2>
+						<p className='case-studies-description text-base mb-6'>{subtitleTranslation}</p>
 
-								lastIndex = wordIndex + word.length;
-							});
-
-							// Add any remaining text
-							if (lastIndex < rawTitleText.length) {
-								elements.push(<span key='text-end'>{rawTitleText.substring(lastIndex)}</span>);
-							}
-
-							return elements;
-						})()}
-					</h2>
-					<p className='case-studies-description text-base mb-6'>{subtitleTranslation}</p>
-
-					{/* Service Selection */}
-					<div className='w-full space-y-2 mb-8'>
-						{Object.keys(caseStudies).map((service) => (
-							<div
-								key={service}
-								className={`service-item cursor-pointer transform transition-all duration-300 
+						{/* Service Selection */}
+						<div className='w-full space-y-2 mb-8'>
+							{Object.keys(caseStudies).map((service) => (
+								<div
+									key={service}
+									className={`service-item cursor-pointer transform transition-all duration-300 
                                 ${activeService === service ? 'text-black font-bold text-xl -translate-y-1' : 'text-gray-500 font-medium text-base hover:text-gray-800 hover:-translate-y-1'}`}
-								onClick={() => handleServiceClick(service)}
-							>
-								{activeService === service ? (
-									<span className='relative'>
-										{service}
-										<span className='absolute bottom-1 left-0 w-full h-1 bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] rounded-full opacity-40'></span>
-									</span>
-								) : (
-									<span>{service}</span>
-								)}
-							</div>
-						))}
-					</div>
-
-					{/* Navigation controls */}
-					<div className='flex justify-center space-x-4 mb-4 nav-controls'>
-						<button onClick={prevSlide} className='bg-white bg-opacity-90 text-black p-3 rounded-full shadow-md flex items-center justify-center border border-gray-200'>
-							<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
-								<path d='m15 18-6-6 6-6' />
-							</svg>
-						</button>
-						<button onClick={nextSlide} className='bg-white bg-opacity-90 text-black p-3 rounded-full shadow-md flex items-center justify-center border border-gray-200'>
-							<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
-								<path d='m9 6 6 6-6 6' />
-							</svg>
-						</button>
-					</div>
-
-					{/* Case Study Slider */}
-					<div className='relative overflow-x-auto overflow-y-visible h-auto'>
-						<div ref={sliderRef} className='slider-container flex flex-nowrap gap-4 w-max pb-8 pt-2' style={{ scrollBehavior: 'smooth', touchAction: 'pan-x' }}>
-							{getVisibleSlides().map((study, index) => (
-								<div key={index} className='slider-item flex-shrink-0 w-[280px] space-y-3 cursor-pointer transition-transform duration-300 hover:-translate-y-2' onClick={() => handleStudyClick(study)}>
-									{/* Image container */}
-									<div className='h-[320px] rounded-lg border border-gray-200 shadow-md overflow-hidden'>
-										<div className='relative w-full h-full'>
-											<Image src={study.image} alt={study.title} className='object-cover hover:scale-105 transition-transform duration-300' fill style={{ objectFit: 'cover' }} priority={index === 0} />
-
-											{/* Overlay with view details button */}
-											<div className='absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center opacity-0 hover:opacity-100'>
-												<span className='px-4 py-2 bg-white text-black font-bold rounded-lg transform scale-95 hover:scale-100 transition-transform text-sm'>View Details</span>
-											</div>
-										</div>
-									</div>
-
-									{/* Title and description below the image */}
-									<div className='space-y-1 px-1'>
-										<h3 className='text-lg font-bold'>{study.title}</h3>
-										<p className='text-sm text-gray-600'>{study.subtitle}</p>
-									</div>
+									onClick={() => handleServiceClick(service)}
+								>
+									{activeService === service ? (
+										<span className='relative'>
+											{service}
+											<span className='absolute bottom-1 left-0 w-full h-1 bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] rounded-full opacity-40'></span>
+										</span>
+									) : (
+										<span>{service}</span>
+									)}
 								</div>
 							))}
 						</div>
+
+						{/* Navigation controls */}
+						<div className='flex justify-center space-x-4 mb-4 nav-controls'>
+							<button onClick={prevSlide} className='bg-white bg-opacity-90 text-black p-3 rounded-full shadow-md flex items-center justify-center border border-gray-200'>
+								<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
+									<path d='m15 18-6-6 6-6' />
+								</svg>
+							</button>
+							<button onClick={nextSlide} className='bg-white bg-opacity-90 text-black p-3 rounded-full shadow-md flex items-center justify-center border border-gray-200'>
+								<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
+									<path d='m9 6 6 6-6 6' />
+								</svg>
+							</button>
+						</div>
+
+						{/* Case Study Slider */}
+						<div className='relative overflow-x-auto overflow-y-visible h-auto'>
+							<div ref={sliderRef} className='slider-container flex flex-nowrap gap-4 w-max pb-8 pt-2' style={{ scrollBehavior: 'smooth', touchAction: 'pan-x' }}>
+								{getVisibleSlides().map((study, index) => (
+									<div key={index} className='slider-item flex-shrink-0 w-[280px] space-y-3 cursor-pointer transition-transform duration-300 hover:-translate-y-2' onClick={() => handleStudyClick(study)}>
+										{/* Image container */}
+										<div className='h-[320px] rounded-lg border border-gray-200 shadow-md overflow-hidden'>
+											<div className='relative w-full h-full'>
+												<Image src={study.image} alt={study.title} className='object-cover hover:scale-105 transition-transform duration-300' fill style={{ objectFit: 'cover' }} priority={index === 0} />
+
+												{/* Overlay with view details button */}
+												<div className='absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center opacity-0 hover:opacity-100'>
+													<span className='px-4 py-2 bg-white text-black font-bold rounded-lg transform scale-95 hover:scale-100 transition-transform text-sm'>View Details</span>
+												</div>
+											</div>
+										</div>
+
+										{/* Title and description below the image */}
+										<div className='space-y-1 px-1'>
+											<h3 className='text-lg font-bold'>{study.title}</h3>
+											<p className='text-sm text-gray-600'>{study.subtitle}</p>
+										</div>
+									</div>
+								))}
+							</div>
+						</div>
 					</div>
 				</div>
-
-				{/* Detail view */}
-				{selectedStudy && (
-					<div className='case-study-detail-container' style={{ display: showDetail ? 'block' : 'none' }}>
-						<CaseStudyDetail
-							study={selectedStudy}
-							activeService={activeService}
-							caseStudies={caseStudies}
-							onClose={handleCloseDetail}
-							onServiceChange={(service) => {
-								setActiveService(service);
-								// Select the first case study of the new service
-								if (caseStudies[service]?.length > 0) {
-									setSelectedStudy(caseStudies[service][0]);
-								}
-							}}
-						/>
-					</div>
-				)}
-			</div>
-		</section>
+			</section>
+		</>
 	);
 }

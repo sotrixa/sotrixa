@@ -269,8 +269,8 @@ export default function CaseStudyDetailMobile({ study, activeService, caseStudie
 	}, [isServicesOpen]);
 
 	return (
-		<div ref={detailRef} className='w-full min-h-screen bg-white relative overflow-x-hidden'>
-			{/* Top navigation bar */}
+		<div ref={detailRef} className='w-full h-full overflow-y-auto bg-white relative'>
+			{/* Top navigation bar - make it sticky */}
 			<div className='sticky top-0 z-30 bg-white px-4 py-4 flex justify-between items-center border-b border-gray-100 shadow-sm'>
 				<a
 					href='#'
