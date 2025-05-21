@@ -27,33 +27,33 @@ const caseStudies: CaseStudiesData = {
 	HOSPITALITY: [
 		{
 			title: 'Hospitality Business',
-			subtitle: 'Strategic growth initiative',
-			image: '/case-studies/hospitality.jpg',
+			subtitle: 'A well-established hospitality business in Bulgaria',
+			image: '/case-studies/brand-a.jpg',
 			description: 'A well-established hospitality business in Bulgaria sought new avenues for expansion and strategic growth. With a strong foundation, the goal was to uncover actionable insights to inform future development.',
 			challenge: 'Despite a solid market presence, the business needed fresh strategies to navigate an evolving, competitive hospitality landscape.',
-			solution: "We launched a comprehensive research initiative to guide decision-making:\n\n- Research: Conducted in-depth analysis of the competitive landscape, including trend scanning and forecasting, to uncover emerging opportunities.\n\n- Bespoke Strategy Creation: Developed a tailored, actionable strategy aligned with the business's strengths and market insights.",
+			solution: "We launched a comprehensive research initiative to guide decision-making:\n\n- Research: Conducted in-depth analysis of the competitive landscape, including trend scanning and forecasting, to uncover emerging opportunities.\n- Bespoke Strategy Creation: Developed a tailored, actionable strategy aligned with the business's strengths and market insights.",
 			results: 'Our efforts identified high-potential growth areas based on current trends. The bespoke strategy offered clear direction, enabling informed expansion decisions.',
 		},
 	],
 	'ITALIAN CONCEPT': [
 		{
 			title: 'Italian Concept Store',
-			subtitle: 'Brand positioning & market strategy',
-			image: '/case-studies/italian-store.jpg',
+			subtitle: 'A specialty retailer introducing Italian lifestyle products',
+			image: '/case-studies/business.jpg',
 			description: 'A specialty retailer introducing Italian lifestyle products to the Bulgarian market aimed to deepen customer engagement and strengthen brand recognition.',
 			challenge: 'While offering high-quality products, the store struggled to establish a cohesive brand presence and connect meaningfully with customers.',
-			solution: "We undertook a strategic repositioning process:\n\n- Research: Conducted an in-depth analysis of the local retail landscape, exploring customer preferences, market trends, and opportunities for differentiation.\n\n- Marketing Plan Development: Crafted a targeted marketing strategy aligned with the store's offerings and audience, defining clear objectives, channels, and engagement steps.",
+			solution: "We undertook a strategic repositioning process:​\n\n- Research: Conducted an in-depth analysis of the local retail landscape, exploring customer preferences, market trends, and opportunities for differentiation.​\n- Marketing Plan Development: Crafted a targeted marketing strategy aligned with the store's offerings and audience, defining clear objectives, channels, and engagement steps.",
 			results: "Our work revealed the store's unique market position, enabling stronger customer connection. A clear, research-based marketing strategy laid a foundation for lasting success.",
 		},
 	],
 	'WELLNESS PRACTICE': [
 		{
 			title: 'Wellness Practice',
-			subtitle: 'Brand development & business strategy',
-			image: '/case-studies/wellness-practice.jpg',
+			subtitle: 'A newly established somatic therapist',
+			image: '/case-studies/sports-direct-1.jpg',
 			description: 'A newly established somatic therapist sought to define her distinctive healing approach and attract aligned clients through a strong, resonant presence.',
 			challenge: 'Launching in a niche market required communicating the unique value of her services and creating a brand identity capable of building trust.',
-			solution: "We guided the practice's development across key areas:\n\n- Research: Analyzed the local wellness landscape to uncover gaps and opportunities.\n\n- Business Architecture: Designed and positioned her service offerings to reflect her methodology.\n\n- Branding: Developed a visual and verbal identity capturing the practice's essence and authenticity.\n\n- Marketing Strategy: Crafted a marketing plan focused on resonant channels and messaging.",
+			solution: "We guided the practice's development across key areas:​\n\n- Research: Analyzed the local wellness landscape to uncover gaps and opportunities.​\n- Business Architecture: Designed and positioned her service offerings to reflect her methodology.​\n- Branding: Developed a visual and verbal identity capturing the practice's essence and authenticity.​\n- Marketing Strategy: Crafted a marketing plan focused on resonant channels and messaging.",
 			results: 'The new brand identity and strategic plan allowed her to connect meaningfully with clients, positioning her practice for growth and sustainability.',
 		},
 	],
@@ -74,80 +74,6 @@ export default function CaseStudySection() {
 
 	// Parse the colored text in title
 	const { text: rawTitleText, coloredWords } = parseColoredText(titleTranslation);
-
-	const nextSlide = useCallback(() => {
-		if (sliderRef.current) {
-			const slides = sliderRef.current.querySelectorAll('.slider-item');
-			const containerRect = sliderRef.current.getBoundingClientRect();
-
-			// Find the first slide that's only partially visible
-			let targetSlide = null;
-			for (let i = 0; i < slides.length; i++) {
-				const slideRect = slides[i].getBoundingClientRect();
-				const slideRightEdge = slideRect.left + slideRect.width - containerRect.left;
-
-				// If the right edge of this slide is beyond the container's right edge
-				if (slideRightEdge > containerRect.width) {
-					targetSlide = slides[i] as HTMLElement;
-					break;
-				}
-			}
-
-			// If we found a partially visible slide, scroll to it
-			if (targetSlide) {
-				const targetLeft = targetSlide.offsetLeft;
-				sliderRef.current.scrollTo({
-					left: targetLeft,
-					behavior: 'smooth',
-				});
-			} else {
-				// If all slides are visible or we're at the end, scroll to the last slide
-				const lastSlide = slides[slides.length - 1] as HTMLElement;
-				if (lastSlide) {
-					const targetLeft = lastSlide.offsetLeft;
-					sliderRef.current.scrollTo({
-						left: targetLeft,
-						behavior: 'smooth',
-					});
-				}
-			}
-		}
-	}, []);
-
-	const prevSlide = useCallback(() => {
-		if (sliderRef.current) {
-			const slides = sliderRef.current.querySelectorAll('.slider-item');
-			const containerRect = sliderRef.current.getBoundingClientRect();
-
-			// Find the first visible slide
-			let firstVisibleSlideIndex = 0;
-			for (let i = 0; i < slides.length; i++) {
-				const slideRect = slides[i].getBoundingClientRect();
-				if (slideRect.left >= containerRect.left) {
-					firstVisibleSlideIndex = i;
-					break;
-				}
-			}
-
-			// Target the slide before the first visible one
-			const targetIndex = Math.max(0, firstVisibleSlideIndex - 1);
-			const targetSlide = slides[targetIndex] as HTMLElement;
-
-			if (targetSlide) {
-				const targetLeft = targetSlide.offsetLeft;
-				sliderRef.current.scrollTo({
-					left: targetLeft,
-					behavior: 'smooth',
-				});
-			} else {
-				// Scroll to the first slide
-				sliderRef.current.scrollTo({
-					left: 0,
-					behavior: 'smooth',
-				});
-			}
-		}
-	}, []);
 
 	const handleStudyClick = (study: CaseStudy) => {
 		// First set the selected study data
@@ -312,7 +238,7 @@ export default function CaseStudySection() {
 					</div>
 
 					{/* Right column - 7/12 width, extending to the right edge */}
-					<div className='lg:col-span-6 relative pr-0 mt-6 lg:mt-0'>
+					<div className='lg:col-span-6 relative pr-0 mt-6 lg:-mt-16'>
 						{/* Case studies container with no right padding - now shows all active service case studies */}
 						<div className='relative overflow-x-auto overflow-y-visible h-auto'>
 							<div ref={sliderRef} className='slider-container flex flex-nowrap gap-4 md:gap-6 w-max px-4 pb-6 pt-3' style={{ scrollBehavior: 'smooth', touchAction: 'pan-x' }}>
@@ -337,18 +263,6 @@ export default function CaseStudySection() {
 										</div>
 									</div>
 								))}
-							</div>
-
-							{/* Slider navigation arrows */}
-							<div className='flex justify-end gap-2 mt-4 px-4'>
-								<button onClick={prevSlide} className='px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors' aria-label='Previous slide'>
-									<span className='sr-only'>Previous</span>
-									&larr;
-								</button>
-								<button onClick={nextSlide} className='px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors' aria-label='Next slide'>
-									<span className='sr-only'>Next</span>
-									&rarr;
-								</button>
 							</div>
 						</div>
 					</div>

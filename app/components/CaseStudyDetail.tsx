@@ -131,6 +131,57 @@ export default function CaseStudyDetail({ study, activeService, caseStudies, onC
 		}
 	};
 
+	// Handle click on a case study title
+	const handleCaseStudyClick = (study: CaseStudy) => {
+		if (study.title === currentStudy.title || isAnimating) return;
+
+		setIsAnimating(true);
+
+		// Animate content out
+		const tl = gsap.timeline({
+			onComplete: () => {
+				setCurrentStudy(study);
+
+				// Set a slightly longer timeout to ensure animations complete
+				setTimeout(() => {
+					setIsAnimating(false);
+
+					// Force visibility after animation
+					if (contentRef.current) {
+						contentRef.current.style.opacity = '1';
+						contentRef.current.style.transform = 'translateY(0)';
+					}
+				}, 500);
+			},
+		});
+
+		if (contentRef.current) {
+			tl.to(
+				contentRef.current,
+				{
+					opacity: 0,
+					y: 30,
+					duration: 0.4,
+					ease: 'power2.out',
+				},
+				0
+			);
+		}
+
+		if (imageRef.current) {
+			tl.to(
+				imageRef.current,
+				{
+					opacity: 0,
+					x: 50,
+					duration: 0.4,
+					ease: 'power2.out',
+				},
+				0
+			);
+		}
+	};
+
 	// Transition to next case study with animation
 	const goToNextCaseStudy = (e: React.MouseEvent<HTMLAnchorElement>) => {
 		e.preventDefault();
@@ -225,8 +276,8 @@ export default function CaseStudyDetail({ study, activeService, caseStudies, onC
 			}
 
 			// Add hover animations to sidebar items
-			gsap.utils.toArray<HTMLDivElement>('.service-item').forEach((item) => {
-				const gradient = item.querySelector('.service-gradient');
+			gsap.utils.toArray<HTMLDivElement>('.service-item, .case-study-item').forEach((item) => {
+				const gradient = item.querySelector('.item-gradient');
 				const hoverTl = gsap.timeline({ paused: true });
 
 				if (gradient) {
@@ -304,52 +355,54 @@ export default function CaseStudyDetail({ study, activeService, caseStudies, onC
 	};
 
 	return (
-		<div ref={detailRef} className='w-full min-h-screen bg-white relative' onKeyDown={handleKeyDown} tabIndex={0}>
+		<div ref={detailRef} className='w-full min-h-screen bg-white relative mt-20' onKeyDown={handleKeyDown} tabIndex={0}>
 			{/* Right side image positioned absolutely at top-right with zero margin/padding */}
 			<div ref={imageRef} className='absolute -top-10 -mr-20 right-0 z-10'>
 				<Image src={currentStudy.image} alt={currentStudy.title} width={500} height={350} className='object-cover' priority />
 			</div>
 
-			{/* Menu button in top right corner over the image */}
-			<div className='absolute top-6 right-10 z-20'>
-				<button onClick={onClose} className='text-black hover:scale-110 transition-transform duration-300' aria-label='Return to services'>
-					<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
-						<line x1='3' y1='12' x2='21' y2='12'></line>
-						<line x1='3' y1='6' x2='21' y2='6'></line>
-						<line x1='3' y1='18' x2='21' y2='18'></line>
-					</svg>
-				</button>
-			</div>
-
 			{/* Main content grid */}
 			<div className='grid grid-cols-1 lg:grid-cols-12 min-h-screen'>
-				{/* Left sidebar */}
-				<div ref={sidebarRef} className='lg:col-span-3 border-r border-gray-200 py-10 px-8 z-10 pt-60 bg-white'>
-					<div className='w-full space-y-8 pl-4'>
+				{/* Left sidebar - Now with case study titles grouped by service */}
+				<div ref={sidebarRef} className='lg:col-span-2 border-r border-gray-200 py-4 px-3 z-10 pt-32 bg-white overflow-y-auto max-h-screen'>
+					<div className='w-full space-y-4'>
 						{Object.keys(caseStudies || {}).map((service) => (
-							<div
-								key={service}
-								className={`service-item cursor-pointer transform transition-all duration-300 
-									${activeService === service ? 'text-black font-black text-6xl -translate-y-2' : 'text-gray-500 font-bold text-3xl hover:text-gray-800 hover:-translate-y-1'}`}
-								onClick={() => handleServiceClick(service)}
-							>
-								{activeService === service ? (
-									<span className='relative'>
-										{service}
-										<span className='service-gradient absolute bottom-2 left-0 w-full h-2 bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] rounded-full opacity-40'></span>
-									</span>
-								) : (
-									<span>{service}</span>
-								)}
+							<div key={service} className='space-y-2'>
+								{/* Only show case study titles without service category headers */}
+								<div className='space-y-3'>
+									{caseStudies[service].map((studyItem) => (
+										<div
+											key={studyItem.title}
+											className={`case-study-item cursor-pointer transform transition-all duration-300 
+												${activeService === service && currentStudy.title === studyItem.title ? 'text-black font-semibold text-base -translate-y-0.5' : 'text-gray-400 text-sm hover:text-gray-700 hover:-translate-y-0.5'}`}
+											onClick={() => {
+												if (service !== activeService) {
+													handleServiceClick(service);
+												} else {
+													handleCaseStudyClick(studyItem);
+												}
+											}}
+										>
+											{activeService === service && currentStudy.title === studyItem.title ? (
+												<span className='relative'>
+													{studyItem.title}
+													<span className='item-gradient absolute bottom-0.5 left-0 w-1/3 h-0.5 bg-gradient-to-r from-[#3ecca7] to-[#70DFC6] rounded-full opacity-40'></span>
+												</span>
+											) : (
+												<span>{studyItem.title}</span>
+											)}
+										</div>
+									))}
+								</div>
 							</div>
 						))}
 					</div>
 				</div>
 
-				{/* Middle content - now with fixed height and scrollable */}
-				<div className='lg:col-span-5 pt-30 pl-10 pr-4 z-10 bg-white h-screen overflow-y-auto'>
+				{/* Middle content - scrollable container - adjust column span */}
+				<div className='lg:col-span-6 pt-20 pl-8 pr-4 z-10 bg-white h-[calc(100vh-200px)] overflow-y-auto'>
 					{/* Navigation row with back link and case study navigation */}
-					<div ref={navRef} className='flex justify-between items-center mb-8'>
+					<div ref={navRef} className='flex justify-between items-center mb-8 relative z-20'>
 						{/* Back link */}
 						<a
 							href='#'
@@ -357,7 +410,7 @@ export default function CaseStudyDetail({ study, activeService, caseStudies, onC
 								e.preventDefault();
 								onClose();
 							}}
-							className='text-black font-bold hover:text-gray-800 transition-all duration-300 hover:-translate-x-1 group bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg'
+							className='text-gray-800 font-bold hover:text-[#3ecca7] transition-all duration-300 hover:-translate-x-1 group flex items-center'
 						>
 							<span className='flex items-center'>
 								<svg className='mr-2 transition-transform duration-300 group-hover:-translate-x-1' xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
@@ -386,20 +439,42 @@ export default function CaseStudyDetail({ study, activeService, caseStudies, onC
 						{currentStudy.title}
 					</h2>
 
-					<div ref={contentRef} className='space-y-8'>
-						<p className='mb-8'>
-							<span className='text-[#3ecca7] text-xl font-semibold'>{activeService}</span>
-							<span className='text-black text-xl'> is about people. Identifying and understanding your audience is in the lifeblood of what research should offer.</span>
-						</p>
+					<div ref={contentRef} className='space-y-8 pb-16'>
+						<div className='detail-content space-y-12'>
+							{currentStudy.subtitle && (
+								<div className='mb-8'>
+									<h3 className='text-xl font-medium text-gray-900 mb-4'>Overview</h3>
+									<p className='text-base text-gray-700'>{currentStudy.subtitle}</p>
+								</div>
+							)}
 
-						<div className='detail-content space-y-6 text-black'>
-							{currentStudy.description && <p className='text-base'>{currentStudy.description}</p>}
+							{currentStudy.description && (
+								<div className='mb-8'>
+									<h3 className='text-xl font-medium text-gray-900 mb-4'>Description</h3>
+									<p className='text-base text-gray-700'>{currentStudy.description}</p>
+								</div>
+							)}
 
-							{currentStudy.challenge && <p className='text-base'>{currentStudy.challenge}</p>}
+							{currentStudy.challenge && (
+								<div className='mb-8'>
+									<h3 className='text-xl font-medium text-gray-900 mb-4'>Challenge</h3>
+									<p className='text-base text-gray-700'>{currentStudy.challenge}</p>
+								</div>
+							)}
 
-							{currentStudy.solution && <p className='text-base'>{currentStudy.solution}</p>}
+							{currentStudy.solution && (
+								<div className='mb-8'>
+									<h3 className='text-xl font-medium text-gray-900 mb-4'>Solution</h3>
+									<div className='text-base text-gray-700 whitespace-pre-line'>{currentStudy.solution}</div>
+								</div>
+							)}
 
-							{currentStudy.results && <p className='text-base'>{currentStudy.results}</p>}
+							{currentStudy.results && (
+								<div className='mb-8'>
+									<h3 className='text-xl font-medium text-gray-900 mb-4'>Results</h3>
+									<p className='text-base text-gray-700'>{currentStudy.results}</p>
+								</div>
+							)}
 						</div>
 					</div>
 
