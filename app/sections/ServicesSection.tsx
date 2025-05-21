@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect, useCallback } from 'react';
 import Section from '../components/Section';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useScrollHandler } from './ServicesSection/hooks/useScrollHandler';
 import { useAnimations } from './ServicesSection/hooks/useAnimations';
 import { gsap } from 'gsap';
@@ -28,13 +28,9 @@ export default function ServicesSection() {
 	const sectionContainerRef = useRef<HTMLDivElement>(null);
 	const backgroundRef = useRef<HTMLDivElement>(null);
 	const [activeServiceIndex, setActiveServiceIndex] = useState(0);
-	const [isDetailView, setIsDetailView] = useState(false);
 	const [showServiceInfo, setShowServiceInfo] = useState(false);
 	const [language] = useState<Language>('en');
 	const services = ['RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRANDING', 'MARKETING', 'WEBSITE DEVELOPMENT'];
-
-	// Service descriptions
-	const serviceDescriptions = ['Deep research, nuanced insight, and future-facing signals that shape powerful strategies.', 'Turning vision into a structured, evolving business—ready for real-world growth.', 'Precision-crafted roadmaps that move your vision forward with clarity, coherence, and purpose.', "Bringing your business's true story to life—visually, verbally, and emotionally.", 'Expanding your presence with soulful marketing strategies that resonate and move.', 'Crafting websites where form meets feeling, and strategy becomes tangible experience.'];
 
 	const sectionIndex = 2; // Position of services section in the page layout
 	const hasCompletedServices = useRef(false);
@@ -74,7 +70,7 @@ export default function ServicesSection() {
 		sectionIndex,
 		isAnimating,
 		hasCompletedServices,
-		isDetailView,
+		isDetailView: false,
 	});
 
 	// Initialize animations
@@ -194,37 +190,7 @@ export default function ServicesSection() {
 	const handleServiceClick = (index: number) => {
 		debouncedSetActiveServiceIndex(index);
 
-		// Smooth transition without flash
-		const tl = gsap.timeline();
-		tl.to(gifRef.current, {
-			opacity: 0,
-			scale: 0.8,
-			duration: 0.3,
-			ease: 'power1.out',
-			onComplete: () => {
-				setIsDetailView(true);
-			},
-		});
-	};
-
-	// Handle back button click
-	const handleBackClick = () => {
-		// Smooth transition without flash
-		setIsDetailView(false);
-		// Restore GIF animation after switching back to list view
-		if (gifRef.current) {
-			gsap.to(gifRef.current, {
-				opacity: 1,
-				scale: 1,
-				duration: 0.5,
-				ease: 'power2.out',
-			});
-		}
-	};
-
-	// Handle service info link click
-	const handleServiceInfoClick = (e: React.MouseEvent) => {
-		e.preventDefault();
+		// Go directly to ServiceInfoSection instead of showing detail view
 		setShowServiceInfo(true);
 	};
 
@@ -343,74 +309,31 @@ export default function ServicesSection() {
 										return elements;
 									})()}
 									<br />
-									<span className='text-black text-2xl sm:text-3xl md:text-2xl font-medium mt-6 block'>{subtitleTranslation}</span>
+									<span className='text-black text-2xl sm:text-3xl md:text-xl font-medium mt-6 block'>{subtitleTranslation}</span>
 								</div>
 							</motion.div>
 
-							{/* Right side with service list or detail view */}
-							<AnimatePresence mode='wait'>
-								{!isDetailView ? (
-									/* Services List View */
-									<motion.div key='services-list' className='md:w-full w-full' initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{ duration: 0.5 }} ref={servicesRef}>
-										<div className='flex flex-col items-start text-left space-y-6 sm:space-y-8 p-4 sm:p-10 ml-0 sm:ml-10'>
-											{/* Services list - direct implementation instead of using components */}
-											<div className='w-full space-y-5 sm:space-y-8'>
-												{services.map((service, index) => (
-													<div
-														key={service}
-														className={`cursor-pointer transform transition-all duration-300 ${index === activeServiceIndex ? 'text-black font-black text-2xl sm:text-3xl md:text-4xl -translate-y-1 sm:-translate-y-2' : 'text-gray-500 font-bold text-xl sm:text-2xl md:text-3xl'}`}
-														onClick={() => handleServiceClick(index)}
-														ref={(el) => {
-															if (el) serviceItemsRef.current[index] = el;
-														}}
-													>
-														<span>{service}</span>
-													</div>
-												))}
+							{/* Right side with service list - removed conditional rendering for detail view */}
+							<motion.div key='services-list' className='md:w-full w-full' initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{ duration: 0.5 }} ref={servicesRef}>
+								<div className='flex flex-col items-start text-left space-y-6 sm:space-y-8 p-4 sm:p-10 ml-0 sm:ml-10'>
+									{/* Services list - direct implementation instead of using components */}
+									<div className='w-full space-y-5 sm:space-y-8'>
+										{services.map((service, index) => (
+											<div
+												key={service}
+												className={`cursor-pointer transform transition-all duration-300 ${index === activeServiceIndex ? 'text-black font-black text-2xl sm:text-3xl md:text-4xl -translate-y-1 sm:-translate-y-2' : 'text-gray-500 font-bold text-xl sm:text-2xl md:text-3xl'}`}
+												onClick={() => handleServiceClick(index)}
+												ref={(el) => {
+													if (el) serviceItemsRef.current[index] = el;
+												}}
+											>
+												<span>{service}</span>
+												{index === activeServiceIndex && <div className='h-1 w-32 sm:w-48 bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] rounded-full mt-1 transform transition-all duration-300'></div>}
 											</div>
-										</div>
-									</motion.div>
-								) : (
-									/* Service Detail View */
-									<motion.div key='service-detail' className='md:w-full w-full' initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 50 }} transition={{ duration: 0.5 }}>
-										<div className='flex flex-col items-start text-left space-y-6 sm:space-y-8 p-4 sm:p-10 ml-0 sm:ml-10'>
-											{/* Back button */}
-											<button onClick={handleBackClick} className='text-gray-500 hover:text-black transition-colors flex items-center space-x-2 mb-4 sm:mb-6 py-2'>
-												<svg xmlns='http://www.w3.org/2000/svg' className='h-5 w-5' viewBox='0 0 20 20' fill='currentColor'>
-													<path fillRule='evenodd' d='M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z' clipRule='evenodd' />
-												</svg>
-												<span>Back to services</span>
-											</button>
-
-											{/* Service title with gradient */}
-											<div className='space-y-2'>
-												<motion.h1 className='text-4xl sm:text-5xl md:text-7xl font-black tracking-tight' initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.5 }}>
-													<span className='bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] text-transparent bg-clip-text'>{services[activeServiceIndex]}</span>
-												</motion.h1>
-												<div className='h-1 w-1/2 bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] rounded-full'></div>
-											</div>
-
-											{/* Service description */}
-											<motion.p className='text-base sm:text-lg text-gray-700 max-w-xl' initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.5 }}>
-												{serviceDescriptions[activeServiceIndex]}
-											</motion.p>
-
-											{/* Links section */}
-											<motion.div className='flex flex-col space-y-4 mt-6 sm:mt-8 pt-4 border-t border-gray-200 w-full' initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.5 }}>
-												<h3 className='text-sm uppercase tracking-widest text-gray-400'>Explore More</h3>
-												<div className='flex space-x-6'>
-													<a href='#' className='group flex items-center space-x-2 text-lg font-bold text-black touch-action-manipulation' onClick={handleServiceInfoClick} style={{ touchAction: 'manipulation' }}>
-														<span>Services</span>
-														<svg xmlns='http://www.w3.org/2000/svg' className='h-5 w-5 transform transition-transform group-hover:translate-x-1' viewBox='0 0 20 20' fill='currentColor'>
-															<path fillRule='evenodd' d='M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z' clipRule='evenodd' />
-														</svg>
-													</a>
-												</div>
-											</motion.div>
-										</div>
-									</motion.div>
-								)}
-							</AnimatePresence>
+										))}
+									</div>
+								</div>
+							</motion.div>
 						</div>
 					</div>
 				</Section>
