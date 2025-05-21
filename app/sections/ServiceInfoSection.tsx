@@ -1,10 +1,12 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import Section from '../components/Section';
 import { motion, AnimatePresence } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '../components/ui/carousel';
+import Autoplay from 'embla-carousel-autoplay';
 
 // Register ScrollTrigger plugin only
 if (typeof window !== 'undefined') {
@@ -29,7 +31,6 @@ interface ServiceInfoSectionProps {
 interface ServiceContent {
 	title: string;
 	description: string[];
-	approachTitle: string;
 	values: {
 		title: string;
 		content?: string;
@@ -62,7 +63,6 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 	const dividerLineRef = useRef<HTMLDivElement>(null);
 	const backButtonRef = useRef<HTMLButtonElement>(null);
 	const servicesTitleRef = useRef<HTMLHeadingElement>(null);
-	const approachTitleRef = useRef<HTMLParagraphElement>(null);
 	const particlesRef = useRef<HTMLDivElement>(null);
 	const gridBackgroundRef = useRef<HTMLDivElement>(null);
 	const gearRefs = useRef<Array<SVGSVGElement | null>>([]);
@@ -76,6 +76,20 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 	const serviceTitleRefs = useRef<(HTMLHeadingElement | null)[]>([]);
 	// Update the type for the splitTextRefs
 	const splitTextRefs = useRef<LetterElements[]>([]);
+
+	// State for Carousel API
+	const [carouselApi, setCarouselApi] = useState<CarouselApi>();
+	const [currentSlide, setCurrentSlide] = useState(0);
+
+	// Create plugin refs with vertical-specific settings
+	const autoplayPluginRef = useRef(
+		Autoplay({
+			delay: 4000,
+			stopOnInteraction: true,
+			stopOnMouseEnter: true,
+			rootNode: (emblaRoot) => emblaRoot.parentElement,
+		})
+	);
 
 	// Create a function to generate a gear SVG with customizable parameters
 	const GearSVG = ({ size, toothCount, color, opacity, className }: GearSVGProps) => {
@@ -128,25 +142,9 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 
 	// Service content definitions
 	const serviceContents: Record<string, ServiceContent> = {
-		'CREATED TO MATTER': {
-			title: 'Empowering bold ideas with strategies that align vision, purpose, and growth.',
-			description: ['Sotrixa partners with visionary entrepreneurs, creatives, and changemakers—those building with purpose and seeking clarity along the way.​', 'We work closely to translate bold ideas into aligned, authentic strategies that are ready for real-world growth.​'],
-			approachTitle: 'Turning vision into structure, potential into direction',
-			values: [
-				{
-					title: 'Impact',
-					content: 'Through deep research, sharp analysis, and strategic design, vision becomes structure—turning potential into direction, and ambition into action.​',
-				},
-				{
-					title: 'Meaning',
-					content: 'Beyond client work, Sotrixa invests in artistic and educational initiatives, giving under-resourced children access to imagination, learning, and creative self-expression. Because the future needs more creators—and every child deserves a space to dream.',
-				},
-			],
-		},
 		RESEARCH: {
 			title: 'Deep research, nuanced insight, and future-facing signals that shape powerful strategies.',
 			description: ['At Sotrixa, research is a journey of co-discovery—driven by curiosity, shaped by context, and grounded in your vision.​', 'Together, we listen between the lines, observe subtle patterns, and trace emerging signals that guide strategic decisions.​'],
-			approachTitle: 'A living compass for everything we build together',
 			values: [
 				{
 					title: 'Curiosity',
@@ -161,7 +159,6 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 		'BUSINESS ARCHITECTURE': {
 			title: 'Turning vision into a structured, evolving business—ready for real-world growth.',
 			description: ['Every idea holds immense potential, but to thrive, it needs form, coherence, and a structure that sustains growth.​', 'At Sotrixa, we shape the fundamental elements of your business—what you offer, how you function, and the role you are meant to play.​'],
-			approachTitle: 'An aligned, living structure—ready for strategy and movement',
 			values: [
 				{
 					title: 'Structure',
@@ -176,7 +173,6 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 		'BESPOKE STRATEGY CREATION': {
 			title: 'Precision-crafted roadmaps that move your vision forward with clarity, coherence, and purpose.',
 			description: ['No two businesses move at the same rhythm.​', 'At Sotrixa, strategy honors your unique goals, capacity, and context—designing roadmaps that are intelligent, flexible, and fully aligned with your evolution.​'],
-			approachTitle: 'Structured, sustainable momentum',
 			values: [
 				{
 					title: 'Precision',
@@ -191,7 +187,6 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 		BRANDING: {
 			title: "Bringing your business's true story to life—visually, verbally, and emotionally.",
 			description: ['A brand is the memory, the feeling, the story people carry after they meet you.​', 'At Sotrixa, branding is an act of alignment: we listen deeply to what your business is becoming and translate that into visual and verbal identities that feel alive and true.​'],
-			approachTitle: 'More than an aesthetic, an invitation',
 			values: [
 				{
 					title: 'Authenticity',
@@ -206,7 +201,6 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 		MARKETING: {
 			title: 'Expanding your presence with soulful marketing strategies that resonate and move.',
 			description: ['Marketing is the movement of your story into the world—the choreography of voice, vision, and presence.​', 'At Sotrixa, we craft marketing strategies that are intelligent, soulful, and grounded in authenticity.​'],
-			approachTitle: "Your story doesn't just travel—it moves, it resonates",
 			values: [
 				{
 					title: 'Creativity',
@@ -221,7 +215,6 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 		'WEBSITE DEVELOPMENT': {
 			title: 'Crafting websites where form meets feeling, and strategy becomes tangible experience.',
 			description: ['Your website is the home of your vision—where strategy meets experience and form meets feeling.​', "At Sotrixa, we design digital spaces that are not only beautiful but deeply functional—reflecting your brand's essence while guiding your audience into connection and action.​"],
-			approachTitle: 'Where presence becomes tangible—and impact begins',
 			values: [
 				{
 					title: 'Usability',
@@ -235,8 +228,8 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 		},
 	};
 
-	// Get content based on active service or default to Created to Matter
-	const currentContent = activeService && serviceContents[activeService] ? serviceContents[activeService] : serviceContents['CREATED TO MATTER'];
+	// Get content based on active service or default to Research
+	const currentContent = activeService && serviceContents[activeService] ? serviceContents[activeService] : serviceContents['RESEARCH'];
 
 	// Create particles animation with colorful gradient-inspired particles
 	const createParticles = () => {
@@ -353,23 +346,23 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 		// Timeline for letter animations
 		const letterTl = gsap.timeline();
 
-		// Animation sequence
+		// Animation sequence for vertical orientation
 		letterTl
-			// First jump up each letter sequentially
+			// First slide sideways for vertical orientation
 			.to(split.chars, {
-				y: -25,
-				rotationX: -90,
+				x: -15,
+				rotationY: -90,
 				opacity: 0,
 				stagger: 0.03,
 				duration: 0.3,
 				ease: 'back.in(2)',
 			})
-			// Then drop them back down in blue
+			// Then bring them back with color
 			.to(
 				split.chars,
 				{
-					y: 0,
-					rotationX: 0,
+					x: 0,
+					rotationY: 0,
 					opacity: 1,
 					color: '#2563eb',
 					stagger: 0.03,
@@ -383,7 +376,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 			.to(
 				split.chars,
 				{
-					y: -5,
+					x: -3,
 					stagger: {
 						each: 0.02,
 						from: 'start',
@@ -401,33 +394,270 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 		return letterTl;
 	};
 
-	// Update resetLetterAnimation
+	// Update resetLetterAnimation for horizontal movement
 	const resetLetterAnimation = (index: number) => {
 		if (!splitTextRefs.current[index]) return;
 
 		const split = splitTextRefs.current[index];
 
 		gsap.to(split.chars, {
-			y: 0,
+			x: 0,
 			opacity: 1,
 			color: '#000',
 			fontWeight: 'bold',
-			rotationX: 0,
+			rotationY: 0,
 			duration: 0.3,
 			stagger: 0.02,
 			ease: 'power1.out',
 		});
 	};
 
-	// Update handleServiceClick to only animate the right side content
-	const handleServiceClick = (service: string, index: number) => {
-		if (service === activeService) return;
+	// Define service items with icons using useMemo
+	const serviceItems = useMemo(
+		() => [
+			{ name: 'RESEARCH', icon: '🔍' },
+			{ name: 'BUSINESS ARCHITECTURE', icon: '🏛️' },
+			{ name: 'BESPOKE STRATEGY CREATION', icon: '🧩' },
+			{ name: 'BRANDING', icon: '✨' },
+			{ name: 'MARKETING', icon: '📊' },
+			{ name: 'WEBSITE DEVELOPMENT', icon: '💻' },
+		],
+		[]
+	);
 
+	// Function to calculate the proper scroll index to ensure the active item is centered
+	const calculateScrollIndex = useCallback(
+		(targetIndex: number) => {
+			// Ensure we show 3 items with the active one in the middle
+			if (targetIndex === 0) {
+				// First item - can't be centered, so show items 0-2
+				return 0;
+			} else if (targetIndex === serviceItems.length - 1) {
+				// Last item - can't be centered, so show last 3 items
+				return Math.max(0, serviceItems.length - 3);
+			} else {
+				// Center the target item by showing the item before and after it
+				return Math.max(0, targetIndex - 1);
+			}
+		},
+		[serviceItems]
+	);
+
+	// Update useEffect to sync carousel with activeService and include all services
+	useEffect(() => {
+		if (carouselApi && activeService) {
+			const serviceIndex = serviceItems.findIndex((service) => service.name === activeService);
+
+			if (serviceIndex >= 0) {
+				// Ensure carousel is properly initialized before scrolling
+				if (carouselApi.canScrollPrev() || carouselApi.canScrollNext()) {
+					// Scroll to the service and center it in the view
+					setTimeout(() => {
+						const scrollIndex = calculateScrollIndex(serviceIndex);
+						carouselApi.scrollTo(scrollIndex);
+						setCurrentSlide(serviceIndex);
+					}, 50);
+				}
+			}
+		}
+	}, [carouselApi, activeService, serviceItems, calculateScrollIndex]);
+
+	// Add an initialization effect for the carousel to ensure proper centering
+	useEffect(() => {
+		if (!carouselApi) return;
+
+		// When carousel is first initialized, make sure it centers correctly
+		const handleInit = () => {
+			if (activeService) {
+				const serviceIndex = serviceItems.findIndex((service) => service.name === activeService);
+				if (serviceIndex >= 0) {
+					// For initial position, make sure we scroll to the active service
+					// while ensuring 3 items remain visible
+					setTimeout(() => {
+						const scrollIndex = calculateScrollIndex(serviceIndex);
+						carouselApi.scrollTo(scrollIndex);
+						setCurrentSlide(serviceIndex);
+					}, 100);
+				}
+			}
+		};
+
+		// Also add a resize handler to maintain proper display
+		const handleResize = () => {
+			if (activeService) {
+				const serviceIndex = serviceItems.findIndex((service) => service.name === activeService);
+				if (serviceIndex >= 0) {
+					const scrollIndex = calculateScrollIndex(serviceIndex);
+					carouselApi.scrollTo(scrollIndex);
+				}
+			}
+		};
+
+		carouselApi.on('init', handleInit);
+		handleInit(); // Call immediately in case init already happened
+
+		window.addEventListener('resize', handleResize);
+
+		return () => {
+			carouselApi.off('init', handleInit);
+			window.removeEventListener('resize', handleResize);
+		};
+	}, [carouselApi, activeService, serviceItems, calculateScrollIndex]);
+
+	// Add an effect to track slide changes and enable proper scrolling
+	useEffect(() => {
+		if (!carouselApi) return;
+
+		const onSelect = () => {
+			const newIndex = carouselApi.selectedScrollSnap();
+
+			// Only update if index has actually changed to avoid infinite loops
+			if (newIndex !== currentSlide) {
+				setCurrentSlide(newIndex);
+
+				// Update active service if needed
+				const newService = serviceItems[newIndex]?.name;
+				if (newService && newService !== activeService) {
+					prevServiceRef.current = activeService;
+					setActiveService(newService);
+
+					// Find the index of the previously active service
+					const prevIndex = serviceItems.findIndex((s) => s.name === prevServiceRef.current);
+
+					// Reset the previous service animation
+					if (prevIndex >= 0 && serviceTitleRefs.current[prevIndex]) {
+						resetLetterAnimation(prevIndex);
+					}
+
+					// Animate the letter stagger for the new service
+					animateLetterStagger(newIndex);
+
+					// Trigger particle animation
+					animateParticles();
+				}
+			}
+		};
+
+		carouselApi.on('select', onSelect);
+
+		// Force the carousel to scroll to the current active service
+		// This ensures the carousel is properly synchronized with the active service
+		if (activeService) {
+			const serviceIndex = serviceItems.findIndex((service) => service.name === activeService);
+			if (serviceIndex >= 0 && serviceIndex !== currentSlide) {
+				const scrollIndex = calculateScrollIndex(serviceIndex);
+				carouselApi.scrollTo(scrollIndex);
+				setCurrentSlide(serviceIndex);
+			}
+		}
+
+		return () => {
+			carouselApi.off('select', onSelect);
+		};
+	}, [carouselApi, activeService, currentSlide, serviceItems, calculateScrollIndex]);
+
+	// Function to handle exit animations (will be used by parent component)
+	const playExitAnimation = () => {
+		if (!sectionDivRef.current) return;
+
+		const tl = gsap.timeline();
+
+		// Trigger particle effect for exit
+		animateParticles();
+
+		// Collect all carousel items
+		const carouselItems = Array.from(servicesGridRef.current?.querySelectorAll('.service-item') || []);
+
+		// Create a flash effect
+		const flashOverlay = document.createElement('div');
+		flashOverlay.className = 'absolute inset-0 bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] pointer-events-none z-50';
+		flashOverlay.style.opacity = '0';
+		sectionDivRef.current.appendChild(flashOverlay);
+
+		// Flash effect
+		tl.to(flashOverlay, {
+			opacity: 0.1,
+			duration: 0.2,
+			ease: 'power1.in',
+			onComplete: () => {
+				gsap.to(flashOverlay, {
+					opacity: 0,
+					duration: 0.5,
+					ease: 'power2.out',
+					onComplete: () => {
+						if (flashOverlay.parentNode) {
+							flashOverlay.parentNode.removeChild(flashOverlay);
+						}
+					},
+				});
+			},
+		});
+
+		// Stylish exit animation adapted for vertical carousel
+		tl.to(
+			carouselItems,
+			{
+				x: -20,
+				opacity: 0,
+				stagger: 0.03,
+				duration: 0.4,
+				ease: 'power2.in',
+			},
+			'-=0.1'
+		)
+			.to(
+				headingRef.current,
+				{
+					y: -15,
+					opacity: 0,
+					duration: 0.3,
+					ease: 'power2.in',
+				},
+				'-=0.3'
+			)
+			.to(
+				rightContentRef.current,
+				{
+					opacity: 0,
+					y: 15,
+					duration: 0.4,
+					ease: 'power2.in',
+				},
+				'-=0.3'
+			)
+			.to(
+				sectionDivRef.current,
+				{
+					opacity: 0,
+					scale: 0.98,
+					duration: 0.4,
+					ease: 'power3.in',
+				},
+				'-=0.2'
+			);
+
+		return tl;
+	};
+
+	// Update handleServiceClick to handle all services with proper scrolling
+	const handleServiceClick = (serviceName: string, index: number) => {
+		// If the clicked service is already active, do nothing
+		if (serviceName === activeService) return;
+
+		// Store the previous service for animation resets
 		prevServiceRef.current = activeService;
-		setActiveService(service);
+		setActiveService(serviceName);
+
+		// Use carousel API to scroll to the selected service
+		if (carouselApi) {
+			// Calculate scroll position to show the clicked service while keeping 3 visible
+			const scrollIndex = calculateScrollIndex(index);
+			carouselApi.scrollTo(scrollIndex);
+			setCurrentSlide(index);
+		}
 
 		// Find the index of the previously active service
-		const prevIndex = ['CREATED TO MATTER', 'RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRANDING', 'MARKETING', 'WEBSITE DEVELOPMENT'].findIndex((s) => s === prevServiceRef.current);
+		const prevIndex = serviceItems.findIndex((s) => s.name === prevServiceRef.current);
 
 		// Reset the previous service animation
 		if (prevIndex >= 0 && serviceTitleRefs.current[prevIndex]) {
@@ -459,9 +689,12 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 		// Enhanced exit animation with particles
 		animateParticles();
 
-		// Create a wave-like exit animation
-		tl.to(servicesGridRef.current?.children || [], {
-			y: -30,
+		// Collect all carousel items
+		const carouselItems = Array.from(servicesGridRef.current?.querySelectorAll('.service-item') || []);
+
+		// Create a wave-like exit animation for vertical carousel
+		tl.to(carouselItems, {
+			x: -30,
 			opacity: 0,
 			stagger: 0.03,
 			duration: 0.3,
@@ -497,6 +730,17 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 
 		return tl;
 	};
+
+	// Use useEffect to control carousel via API when activeService changes
+	useEffect(() => {
+		if (carouselApi && activeService) {
+			const serviceIndex = serviceItems.findIndex((service) => service.name === activeService);
+
+			if (serviceIndex >= 0) {
+				carouselApi.scrollTo(serviceIndex);
+			}
+		}
+	}, [carouselApi, activeService, serviceItems, calculateScrollIndex]);
 
 	useEffect(() => {
 		if (!sectionDivRef.current) return;
@@ -741,90 +985,26 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [onBackClick]); // activeService intentionally omitted to prevent "changed size between renders" error
 
-	// Function to handle exit animations (will be used by parent component)
-	const playExitAnimation = () => {
-		if (!sectionDivRef.current) return;
-
-		const tl = gsap.timeline();
-
-		// Trigger particle effect for exit
-		animateParticles();
-
-		// Create a flash effect
-		const flashOverlay = document.createElement('div');
-		flashOverlay.className = 'absolute inset-0 bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] pointer-events-none z-50';
-		flashOverlay.style.opacity = '0';
-		sectionDivRef.current.appendChild(flashOverlay);
-
-		// Flash effect
-		tl.to(flashOverlay, {
-			opacity: 0.1,
-			duration: 0.2,
-			ease: 'power1.in',
-			onComplete: () => {
-				gsap.to(flashOverlay, {
-					opacity: 0,
-					duration: 0.5,
-					ease: 'power2.out',
-					onComplete: () => {
-						if (flashOverlay.parentNode) {
-							flashOverlay.parentNode.removeChild(flashOverlay);
-						}
-					},
-				});
-			},
-		});
-
-		// Stylish exit animation matching ServicesSection style
-		tl.to(
-			[...(servicesGridRef.current?.children || [])],
-			{
-				y: -20,
-				opacity: 0,
-				stagger: 0.03,
-				duration: 0.4,
-				ease: 'power2.in',
-			},
-			'-=0.1'
-		)
-			.to(
-				headingRef.current,
-				{
-					y: -15,
-					opacity: 0,
-					duration: 0.3,
-					ease: 'power2.in',
-				},
-				'-=0.3'
-			)
-			.to(
-				rightContentRef.current,
-				{
-					opacity: 0,
-					y: 15,
-					duration: 0.4,
-					ease: 'power2.in',
-				},
-				'-=0.3'
-			)
-			.to(
-				sectionDivRef.current,
-				{
-					opacity: 0,
-					scale: 0.98,
-					duration: 0.4,
-					ease: 'power3.in',
-				},
-				'-=0.2'
-			);
-
-		return tl;
-	};
-
 	// Make the function accessible to the parent
 	if (typeof window !== 'undefined') {
 		window.playServiceInfoExitAnimation = playExitAnimation;
 	}
+
+	// Use useEffect to handle autoplay pause when service is active
+	useEffect(() => {
+		const autoplay = autoplayPluginRef.current;
+
+		// Stop autoplay when a service is selected
+		if (activeService && autoplay && autoplay.stop) {
+			autoplay.stop();
+		}
+
+		return () => {
+			if (autoplay && autoplay.stop) {
+				autoplay.stop();
+			}
+		};
+	}, [activeService, serviceItems, calculateScrollIndex]);
 
 	return (
 		<Section id='service-info' className='bg-[#FAFAFA] text-black p-4 sm:p-6 relative overflow-hidden min-h-screen'>
@@ -913,8 +1093,8 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 
 			<div ref={sectionDivRef} className='flex flex-col md:flex-row w-full h-full relative z-20 mx-auto my-8'>
 				{/* Left side with strategy heading and services list */}
-				<div className='w-full md:w-1/2 p-6 md:p-10 flex flex-col' ref={leftSideRef}>
-					<div className='mb-8' ref={logoRef}>
+				<div className='w-full md:w-1/2 p-4 md:p-6' ref={leftSideRef}>
+					<div className='mb-4' ref={logoRef}>
 						<button onClick={handleBackToServices} ref={backButtonRef} className='group flex items-center space-x-2 cursor-pointer'>
 							<svg xmlns='http://www.w3.org/2000/svg' className='h-5 w-5 transform transition-transform duration-300 group-hover:-translate-x-1' viewBox='0 0 20 20' fill='currentColor'>
 								<path fillRule='evenodd' d='M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z' clipRule='evenodd' />
@@ -923,27 +1103,138 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 						</button>
 					</div>
 
-					<div className='my-8'>
-						<h1 className='text-3xl md:text-4xl font-bold mb-6' ref={headingRef}>
+					<div className='my-6'>
+						<h1 className='text-3xl md:text-4xl font-bold mb-4' ref={headingRef}>
 							<span className='text-transparent bg-clip-text bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6]'>{currentContent.title}</span>
 						</h1>
 					</div>
 
-					<div className='grid grid-cols-1 md:grid-cols-2 gap-4 mt-10' ref={servicesGridRef}>
-						{['CREATED TO MATTER', 'RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRANDING', 'MARKETING', 'WEBSITE DEVELOPMENT'].map((service, index) => (
-							<div key={service} className={`mb-4 service-item cursor-pointer transition-all duration-300 ${activeService === service ? 'transform -translate-y-1' : 'hover:-translate-y-0.5'}`} onClick={() => handleServiceClick(service, index)}>
-								<h3
-									ref={(el) => {
-										serviceTitleRefs.current[index] = el;
-									}}
-									className={`text-lg uppercase font-bold tracking-widest mb-2 ${activeService === service ? 'text-transparent bg-clip-text bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6]' : 'text-gray-700'}`}
-								>
-									{service}
-								</h3>
+					{/* Carousel shows ONLY 3 services at a time with vertical scrolling */}
+					<div className='mt-12 relative' ref={servicesGridRef}>
+						{/* Fixed height container to show exactly 3 items */}
+						<div className='h-[270px] overflow-hidden'>
+							<Carousel
+								setApi={setCarouselApi}
+								opts={{
+									align: 'start',
+									loop: false,
+									dragFree: true,
+									containScroll: 'trimSnaps',
+									slidesToScroll: 1,
+								}}
+								plugins={[autoplayPluginRef.current]}
+								orientation='vertical'
+								className='w-full h-full'
+							>
+								<CarouselContent className='h-full pt-1'>
+									{serviceItems.map(({ name }, index) => (
+										<CarouselItem key={name} className='basis-1/3 h-[90px] min-h-[90px] flex-shrink-0 pt-0 mb-0'>
+											<div className={`service-item cursor-pointer transition-all duration-300 p-3 rounded-lg h-[80px] flex items-center ${activeService === name ? 'bg-white shadow-md border-l-4 border-[#d142e2] transform -translate-x-1' : 'bg-white/60 hover:bg-white/90 hover:-translate-x-1 border-l-4 border-transparent'}`} onClick={() => handleServiceClick(name, index)}>
+												<h3
+													ref={(el) => {
+														serviceTitleRefs.current[index] = el;
+													}}
+													className={`text-left text-sm uppercase font-medium tracking-wider ${activeService === name ? 'text-[#d142e2]' : 'text-gray-700'}`}
+												>
+													{name}
+												</h3>
+											</div>
+										</CarouselItem>
+									))}
+								</CarouselContent>
 
-								{activeService === service && <div className='h-1 w-20 bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] rounded-full'></div>}
+								{/* Navigation buttons - must be inside Carousel */}
+								<div className='absolute right-[-16px] top-1/2 transform -translate-y-1/2 z-10 flex flex-col items-center space-y-4'>
+									<CarouselPrevious
+										className='rotate-90 h-7 w-7 scale-75 bg-white hover:bg-gray-50 shadow-sm rounded-full p-0 border-0'
+										onClick={(e) => {
+											e.stopPropagation();
+											e.preventDefault();
+											if (carouselApi && currentSlide > 0) {
+												const newIndex = currentSlide - 1;
+												const scrollIndex = calculateScrollIndex(newIndex);
+												carouselApi.scrollTo(scrollIndex);
+												setCurrentSlide(newIndex);
+
+												const newService = serviceItems[newIndex]?.name;
+												if (newService && newService !== activeService) {
+													prevServiceRef.current = activeService;
+													setActiveService(newService);
+
+													const prevIndex = serviceItems.findIndex((s) => s.name === activeService);
+													if (prevIndex >= 0 && serviceTitleRefs.current[prevIndex]) {
+														resetLetterAnimation(prevIndex);
+													}
+
+													animateLetterStagger(newIndex);
+													animateParticles();
+												}
+											}
+										}}
+									/>
+									<CarouselNext
+										className='rotate-90 h-7 w-7 scale-75 bg-white hover:bg-gray-50 shadow-sm rounded-full p-0 border-0'
+										onClick={(e) => {
+											e.stopPropagation();
+											e.preventDefault();
+											if (carouselApi && currentSlide < serviceItems.length - 1) {
+												const newIndex = currentSlide + 1;
+												const scrollIndex = calculateScrollIndex(newIndex);
+												carouselApi.scrollTo(scrollIndex);
+												setCurrentSlide(newIndex);
+
+												const newService = serviceItems[newIndex]?.name;
+												if (newService && newService !== activeService) {
+													prevServiceRef.current = activeService;
+													setActiveService(newService);
+
+													const prevIndex = serviceItems.findIndex((s) => s.name === activeService);
+													if (prevIndex >= 0 && serviceTitleRefs.current[prevIndex]) {
+														resetLetterAnimation(prevIndex);
+													}
+
+													animateLetterStagger(newIndex);
+													animateParticles();
+												}
+											}
+										}}
+									/>
+								</div>
+							</Carousel>
+						</div>
+
+						{/* Dots pagination moved below */}
+						<div className='absolute -bottom-16 left-0 right-0 z-10 flex justify-center items-center'>
+							<div className='flex space-x-2'>
+								{serviceItems.map((item, index) => (
+									<button
+										key={index}
+										className={`h-3 w-3 rounded-full transition-all ${currentSlide === index ? 'bg-[#d142e2]' : 'bg-gray-300 hover:bg-gray-400'}`}
+										onClick={() => {
+											if (carouselApi) {
+												const scrollIndex = calculateScrollIndex(index);
+												carouselApi.scrollTo(scrollIndex);
+												setCurrentSlide(index);
+
+												if (item.name !== activeService) {
+													prevServiceRef.current = activeService;
+													setActiveService(item.name);
+
+													const prevIndex = serviceItems.findIndex((s) => s.name === activeService);
+													if (prevIndex >= 0 && serviceTitleRefs.current[prevIndex]) {
+														resetLetterAnimation(prevIndex);
+													}
+
+													animateLetterStagger(index);
+													animateParticles();
+												}
+											}
+										}}
+										aria-label={`Go to ${item.name}`}
+									/>
+								))}
 							</div>
-						))}
+						</div>
 					</div>
 				</div>
 
@@ -953,16 +1244,12 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 				</div>
 
 				{/* Right side with services details */}
-				<div className='w-full md:w-1/2 p-6 md:p-10' ref={rightSideRef}>
+				<div className='w-full md:w-1/2 p-4 md:p-6' ref={rightSideRef}>
 					<AnimatePresence mode='wait'>
 						<motion.div ref={rightContentRef} key={activeService} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.5 }}>
-							<h3 ref={servicesTitleRef} className='text-2xl font-black mb-2 text-transparent bg-clip-text bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6]'>
+							<h3 ref={servicesTitleRef} className='text-2xl font-black mb-6 text-transparent bg-clip-text bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6]'>
 								{activeService || 'Services'}
 							</h3>
-
-							<p ref={approachTitleRef} className='text-2xl mb-8 font-bold'>
-								{currentContent.approachTitle}
-							</p>
 
 							<div className='mb-8 space-y-4'>
 								{currentContent.description.map((paragraph, index) => (
