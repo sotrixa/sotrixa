@@ -202,18 +202,21 @@ export default function IntroSection() {
 					}}
 				/>
 
-				<div className='flex flex-col md:flex-row items-center justify-between gap-10 relative z-10'>
-					<div className='w-full py-10 px-4 flex flex-col items-center md:items-start md:w-1/2 md:ml-25 md:px-0'>
-						<motion.div className='w-full max-w-md md:max-w-none text-left md:text-left space-y-2 md:space-y-4 md:bg-transparent p-4 rounded-lg md:p-0 md:rounded-none md:shadow-none' initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8 }}>
-							<h1 className='text-3xl md:text-[3.5rem] font-black leading-tight md:leading-none'>{renderColoredText(firstLine)}</h1>
-							<h2 className='text-3xl md:text-[3rem] font-black leading-tight md:leading-none'>{renderColoredText(secondLine)}</h2>
+				<div className='flex flex-col md:flex-row items-start justify-between md:gap-20 relative z-10 md:px-10'>
+					<div className='w-full py-5 px-4 flex flex-col items-center md:items-start md:w-7/12 md:px-0'>
+						<motion.div className='w-full max-w-md md:max-w-none text-left md:text-left space-y-2 md:space-y-6 md:bg-transparent p-4 rounded-lg md:p-0 md:rounded-none md:shadow-none' initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8 }}>
+							{/* Title with optimized font sizes */}
+							<div className='mb-6 md:pt-30 md:mb-8 pl-10'>
+								<h1 className='text-3xl md:text-[2rem] lg:text-[3.2rem] font-black leading-tight md:leading-none'>{renderColoredText(firstLine)}</h1>
+								<h2 className='text-3xl md:text-[2.7rem] font-black leading-tight md:leading-none mt-3'>{renderColoredText(secondLine)}</h2>
+							</div>
 
-							{/* Subheading with play button for mobile */}
-							<div className='flex items-center gap-3 mt-4'>
-								<p className='text-lg md:text-xl font-medium'>{subheadingText}</p>
+							{/* Subheading in its own row */}
+							<div className='w-full mt-6 pl-10'>
+								<p className='text-lg md:text-xl font-serif'>{subheadingText}</p>
 
 								{/* Mobile-only play button */}
-								<button type='button' className='block md:hidden bg-white rounded-full p-2 shadow-lg cursor-pointer hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-[#d142e2] group' onClick={handlePlayClick} aria-label='Play Sotrixa introduction video'>
+								<button type='button' className='block md:hidden mt-4 bg-white rounded-full p-2 shadow-lg cursor-pointer hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-[#d142e2] group' onClick={handlePlayClick} aria-label='Play Sotrixa introduction video'>
 									<div className='w-7 h-7 flex items-center justify-center group-hover:scale-110 transition-transform'>
 										<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' className='w-4 h-4 text-[#d142e2]'>
 											<path d='M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z' />
@@ -229,9 +232,9 @@ export default function IntroSection() {
 						</motion.div>
 					</div>
 
-					{/* Desktop-only video container */}
-					<motion.div className='hidden md:block md:w-1/2 relative' initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.5 }}>
-						<div className='relative md:-ml-36 w-full h-[500px]'>
+					{/* Desktop-only video container with proper spacing */}
+					<motion.div className='hidden md:block md:w-5/12 relative' initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.5 }}>
+						<div className='relative w-full h-[400px]'>
 							{renderVideoContent()}
 
 							{/* Desktop-only testimonial */}

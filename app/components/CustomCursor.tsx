@@ -61,6 +61,13 @@ export default function CustomCursor() {
 			}
 		};
 
+		// Handle horizontal scrolling events from our custom system
+		const handleHorizontalScroll = () => {
+			if (showScrollPrompt) {
+				setShowScrollPrompt(false);
+			}
+		};
+
 		// Hide default cursor
 		if (document.body && !isMobile) {
 			document.body.style.cursor = 'none';
@@ -75,6 +82,9 @@ export default function CustomCursor() {
 
 			// Also detect wheel events for more immediate response
 			window.addEventListener('wheel', handleScroll, { passive: true, capture: true });
+
+			// Listen for custom horizontal scrolling events
+			document.addEventListener('horizontalScrolling', handleHorizontalScroll);
 		}
 
 		// Add resize listener to detect screen size changes
@@ -87,6 +97,7 @@ export default function CustomCursor() {
 			window.removeEventListener('resize', checkMobile);
 			window.removeEventListener('scroll', handleScroll);
 			window.removeEventListener('wheel', handleScroll);
+			document.removeEventListener('horizontalScrolling', handleHorizontalScroll);
 
 			// Reset cursor style on component unmount
 			if (document.body) {
