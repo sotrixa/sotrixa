@@ -5,10 +5,10 @@ import { useState, useEffect, useRef } from 'react';
 export default function CustomCursor() {
 	const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 	const [isVisible, setIsVisible] = useState(true);
-	const [showBubble, setShowBubble] = useState(true);
 	const [isMobile, setIsMobile] = useState(false);
 	const [isClickable, setIsClickable] = useState(false);
-	const hasScrolled = useRef(false);
+	const [showScrollPrompt, setShowScrollPrompt] = useState(true);
+	const [hasUserMoved, setHasUserMoved] = useState(false);
 	const cursorRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
@@ -20,11 +20,20 @@ export default function CustomCursor() {
 		// Initial check
 		checkMobile();
 
+		// Center cursor on page load
+		if (typeof window !== 'undefined') {
+			setMousePosition({
+				x: window.innerWidth / 2,
+				y: window.innerHeight / 2,
+			});
+		}
+
 		// Mouse position tracking for custom cursor
 		const handleMouseMove = (e: MouseEvent) => {
 			setMousePosition({ x: e.clientX, y: e.clientY });
+			setHasUserMoved(true);
 
-			// Make cursor visible when it moves (in case it was hidden)
+			// Make cursor visible when it moves
 			setIsVisible(true);
 
 			// Check if the element under the cursor is clickable
@@ -33,14 +42,6 @@ export default function CustomCursor() {
 			const isClickableElement = !!(target.tagName === 'A' || target.tagName === 'BUTTON' || target.closest('a') || target.closest('button') || target.classList.contains('cursor-pointer') || target.closest('.cursor-pointer') || target.getAttribute('role') === 'button' || target.closest('[role="button"]') || target.closest('[onClick]') || target.closest('.clickable') || window.getComputedStyle(target).cursor === 'pointer');
 
 			setIsClickable(isClickableElement);
-		};
-
-		// Hide text bubble when user scrolls
-		const handleScroll = () => {
-			if (!hasScrolled.current) {
-				hasScrolled.current = true;
-				setShowBubble(false);
-			}
 		};
 
 		// Handle mouse leaving the window
@@ -53,7 +54,14 @@ export default function CustomCursor() {
 			setIsVisible(true);
 		};
 
-		// Hide default cursor on desktop only
+		// Handle scroll to hide the scroll prompt
+		const handleScroll = () => {
+			if (showScrollPrompt) {
+				setShowScrollPrompt(false);
+			}
+		};
+
+		// Hide default cursor
 		if (document.body && !isMobile) {
 			document.body.style.cursor = 'none';
 		}
@@ -61,10 +69,12 @@ export default function CustomCursor() {
 		// Add event listeners for desktop only
 		if (!isMobile) {
 			window.addEventListener('mousemove', handleMouseMove);
-			window.addEventListener('scroll', handleScroll);
-			window.addEventListener('wheel', handleScroll);
 			document.addEventListener('mouseleave', handleMouseLeave);
 			document.addEventListener('mouseenter', handleMouseEnter);
+			window.addEventListener('scroll', handleScroll, { passive: true, capture: true });
+
+			// Also detect wheel events for more immediate response
+			window.addEventListener('wheel', handleScroll, { passive: true, capture: true });
 		}
 
 		// Add resize listener to detect screen size changes
@@ -72,18 +82,18 @@ export default function CustomCursor() {
 
 		return () => {
 			window.removeEventListener('mousemove', handleMouseMove);
-			window.removeEventListener('scroll', handleScroll);
-			window.removeEventListener('wheel', handleScroll);
 			document.removeEventListener('mouseleave', handleMouseLeave);
 			document.removeEventListener('mouseenter', handleMouseEnter);
 			window.removeEventListener('resize', checkMobile);
+			window.removeEventListener('scroll', handleScroll);
+			window.removeEventListener('wheel', handleScroll);
 
 			// Reset cursor style on component unmount
 			if (document.body) {
 				document.body.style.cursor = 'auto';
 			}
 		};
-	}, [isMobile]);
+	}, [isMobile, showScrollPrompt]);
 
 	// Don't render cursor on mobile or if cursor is outside window
 	if (isMobile || !isVisible) return null;
@@ -98,71 +108,35 @@ export default function CustomCursor() {
 				top: mousePosition.y,
 				pointerEvents: 'none', // Important - allows clicking through
 				zIndex: 9999,
-				transform: 'translate(-50%, -50%)',
-				display: 'flex',
-				flexDirection: 'column',
-				alignItems: 'center',
-				transition: 'transform 0.1s ease-out',
+				transform: isClickable ? 'scale(1.2) translate(-5px, -5px)' : 'translate(-5px, -5px)',
+				transition: hasUserMoved ? 'transform 0.2s' : 'none',
+				filter: 'drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.5))',
 			}}
 		>
-			{/* Cursor pointer */}
-			{isClickable ? (
-				// Hand pointer icon when hovering over clickable elements
-				<div
-					style={{
-						width: '60px',
-						height: '60px',
-						display: 'flex',
-						justifyContent: 'center',
-						alignItems: 'center',
-						transition: 'transform 0.3s ease-out',
-						// Adjust positioning to match where the pointer finger would be
-						position: 'relative',
-						transform: 'translate(5px, -10px)', // Move slightly right and up to align finger tip
-					}}
-				>
-					<svg width='60' height='60' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
-						<path d='M12 3V21M9 6.8L9 11M15 8V11M18 9.2V15C18 18 16.2 21 12 21C7.8 21 6 18 6 15V10.5' stroke='black' strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round' />
-					</svg>
-				</div>
-			) : (
-				// Default cursor with circle background
-				<div
-					style={{
-						width: '80px',
-						height: '80px',
-						borderRadius: '50%',
-						border: '3px solid black',
-						backgroundColor: 'rgba(255, 255, 255, 0.8)',
-						display: 'flex',
-						justifyContent: 'center',
-						alignItems: 'center',
-						transform: 'rotate(-45deg)',
-						marginBottom: showBubble ? '15px' : '0',
-						transition: 'transform 0.3s ease-out',
-					}}
-				>
-					<svg width='40' height='40' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
-						<path d='M5 12H19M19 12L12 5M19 12L12 19' stroke='black' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round' />
-					</svg>
-				</div>
-			)}
+			{/* Mouse pointer cursor */}
+			<svg width={isClickable ? '36' : '30'} height={isClickable ? '36' : '30'} viewBox='0 0 24 24' fill='white' stroke='black' strokeWidth='1.5'>
+				<path d='M5,2 L5,18 L10,13 L13,16 L19,6 L13,16 L16,21 L18,10z' />
+			</svg>
 
-			{/* Text bubble that shows only on home page initially */}
-			{showBubble && (
+			{/* Scroll prompt bubble */}
+			{showScrollPrompt && (
 				<div
 					style={{
-						padding: '10px 16px',
-						backgroundColor: 'black',
+						position: 'absolute',
+						top: '100%',
+						left: '50%',
+						transform: 'translateX(-50%)',
+						backgroundColor: 'rgba(0, 0, 0, 0.7)',
 						color: 'white',
+						padding: '8px 12px',
 						borderRadius: '20px',
-						fontSize: '18px',
-						fontWeight: 600,
+						fontSize: '14px',
+						marginTop: '10px',
 						whiteSpace: 'nowrap',
-						marginTop: isClickable ? '15px' : '0',
+						animation: 'fadeIn 0.5s ease-in-out',
 					}}
 				>
-					START SCROLLING
+					Scroll to explore
 				</div>
 			)}
 		</div>
