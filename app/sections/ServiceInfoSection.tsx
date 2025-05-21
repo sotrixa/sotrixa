@@ -300,7 +300,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 					x: 0,
 					rotationY: 0,
 					opacity: 1,
-					color: '#2563eb',
+					color: '#d142e2',
 					stagger: 0.03,
 					duration: 0.3,
 					ease: 'elastic.out(1, 0.5)',
@@ -749,12 +749,16 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 					serviceItem.addEventListener('mouseenter', () => {
 						if (activeService === ['CREATED TO MATTER', 'RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRANDING', 'MARKETING', 'WEBSITE DEVELOPMENT'][index]) return;
 
+						// Enhanced hover animation
 						gsap.to(chars, {
-							y: -15,
+							y: -5, // Reduced movement from -15 to -5 for subtlety
+							x: 2, // Slight shift right
 							opacity: 1,
-							stagger: 0.02,
-							duration: 0.3,
-							ease: 'back.out(2)',
+							scale: 1.05, // Slight scale up
+							color: '#d142e2', // Match the purple from gradient
+							stagger: 0.01, // Faster stagger for more professional feel
+							duration: 0.25,
+							ease: 'power2.out',
 							overwrite: true,
 						});
 					});
@@ -762,9 +766,13 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 					serviceItem.addEventListener('mouseleave', () => {
 						if (activeService === ['CREATED TO MATTER', 'RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRANDING', 'MARKETING', 'WEBSITE DEVELOPMENT'][index]) return;
 
+						// Smoother reset animation
 						gsap.to(chars, {
 							y: 0,
+							x: 0,
+							scale: 1,
 							opacity: 1,
+							color: '#333', // Dark gray instead of pure black for better readability
 							stagger: 0.01,
 							duration: 0.2,
 							ease: 'power1.out',
@@ -785,18 +793,18 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 			if (titleRef) {
 				const service = ['CREATED TO MATTER', 'RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRANDING', 'MARKETING', 'WEBSITE DEVELOPMENT'][index];
 
-				// Set initial styles
+				// Set initial styles - change blue to gradient purple
 				gsap.set(titleRef, {
 					letterSpacing: '0.05em',
-					color: activeService === service ? '#2563eb' : '#000',
+					color: activeService === service ? '#d142e2' : '#333', // Changed from blue to purple, and #000 to #333
 					fontWeight: 'bold',
-					textShadow: activeService === service ? '0 0 3px rgba(37,99,235,0.2)' : 'none',
+					textShadow: activeService === service ? '0 0 3px rgba(209,66,226,0.3)' : 'none', // Updated shadow color
 				});
 
-				// If there's an active service on initial load, animate its knot
+				// If there's an active service on initial load, animate its text
 				if (activeService === service) {
 					gsap.to(titleRef, {
-						color: '#2563eb',
+						color: '#d142e2', // Changed from blue to purple
 						fontWeight: 'bold',
 						duration: 0.3,
 					});
@@ -1038,7 +1046,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 									{serviceItems.map(({ name }, index) => (
 										<CarouselItem key={name} className='basis-auto h-[80px] min-h-[80px] flex-shrink-0 pt-1 pb-1 transition-all duration-300'>
 											<div
-												className={`service-item cursor-pointer transition-all duration-300 p-3 rounded-lg h-[70px] flex items-center ${activeService === name ? 'bg-white shadow-md border-l-4 border-[#d142e2] transform -translate-x-1' : 'bg-white/60 hover:bg-white/90 hover:-translate-x-1 border-l-4 border-transparent'}`}
+												className={`service-item cursor-pointer transition-all duration-300 p-3 rounded-lg h-[70px] flex items-center ${activeService === name ? 'bg-white shadow-md border-l-4 border-[#d142e2] transform -translate-x-1' : 'bg-white/60 hover:bg-white hover:shadow-sm hover:-translate-x-1 border-l-4 border-transparent'}`}
 												onClick={(e) => {
 													e.stopPropagation();
 													handleServiceClick(name, index);
