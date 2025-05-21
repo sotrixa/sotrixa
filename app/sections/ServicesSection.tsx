@@ -5,7 +5,6 @@ import Section from '../components/Section';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useScrollHandler } from './ServicesSection/hooks/useScrollHandler';
 import { useAnimations } from './ServicesSection/hooks/useAnimations';
-import Image from 'next/image';
 import { gsap } from 'gsap';
 import ServiceInfoSection from './ServiceInfoSection';
 import { getText, parseColoredText, Language } from '../data/translations';
@@ -32,10 +31,10 @@ export default function ServicesSection() {
 	const [isDetailView, setIsDetailView] = useState(false);
 	const [showServiceInfo, setShowServiceInfo] = useState(false);
 	const [language] = useState<Language>('en');
-	const services = ['CREATED TO MATTER', 'RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRANDING', 'MARKETING', 'WEBSITE DEVELOPMENT'];
+	const services = ['RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRANDING', 'MARKETING', 'WEBSITE DEVELOPMENT'];
 
 	// Service descriptions
-	const serviceDescriptions = ['Empowering bold ideas with strategies that align vision, purpose, and growth.', 'Deep research, nuanced insight, and future-facing signals that shape powerful strategies.', 'Turning vision into a structured, evolving business—ready for real-world growth.', 'Precision-crafted roadmaps that move your vision forward with clarity, coherence, and purpose.', 'Bringing your business’s true story to life—visually, verbally, and emotionally.', 'Expanding your presence with soulful marketing strategies that resonate and move.', 'Crafting websites where form meets feeling, and strategy becomes tangible experience. '];
+	const serviceDescriptions = ['Deep research, nuanced insight, and future-facing signals that shape powerful strategies.', 'Turning vision into a structured, evolving business—ready for real-world growth.', 'Precision-crafted roadmaps that move your vision forward with clarity, coherence, and purpose.', "Bringing your business's true story to life—visually, verbally, and emotionally.", 'Expanding your presence with soulful marketing strategies that resonate and move.', 'Crafting websites where form meets feeling, and strategy becomes tangible experience.'];
 
 	const sectionIndex = 2; // Position of services section in the page layout
 	const hasCompletedServices = useRef(false);
@@ -303,19 +302,7 @@ export default function ServicesSection() {
 
 					{/* Container div with ref */}
 					<div ref={sectionContainerRef} className='relative w-full h-full' style={{ zIndex: 2 }}>
-						{/* Floating GIF - positioned randomly and hidden in detail view */}
-						<div
-							ref={gifRef}
-							className='absolute w-[200px] h-[140px] sm:w-[300px] sm:h-[200px] z-10 drop-shadow-2xl transform-gpu pointer-events-none'
-							style={{
-								filter: 'drop-shadow(0 15px 15px rgba(0,0,0,0.2))',
-								visibility: isDetailView ? 'hidden' : 'visible',
-							}}
-						>
-							<motion.div key={activeServiceIndex} initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.7 }} className='w-full h-full relative'>
-								<Image src={`/gif/service${activeServiceIndex + 1}.gif`} alt={`${services[activeServiceIndex]} visualization`} fill style={{ objectFit: 'cover' }} className='rounded-2xl border-4 border-white' priority />
-							</motion.div>
-						</div>
+						{/* Removed the floating GIF section */}
 
 						<div className='flex flex-col md:flex-row items-center justify-between mt-10 gap-8 sm:gap-12 py-8 sm:py-12'>
 							{/* Left side with colored text */}
@@ -366,20 +353,12 @@ export default function ServicesSection() {
 									/* Services List View */
 									<motion.div key='services-list' className='md:w-full w-full' initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{ duration: 0.5 }} ref={servicesRef}>
 										<div className='flex flex-col items-start text-left space-y-6 sm:space-y-8 p-4 sm:p-10 ml-0 sm:ml-10'>
-											{/* Cool gradient title with slogan */}
-											<div className='space-y-2 w-full'>
-												<h2 className='text-2xl sm:text-4xl font-black tracking-tight relative overflow-hidden'>
-													<span className='bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] text-transparent bg-clip-text animate-pulse'>You need it - we do it!</span>
-												</h2>
-												<div className='h-1 w-full bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] rounded-full'></div>
-											</div>
-
 											{/* Services list - direct implementation instead of using components */}
 											<div className='w-full space-y-5 sm:space-y-8'>
 												{services.map((service, index) => (
 													<div
 														key={service}
-														className={`cursor-pointer transform transition-all duration-300 ${index === activeServiceIndex ? 'text-black font-black text-3xl sm:text-5xl md:text-6xl -translate-y-1 sm:-translate-y-2' : 'text-gray-500 font-bold text-xl sm:text-2xl md:text-3xl'}`}
+														className={`cursor-pointer transform transition-all duration-300 ${index === activeServiceIndex ? 'text-black font-black text-2xl sm:text-3xl md:text-4xl -translate-y-1 sm:-translate-y-2' : 'text-gray-500 font-bold text-xl sm:text-2xl md:text-3xl'}`}
 														onClick={() => handleServiceClick(index)}
 														ref={(el) => {
 															if (el) serviceItemsRef.current[index] = el;
