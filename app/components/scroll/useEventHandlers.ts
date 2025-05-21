@@ -87,9 +87,11 @@ export function useEventHandlers({ containerRef, sectionsRef, activeIndex, isAni
 			const style = document.createElement('style');
 			style.setAttribute('data-horizontal-drag', 'true');
 			style.innerHTML = `
-				.horizontal-drag-enabled.is-dragging * {
+				.horizontal-drag-enabled.is-dragging *:not(#case-study *) {
 					user-select: none !important;
 					-webkit-user-select: none !important;
+				}
+				.horizontal-drag-enabled.is-dragging *:not(#case-study *, a, button, [role="button"]) {
 					pointer-events: none !important;
 				}
 				.horizontal-drag-enabled.is-dragging {
@@ -113,11 +115,17 @@ export function useEventHandlers({ containerRef, sectionsRef, activeIndex, isAni
 			const isServicesSection = activeSection === '2'; // Services is at index 2
 			const servicesHasControl = typeof window !== 'undefined' && window.servicesHasControl;
 
+			// ADDED: Skip if we're in the case study section
+			const target = e.target as HTMLElement;
+			const inCaseStudySection = target.closest('#case-study') !== null;
+			if (inCaseStudySection) {
+				return; // Don't handle drag in case study section
+			}
+
 			if (isServicesSection || servicesHasControl) return;
 			if (isAnimating.current) return;
 
 			// Skip if we're clicking on specific UI controls (not content)
-			const target = e.target as HTMLElement;
 			if ((target.tagName === 'BUTTON' || target.closest('button') || target.getAttribute('role') === 'button' || target.closest('[role="button"]')) && !target.closest('.section-content')) {
 				// Allow dragging on content areas
 				return;
@@ -148,7 +156,7 @@ export function useEventHandlers({ containerRef, sectionsRef, activeIndex, isAni
 		const handleMouseUp = (e: MouseEvent) => {
 			if (!isDragging) return;
 
-			// Remove dragging class
+			// Remove dragging class immediately
 			document.body.classList.remove('is-dragging');
 
 			// Calculate drag distance
@@ -166,6 +174,11 @@ export function useEventHandlers({ containerRef, sectionsRef, activeIndex, isAni
 			}
 
 			isDragging = false;
+
+			// Added: Make sure to enable pointer events again
+			setTimeout(() => {
+				document.body.classList.remove('is-dragging');
+			}, 10);
 
 			// Prevent any default behavior at the end of drag
 			e.preventDefault();
