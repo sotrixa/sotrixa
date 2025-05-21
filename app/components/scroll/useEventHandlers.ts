@@ -59,6 +59,12 @@ export function useEventHandlers({ containerRef, sectionsRef, activeIndex, isAni
 		let startX = 0;
 		const dragThreshold = 100; // Minimum drag distance to trigger section change
 
+		// Check if target is in case study section
+		const isInCaseStudySection = (target: HTMLElement): boolean => {
+			// Check if the element or any of its parents has id="case-study"
+			return target.closest('#case-study') !== null;
+		};
+
 		// Prevent default drag behavior on all elements
 		const preventDragDefault = (e: Event) => {
 			e.preventDefault();
@@ -72,6 +78,11 @@ export function useEventHandlers({ containerRef, sectionsRef, activeIndex, isAni
 			const mediaElements = document.querySelectorAll('img, video, a, [draggable="true"], iframe, canvas, svg, object, embed');
 
 			mediaElements.forEach((element) => {
+				// Don't modify elements inside case study section
+				if (isInCaseStudySection(element as HTMLElement)) {
+					return;
+				}
+
 				// Prevent native dragging
 				element.setAttribute('draggable', 'false');
 
@@ -97,6 +108,20 @@ export function useEventHandlers({ containerRef, sectionsRef, activeIndex, isAni
 				.horizontal-drag-enabled.is-dragging {
 					cursor: grabbing !important;
 				}
+				/* Explicitly ensure case study section elements are unaffected */
+				#case-study * {
+					user-select: text !important;
+					pointer-events: auto !important;
+				}
+				#case-study a, #case-study button, #case-study [role="button"] {
+					cursor: pointer !important;
+				}
+				#case-study .cursor-grab {
+					cursor: grab !important;
+				}
+				#case-study .cursor-grabbing {
+					cursor: grabbing !important;
+				}
 			`;
 			document.head.appendChild(style);
 		};
@@ -110,17 +135,16 @@ export function useEventHandlers({ containerRef, sectionsRef, activeIndex, isAni
 
 		// Drag handling functions
 		const handleMouseDown = (e: MouseEvent) => {
+			// IMPORTANT: Skip if we're in case study section - completely bypass all event handling
+			const target = e.target as HTMLElement;
+			if (isInCaseStudySection(target)) {
+				return; // Don't handle any events in case study section
+			}
+
 			// Skip if we're in services section with control
 			const activeSection = document.documentElement.getAttribute('data-active-section');
 			const isServicesSection = activeSection === '2'; // Services is at index 2
 			const servicesHasControl = typeof window !== 'undefined' && window.servicesHasControl;
-
-			// ADDED: Skip if we're in the case study section
-			const target = e.target as HTMLElement;
-			const inCaseStudySection = target.closest('#case-study') !== null;
-			if (inCaseStudySection) {
-				return; // Don't handle drag in case study section
-			}
 
 			if (isServicesSection || servicesHasControl) return;
 			if (isAnimating.current) return;
@@ -146,6 +170,12 @@ export function useEventHandlers({ containerRef, sectionsRef, activeIndex, isAni
 		};
 
 		const handleMouseMove = (e: MouseEvent) => {
+			// Skip if target is in case study section
+			const target = e.target as HTMLElement;
+			if (isInCaseStudySection(target)) {
+				return;
+			}
+
 			if (!isDragging) return;
 
 			// Prevent text selection during drag
@@ -154,6 +184,12 @@ export function useEventHandlers({ containerRef, sectionsRef, activeIndex, isAni
 		};
 
 		const handleMouseUp = (e: MouseEvent) => {
+			// Skip if target is in case study section
+			const target = e.target as HTMLElement;
+			if (isInCaseStudySection(target)) {
+				return;
+			}
+
 			if (!isDragging) return;
 
 			// Remove dragging class immediately
@@ -195,6 +231,12 @@ export function useEventHandlers({ containerRef, sectionsRef, activeIndex, isAni
 
 		// Handle wheel events for snapping navigation
 		const handleWheel = (e: WheelEvent) => {
+			// Skip if target is in case study section
+			const target = e.target as HTMLElement;
+			if (isInCaseStudySection(target)) {
+				return; // Let native scrolling work in case study section
+			}
+
 			// IMPORTANT: Skip handling if the services section is active and has control
 			// Check both the data attribute and the window flag
 			const activeSection = document.documentElement.getAttribute('data-active-section');
@@ -229,6 +271,12 @@ export function useEventHandlers({ containerRef, sectionsRef, activeIndex, isAni
 
 		// Handle keyboard events
 		const handleKeyDown = (e: KeyboardEvent) => {
+			// Skip keyboard handling if focus is in case study section
+			const activeElement = document.activeElement;
+			if (activeElement && isInCaseStudySection(activeElement as HTMLElement)) {
+				return;
+			}
+
 			if (isAnimating.current) return;
 
 			if (e.key === 'ArrowRight') {
@@ -243,6 +291,12 @@ export function useEventHandlers({ containerRef, sectionsRef, activeIndex, isAni
 		// Handle anchor clicks for navigation
 		const handleAnchorClick = (e: MouseEvent) => {
 			const target = e.target as HTMLElement;
+
+			// Skip if within case study section
+			if (isInCaseStudySection(target)) {
+				return;
+			}
+
 			const anchor = target.closest('a');
 
 			if (anchor && anchor.getAttribute('href')?.startsWith('#')) {

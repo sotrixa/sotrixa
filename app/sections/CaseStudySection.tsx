@@ -63,10 +63,16 @@ export default function CaseStudySection() {
 	const sectionRef = useRef<HTMLDivElement>(null);
 	const [activeService, setActiveService] = useState<string>('HOSPITALITY');
 	const sliderRef = useRef<HTMLDivElement>(null);
+	const sliderContainerRef = useRef<HTMLDivElement>(null);
 	const [selectedStudy, setSelectedStudy] = useState<CaseStudy | null>(null);
 	// New state to control visibility of detail view
 	const [showDetail, setShowDetail] = useState(false);
 	const [language] = useState<Language>('en');
+
+	// Scrolling state
+	const [isDragging, setIsDragging] = useState(false);
+	const [startX, setStartX] = useState(0);
+	const [scrollLeft, setScrollLeft] = useState(0);
 
 	// Get title and subtitle from translations
 	const titleTranslation = getText('caseStudySection.title', language);
@@ -75,11 +81,54 @@ export default function CaseStudySection() {
 	// Parse the colored text in title
 	const { text: rawTitleText, coloredWords } = parseColoredText(titleTranslation);
 
+	// Mouse and touch event handlers for scrolling
+	const handleMouseDown = (e: React.MouseEvent) => {
+		if (!sliderContainerRef.current) return;
+		setIsDragging(true);
+		setStartX(e.pageX - sliderContainerRef.current.offsetLeft);
+		setScrollLeft(sliderContainerRef.current.scrollLeft);
+		// Change cursor style
+		sliderContainerRef.current.style.cursor = 'grabbing';
+	};
+
+	const handleMouseMove = (e: React.MouseEvent) => {
+		if (!isDragging || !sliderContainerRef.current) return;
+		e.preventDefault();
+		const x = e.pageX - sliderContainerRef.current.offsetLeft;
+		const walk = (x - startX) * 2; // Adjust scrolling speed
+		sliderContainerRef.current.scrollLeft = scrollLeft - walk;
+	};
+
+	const handleMouseUp = () => {
+		setIsDragging(false);
+		if (sliderContainerRef.current) {
+			sliderContainerRef.current.style.cursor = 'grab';
+		}
+	};
+
+	// Touch events for mobile
+	const handleTouchStart = (e: React.TouchEvent) => {
+		if (!sliderContainerRef.current) return;
+		setIsDragging(true);
+		setStartX(e.touches[0].pageX - sliderContainerRef.current.offsetLeft);
+		setScrollLeft(sliderContainerRef.current.scrollLeft);
+	};
+
+	const handleTouchMove = (e: React.TouchEvent) => {
+		if (!isDragging || !sliderContainerRef.current) return;
+		const x = e.touches[0].pageX - sliderContainerRef.current.offsetLeft;
+		const walk = (x - startX) * 2;
+		sliderContainerRef.current.scrollLeft = scrollLeft - walk;
+	};
+
 	const handleStudyClick = (study: CaseStudy) => {
-		// First set the selected study data
-		setSelectedStudy(study);
-		// Then show the detail view
-		setShowDetail(true);
+		// Only handle click if not dragging
+		if (!isDragging) {
+			// First set the selected study data
+			setSelectedStudy(study);
+			// Then show the detail view
+			setShowDetail(true);
+		}
 	};
 
 	const handleCloseDetail = () => {
@@ -239,9 +288,9 @@ export default function CaseStudySection() {
 
 					{/* Right column - 7/12 width, extending to the right edge */}
 					<div className='lg:col-span-6 relative pr-0 mt-6 lg:-mt-16'>
-						{/* Case studies container with no right padding - now shows all active service case studies */}
-						<div className='relative overflow-x-auto overflow-y-visible h-auto'>
-							<div ref={sliderRef} className='slider-container flex flex-nowrap gap-4 md:gap-6 w-max px-4 pb-6 pt-3' style={{ scrollBehavior: 'smooth', touchAction: 'pan-x' }}>
+						{/* Case studies container with improved scrolling functionality */}
+						<div ref={sliderContainerRef} className='relative overflow-x-auto overflow-y-visible h-auto cursor-grab' onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp} onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleMouseUp}>
+							<div ref={sliderRef} className='slider-container flex flex-nowrap gap-4 md:gap-6 w-max px-4 pb-6 pt-3'>
 								{getVisibleSlides().map((study, index) => (
 									<div key={index} className='slider-item flex-shrink-0 w-[280px] sm:w-[320px] md:w-[380px] space-y-4 cursor-pointer transition-transform duration-300 hover:-translate-y-2' onClick={() => handleStudyClick(study)}>
 										{/* Image container - reduced size */}
@@ -263,6 +312,13 @@ export default function CaseStudySection() {
 										</div>
 									</div>
 								))}
+							</div>
+
+							{/* Add scroll indicators to help with usability */}
+							<div className='absolute bottom-0 left-0 right-0 flex justify-center pb-2'>
+								<div className='flex items-center space-x-1'>
+									<span className='text-xs text-gray-500'>← Scroll →</span>
+								</div>
 							</div>
 						</div>
 					</div>
