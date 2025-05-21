@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import Section from '../components/Section';
 import { motion, AnimatePresence } from 'framer-motion';
 import { gsap } from 'gsap';
@@ -31,10 +31,6 @@ interface ServiceInfoSectionProps {
 interface ServiceContent {
 	title: string;
 	description: string[];
-	values: {
-		title: string;
-		content?: string;
-	}[];
 }
 
 // Define interface for our custom letter elements
@@ -144,87 +140,27 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 	const serviceContents: Record<string, ServiceContent> = {
 		RESEARCH: {
 			title: 'Deep research, nuanced insight, and future-facing signals that shape powerful strategies.',
-			description: ['At Sotrixa, research is a journey of co-discovery—driven by curiosity, shaped by context, and grounded in your vision.​', 'Together, we listen between the lines, observe subtle patterns, and trace emerging signals that guide strategic decisions.​'],
-			values: [
-				{
-					title: 'Curiosity',
-					content: 'By blending human stories with data-driven insights, we craft nuanced research journeys—through in-depth interviews, thoughtful surveys, cultural listening, and pattern-sensing.​',
-				},
-				{
-					title: 'Conscience',
-					content: 'What we uncover together: Category Analysis, Competitive Analysis, Consumer Behavior Insights, Trend Scanning & Forecasting, and Audience Segmentation—mapping real people with real stories and needs, not just numbers.​',
-				},
-			],
+			description: ['At Sotrixa, research is a journey of co-discovery—driven by curiosity, shaped by context, and grounded in your vision.​', 'Together, we listen between the lines, observe subtle patterns, and trace emerging signals that guide strategic decisions.​', 'By blending human stories with data-driven insights, we craft nuanced research journeys—through in-depth interviews, thoughtful surveys, cultural listening, and pattern-sensing.​', '', 'What we uncover together:​', '• Category Analysis – Understand the shifts and undercurrents defining your space.​', '• Competitive Analysis – Gain a clear view of your landscape and your distinction.​', '• Consumer Behavior Insights – Explore the drivers, desires, and needs of your audience.​', "• Trend Scanning & Forecasting – Anticipate what's next and move ahead of the current.​", '• Audience Segmentation – Map real people with real stories and needs—not just numbers.​', '', 'Our findings become a living compass for everything we build together.'],
 		},
 		'BUSINESS ARCHITECTURE': {
 			title: 'Turning vision into a structured, evolving business—ready for real-world growth.',
-			description: ['Every idea holds immense potential, but to thrive, it needs form, coherence, and a structure that sustains growth.​', 'At Sotrixa, we shape the fundamental elements of your business—what you offer, how you function, and the role you are meant to play.​'],
-			values: [
-				{
-					title: 'Structure',
-					content: 'Through co-creation, we translate concepts into frameworks and possibilities into actionable plans.​ What we shape together: Business Model Design, Offer Design & Positioning, and Operational Frameworks that map systems and processes for consistency and focus.​',
-				},
-				{
-					title: 'Scalability',
-					content: 'We help define Mission, Vision & Values—the deeper truths that guide your evolution, while creating Growth Pathways to strategize how to expand, shift, or scale intentionally over time.​',
-				},
-			],
+			description: ['Every idea holds immense potential, but to thrive, it needs form, coherence, and a structure that sustains growth.​', 'At Sotrixa, we shape the fundamental elements of your business—what you offer, how you function, and the role you are meant to play.​', 'Through co-creation, we translate concepts into frameworks and possibilities into actionable plans.​', '', 'What we shape together:​', '• Business Model Design – Create a structure that sustains value creation and growth.​', '• Offer Design & Positioning – Shape your offerings with clarity, meaning, and distinction.​', '• Operational Frameworks – Map systems and processes for consistency and focus.​', '• Mission, Vision & Values – Define the deeper truths that guide your evolution.​', '• Growth Pathways – Strategize how to expand, shift, or scale intentionally over time.​', '', 'This is where your business becomes an aligned, living structure—ready for strategy and movement.'],
 		},
 		'BESPOKE STRATEGY CREATION': {
 			title: 'Precision-crafted roadmaps that move your vision forward with clarity, coherence, and purpose.',
-			description: ['No two businesses move at the same rhythm.​', 'At Sotrixa, strategy honors your unique goals, capacity, and context—designing roadmaps that are intelligent, flexible, and fully aligned with your evolution.​'],
-			values: [
-				{
-					title: 'Precision',
-					content: 'Whether you are launching something new, expanding reach, refining an offer, or exploring partnerships, each strategic layer moves vision into structured, sustainable momentum.​',
-				},
-				{
-					title: 'Adaptability',
-					content: 'From go-to-market approaches and visibility plans to audience engagement, growth models, and positioning strategies—every element is crafted to create meaningful forward motion.',
-				},
-			],
+			description: ['No two businesses move at the same rhythm.​', 'At Sotrixa, strategy honors your unique goals, capacity, and context—designing roadmaps that are intelligent, flexible, and fully aligned with your evolution.​', 'Whether you are launching something new, expanding reach, refining an offer, or exploring partnerships, each strategic layer moves vision into structured, sustainable momentum.​', 'From go-to-market approaches and visibility plans to audience engagement, growth models, and positioning strategies—every element is crafted to create meaningful forward motion.'],
 		},
 		BRANDING: {
 			title: "Bringing your business's true story to life—visually, verbally, and emotionally.",
-			description: ['A brand is the memory, the feeling, the story people carry after they meet you.​', 'At Sotrixa, branding is an act of alignment: we listen deeply to what your business is becoming and translate that into visual and verbal identities that feel alive and true.​'],
-			values: [
-				{
-					title: 'Authenticity',
-					content: 'We create logos, color palettes, typography, design elements, and voice and tone guidelines—crafted with precision and emotional resonance.​',
-				},
-				{
-					title: 'Distinction',
-					content: 'Your brand becomes an invitation: a true reflection of your story, ready to connect and inspire.',
-				},
-			],
+			description: ['A brand is the memory, the feeling, the story people carry after they meet you.​', 'At Sotrixa, branding is an act of alignment: we listen deeply to what your business is becoming and translate that into visual and verbal identities that feel alive and true.​', 'We create logos, color palettes, typography, design elements, and voice and tone guidelines—crafted with precision and emotional resonance.​', 'More than an aesthetic, your brand becomes an invitation: a true reflection of your story, ready to connect and inspire.'],
 		},
 		MARKETING: {
 			title: 'Expanding your presence with soulful marketing strategies that resonate and move.',
-			description: ['Marketing is the movement of your story into the world—the choreography of voice, vision, and presence.​', 'At Sotrixa, we craft marketing strategies that are intelligent, soulful, and grounded in authenticity.​'],
-			values: [
-				{
-					title: 'Creativity',
-					content: 'From channel strategies and campaign direction to content pillars and creative activations, every element amplifies your voice with coherence and clarity.',
-				},
-				{
-					title: 'Measurement',
-					content: 'We design collaborations and strategic initiatives that expand your reach with purpose and impact, building sustainable momentum for your brand.',
-				},
-			],
+			description: ['Marketing is the movement of your story into the world—the choreography of voice, vision, and presence.​', 'At Sotrixa, we craft marketing strategies that are intelligent, soulful, and grounded in authenticity.​', 'From channel strategies and campaign direction to content pillars, creative activations, and collaborations, every element amplifies your voice and expands your reach with coherence, clarity, and impact.​', "Your story doesn't just travel—it moves, it resonates, it builds momentum."],
 		},
 		'WEBSITE DEVELOPMENT': {
 			title: 'Crafting websites where form meets feeling, and strategy becomes tangible experience.',
-			description: ['Your website is the home of your vision—where strategy meets experience and form meets feeling.​', "At Sotrixa, we design digital spaces that are not only beautiful but deeply functional—reflecting your brand's essence while guiding your audience into connection and action.​"],
-			values: [
-				{
-					title: 'Usability',
-					content: 'Rooted in clarity, crafted with care, your website becomes a living, evolving expression of everything you stand for.​',
-				},
-				{
-					title: 'Performance',
-					content: 'We build responsive, accessible experiences optimized to deliver your message with impact, creating seamless journeys that engage and convert.',
-				},
-			],
+			description: ['Your website is the home of your vision—where strategy meets experience and form meets feeling.​', "At Sotrixa, we design digital spaces that are not only beautiful but deeply functional—reflecting your brand's essence while guiding your audience into connection and action.​", 'Rooted in clarity, crafted with care, your website becomes a living, evolving expression of everything you stand for.​', "It's where presence becomes tangible—and impact begins."],
 		},
 	};
 
@@ -425,42 +361,20 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 		[]
 	);
 
-	// Function to calculate the proper scroll index to ensure the active item is centered
-	const calculateScrollIndex = useCallback(
-		(targetIndex: number) => {
-			// Ensure we show 3 items with the active one in the middle
-			if (targetIndex === 0) {
-				// First item - can't be centered, so show items 0-2
-				return 0;
-			} else if (targetIndex === serviceItems.length - 1) {
-				// Last item - can't be centered, so show last 3 items
-				return Math.max(0, serviceItems.length - 3);
-			} else {
-				// Center the target item by showing the item before and after it
-				return Math.max(0, targetIndex - 1);
-			}
-		},
-		[serviceItems]
-	);
-
-	// Update useEffect to sync carousel with activeService and include all services
+	// Use useEffect to sync carousel with activeService and include all services
 	useEffect(() => {
 		if (carouselApi && activeService) {
 			const serviceIndex = serviceItems.findIndex((service) => service.name === activeService);
 
 			if (serviceIndex >= 0) {
 				// Ensure carousel is properly initialized before scrolling
-				if (carouselApi.canScrollPrev() || carouselApi.canScrollNext()) {
-					// Scroll to the service and center it in the view
-					setTimeout(() => {
-						const scrollIndex = calculateScrollIndex(serviceIndex);
-						carouselApi.scrollTo(scrollIndex);
-						setCurrentSlide(serviceIndex);
-					}, 50);
-				}
+				setTimeout(() => {
+					carouselApi.scrollTo(serviceIndex);
+					setCurrentSlide(serviceIndex);
+				}, 100);
 			}
 		}
-	}, [carouselApi, activeService, serviceItems, calculateScrollIndex]);
+	}, [carouselApi, activeService, serviceItems]);
 
 	// Add an initialization effect for the carousel to ensure proper centering
 	useEffect(() => {
@@ -472,12 +386,10 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 				const serviceIndex = serviceItems.findIndex((service) => service.name === activeService);
 				if (serviceIndex >= 0) {
 					// For initial position, make sure we scroll to the active service
-					// while ensuring 3 items remain visible
 					setTimeout(() => {
-						const scrollIndex = calculateScrollIndex(serviceIndex);
-						carouselApi.scrollTo(scrollIndex);
+						carouselApi.scrollTo(serviceIndex);
 						setCurrentSlide(serviceIndex);
-					}, 100);
+					}, 200);
 				}
 			}
 		};
@@ -487,8 +399,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 			if (activeService) {
 				const serviceIndex = serviceItems.findIndex((service) => service.name === activeService);
 				if (serviceIndex >= 0) {
-					const scrollIndex = calculateScrollIndex(serviceIndex);
-					carouselApi.scrollTo(scrollIndex);
+					carouselApi.scrollTo(serviceIndex);
 				}
 			}
 		};
@@ -502,7 +413,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 			carouselApi.off('init', handleInit);
 			window.removeEventListener('resize', handleResize);
 		};
-	}, [carouselApi, activeService, serviceItems, calculateScrollIndex]);
+	}, [carouselApi, activeService, serviceItems]);
 
 	// Add an effect to track slide changes and enable proper scrolling
 	useEffect(() => {
@@ -545,8 +456,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 		if (activeService) {
 			const serviceIndex = serviceItems.findIndex((service) => service.name === activeService);
 			if (serviceIndex >= 0 && serviceIndex !== currentSlide) {
-				const scrollIndex = calculateScrollIndex(serviceIndex);
-				carouselApi.scrollTo(scrollIndex);
+				carouselApi.scrollTo(serviceIndex);
 				setCurrentSlide(serviceIndex);
 			}
 		}
@@ -554,7 +464,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 		return () => {
 			carouselApi.off('select', onSelect);
 		};
-	}, [carouselApi, activeService, currentSlide, serviceItems, calculateScrollIndex]);
+	}, [carouselApi, activeService, currentSlide, serviceItems]);
 
 	// Function to handle exit animations (will be used by parent component)
 	const playExitAnimation = () => {
@@ -639,7 +549,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 		return tl;
 	};
 
-	// Update handleServiceClick to handle all services with proper scrolling
+	// Update handleServiceClick to handle all services with direct scrolling
 	const handleServiceClick = (serviceName: string, index: number) => {
 		// If the clicked service is already active, do nothing
 		if (serviceName === activeService) return;
@@ -650,9 +560,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 
 		// Use carousel API to scroll to the selected service
 		if (carouselApi) {
-			// Calculate scroll position to show the clicked service while keeping 3 visible
-			const scrollIndex = calculateScrollIndex(index);
-			carouselApi.scrollTo(scrollIndex);
+			carouselApi.scrollTo(index);
 			setCurrentSlide(index);
 		}
 
@@ -740,7 +648,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 				carouselApi.scrollTo(serviceIndex);
 			}
 		}
-	}, [carouselApi, activeService, serviceItems, calculateScrollIndex]);
+	}, [carouselApi, activeService, serviceItems]);
 
 	useEffect(() => {
 		if (!sectionDivRef.current) return;
@@ -1004,7 +912,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 				autoplay.stop();
 			}
 		};
-	}, [activeService, serviceItems, calculateScrollIndex]);
+	}, [activeService, serviceItems]);
 
 	return (
 		<Section id='service-info' className='bg-[#FAFAFA] text-black p-4 sm:p-6 relative overflow-hidden min-h-screen'>
@@ -1094,8 +1002,8 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 			<div ref={sectionDivRef} className='flex flex-col md:flex-row w-full h-full relative z-20 mx-auto my-8'>
 				{/* Left side with strategy heading and services list */}
 				<div className='w-full md:w-1/2 p-4 md:p-6' ref={leftSideRef}>
-					<div className='mb-4' ref={logoRef}>
-						<button onClick={handleBackToServices} ref={backButtonRef} className='group flex items-center space-x-2 cursor-pointer'>
+					<div className='mb-4 sticky top-5 z-50' ref={logoRef}>
+						<button onClick={handleBackToServices} ref={backButtonRef} className='group flex items-center space-x-2 cursor-pointer bg-white/80 backdrop-blur px-3 py-2 rounded-lg shadow-sm hover:shadow'>
 							<svg xmlns='http://www.w3.org/2000/svg' className='h-5 w-5 transform transition-transform duration-300 group-hover:-translate-x-1' viewBox='0 0 20 20' fill='currentColor'>
 								<path fillRule='evenodd' d='M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z' clipRule='evenodd' />
 							</svg>
@@ -1103,7 +1011,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 						</button>
 					</div>
 
-					<div className='my-6'>
+					<div className='my-6 mt-16'>
 						<h1 className='text-3xl md:text-4xl font-bold mb-4' ref={headingRef}>
 							<span className='text-transparent bg-clip-text bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6]'>{currentContent.title}</span>
 						</h1>
@@ -1111,25 +1019,31 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 
 					{/* Carousel shows ONLY 3 services at a time with vertical scrolling */}
 					<div className='mt-12 relative' ref={servicesGridRef}>
-						{/* Fixed height container to show exactly 3 items */}
-						<div className='h-[270px] overflow-hidden'>
+						{/* Container with fixed height for exactly 3 items */}
+						<div className='h-[240px] overflow-hidden relative'>
 							<Carousel
 								setApi={setCarouselApi}
 								opts={{
 									align: 'start',
-									loop: false,
+									loop: true,
 									dragFree: true,
-									containScroll: 'trimSnaps',
+									containScroll: false,
 									slidesToScroll: 1,
 								}}
 								plugins={[autoplayPluginRef.current]}
 								orientation='vertical'
 								className='w-full h-full'
 							>
-								<CarouselContent className='h-full pt-1'>
+								<CarouselContent className='h-full -mt-1 -mb-1'>
 									{serviceItems.map(({ name }, index) => (
-										<CarouselItem key={name} className='basis-1/3 h-[90px] min-h-[90px] flex-shrink-0 pt-0 mb-0'>
-											<div className={`service-item cursor-pointer transition-all duration-300 p-3 rounded-lg h-[80px] flex items-center ${activeService === name ? 'bg-white shadow-md border-l-4 border-[#d142e2] transform -translate-x-1' : 'bg-white/60 hover:bg-white/90 hover:-translate-x-1 border-l-4 border-transparent'}`} onClick={() => handleServiceClick(name, index)}>
+										<CarouselItem key={name} className='basis-auto h-[80px] min-h-[80px] flex-shrink-0 pt-1 pb-1 transition-all duration-300'>
+											<div
+												className={`service-item cursor-pointer transition-all duration-300 p-3 rounded-lg h-[70px] flex items-center ${activeService === name ? 'bg-white shadow-md border-l-4 border-[#d142e2] transform -translate-x-1' : 'bg-white/60 hover:bg-white/90 hover:-translate-x-1 border-l-4 border-transparent'}`}
+												onClick={(e) => {
+													e.stopPropagation();
+													handleServiceClick(name, index);
+												}}
+											>
 												<h3
 													ref={(el) => {
 														serviceTitleRefs.current[index] = el;
@@ -1144,16 +1058,15 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 								</CarouselContent>
 
 								{/* Navigation buttons - must be inside Carousel */}
-								<div className='absolute right-[-16px] top-1/2 transform -translate-y-1/2 z-10 flex flex-col items-center space-y-4'>
+								<div className='absolute right-[-16px] top-1/2 transform -translate-y-1/2 z-30 flex flex-col items-center space-y-4'>
 									<CarouselPrevious
 										className='rotate-90 h-7 w-7 scale-75 bg-white hover:bg-gray-50 shadow-sm rounded-full p-0 border-0'
 										onClick={(e) => {
 											e.stopPropagation();
 											e.preventDefault();
-											if (carouselApi && currentSlide > 0) {
-												const newIndex = currentSlide - 1;
-												const scrollIndex = calculateScrollIndex(newIndex);
-												carouselApi.scrollTo(scrollIndex);
+											if (carouselApi) {
+												const newIndex = Math.max(0, currentSlide - 1);
+												carouselApi.scrollTo(newIndex);
 												setCurrentSlide(newIndex);
 
 												const newService = serviceItems[newIndex]?.name;
@@ -1177,10 +1090,9 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 										onClick={(e) => {
 											e.stopPropagation();
 											e.preventDefault();
-											if (carouselApi && currentSlide < serviceItems.length - 1) {
-												const newIndex = currentSlide + 1;
-												const scrollIndex = calculateScrollIndex(newIndex);
-												carouselApi.scrollTo(scrollIndex);
+											if (carouselApi) {
+												const newIndex = Math.min(serviceItems.length - 1, currentSlide + 1);
+												carouselApi.scrollTo(newIndex);
 												setCurrentSlide(newIndex);
 
 												const newService = serviceItems[newIndex]?.name;
@@ -1201,9 +1113,12 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 									/>
 								</div>
 							</Carousel>
+
+							{/* Bottom fade to indicate scrollability */}
+							<div className='absolute bottom-0 left-0 right-0 h-[30px] bg-gradient-to-t from-[#FAFAFA] to-transparent pointer-events-none'></div>
 						</div>
 
-						{/* Dots pagination moved below */}
+						{/* Dots pagination */}
 						<div className='absolute -bottom-16 left-0 right-0 z-10 flex justify-center items-center'>
 							<div className='flex space-x-2'>
 								{serviceItems.map((item, index) => (
@@ -1212,8 +1127,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 										className={`h-3 w-3 rounded-full transition-all ${currentSlide === index ? 'bg-[#d142e2]' : 'bg-gray-300 hover:bg-gray-400'}`}
 										onClick={() => {
 											if (carouselApi) {
-												const scrollIndex = calculateScrollIndex(index);
-												carouselApi.scrollTo(scrollIndex);
+												carouselApi.scrollTo(index);
 												setCurrentSlide(index);
 
 												if (item.name !== activeService) {
@@ -1235,6 +1149,13 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 								))}
 							</div>
 						</div>
+
+						{/* Scroll indicator */}
+						<div className='absolute bottom-[-4px] left-1/2 transform -translate-x-1/2 animate-bounce opacity-60 pointer-events-none'>
+							<svg xmlns='http://www.w3.org/2000/svg' className='h-6 w-6 text-[#d142e2]' viewBox='0 0 20 20' fill='currentColor'>
+								<path fillRule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clipRule='evenodd' />
+							</svg>
+						</div>
 					</div>
 				</div>
 
@@ -1251,21 +1172,52 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 								{activeService || 'Services'}
 							</h3>
 
-							<div className='mb-8 space-y-4'>
-								{currentContent.description.map((paragraph, index) => (
-									<p key={index} className='text-gray-700 leading-relaxed'>
-										{paragraph}
-									</p>
-								))}
-							</div>
+							<div className='mb-8'>
+								{currentContent.description.map((paragraph, index) => {
+									// Group of bullet points
+									if (paragraph.startsWith('•')) {
+										// Extract content after the bullet point and dash
+										const parts = paragraph.substring(1).trim().split('–');
+										const bulletTitle = parts[0].trim();
+										const bulletContent = parts.length > 1 ? parts[1].trim() : '';
 
-							<div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-10'>
-								{currentContent.values.map((value, index) => (
-									<motion.div key={index} className='value-item p-5 rounded-lg bg-gray-50/50 hover:bg-gray-50/80 transition-colors duration-300' initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + index * 0.1, duration: 0.5 }}>
-										<h3 className='text-xl font-bold mb-3'>{value.title}</h3>
-										{value.content && <p className='text-gray-600 leading-relaxed'>{value.content}</p>}
-									</motion.div>
-								))}
+										return (
+											<div key={index} className='flex items-start group hover:translate-x-1 transition-transform duration-300 py-[1px]'>
+												<span className='text-[#d142e2] text-xs mr-1.5 mt-[3px] opacity-90 group-hover:opacity-100 flex-shrink-0'>•</span>
+												<div className='text-gray-700 leading-snug'>
+													<span className='font-medium text-gray-800'>{bulletTitle}</span>
+													{bulletContent && (
+														<>
+															{' '}
+															– <span className='text-gray-600 text-sm'>{bulletContent}</span>
+														</>
+													)}
+												</div>
+											</div>
+										);
+									}
+
+									// Header for list sections (like "What we uncover together:")
+									if (paragraph.endsWith(':​')) {
+										return (
+											<p key={index} className='text-gray-700 font-medium mt-4 mb-1.5'>
+												{paragraph}
+											</p>
+										);
+									}
+
+									// Empty line creates spacing
+									if (paragraph === '') {
+										return <div key={index} className='h-2'></div>;
+									}
+
+									// Regular paragraph
+									return (
+										<p key={index} className='text-gray-700 leading-relaxed mb-3'>
+											{paragraph}
+										</p>
+									);
+								})}
 							</div>
 						</motion.div>
 					</AnimatePresence>
