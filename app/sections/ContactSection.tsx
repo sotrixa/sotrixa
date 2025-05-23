@@ -5,6 +5,7 @@ import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Section from '../components/Section';
+import { useContactForm } from '../lib/hooks/useContactForm';
 
 export default function ContactSection() {
 	// Refs for animation targets
@@ -14,6 +15,9 @@ export default function ContactSection() {
 	const imageRef = useRef<HTMLDivElement>(null);
 	const formItemsRef = useRef<HTMLDivElement[]>([]);
 	const [animationsCreated, setAnimationsCreated] = useState(false);
+
+	// Contact form hook
+	const { formData, isSubmitting, isSuccess, error, handleInputChange, handleSubmit } = useContactForm();
 
 	useEffect(() => {
 		// Register ScrollTrigger plugin
@@ -147,7 +151,7 @@ export default function ContactSection() {
 
 	return (
 		<Section id='contact' className='bg-[#FAFAFA] text-black min-h-screen flex items-center justify-center pt-20 pb-24'>
-			<div className='w-full px-1 sm:px-1 lg:px-1 xl:px-1 max-w-7xl mx-auto'>
+			<div className='w-full px-1r sm:px-1 lg:px-1 xl:px-1 max-w-7xl mx-auto'>
 				<div className='mb-6 text-center' ref={headingRef} style={{ opacity: animationsCreated ? undefined : 1 }}>
 					<h2 className='text-3xl font-medium mb-2'>Contact</h2>
 					<div className='w-16 h-0.5 bg-black mx-auto mb-3'></div>
@@ -204,40 +208,63 @@ export default function ContactSection() {
 
 						{/* Contact Form */}
 						<div ref={formRef} style={{ opacity: animationsCreated ? undefined : 1 }}>
-							<form className='space-y-2.5'>
+							{/* Success Message */}
+							{isSuccess && (
+								<div className='mb-4 p-3 bg-green-50 border border-green-200 rounded-md'>
+									<p className='text-green-800 text-sm font-medium'>✓ Message sent successfully!</p>
+									<p className='text-green-600 text-xs mt-1'>We&apos;ll get back to you soon.</p>
+								</div>
+							)}
+
+							{/* Error Message */}
+							{error && (
+								<div className='mb-4 p-3 bg-red-50 border border-red-200 rounded-md'>
+									<p className='text-red-800 text-sm font-medium'>⚠ {error}</p>
+									<p className='text-red-600 text-xs mt-1'>Please try again or contact us directly.</p>
+								</div>
+							)}
+
+							<form onSubmit={handleSubmit} className='space-y-2.5'>
 								<div className='grid grid-cols-1 md:grid-cols-2 gap-2.5'>
 									<div ref={addToFormRefs} style={{ opacity: animationsCreated ? undefined : 1 }}>
 										<label htmlFor='name' className='block mb-1 text-xs font-medium text-gray-700'>
-											Name
+											Name *
 										</label>
-										<input type='text' id='name' className='w-full px-3 py-1.5 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800 text-sm' placeholder='John Doe' />
+										<input type='text' id='name' name='name' value={formData.name} onChange={handleInputChange} className='w-full px-3 py-1.5 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800 text-sm' placeholder='John Doe' required disabled={isSubmitting} />
 									</div>
 
 									<div ref={addToFormRefs} style={{ opacity: animationsCreated ? undefined : 1 }}>
 										<label htmlFor='email' className='block mb-1 text-xs font-medium text-gray-700'>
-											Email
+											Email *
 										</label>
-										<input type='email' id='email' className='w-full px-3 py-1.5 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800 text-sm' placeholder='john@example.com' />
+										<input type='email' id='email' name='email' value={formData.email} onChange={handleInputChange} className='w-full px-3 py-1.5 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800 text-sm' placeholder='john@example.com' required disabled={isSubmitting} />
 									</div>
 								</div>
 
 								<div ref={addToFormRefs} style={{ opacity: animationsCreated ? undefined : 1 }}>
 									<label htmlFor='subject' className='block mb-1 text-xs font-medium text-gray-700'>
-										Subject
+										Subject *
 									</label>
-									<input type='text' id='subject' className='w-full px-3 py-1.5 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800 text-sm' placeholder='Project inquiry' />
+									<input type='text' id='subject' name='subject' value={formData.subject} onChange={handleInputChange} className='w-full px-3 py-1.5 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800 text-sm' placeholder='Project inquiry' required disabled={isSubmitting} />
 								</div>
 
 								<div ref={addToFormRefs} style={{ opacity: animationsCreated ? undefined : 1 }}>
 									<label htmlFor='message' className='block mb-1 text-xs font-medium text-gray-700'>
-										Message
+										Message *
 									</label>
-									<textarea id='message' rows={2} className='w-full px-3 py-1.5 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800 text-sm resize-none' placeholder='Tell us about your project...'></textarea>
+									<textarea id='message' name='message' value={formData.message} onChange={handleInputChange} rows={2} className='w-full px-3 py-1.5 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800 text-sm resize-none' placeholder='Tell us about your project...' required disabled={isSubmitting}></textarea>
 								</div>
 
 								<div ref={addToFormRefs} style={{ opacity: animationsCreated ? undefined : 1 }}>
-									<button type='submit' className='px-4 py-1.5 bg-black text-white font-medium rounded-md hover:bg-gray-800 transition-colors text-sm'>
-										Send Message
+									<button type='submit' disabled={isSubmitting} className='px-4 py-1.5 bg-black text-white font-medium rounded-md hover:bg-gray-800 transition-colors text-sm disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2'>
+										{isSubmitting ? (
+											<>
+												<div className='w-3 h-3 border border-white border-t-transparent rounded-full animate-spin'></div>
+												Sending...
+											</>
+										) : (
+											'Send Message'
+										)}
 									</button>
 								</div>
 							</form>
