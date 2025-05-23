@@ -63,16 +63,14 @@ export default function CaseStudySection() {
 	const sectionRef = useRef<HTMLDivElement>(null);
 	const [activeService, setActiveService] = useState<string>('HOSPITALITY');
 	const sliderRef = useRef<HTMLDivElement>(null);
-	const sliderContainerRef = useRef<HTMLDivElement>(null);
 	const [selectedStudy, setSelectedStudy] = useState<CaseStudy | null>(null);
 	// New state to control visibility of detail view
 	const [showDetail, setShowDetail] = useState(false);
 	const [language] = useState<Language>('en');
 
-	// Scrolling state
-	const [isDragging, setIsDragging] = useState(false);
-	const [startX, setStartX] = useState(0);
-	const [scrollLeft, setScrollLeft] = useState(0);
+	// Navigation state for carousel
+	const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+	const [slidesPerView, setSlidesPerView] = useState(1);
 
 	// Get title and subtitle from translations
 	const titleTranslation = getText('caseStudySection.title', language);
@@ -81,54 +79,25 @@ export default function CaseStudySection() {
 	// Parse the colored text in title
 	const { text: rawTitleText, coloredWords } = parseColoredText(titleTranslation);
 
-	// Mouse and touch event handlers for scrolling
-	const handleMouseDown = (e: React.MouseEvent) => {
-		if (!sliderContainerRef.current) return;
-		setIsDragging(true);
-		setStartX(e.pageX - sliderContainerRef.current.offsetLeft);
-		setScrollLeft(sliderContainerRef.current.scrollLeft);
-		// Change cursor style
-		sliderContainerRef.current.style.cursor = 'grabbing';
-	};
+	// Update slides per view on resize
+	useEffect(() => {
+		const updateSlidesPerView = () => {
+			setSlidesPerView(window.innerWidth >= 1024 ? 2 : 1);
+		};
 
-	const handleMouseMove = (e: React.MouseEvent) => {
-		if (!isDragging || !sliderContainerRef.current) return;
-		e.preventDefault();
-		const x = e.pageX - sliderContainerRef.current.offsetLeft;
-		const walk = (x - startX) * 2; // Adjust scrolling speed
-		sliderContainerRef.current.scrollLeft = scrollLeft - walk;
-	};
+		// Set initial value
+		updateSlidesPerView();
 
-	const handleMouseUp = () => {
-		setIsDragging(false);
-		if (sliderContainerRef.current) {
-			sliderContainerRef.current.style.cursor = 'grab';
-		}
-	};
-
-	// Touch events for mobile
-	const handleTouchStart = (e: React.TouchEvent) => {
-		if (!sliderContainerRef.current) return;
-		setIsDragging(true);
-		setStartX(e.touches[0].pageX - sliderContainerRef.current.offsetLeft);
-		setScrollLeft(sliderContainerRef.current.scrollLeft);
-	};
-
-	const handleTouchMove = (e: React.TouchEvent) => {
-		if (!isDragging || !sliderContainerRef.current) return;
-		const x = e.touches[0].pageX - sliderContainerRef.current.offsetLeft;
-		const walk = (x - startX) * 2;
-		sliderContainerRef.current.scrollLeft = scrollLeft - walk;
-	};
+		// Add resize listener
+		window.addEventListener('resize', updateSlidesPerView);
+		return () => window.removeEventListener('resize', updateSlidesPerView);
+	}, []);
 
 	const handleStudyClick = (study: CaseStudy) => {
-		// Only handle click if not dragging
-		if (!isDragging) {
-			// First set the selected study data
-			setSelectedStudy(study);
-			// Then show the detail view
-			setShowDetail(true);
-		}
+		// First set the selected study data
+		setSelectedStudy(study);
+		// Then show the detail view
+		setShowDetail(true);
 	};
 
 	const handleCloseDetail = () => {
@@ -163,12 +132,34 @@ export default function CaseStudySection() {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [caseStudies]);
 
-	// Calculate all slides to display for the active service instead of just two
-	const getVisibleSlides = useCallback(() => {
-		// Return all case studies from all categories
-		const allSlides = Object.values(caseStudies).flat();
-		return allSlides;
+	// Get all case studies
+	const getAllSlides = useCallback(() => {
+		return Object.values(caseStudies).flat();
 	}, []);
+
+	// Navigation functions
+	const goToPrevious = () => {
+		setCurrentSlideIndex((prev) => Math.max(0, prev - slidesPerView));
+	};
+
+	const goToNext = () => {
+		const allSlides = getAllSlides();
+		const maxIndex = Math.max(0, allSlides.length - slidesPerView);
+		setCurrentSlideIndex((prev) => Math.min(maxIndex, prev + slidesPerView));
+	};
+
+	// Check if navigation buttons should be disabled
+	const isPrevDisabled = currentSlideIndex === 0;
+	const isNextDisabled = () => {
+		const allSlides = getAllSlides();
+		return currentSlideIndex >= allSlides.length - slidesPerView;
+	};
+
+	// Get visible slides based on current index
+	const getVisibleSlides = useCallback(() => {
+		const allSlides = Object.values(caseStudies).flat();
+		return allSlides.slice(currentSlideIndex, currentSlideIndex + slidesPerView);
+	}, [currentSlideIndex, slidesPerView]);
 
 	// Handle slide changes with GSAP
 	useEffect(() => {
@@ -176,33 +167,24 @@ export default function CaseStudySection() {
 			// Get all slide items
 			const slideItems = sliderRef.current.querySelectorAll('.slider-item');
 
-			// Animate all slides with a fade and scale
-			gsap.to(slideItems, {
-				opacity: 0.4,
-				scale: 0.95,
-				duration: 0.4,
-				ease: 'power2.out',
-			});
-
-			// Then highlight all slides
-			const visibleSlides = getVisibleSlides();
-			visibleSlides.forEach((_, index) => {
-				gsap.to(slideItems[index], {
-					opacity: 1,
+			// Simple fade-in animation without flashing
+			gsap.set(slideItems, { opacity: 1, y: 0 });
+			gsap.fromTo(
+				slideItems,
+				{ scale: 0.98 },
+				{
 					scale: 1,
-					duration: 0.6,
-					delay: 0.1,
+					duration: 0.3,
 					ease: 'power2.out',
-				});
-			});
+				}
+			);
 		}
-	}, [getVisibleSlides]);
+	}, [currentSlideIndex]);
 
 	// Handle service change from detail view
 	const handleDetailServiceChange = useCallback((service: string) => {
 		// Reset selected study when changing service
 		setSelectedStudy(null);
-
 		setActiveService(service);
 
 		// If there are case studies for this service, select the first one
@@ -288,12 +270,26 @@ export default function CaseStudySection() {
 
 					{/* Right column - 7/12 width, extending to the right edge */}
 					<div className='lg:col-span-6 relative pr-0 mt-6 lg:-mt-16'>
-						{/* Case studies container with improved scrolling functionality */}
-						<div ref={sliderContainerRef} className='relative overflow-x-auto overflow-y-visible h-auto cursor-grab' onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp} onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleMouseUp}>
-							<div ref={sliderRef} className='slider-container flex flex-nowrap gap-4 md:gap-6 w-max px-4 pb-6 pt-3'>
+						{/* Case studies container */}
+						<div className='relative overflow-hidden h-auto'>
+							{/* Navigation arrows - positioned on the left side */}
+							<div className='absolute left-0 top-1/2 -translate-y-1/2 z-10 flex flex-col gap-3 pl-2'>
+								<button onClick={goToPrevious} disabled={isPrevDisabled} className={`w-14 h-14 flex items-center justify-center transition-all duration-200 ${isPrevDisabled ? 'opacity-30 cursor-not-allowed' : 'opacity-70 hover:opacity-100 hover:scale-110 active:scale-95'}`} aria-label='Previous case study'>
+									<svg width='32' height='32' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2'>
+										<path d='M15 18l-6-6 6-6' />
+									</svg>
+								</button>
+								<button onClick={goToNext} disabled={isNextDisabled()} className={`w-14 h-14 flex items-center justify-center transition-all duration-200 ${isNextDisabled() ? 'opacity-30 cursor-not-allowed' : 'opacity-70 hover:opacity-100 hover:scale-110 active:scale-95'}`} aria-label='Next case study'>
+									<svg width='32' height='32' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2'>
+										<path d='M9 18l6-6-6-6' />
+									</svg>
+								</button>
+							</div>
+
+							<div ref={sliderRef} className='slider-container flex gap-4 md:gap-6 px-4 pb-6 pt-3 ml-16'>
 								{getVisibleSlides().map((study, index) => (
-									<div key={index} className='slider-item flex-shrink-0 w-[280px] sm:w-[320px] md:w-[380px] space-y-4 cursor-pointer transition-transform duration-300 hover:-translate-y-2' onClick={() => handleStudyClick(study)}>
-										{/* Image container - reduced size */}
+									<div key={`${currentSlideIndex}-${index}`} className='slider-item flex-shrink-0 w-full lg:w-1/2 space-y-4 cursor-pointer transition-transform duration-300 hover:-translate-y-2' onClick={() => handleStudyClick(study)}>
+										{/* Image container */}
 										<div className='h-[280px] sm:h-[340px] md:h-[420px] lg:h-[460px] rounded-lg border border-gray-200 shadow-md overflow-hidden'>
 											<div className='relative w-full h-full'>
 												<Image src={study.image} alt={study.title} className='object-cover hover:scale-105 transition-transform duration-300' fill style={{ objectFit: 'cover' }} priority={index === 0} />
@@ -312,13 +308,6 @@ export default function CaseStudySection() {
 										</div>
 									</div>
 								))}
-							</div>
-
-							{/* Add scroll indicators to help with usability */}
-							<div className='absolute bottom-0 left-0 right-0 flex justify-center pb-2'>
-								<div className='flex items-center space-x-1'>
-									<span className='text-xs text-gray-500'>← Scroll →</span>
-								</div>
 							</div>
 						</div>
 					</div>
