@@ -27,7 +27,7 @@ export default function ServicesSection() {
 	const gifRef = useRef<HTMLDivElement>(null);
 	const sectionContainerRef = useRef<HTMLDivElement>(null);
 	const backgroundRef = useRef<HTMLDivElement>(null);
-	const [activeServiceIndex, setActiveServiceIndex] = useState(0);
+	const [activeServiceIndex, setActiveServiceIndex] = useState(-1);
 	const [showServiceInfo, setShowServiceInfo] = useState(false);
 	const [language] = useState<Language>('en');
 	const services = ['RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRANDING', 'MARKETING', 'WEBSITE DEVELOPMENT'];
@@ -59,7 +59,8 @@ export default function ServicesSection() {
 
 	// Ensure first service is active when component mounts or section changes
 	useEffect(() => {
-		setActiveServiceIndex(0);
+		// Don't set an active index initially
+		// setActiveServiceIndex(0);
 	}, []);
 
 	// Use custom hooks for scroll handling and animations
@@ -328,7 +329,7 @@ export default function ServicesSection() {
 												}}
 											>
 												<span>{service}</span>
-												{index === activeServiceIndex && <div className='h-1 w-32 sm:w-48 bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] rounded-full mt-1 transform transition-all duration-300'></div>}
+												{index === activeServiceIndex && <div className='h-1 w-32 sm:w-48 bg-[#d142e2] rounded-full mt-1 transform transition-all duration-300'></div>}
 											</div>
 										))}
 									</div>

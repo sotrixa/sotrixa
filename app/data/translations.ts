@@ -30,7 +30,7 @@ export const translations: Translations = {
 		bg: 'Проучването също трябва да бъде.',
 	},
 	'introSection.title': {
-		en: 'Every {{strategy:#D142E2}} has a {{rhythm:#71DEC6}}\n—ours begins by {{listening:#F4DD65}}.',
+		en: 'Every {{strategy:#D142E2}} has a {{rhythm:#71DEC6}}\n—ours begins by {{listening:#F4DD65}}',
 		bg: 'Всяка {{strategy:#D142E2}} има свой {{rhythm:#71DEC6}}\n—нашата започва със {{listening:#F4DD65}}.',
 	},
 	'introSection.subheading': {

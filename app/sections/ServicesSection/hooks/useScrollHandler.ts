@@ -38,8 +38,8 @@ export const useScrollHandler = ({ activeServiceIndex, setActiveServiceIndex, se
 
 			// If we're now on services section, reset the service index
 			if (isOnServicesSection()) {
-				// Explicitly set service index to 0 when entering the section
-				setActiveServiceIndex(0);
+				// Don't automatically set service index to 0 when entering the section
+				// setActiveServiceIndex(0);
 				hasCompletedServices.current = false;
 				isAnimating.current = false; // Reset animation state
 			}
@@ -77,7 +77,7 @@ export const useScrollHandler = ({ activeServiceIndex, setActiveServiceIndex, se
 					console.log('Moving to next panel');
 					nextPanel();
 					hasCompletedServices.current = false;
-					setActiveServiceIndex(0);
+					// setActiveServiceIndex(0);
 				}
 			}
 		};
@@ -174,7 +174,7 @@ export const useScrollHandler = ({ activeServiceIndex, setActiveServiceIndex, se
 			} else if (window.horizontalScrollControls?.nextPanel) {
 				window.horizontalScrollControls.nextPanel();
 				hasCompletedServices.current = false;
-				setActiveServiceIndex(0);
+				// setActiveServiceIndex(0);
 			}
 		} else {
 			if (activeServiceIndex > 0) {

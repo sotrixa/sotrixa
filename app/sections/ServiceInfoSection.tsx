@@ -1021,7 +1021,33 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 
 					<div className='mb-6'>
 						<h1 className='text-3xl md:text-4xl font-bold mb-4' ref={headingRef}>
-							<span className='text-transparent bg-clip-text bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6]'>{currentContent.title}</span>
+							{activeService === 'RESEARCH' ? (
+								<span>
+									Deep <span className='text-[#D142E2]'>research</span>, nuanced insight, and future-facing <span className='text-[#71DDC6]'>signals</span> that shape powerful <span className='text-[#F4DD65]'>strategies</span>.
+								</span>
+							) : activeService === 'BUSINESS ARCHITECTURE' ? (
+								<span>
+									Turning <span className='text-[#D142E2]'>vision</span> into a <span className='text-[#71DDC6]'>structured</span>, evolving business—ready for real-world <span className='text-[#F4DD65]'>growth</span>.
+								</span>
+							) : activeService === 'BESPOKE STRATEGY CREATION' ? (
+								<span>
+									Precision-crafted roadmaps that move your <span className='text-[#D142E2]'>vision</span> forward with <span className='text-[#71DDC6]'>clarity</span>, coherence, and <span className='text-[#F4DD65]'>purpose</span>.
+								</span>
+							) : activeService === 'BRANDING' ? (
+								<span>
+									<span className='text-[#D142E2]'>Bringing</span> your business&apos;s true <span className='text-[#71DDC6]'>story</span> to life—visually, verbally, and <span className='text-[#F4DD65]'>emotionally</span>.
+								</span>
+							) : activeService === 'MARKETING' ? (
+								<span>
+									Expanding your <span className='text-[#D142E2]'>presence</span> with soulful marketing <span className='text-[#71DDC6]'>strategies</span> that resonate and <span className='text-[#F4DD65]'>move</span>.
+								</span>
+							) : activeService === 'WEBSITE DEVELOPMENT' ? (
+								<span>
+									Crafting <span className='text-[#D142E2]'>websites</span> where form meets <span className='text-[#71DDC6]'>feeling</span>, and strategy becomes tangible <span className='text-[#F4DD65]'>experience</span>.
+								</span>
+							) : (
+								<span className='text-transparent bg-clip-text bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6]'>{currentContent.title}</span>
+							)}
 						</h1>
 					</div>
 
@@ -1176,7 +1202,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 				<div className='w-full md:w-1/2 p-4 md:p-6' ref={rightSideRef}>
 					<AnimatePresence mode='wait'>
 						<motion.div ref={rightContentRef} key={activeService} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.5 }}>
-							<h3 ref={servicesTitleRef} className='text-2xl font-black mb-6 text-transparent bg-clip-text bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6]'>
+							<h3 ref={servicesTitleRef} className='text-2xl font-black mb-6 text-black'>
 								{activeService || 'Services'}
 							</h3>
 

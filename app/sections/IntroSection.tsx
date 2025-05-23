@@ -233,8 +233,8 @@ export default function IntroSection() {
 					</div>
 
 					{/* Desktop-only video container with proper spacing */}
-					<motion.div className='hidden md:block md:w-5/12 relative' initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.5 }}>
-						<div className='relative w-full h-[400px]'>
+					<motion.div className='hidden md:block md:w-7/12 relative' initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.5 }}>
+						<div className='relative w-full h-[420px]'>
 							{renderVideoContent()}
 
 							{/* Desktop-only testimonial */}

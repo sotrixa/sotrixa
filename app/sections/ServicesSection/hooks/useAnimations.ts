@@ -12,23 +12,15 @@ interface UseAnimationsOptions {
 export const useAnimations = ({ activeServiceIndex, serviceItemsRef, servicesRef, services, isAnimating }: UseAnimationsOptions) => {
 	const tl = useRef<gsap.core.Timeline | null>(null);
 
-	// Initialize first service as active on component mount
-	useEffect(() => {
-		if (!serviceItemsRef.current[0]) return;
-
-		// Set initial styles for first service item
-		gsap.set(serviceItemsRef.current[0], {
-			color: '#d142e2',
-			scale: 1.3,
-			opacity: 1,
-			fontWeight: 800,
-			letterSpacing: '0.05em',
-		});
-	}, [serviceItemsRef]);
+	// No longer initialize first service as active on component mount
+	// The effect that was here has been removed
 
 	// Set up GSAP animations for services
 	useEffect(() => {
 		if (!servicesRef.current) return;
+
+		// If activeServiceIndex is -1, don't animate anything
+		if (activeServiceIndex === -1) return;
 
 		// Kill any existing timeline
 		if (tl.current) {
@@ -61,7 +53,7 @@ export const useAnimations = ({ activeServiceIndex, serviceItemsRef, servicesRef
 				timeline.to(
 					item,
 					{
-						color: '#d142e2',
+						color: '#000000', // Changed to black
 						scale: 1.3, // Bigger scale for active item
 						opacity: 1,
 						fontWeight: 800, // Make it bolder
