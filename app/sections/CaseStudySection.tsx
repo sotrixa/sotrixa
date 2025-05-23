@@ -61,6 +61,7 @@ const caseStudies: CaseStudiesData = {
 
 export default function CaseStudySection() {
 	const sectionRef = useRef<HTMLDivElement>(null);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [activeService, setActiveService] = useState<string>('HOSPITALITY');
 	const sliderRef = useRef<HTMLDivElement>(null);
 	const [selectedStudy, setSelectedStudy] = useState<CaseStudy | null>(null);
@@ -180,18 +181,6 @@ export default function CaseStudySection() {
 			);
 		}
 	}, [currentSlideIndex]);
-
-	// Handle service change from detail view
-	const handleDetailServiceChange = useCallback((service: string) => {
-		// Reset selected study when changing service
-		setSelectedStudy(null);
-		setActiveService(service);
-
-		// If there are case studies for this service, select the first one
-		if (caseStudies[service]?.length > 0) {
-			setSelectedStudy(caseStudies[service][0]);
-		}
-	}, []);
 
 	// After initial render, apply GSAP animations based on showDetail state
 	useEffect(() => {
@@ -316,7 +305,7 @@ export default function CaseStudySection() {
 				{/* Detail view - always render but control visibility with CSS */}
 				{selectedStudy && (
 					<div className='px-4 sm:px-8 md:px-12 lg:px-20 py-6 lg:py-10 case-study-detail-container' style={{ display: showDetail ? 'block' : 'none' }}>
-						<CaseStudyDetail study={selectedStudy} activeService={activeService} caseStudies={caseStudies} onClose={handleCloseDetail} onServiceChange={handleDetailServiceChange} />
+						<CaseStudyDetail study={selectedStudy} activeService={activeService} caseStudies={caseStudies} onClose={handleCloseDetail} />
 					</div>
 				)}
 			</div>

@@ -13,7 +13,7 @@ export default function ParallaxContainer({ children }: ParallaxContainerProps) 
 	const [startX, setStartX] = useState(0);
 	const [scrollLeft, setScrollLeft] = useState(0);
 
-	// Add this near the top of the useEffect
+	// Check if device is mobile
 	const isMobile = typeof window !== 'undefined' && (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768);
 
 	// Set up horizontal scrolling
@@ -236,7 +236,7 @@ export default function ParallaxContainer({ children }: ParallaxContainerProps) 
 				}
 			};
 		}
-	}, [isDragging, startX, scrollLeft]);
+	}, [isDragging, startX, scrollLeft]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	return (
 		<div
