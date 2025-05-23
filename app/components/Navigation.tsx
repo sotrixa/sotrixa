@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import Header from './header';
 import { useState, useEffect, CSSProperties } from 'react';
 
@@ -65,9 +66,9 @@ export default function Navigation() {
 			<div className={`${isMobile ? 'px-4 py-3' : 'px-20 py-4'} transition-all duration-300`}>
 				<div className='flex justify-between items-center'>
 					{/* Logo */}
-					<div>
+					<Link href='#home' className='transition-transform duration-300 hover:scale-105'>
 						<Image src='/sotrixa-logo.webp' alt='Sotrixa Logo' width={isMobile ? 100 : 120} height={isMobile ? 33 : 40} className='transition-all duration-300' />
-					</div>
+					</Link>
 				</div>
 			</div>
 
