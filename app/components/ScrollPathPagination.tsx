@@ -316,7 +316,7 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 
 	// Generate a horizontal curved path
 	const generateSVGPath = () => {
-		const width = svgWidth - 40; // Small padding on right side
+		const width = svgWidth - 80; // Increased padding on right side for labels
 		const spacing = width / (sections.length - 1);
 		let path = `M20 30`; // Minimal left padding
 
@@ -337,7 +337,7 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 
 	// Calculate dot positions
 	const calculateDotPositions = () => {
-		const width = svgWidth - 40; // Match padding from path
+		const width = svgWidth - 80; // Match increased padding from path
 		const spacing = width / (sections.length - 1);
 
 		return sections.map((_, i) => ({
@@ -353,8 +353,8 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 	const svgHeight = 80;
 
 	return (
-		<div ref={containerRef} className='fixed bottom-10 left-1/2 -translate-x-1/2 md:translate-x-0 z-[1000] pointer-events-auto' style={{ opacity: 1 }}>
-			<svg ref={svgRef} width={svgWidth} height={svgHeight} viewBox={`0 0 ${svgWidth} ${svgHeight}`} fill='none' xmlns='http://www.w3.org/2000/svg' style={{ filter: 'drop-shadow(0px 0px 5px rgba(0,0,0,0.2))', opacity: 1 }}>
+		<div ref={containerRef} className='fixed bottom-10 left-1/2 -translate-x-1/2 md:left-auto md:right-8 md:translate-x-0 z-[1000] pointer-events-auto max-w-[90vw]' style={{ opacity: 1 }}>
+			<svg ref={svgRef} width={svgWidth} height={svgHeight} viewBox={`0 0 ${svgWidth} ${svgHeight}`} fill='none' xmlns='http://www.w3.org/2000/svg' style={{ filter: 'drop-shadow(0px 0px 5px rgba(0,0,0,0.2))', opacity: 1 }} className='w-full h-auto'>
 				{/* Background glow */}
 				<path d={pathData} stroke='rgba(0,0,0,0.2)' strokeWidth='8' strokeLinecap='round' fill='none' />
 

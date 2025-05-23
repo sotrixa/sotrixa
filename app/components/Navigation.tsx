@@ -48,19 +48,6 @@ export default function Navigation() {
 		boxShadow: isMobile && isScrolled ? '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' : 'none',
 	};
 
-	// Debug indicator style
-	const debugStyle: CSSProperties = {
-		position: 'fixed',
-		bottom: '10px',
-		right: '10px',
-		padding: '5px 10px',
-		background: '#333',
-		color: 'white',
-		borderRadius: '4px',
-		fontSize: '12px',
-		zIndex: 9999,
-	};
-
 	return (
 		<nav style={navStyle}>
 			<div className={`${isMobile ? 'px-4 py-3' : 'px-20 py-4'} transition-all duration-300`}>
@@ -74,13 +61,6 @@ export default function Navigation() {
 
 			{/* Sliding Stairs Menu */}
 			<Header />
-
-			{/* Debug indicator - visible only during development */}
-			{process.env.NODE_ENV === 'development' && (
-				<div style={debugStyle}>
-					Mobile: {isMobile ? 'Yes' : 'No'} | Scrolled: {isScrolled ? 'Yes' : 'No'}
-				</div>
-			)}
 		</nav>
 	);
 }
