@@ -5,8 +5,6 @@ import Section from '../components/Section';
 import { motion, AnimatePresence } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '../components/ui/carousel';
-import Autoplay from 'embla-carousel-autoplay';
 
 // Register ScrollTrigger plugin only
 if (typeof window !== 'undefined') {
@@ -72,20 +70,6 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 	const serviceTitleRefs = useRef<(HTMLHeadingElement | null)[]>([]);
 	// Update the type for the splitTextRefs
 	const splitTextRefs = useRef<LetterElements[]>([]);
-
-	// State for Carousel API
-	const [carouselApi, setCarouselApi] = useState<CarouselApi>();
-	const [currentSlide, setCurrentSlide] = useState(0);
-
-	// Create plugin refs with vertical-specific settings
-	const autoplayPluginRef = useRef(
-		Autoplay({
-			delay: 4000,
-			stopOnInteraction: true,
-			stopOnMouseEnter: true,
-			rootNode: (emblaRoot) => emblaRoot.parentElement,
-		})
-	);
 
 	// Create a function to generate a gear SVG with customizable parameters
 	const GearSVG = ({ size, toothCount, color, opacity, className }: GearSVGProps) => {
@@ -361,111 +345,6 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 		[]
 	);
 
-	// Use useEffect to sync carousel with activeService and include all services
-	useEffect(() => {
-		if (carouselApi && activeService) {
-			const serviceIndex = serviceItems.findIndex((service) => service.name === activeService);
-
-			if (serviceIndex >= 0) {
-				// Ensure carousel is properly initialized before scrolling
-				setTimeout(() => {
-					carouselApi.scrollTo(serviceIndex);
-					setCurrentSlide(serviceIndex);
-				}, 100);
-			}
-		}
-	}, [carouselApi, activeService, serviceItems]);
-
-	// Add an initialization effect for the carousel to ensure proper centering
-	useEffect(() => {
-		if (!carouselApi) return;
-
-		// When carousel is first initialized, make sure it centers correctly
-		const handleInit = () => {
-			if (activeService) {
-				const serviceIndex = serviceItems.findIndex((service) => service.name === activeService);
-				if (serviceIndex >= 0) {
-					// For initial position, make sure we scroll to the active service
-					setTimeout(() => {
-						carouselApi.scrollTo(serviceIndex);
-						setCurrentSlide(serviceIndex);
-					}, 200);
-				}
-			}
-		};
-
-		// Also add a resize handler to maintain proper display
-		const handleResize = () => {
-			if (activeService) {
-				const serviceIndex = serviceItems.findIndex((service) => service.name === activeService);
-				if (serviceIndex >= 0) {
-					carouselApi.scrollTo(serviceIndex);
-				}
-			}
-		};
-
-		carouselApi.on('init', handleInit);
-		handleInit(); // Call immediately in case init already happened
-
-		window.addEventListener('resize', handleResize);
-
-		return () => {
-			carouselApi.off('init', handleInit);
-			window.removeEventListener('resize', handleResize);
-		};
-	}, [carouselApi, activeService, serviceItems]);
-
-	// Add an effect to track slide changes and enable proper scrolling
-	useEffect(() => {
-		if (!carouselApi) return;
-
-		const onSelect = () => {
-			const newIndex = carouselApi.selectedScrollSnap();
-
-			// Only update if index has actually changed to avoid infinite loops
-			if (newIndex !== currentSlide) {
-				setCurrentSlide(newIndex);
-
-				// Update active service if needed
-				const newService = serviceItems[newIndex]?.name;
-				if (newService && newService !== activeService) {
-					prevServiceRef.current = activeService;
-					setActiveService(newService);
-
-					// Find the index of the previously active service
-					const prevIndex = serviceItems.findIndex((s) => s.name === prevServiceRef.current);
-
-					// Reset the previous service animation
-					if (prevIndex >= 0 && serviceTitleRefs.current[prevIndex]) {
-						resetLetterAnimation(prevIndex);
-					}
-
-					// Animate the letter stagger for the new service
-					animateLetterStagger(newIndex);
-
-					// Trigger particle animation
-					animateParticles();
-				}
-			}
-		};
-
-		carouselApi.on('select', onSelect);
-
-		// Force the carousel to scroll to the current active service
-		// This ensures the carousel is properly synchronized with the active service
-		if (activeService) {
-			const serviceIndex = serviceItems.findIndex((service) => service.name === activeService);
-			if (serviceIndex >= 0 && serviceIndex !== currentSlide) {
-				carouselApi.scrollTo(serviceIndex);
-				setCurrentSlide(serviceIndex);
-			}
-		}
-
-		return () => {
-			carouselApi.off('select', onSelect);
-		};
-	}, [carouselApi, activeService, currentSlide, serviceItems]);
-
 	// Function to handle exit animations (will be used by parent component)
 	const playExitAnimation = () => {
 		if (!sectionDivRef.current) return;
@@ -549,36 +428,6 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 		return tl;
 	};
 
-	// Update handleServiceClick to handle all services with direct scrolling
-	const handleServiceClick = (serviceName: string, index: number) => {
-		// If the clicked service is already active, do nothing
-		if (serviceName === activeService) return;
-
-		// Store the previous service for animation resets
-		prevServiceRef.current = activeService;
-		setActiveService(serviceName);
-
-		// Use carousel API to scroll to the selected service
-		if (carouselApi) {
-			carouselApi.scrollTo(index);
-			setCurrentSlide(index);
-		}
-
-		// Find the index of the previously active service
-		const prevIndex = serviceItems.findIndex((s) => s.name === prevServiceRef.current);
-
-		// Reset the previous service animation
-		if (prevIndex >= 0 && serviceTitleRefs.current[prevIndex]) {
-			resetLetterAnimation(prevIndex);
-		}
-
-		// Animate the letter stagger on the left side
-		animateLetterStagger(index);
-
-		// Trigger the particle animation when changing service
-		animateParticles();
-	};
-
 	// Function to handle back button click
 	const handleBackToServices = () => {
 		// Play exit animation first
@@ -638,17 +487,6 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 
 		return tl;
 	};
-
-	// Use useEffect to control carousel via API when activeService changes
-	useEffect(() => {
-		if (carouselApi && activeService) {
-			const serviceIndex = serviceItems.findIndex((service) => service.name === activeService);
-
-			if (serviceIndex >= 0) {
-				carouselApi.scrollTo(serviceIndex);
-			}
-		}
-	}, [carouselApi, activeService, serviceItems]);
 
 	useEffect(() => {
 		if (!sectionDivRef.current) return;
@@ -906,22 +744,6 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 		window.playServiceInfoExitAnimation = playExitAnimation;
 	}
 
-	// Use useEffect to handle autoplay pause when service is active
-	useEffect(() => {
-		const autoplay = autoplayPluginRef.current;
-
-		// Stop autoplay when a service is selected
-		if (activeService && autoplay && autoplay.stop) {
-			autoplay.stop();
-		}
-
-		return () => {
-			if (autoplay && autoplay.stop) {
-				autoplay.stop();
-			}
-		};
-	}, [activeService, serviceItems]);
-
 	return (
 		<Section id='service-info' className='bg-[#FAFAFA] text-black p-4 sm:p-6 relative overflow-hidden min-h-screen'>
 			{/* Animated grid background */}
@@ -1051,144 +873,91 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 						</h1>
 					</div>
 
-					{/* Carousel shows ONLY 3 services at a time with vertical scrolling */}
+					{/* Navigation arrows to change services */}
 					<div className='mt-12 relative' ref={servicesGridRef}>
-						{/* Container with fixed height for exactly 3 items */}
-						<div className='h-[240px] overflow-hidden relative'>
-							<Carousel
-								setApi={setCarouselApi}
-								opts={{
-									align: 'start',
-									loop: true,
-									dragFree: true,
-									containScroll: false,
-									slidesToScroll: 1,
+						{/* Navigation with arrows and dots */}
+						<div className='flex items-center justify-start space-x-6'>
+							{/* Left arrow with text */}
+							<button
+								onClick={() => {
+									const currentIndex = serviceItems.findIndex((item) => item.name === activeService);
+									const prevIndex = currentIndex > 0 ? currentIndex - 1 : serviceItems.length - 1;
+									const newService = serviceItems[prevIndex].name;
+
+									prevServiceRef.current = activeService;
+									setActiveService(newService);
+
+									// Reset previous service animation
+									if (serviceTitleRefs.current[currentIndex]) {
+										resetLetterAnimation(currentIndex);
+									}
+
+									// Animate new service
+									animateLetterStagger(prevIndex);
+									animateParticles();
 								}}
-								plugins={[autoplayPluginRef.current]}
-								orientation='vertical'
-								className='w-full h-full'
+								className='group flex items-center space-x-3 text-black hover:text-[#d142e2] transition-all duration-300'
+								aria-label='Previous service'
 							>
-								<CarouselContent className='h-full -mt-1 -mb-1'>
-									{serviceItems.map(({ name }, index) => (
-										<CarouselItem key={name} className='basis-auto h-[80px] min-h-[80px] flex-shrink-0 pt-1 pb-1 transition-all duration-300'>
-											<div
-												className={`service-item cursor-pointer transition-all duration-300 p-3 rounded-lg h-[70px] flex items-center ${activeService === name ? 'bg-white shadow-md border-l-4 border-[#d142e2] transform -translate-x-1' : 'bg-white/60 hover:bg-white hover:shadow-sm hover:-translate-x-1 border-l-4 border-transparent'}`}
-												onClick={(e) => {
-													e.stopPropagation();
-													handleServiceClick(name, index);
-												}}
-											>
-												<h3
-													ref={(el) => {
-														serviceTitleRefs.current[index] = el;
-													}}
-													className={`text-left text-sm uppercase font-medium tracking-wider ${activeService === name ? 'text-[#d142e2]' : 'text-gray-700'}`}
-												>
-													{name}
-												</h3>
-											</div>
-										</CarouselItem>
-									))}
-								</CarouselContent>
+								<svg xmlns='http://www.w3.org/2000/svg' className='h-6 w-6 transition-colors duration-300' viewBox='0 0 20 20' fill='currentColor'>
+									<path fillRule='evenodd' d='M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z' clipRule='evenodd' />
+								</svg>
+								<span className='text-sm font-medium tracking-wide transition-colors duration-300'>Previous service</span>
+							</button>
 
-								{/* Navigation buttons - must be inside Carousel */}
-								<div className='absolute right-[-16px] top-1/2 transform -translate-y-1/2 z-30 flex flex-col items-center space-y-4'>
-									<CarouselPrevious
-										className='rotate-90 h-7 w-7 scale-75 bg-white hover:bg-gray-50 shadow-sm rounded-full p-0 border-0'
-										onClick={(e) => {
-											e.stopPropagation();
-											e.preventDefault();
-											if (carouselApi) {
-												const newIndex = Math.max(0, currentSlide - 1);
-												carouselApi.scrollTo(newIndex);
-												setCurrentSlide(newIndex);
-
-												const newService = serviceItems[newIndex]?.name;
-												if (newService && newService !== activeService) {
-													prevServiceRef.current = activeService;
-													setActiveService(newService);
-
-													const prevIndex = serviceItems.findIndex((s) => s.name === activeService);
-													if (prevIndex >= 0 && serviceTitleRefs.current[prevIndex]) {
-														resetLetterAnimation(prevIndex);
-													}
-
-													animateLetterStagger(newIndex);
-													animateParticles();
-												}
-											}
-										}}
-									/>
-									<CarouselNext
-										className='rotate-90 h-7 w-7 scale-75 bg-white hover:bg-gray-50 shadow-sm rounded-full p-0 border-0'
-										onClick={(e) => {
-											e.stopPropagation();
-											e.preventDefault();
-											if (carouselApi) {
-												const newIndex = Math.min(serviceItems.length - 1, currentSlide + 1);
-												carouselApi.scrollTo(newIndex);
-												setCurrentSlide(newIndex);
-
-												const newService = serviceItems[newIndex]?.name;
-												if (newService && newService !== activeService) {
-													prevServiceRef.current = activeService;
-													setActiveService(newService);
-
-													const prevIndex = serviceItems.findIndex((s) => s.name === activeService);
-													if (prevIndex >= 0 && serviceTitleRefs.current[prevIndex]) {
-														resetLetterAnimation(prevIndex);
-													}
-
-													animateLetterStagger(newIndex);
-													animateParticles();
-												}
-											}
-										}}
-									/>
-								</div>
-							</Carousel>
-
-							{/* Bottom fade to indicate scrollability */}
-							<div className='absolute bottom-0 left-0 right-0 h-[30px] bg-gradient-to-t from-[#FAFAFA] to-transparent pointer-events-none'></div>
-						</div>
-
-						{/* Dots pagination */}
-						<div className='absolute -bottom-16 left-0 right-0 z-10 flex justify-center items-center'>
+							{/* Service dots indicator */}
 							<div className='flex space-x-2'>
 								{serviceItems.map((item, index) => (
 									<button
 										key={index}
-										className={`h-3 w-3 rounded-full transition-all ${currentSlide === index ? 'bg-[#d142e2]' : 'bg-gray-300 hover:bg-gray-400'}`}
+										className={`h-3 w-3 rounded-full transition-all ${activeService === item.name ? 'bg-black' : 'bg-gray-400 hover:bg-gray-500'}`}
 										onClick={() => {
-											if (carouselApi) {
-												carouselApi.scrollTo(index);
-												setCurrentSlide(index);
+											const currentIndex = serviceItems.findIndex((service) => service.name === activeService);
 
-												if (item.name !== activeService) {
-													prevServiceRef.current = activeService;
-													setActiveService(item.name);
+											prevServiceRef.current = activeService;
+											setActiveService(item.name);
 
-													const prevIndex = serviceItems.findIndex((s) => s.name === activeService);
-													if (prevIndex >= 0 && serviceTitleRefs.current[prevIndex]) {
-														resetLetterAnimation(prevIndex);
-													}
-
-													animateLetterStagger(index);
-													animateParticles();
-												}
+											// Reset previous service animation
+											if (serviceTitleRefs.current[currentIndex]) {
+												resetLetterAnimation(currentIndex);
 											}
+
+											// Animate new service
+											animateLetterStagger(index);
+											animateParticles();
 										}}
 										aria-label={`Go to ${item.name}`}
 									/>
 								))}
 							</div>
-						</div>
 
-						{/* Scroll indicator */}
-						<div className='absolute bottom-[-4px] left-1/2 transform -translate-x-1/2 animate-bounce opacity-60 pointer-events-none'>
-							<svg xmlns='http://www.w3.org/2000/svg' className='h-6 w-6 text-[#d142e2]' viewBox='0 0 20 20' fill='currentColor'>
-								<path fillRule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clipRule='evenodd' />
-							</svg>
+							{/* Right arrow with text */}
+							<button
+								onClick={() => {
+									const currentIndex = serviceItems.findIndex((item) => item.name === activeService);
+									const nextIndex = currentIndex < serviceItems.length - 1 ? currentIndex + 1 : 0;
+									const newService = serviceItems[nextIndex].name;
+
+									prevServiceRef.current = activeService;
+									setActiveService(newService);
+
+									// Reset previous service animation
+									if (serviceTitleRefs.current[currentIndex]) {
+										resetLetterAnimation(currentIndex);
+									}
+
+									// Animate new service
+									animateLetterStagger(nextIndex);
+									animateParticles();
+								}}
+								className='group flex items-center space-x-3 text-black hover:text-[#d142e2] transition-all duration-300'
+								aria-label='Next service'
+							>
+								<span className='text-sm font-medium tracking-wide transition-colors duration-300'>See next Service</span>
+								<svg xmlns='http://www.w3.org/2000/svg' className='h-6 w-6 transition-colors duration-300' viewBox='0 0 20 20' fill='currentColor'>
+									<path fillRule='evenodd' d='M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z' clipRule='evenodd' />
+								</svg>
+							</button>
 						</div>
 					</div>
 				</div>
