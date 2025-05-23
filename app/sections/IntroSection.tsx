@@ -207,8 +207,10 @@ export default function IntroSection() {
 						<motion.div className='w-full max-w-md md:max-w-none text-left md:text-left space-y-2 md:space-y-6 md:bg-transparent p-4 rounded-lg md:p-0 md:rounded-none md:shadow-none' initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8 }}>
 							{/* Title with optimized font sizes */}
 							<div className='mb-6 md:pt-30 md:mb-8 pl-10'>
-								<h1 className='text-3xl md:text-[2rem] lg:text-[3.2rem] font-black leading-tight md:leading-none'>{renderColoredText(firstLine)}</h1>
-								<h2 className='text-3xl md:text-[2.7rem] font-black leading-tight md:leading-none mt-3'>{renderColoredText(secondLine)}</h2>
+								<div className='space-y-2 md:space-y-4'>
+									<h1 className='text-3xl md:text-[2rem] lg:text-[2.7rem] font-black leading-tight md:leading-none block'>{renderColoredText(firstLine)}</h1>
+									<h1 className='text-3xl md:text-[2.7rem] font-black leading-tight md:leading-none block'>{renderColoredText(secondLine)}</h1>
+								</div>
 							</div>
 
 							{/* Subheading in its own row */}
