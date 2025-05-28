@@ -616,6 +616,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 					charSpan.textContent = char;
 					charSpan.style.display = 'inline-block';
 					charSpan.style.willChange = 'transform, opacity';
+					charSpan.style.fontSize = 'inherit';
 					titleRef.appendChild(charSpan);
 					chars.push(charSpan);
 				});
@@ -903,7 +904,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 					</div>
 
 					<div className='mb-6'>
-						<h1 className='text-3xl md:text-4xl font-bold mb-4' ref={headingRef}>
+						<h1 className='!text-4xl md:!text-5xl lg:!text-5xl font-bold mb-0' ref={headingRef}>
 							{activeService && serviceContents[activeService] ? renderStyledTitle(serviceContents[activeService].title, activeService) : <span className='text-transparent bg-clip-text bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6]'>{currentContent.title}</span>}
 						</h1>
 					</div>
