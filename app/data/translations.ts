@@ -10,12 +10,12 @@ export type Translations = {
 
 export const translations: Translations = {
 	'homeSection.title': {
-		en: 'We are a strategy lab for visionary thinkers.',
-		bg: 'Ние сме стратегическа лаборатория за визионерски мислители.',
+		en: 'We are a strategy lab for visionary thinkers',
+		bg: 'Ние сме стратегическа лаборатория за визионерски мислители',
 	},
 	'homeSection.paragraph': {
-		en: 'Through deep analysis and creative design, we shape strategic direction that moves ideas forward.',
-		bg: 'Чрез задълбочен анализ и креативен дизайн, ниеформираме стратегическа посока, която придвижва идеите напред.',
+		en: 'Through deep analysis and creative design, we shape strategic direction that moves ideas forward',
+		bg: 'Чрез задълбочен анализ и креативен дизайн, ниеформираме стратегическа посока, която придвижва идеите напред',
 	},
 	'homeSection.talkToUs': {
 		en: 'Talk to us',
@@ -26,23 +26,23 @@ export const translations: Translations = {
 		bg: 'Вижте нашата работа',
 	},
 	'homeSection.researchSubheading': {
-		en: 'Research should be too.',
-		bg: 'Проучването също трябва да бъде.',
+		en: 'Research should be too',
+		bg: 'Проучването също трябва да бъде',
 	},
 	'introSection.title': {
 		en: 'Every {{strategy:#D142E2}} has a {{rhythm:#71DEC6}}\n—ours begins by {{listening:#F4DD65}}',
-		bg: 'Всяка {{strategy:#D142E2}} има свой {{rhythm:#71DEC6}}\n—нашата започва със {{listening:#F4DD65}}.',
+		bg: 'Всяка {{strategy:#D142E2}} има свой {{rhythm:#71DEC6}}\n—нашата започва със {{listening:#F4DD65}}',
 	},
 	'introSection.subheading': {
 		en: 'SOTRIXA in 60 seconds',
 		bg: 'SOTRIXA за 60 секунди',
 	},
 	'introSection.testimonial': {
-		en: "Each project becomes a living story, unfolding through research, structure, strategy, and design - shaping everything from your foundation to how you're seen and remembered.",
+		en: "Each project becomes a living story, unfolding through research, structure, strategy, and design - shaping everything from your foundation to how you're seen and remembered",
 		bg: 'Всеки проект се превръща в жива история, разгръщаща се чрез изследване, структура, стратегия и дизайн -формираща всичко от вашата основа до това как сте възприемани и запомнени.',
 	},
 	'servicesSection.title': {
-		en: 'The way we work is {{layered:#F4DD65}}, {{intentional:#D142E2}}, and deeply {{aligned:#71DEC6}}.',
+		en: 'The way we work is {{layered:#F4DD65}}, {{intentional:#D142E2}}, and deeply {{aligned:#71DEC6}}',
 		bg: 'Начинът, по който работим, е {{layered:#F4DD65}}, {{intentional:#D142E2}} и дълбоко {{aligned:#71DEC6}}.',
 	},
 	'servicesSection.subtitle': {
@@ -51,11 +51,11 @@ export const translations: Translations = {
 	},
 	'caseStudySection.title': {
 		en: 'We {{build:#F4DD65}} with {{purpose:#D142E2}}—and every outcome reflects the {{thinking:#71DDC6}} behind it',
-		bg: 'Ние {{build:#F4DD65}} с {{purpose:#D142E2}}—и всеки резултат отразява {{thinking:#71DDC6}} зад него.',
+		bg: 'Ние {{build:#F4DD65}} с {{purpose:#D142E2}}—и всеки резултат отразява {{thinking:#71DDC6}} зад него',
 	},
 	'caseStudySection.subtitle': {
-		en: 'A glimpse into how we shape strategy, identity, and experience with intention.',
-		bg: 'Поглед към това как оформяме стратегия, идентичност и преживяване с намерение.',
+		en: 'A glimpse into how we shape strategy, identity, and experience with intention',
+		bg: 'Поглед към това как оформяме стратегия, идентичност и преживяване с намерение',
 	},
 };
 
