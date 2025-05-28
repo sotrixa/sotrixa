@@ -132,6 +132,8 @@ export default function IntroSection() {
 	const titleText = getText('introSection.title', 'en').split('\n');
 	const firstLine = titleText[0] || '';
 	const secondLine = titleText[1] || '';
+	// Join both lines into one for single line display
+	const fullTitle = `${firstLine} ${secondLine}`;
 	const subheadingText = getText('introSection.subheading', 'en');
 	const testimonialText = getText('introSection.testimonial', 'en');
 
@@ -221,14 +223,13 @@ export default function IntroSection() {
 					}}
 				/>
 
-				<div className='flex flex-col md:flex-row items-start justify-between md:gap-20 relative z-10 md:px-10'>
-					<div className='w-full py-5 px-4 flex flex-col items-center md:items-start md:w-8/12 md:px-0'>
+				<div className='flex flex-col md:flex-row items-start justify-between md:gap-8 relative z-10'>
+					<div className='w-full py-5 px-4 flex flex-col items-center md:items-start md:w-1/2 md:px-6'>
 						<motion.div className='w-full max-w-md md:max-w-none text-left md:text-left space-y-2 md:space-y-6 md:bg-transparent p-4 rounded-lg md:p-0 md:rounded-none md:shadow-none' initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8 }}>
 							{/* Title with optimized font sizes */}
 							<div className='mb-6 md:pt-30 md:mb-8 pl-10'>
 								<div className='space-y-2 md:space-y-4'>
-									<h1 className='text-[2.5rem] md:text-[3.7rem] font-black leading-tight md:leading-none block'>{renderColoredText(firstLine)}</h1>
-									<h1 className='text-[2.5rem] md:text-[3.7rem] font-black leading-tight md:leading-none block'>{renderColoredText(secondLine)}</h1>
+									<h1 className='text-[2.5rem] md:text-[3.7rem] font-black leading-tight md:leading-none block'>{renderColoredText(fullTitle)}</h1>
 								</div>
 							</div>
 
@@ -254,8 +255,8 @@ export default function IntroSection() {
 					</div>
 
 					{/* Desktop-only video container with proper spacing */}
-					<motion.div className='hidden md:block md:w-4/12 relative' initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.5 }}>
-						<div className='relative w-full h-[420px]'>
+					<motion.div className='hidden md:block md:w-1/2 relative' initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.5 }}>
+						<div className='relative w-full h-[420px] md:px-6'>
 							{renderVideoContent()}
 
 							{/* Desktop-only testimonial */}
