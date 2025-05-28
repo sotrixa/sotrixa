@@ -488,6 +488,25 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 		return tl;
 	};
 
+	// Function to render text with styled dashes
+	const renderTextWithStyledDashes = (text: string) => {
+		// Handle both em dashes (—) and en dashes (–)
+		const parts = text.split(/(—|–)/g);
+
+		return parts.map((part, i) => {
+			// Check if this part is a dash
+			if (part === '—' || part === '–') {
+				return (
+					<span key={i} style={{ fontSize: '1em', fontWeight: '200', transform: 'scaleX(0.5)', display: 'inline-block' }}>
+						{part}
+					</span>
+				);
+			}
+
+			return <span key={i}>{part}</span>;
+		});
+	};
+
 	// Function to render title with colored keywords
 	const renderStyledTitle = (title: string, service: string) => {
 		// Define color mappings for each service
@@ -526,24 +545,37 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 
 		const colors = colorMappings[service] || {};
 
-		// Split title into words and apply colors
-		const words = title.split(' ');
+		// First handle dashes, then apply color styling
+		const dashParts = title.split(/(—|–)/g);
 
 		return (
 			<span>
-				{words.map((word, index) => {
-					// Remove punctuation to check for color mapping
-					const cleanWord = word.replace(/[.,!?;:]$/, '');
-					const punctuation = word.match(/[.,!?;:]$/)?.[0] || '';
-					const colorClass = colors[cleanWord];
+				{dashParts.map((dashPart, dashIndex) => {
+					// If this part is a dash, style it
+					if (dashPart === '—' || dashPart === '–') {
+						return (
+							<span key={dashIndex} style={{ fontSize: '1em', fontWeight: '200', transform: 'scaleX(0.5)', display: 'inline-block' }}>
+								{dashPart}
+							</span>
+						);
+					}
 
-					return (
-						<span key={index}>
-							{colorClass ? <span className={colorClass}>{cleanWord}</span> : cleanWord}
-							{punctuation}
-							{index < words.length - 1 ? ' ' : ''}
-						</span>
-					);
+					// For non-dash parts, apply color styling
+					const words = dashPart.split(' ');
+					return words.map((word, wordIndex) => {
+						// Remove punctuation to check for color mapping
+						const cleanWord = word.replace(/[.,!?;:]$/, '');
+						const punctuation = word.match(/[.,!?;:]$/)?.[0] || '';
+						const colorClass = colors[cleanWord];
+
+						return (
+							<span key={`${dashIndex}-${wordIndex}`}>
+								{colorClass ? <span className={colorClass}>{cleanWord}</span> : cleanWord}
+								{punctuation}
+								{wordIndex < words.length - 1 ? ' ' : ''}
+							</span>
+						);
+					});
 				})}
 			</span>
 		);
@@ -1027,7 +1059,10 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 													<span className='font-medium text-gray-800'>{bulletTitle}</span>
 													{bulletContent && (
 														<>
-															<span className='text-xs font-serif'>–</span> <span className='text-gray-600 text-xs'>{bulletContent}</span>
+															<span className='text-xs font-serif' style={{ fontSize: '1em', fontWeight: '200', transform: 'scaleX(0.5)', display: 'inline-block' }}>
+																–
+															</span>{' '}
+															<span className='text-gray-600 text-xs'>{renderTextWithStyledDashes(bulletContent)}</span>
 														</>
 													)}
 												</div>
@@ -1052,7 +1087,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 									// Regular paragraph
 									return (
 										<p key={index} className='text-gray-700 leading-relaxed mb-3'>
-											{paragraph}
+											{renderTextWithStyledDashes(paragraph)}
 										</p>
 									);
 								})}
