@@ -50,8 +50,8 @@ export const translations: Translations = {
 		bg: 'Преминаваме от прозрение към структура, от стратегия към история—изграждайки идентичности и преживявания, които се свързват и вървят напред.',
 	},
 	'caseStudySection.title': {
-		en: 'We {{build:#3ecca7}} with {{purpose:#ff69b4}}—and every outcome reflects the {{thinking:#f4dd65}} behind it',
-		bg: 'Ние {{build:#3ecca7}} с {{purpose:#ff69b4}}—и всеки резултат отразява {{thinking:#f4dd65}} зад него.',
+		en: 'We {{build:#F4DD65}} with {{purpose:#D142E2}}—and every outcome reflects the {{thinking:#71DDC6}} behind it',
+		bg: 'Ние {{build:#F4DD65}} с {{purpose:#D142E2}}—и всеки резултат отразява {{thinking:#71DDC6}} зад него.',
 	},
 	'caseStudySection.subtitle': {
 		en: 'A glimpse into how we shape strategy, identity, and experience with intention.',

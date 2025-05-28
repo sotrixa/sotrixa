@@ -174,11 +174,11 @@ export default function CaseStudyDetail({ study, activeService, caseStudies, onC
 	};
 
 	return (
-		<div ref={detailRef} className='w-full min-h-screen bg-white relative mt-30' onKeyDown={handleKeyDown} tabIndex={0}>
+		<div ref={detailRef} className='w-full min-h-screen bg-white relative mt-32' onKeyDown={handleKeyDown} tabIndex={0}>
 			{/* 2-column grid layout */}
-			<div className='grid grid-cols-12 gap-8 min-h-screen'>
+			<div className='grid grid-cols-12 gap-8 min-h-screen px-8'>
 				{/* Left column - Content (8 columns) */}
-				<div className='col-span-8 ml-50 px-8'>
+				<div className='col-span-8'>
 					{/* Content container */}
 					<div className='pt-20 z-10 bg-white h-[calc(100vh-200px)] overflow-y-auto max-w-full'>
 						{/* Navigation row with both buttons */}
