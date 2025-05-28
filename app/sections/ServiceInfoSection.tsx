@@ -123,27 +123,27 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 	// Service content definitions
 	const serviceContents: Record<string, ServiceContent> = {
 		RESEARCH: {
-			title: 'Deep research, nuanced insight, and future-facing signals that shape powerful strategies.',
+			title: 'Deep research, nuanced insight, and future-facing signals that shape powerful strategies',
 			description: ['At Sotrixa, research is a journey of co-discovery—driven by curiosity, shaped by context, and grounded in your vision.​', 'Together, we listen between the lines, observe subtle patterns, and trace emerging signals that guide strategic decisions.​', 'By blending human stories with data-driven insights, we craft nuanced research journeys—through in-depth interviews, thoughtful surveys, cultural listening, and pattern-sensing.​', '', 'What we uncover together:​', '• Category Analysis – Understand the shifts and undercurrents defining your space.​', '• Competitive Analysis – Gain a clear view of your landscape and your distinction.​', '• Consumer Behavior Insights – Explore the drivers, desires, and needs of your audience.​', "• Trend Scanning & Forecasting – Anticipate what's next and move ahead of the current.​", '• Audience Segmentation – Map real people with real stories and needs—not just numbers.​', '', 'Our findings become a living compass for everything we build together.'],
 		},
 		'BUSINESS ARCHITECTURE': {
-			title: 'Turning vision into a structured, evolving business—ready for real-world growth.',
+			title: 'Turning vision into a structured, evolving business—ready for real-world growth',
 			description: ['Every idea holds immense potential, but to thrive, it needs form, coherence, and a structure that sustains growth.​', 'At Sotrixa, we shape the fundamental elements of your business—what you offer, how you function, and the role you are meant to play.​', 'Through co-creation, we translate concepts into frameworks and possibilities into actionable plans.​', '', 'What we shape together:​', '• Business Model Design – Create a structure that sustains value creation and growth.​', '• Offer Design & Positioning – Shape your offerings with clarity, meaning, and distinction.​', '• Operational Frameworks – Map systems and processes for consistency and focus.​', '• Mission, Vision & Values – Define the deeper truths that guide your evolution.​', '• Growth Pathways – Strategize how to expand, shift, or scale intentionally over time.​', '', 'This is where your business becomes an aligned, living structure—ready for strategy and movement.'],
 		},
 		'BESPOKE STRATEGY CREATION': {
-			title: 'Precision-crafted roadmaps that move your vision forward with clarity, coherence, and purpose.',
+			title: 'Precision-crafted roadmaps that move your vision forward with clarity, coherence, and purpose',
 			description: ['No two businesses move at the same rhythm.​', 'At Sotrixa, strategy honors your unique goals, capacity, and context—designing roadmaps that are intelligent, flexible, and fully aligned with your evolution.​', 'Whether you are launching something new, expanding reach, refining an offer, or exploring partnerships, each strategic layer moves vision into structured, sustainable momentum.​', 'From go-to-market approaches and visibility plans to audience engagement, growth models, and positioning strategies—every element is crafted to create meaningful forward motion.'],
 		},
 		BRANDING: {
-			title: "Bringing your business's true story to life—visually, verbally, and emotionally.",
+			title: "Bringing your business's true story to life—visually, verbally, and emotionally",
 			description: ['A brand is the memory, the feeling, the story people carry after they meet you.​', 'At Sotrixa, branding is an act of alignment: we listen deeply to what your business is becoming and translate that into visual and verbal identities that feel alive and true.​', 'We create logos, color palettes, typography, design elements, and voice and tone guidelines—crafted with precision and emotional resonance.​', 'More than an aesthetic, your brand becomes an invitation: a true reflection of your story, ready to connect and inspire.'],
 		},
 		MARKETING: {
-			title: 'Expanding your presence with soulful marketing strategies that resonate and move.',
+			title: 'Expanding your presence with soulful marketing strategies that resonate and move',
 			description: ['Marketing is the movement of your story into the world—the choreography of voice, vision, and presence.​', 'At Sotrixa, we craft marketing strategies that are intelligent, soulful, and grounded in authenticity.​', 'From channel strategies and campaign direction to content pillars, creative activations, and collaborations, every element amplifies your voice and expands your reach with coherence, clarity, and impact.​', "Your story doesn't just travel—it moves, it resonates, it builds momentum."],
 		},
 		'WEBSITE DEVELOPMENT': {
-			title: 'Crafting websites where form meets feeling, and strategy becomes tangible experience.',
+			title: 'Crafting websites where form meets feeling, and strategy becomes tangible experience',
 			description: ['Your website is the home of your vision—where strategy meets experience and form meets feeling.​', "At Sotrixa, we design digital spaces that are not only beautiful but deeply functional—reflecting your brand's essence while guiding your audience into connection and action.​", 'Rooted in clarity, crafted with care, your website becomes a living, evolving expression of everything you stand for.​', "It's where presence becomes tangible—and impact begins."],
 		},
 	};
@@ -486,6 +486,67 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 			});
 
 		return tl;
+	};
+
+	// Function to render title with colored keywords
+	const renderStyledTitle = (title: string, service: string) => {
+		// Define color mappings for each service
+		const colorMappings: Record<string, Record<string, string>> = {
+			RESEARCH: {
+				research: 'text-[#D142E2]',
+				signals: 'text-[#71DDC6]',
+				strategies: 'text-[#F4DD65]',
+			},
+			'BUSINESS ARCHITECTURE': {
+				vision: 'text-[#D142E2]',
+				structured: 'text-[#71DDC6]',
+				growth: 'text-[#F4DD65]',
+			},
+			'BESPOKE STRATEGY CREATION': {
+				vision: 'text-[#D142E2]',
+				clarity: 'text-[#71DDC6]',
+				purpose: 'text-[#F4DD65]',
+			},
+			BRANDING: {
+				Bringing: 'text-[#D142E2]',
+				story: 'text-[#71DDC6]',
+				emotionally: 'text-[#F4DD65]',
+			},
+			MARKETING: {
+				presence: 'text-[#D142E2]',
+				strategies: 'text-[#71DDC6]',
+				move: 'text-[#F4DD65]',
+			},
+			'WEBSITE DEVELOPMENT': {
+				websites: 'text-[#D142E2]',
+				feeling: 'text-[#71DDC6]',
+				experience: 'text-[#F4DD65]',
+			},
+		};
+
+		const colors = colorMappings[service] || {};
+
+		// Split title into words and apply colors
+		const words = title.split(' ');
+
+		return (
+			<span>
+				{words.map((word, index) => {
+					// Remove punctuation to check for color mapping
+					const cleanWord = word.replace(/[.,!?;:]$/, '');
+					const punctuation = word.match(/[.,!?;:]$/)?.[0] || '';
+					const colorClass = colors[cleanWord];
+
+					return (
+						<span key={index}>
+							{colorClass ? <span className={colorClass}>{cleanWord}</span> : cleanWord}
+							{punctuation}
+							{index < words.length - 1 ? ' ' : ''}
+						</span>
+					);
+				})}
+			</span>
+		);
 	};
 
 	useEffect(() => {
@@ -831,7 +892,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 
 			<div ref={sectionDivRef} className='flex flex-col md:flex-row w-full h-full relative z-20 mx-auto my-8 mt-0'>
 				{/* Left side with strategy heading and services list */}
-				<div className='w-full md:w-1/2 p-4 md:p-6 mt-10' ref={leftSideRef}>
+				<div className='w-full md:w-1/2 p-4 md:p-6 flex flex-col justify-center min-h-screen md:min-h-full' ref={leftSideRef}>
 					<div className='mb-6' ref={logoRef}>
 						<button onClick={handleBackToServices} ref={backButtonRef} className='group flex items-center space-x-2 cursor-pointer text-black hover:text-[#f4dd65] transition-colors duration-300'>
 							<svg xmlns='http://www.w3.org/2000/svg' className='h-5 w-5 transform transition-transform duration-300 group-hover:-translate-x-1' viewBox='0 0 20 20' fill='currentColor'>
@@ -843,33 +904,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 
 					<div className='mb-6'>
 						<h1 className='text-3xl md:text-4xl font-bold mb-4' ref={headingRef}>
-							{activeService === 'RESEARCH' ? (
-								<span>
-									Deep <span className='text-[#D142E2]'>research</span>, nuanced insight, and future-facing <span className='text-[#71DDC6]'>signals</span> that shape powerful <span className='text-[#F4DD65]'>strategies</span>.
-								</span>
-							) : activeService === 'BUSINESS ARCHITECTURE' ? (
-								<span>
-									Turning <span className='text-[#D142E2]'>vision</span> into a <span className='text-[#71DDC6]'>structured</span>, evolving business—ready for real-world <span className='text-[#F4DD65]'>growth</span>.
-								</span>
-							) : activeService === 'BESPOKE STRATEGY CREATION' ? (
-								<span>
-									Precision-crafted roadmaps that move your <span className='text-[#D142E2]'>vision</span> forward with <span className='text-[#71DDC6]'>clarity</span>, coherence, and <span className='text-[#F4DD65]'>purpose</span>.
-								</span>
-							) : activeService === 'BRANDING' ? (
-								<span>
-									<span className='text-[#D142E2]'>Bringing</span> your business&apos;s true <span className='text-[#71DDC6]'>story</span> to life—visually, verbally, and <span className='text-[#F4DD65]'>emotionally</span>.
-								</span>
-							) : activeService === 'MARKETING' ? (
-								<span>
-									Expanding your <span className='text-[#D142E2]'>presence</span> with soulful marketing <span className='text-[#71DDC6]'>strategies</span> that resonate and <span className='text-[#F4DD65]'>move</span>.
-								</span>
-							) : activeService === 'WEBSITE DEVELOPMENT' ? (
-								<span>
-									Crafting <span className='text-[#D142E2]'>websites</span> where form meets <span className='text-[#71DDC6]'>feeling</span>, and strategy becomes tangible <span className='text-[#F4DD65]'>experience</span>.
-								</span>
-							) : (
-								<span className='text-transparent bg-clip-text bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6]'>{currentContent.title}</span>
-							)}
+							{activeService && serviceContents[activeService] ? renderStyledTitle(serviceContents[activeService].title, activeService) : <span className='text-transparent bg-clip-text bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6]'>{currentContent.title}</span>}
 						</h1>
 					</div>
 

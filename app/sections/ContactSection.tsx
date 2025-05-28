@@ -152,17 +152,16 @@ export default function ContactSection() {
 	return (
 		<Section id='contact' className='bg-[#FAFAFA] text-black min-h-screen flex items-center justify-center pt-20 pb-24'>
 			<div className='w-full px-1r sm:px-1 lg:px-1 xl:px-1 max-w-7xl mx-auto'>
-				<div className='mb-6 text-center' ref={headingRef} style={{ opacity: animationsCreated ? undefined : 1 }}>
-					<h2 className='text-3xl font-medium mb-2'>Contact</h2>
-					<div className='w-16 h-0.5 bg-black mx-auto mb-3'></div>
-					<p className='text-gray-600 max-w-lg mx-auto text-sm'>Get in touch and let&apos;s discuss your project.</p>
-				</div>
-
-				<div className='grid grid-cols-1 lg:grid-cols-5 gap-6 items-start max-h-[calc(100vh-200px)] overflow-y-auto'>
+				<div className='grid grid-cols-1 lg:grid-cols-5 gap-6 items-start'>
 					{/* Left Column - Contact Content */}
 					<div className='lg:col-span-2 space-y-4 mt-8 lg:mt-16' ref={contactInfoRef} style={{ opacity: animationsCreated ? undefined : 1 }}>
 						{/* Contact Information */}
 						<div className='space-y-3'>
+							<div className='mb-6 text-left' ref={headingRef} style={{ opacity: animationsCreated ? undefined : 1 }}>
+								<h2 className='text-3xl font-medium mb-2'>Contact</h2>
+								<div className='w-40 h-0.5 bg-black mb-3'></div>
+								<p className='text-gray-600 max-w-lg mx-auto text-sm'>Get in touch and let&apos;s discuss your project.</p>
+							</div>
 							<div>
 								<p className='text-xs uppercase tracking-wider font-medium text-gray-500 mb-2'>Contact Information</p>
 
@@ -274,7 +273,7 @@ export default function ContactSection() {
 					{/* Right Column - Image */}
 					<div className='lg:col-span-3 flex items-center justify-end' ref={imageRef} style={{ opacity: animationsCreated ? undefined : 1 }}>
 						<div className='relative w-full max-w-lg aspect-square rounded-lg overflow-hidden bg-gray-50 ml-auto'>
-							<Image src='/contact-page.png' alt='Contact us' fill className='object-contain' sizes='(max-width: 1024px) 70vw, 50vw' priority />
+							<Image src='/contact-page-1.png' alt='Contact us' fill className='object-contain' sizes='(max-width: 1024px) 70vw, 50vw' priority />
 						</div>
 					</div>
 				</div>

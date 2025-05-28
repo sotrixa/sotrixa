@@ -7,6 +7,18 @@ import { useLanguage } from '../data/LanguageContext';
 import { getText } from '../data/translations';
 import LanguageSwitcher from '../components/LanguageSwitcher';
 
+// Extend Window interface for navigation controls
+declare global {
+	interface Window {
+		horizontalScrollControls?: {
+			navigateToPanel: (index: number) => void;
+			nextPanel: () => void;
+			prevPanel: () => void;
+			activeIndex: number;
+		};
+	}
+}
+
 export default function HomeSection() {
 	const [windowWidth, setWindowWidth] = useState(0);
 	const { language } = useLanguage();
@@ -155,8 +167,39 @@ export default function HomeSection() {
 					{getText('homeSection.paragraph', language)}
 				</p>
 				<div ref={buttonsRef} className={styles.buttons}>
-					<button className={styles.button}>{getText('homeSection.talkToUs', language)}</button>
-					<button className={styles.button}>{getText('homeSection.seeOurWork', language)}</button>
+					<button
+						className={styles.button}
+						onClick={() => {
+							// Navigate to Contact section (index 4)
+							if (window.horizontalScrollControls) {
+								window.horizontalScrollControls.navigateToPanel(4);
+							}
+						}}
+					>
+						{getText('homeSection.talkToUs', language)}
+					</button>
+					<button
+						className={styles.button}
+						onClick={() => {
+							// Navigate to Services section (index 2)
+							if (window.horizontalScrollControls) {
+								window.horizontalScrollControls.navigateToPanel(2);
+							}
+						}}
+					>
+						What we do
+					</button>
+					<button
+						className={styles.button}
+						onClick={() => {
+							// Navigate to Case Study section (index 3)
+							if (window.horizontalScrollControls) {
+								window.horizontalScrollControls.navigateToPanel(3);
+							}
+						}}
+					>
+						{getText('homeSection.seeOurWork', language)}
+					</button>
 				</div>
 			</div>
 

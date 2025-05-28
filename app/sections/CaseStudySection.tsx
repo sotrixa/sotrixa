@@ -279,7 +279,7 @@ export default function CaseStudySection() {
 								{getVisibleSlides().map((study, index) => (
 									<div key={`${currentSlideIndex}-${index}`} className='slider-item flex-shrink-0 w-full lg:w-1/2 space-y-4 cursor-pointer transition-transform duration-300 hover:-translate-y-2' onClick={() => handleStudyClick(study)}>
 										{/* Image container */}
-										<div className='h-[280px] sm:h-[340px] md:h-[420px] lg:h-[460px] rounded-lg border border-gray-200 shadow-md overflow-hidden'>
+										<div className='h-[240px] sm:h-[280px] md:h-[340px] lg:h-[380px] rounded-lg border border-gray-200 shadow-md overflow-hidden'>
 											<div className='relative w-full h-full'>
 												<Image src={study.image} alt={study.title} className='object-cover hover:scale-105 transition-transform duration-300' fill style={{ objectFit: 'cover' }} priority={index === 0} />
 

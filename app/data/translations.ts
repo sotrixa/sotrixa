@@ -50,7 +50,7 @@ export const translations: Translations = {
 		bg: 'Преминаваме от прозрение към структура, от стратегия към история—изграждайки идентичности и преживявания, които се свързват и вървят напред.',
 	},
 	'caseStudySection.title': {
-		en: 'We {{build:#3ecca7}} with {{purpose:#ff69b4}}—and every outcome reflects the {{thinking:#f4dd65}} behind it.',
+		en: 'We {{build:#3ecca7}} with {{purpose:#ff69b4}}—and every outcome reflects the {{thinking:#f4dd65}} behind it',
 		bg: 'Ние {{build:#3ecca7}} с {{purpose:#ff69b4}}—и всеки резултат отразява {{thinking:#f4dd65}} зад него.',
 	},
 	'caseStudySection.subtitle': {

@@ -175,81 +175,86 @@ export default function CaseStudyDetail({ study, activeService, caseStudies, onC
 
 	return (
 		<div ref={detailRef} className='w-full min-h-screen bg-white relative mt-30' onKeyDown={handleKeyDown} tabIndex={0}>
-			{/* Right side image positioned absolutely at top-right with zero margin/padding */}
-			<div ref={imageRef} className='absolute -top-10 -mr-20 right-0 z-10'>
-				<Image src={currentStudy.image} alt={currentStudy.title} width={500} height={350} className='object-cover' priority />
-			</div>
+			{/* 2-column grid layout */}
+			<div className='grid grid-cols-12 gap-8 min-h-screen'>
+				{/* Left column - Content (8 columns) */}
+				<div className='col-span-8 ml-50 px-8'>
+					{/* Content container */}
+					<div className='pt-20 z-10 bg-white h-[calc(100vh-200px)] overflow-y-auto max-w-full'>
+						{/* Navigation row with both buttons */}
+						<div ref={navRef} className='flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mb-8 relative z-20 max-w-full'>
+							{/* Back button */}
+							<button onClick={onClose} className='text-gray-800 font-bold hover:text-[#3ecca7] transition-all duration-300 hover:-translate-x-1 group flex items-center flex-shrink-0'>
+								<span className='flex items-center'>
+									<svg className='mr-2 transition-transform duration-300 group-hover:-translate-x-1' xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
+										<path d='M19 12H5'></path>
+										<path d='M12 19l-7-7 7-7'></path>
+									</svg>
+									RETURN TO CASE STUDIES
+								</span>
+							</button>
 
-			{/* Main content - single column layout moved to left */}
-			<div className='max-w-4xl ml-50 mr-auto px-8'>
-				{/* Content container */}
-				<div className='pt-20 z-10 bg-white h-[calc(100vh-200px)] overflow-y-auto'>
-					{/* Navigation row with both buttons */}
-					<div ref={navRef} className='flex items-center gap-6 mb-8 relative z-20'>
-						{/* Back button */}
-						<button onClick={onClose} className='text-gray-800 font-bold hover:text-[#3ecca7] transition-all duration-300 hover:-translate-x-1 group flex items-center'>
-							<span className='flex items-center'>
-								<svg className='mr-2 transition-transform duration-300 group-hover:-translate-x-1' xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
-									<path d='M19 12H5'></path>
-									<path d='M12 19l-7-7 7-7'></path>
-								</svg>
-								RETURN TO CASE STUDIES
-							</span>
-						</button>
-
-						{/* Next case study button - always visible */}
-						<button onClick={goToNextCaseStudy} className='text-black font-medium hover:text-gray-700 transition-all duration-300 hover:translate-x-1 group flex items-center'>
-							<span className='flex items-center'>
-								SEE NEXT CASE STUDY
-								<svg className='ml-2 transition-transform duration-300 group-hover:translate-x-1' xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
-									<path d='M5 12h14'></path>
-									<path d='M12 5l7 7-7 7'></path>
-								</svg>
-							</span>
-						</button>
-					</div>
-
-					<h2 ref={titleRef} className='text-5xl font-bold text-black mb-8 leading-tight'>
-						{currentStudy.title}
-					</h2>
-
-					<div ref={contentRef} className='space-y-8 pb-16'>
-						<div className='detail-content space-y-12'>
-							{currentStudy.subtitle && (
-								<div className='mb-8'>
-									<h3 className='text-xl font-medium text-gray-900 mb-4'>Overview</h3>
-									<p className='text-base text-gray-700'>{currentStudy.subtitle}</p>
-								</div>
-							)}
-
-							{currentStudy.description && (
-								<div className='mb-8'>
-									<h3 className='text-xl font-medium text-gray-900 mb-4'>Description</h3>
-									<p className='text-base text-gray-700'>{currentStudy.description}</p>
-								</div>
-							)}
-
-							{currentStudy.challenge && (
-								<div className='mb-8'>
-									<h3 className='text-xl font-medium text-gray-900 mb-4'>Challenge</h3>
-									<p className='text-base text-gray-700'>{currentStudy.challenge}</p>
-								</div>
-							)}
-
-							{currentStudy.solution && (
-								<div className='mb-8'>
-									<h3 className='text-xl font-medium text-gray-900 mb-4'>Solution</h3>
-									<div className='text-base text-gray-700 whitespace-pre-line'>{currentStudy.solution}</div>
-								</div>
-							)}
-
-							{currentStudy.results && (
-								<div className='mb-8'>
-									<h3 className='text-xl font-medium text-gray-900 mb-4'>Results</h3>
-									<p className='text-base text-gray-700'>{currentStudy.results}</p>
-								</div>
-							)}
+							{/* Next case study button - always visible */}
+							<button onClick={goToNextCaseStudy} className='text-black font-medium hover:text-gray-700 transition-all duration-300 hover:translate-x-1 group flex items-center flex-shrink-0'>
+								<span className='flex items-center'>
+									SEE NEXT CASE STUDY
+									<svg className='ml-2 transition-transform duration-300 group-hover:translate-x-1' xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
+										<path d='M5 12h14'></path>
+										<path d='M12 5l7 7-7 7'></path>
+									</svg>
+								</span>
+							</button>
 						</div>
+
+						<h2 ref={titleRef} className='text-5xl sm:text-6xl lg:text-7xl font-bold text-black mb-8 leading-tight max-w-full break-words'>
+							{currentStudy.title}
+						</h2>
+
+						<div ref={contentRef} className='space-y-8 pb-16 max-w-full'>
+							<div className='detail-content space-y-12 max-w-full'>
+								{currentStudy.subtitle && (
+									<div className='mb-8 max-w-full'>
+										<h3 className='text-xl font-medium text-gray-900 mb-4 break-words'>Overview</h3>
+										<p className='text-base text-gray-700 leading-relaxed break-words'>{currentStudy.subtitle}</p>
+									</div>
+								)}
+
+								{currentStudy.description && (
+									<div className='mb-8 max-w-full'>
+										<h3 className='text-xl font-medium text-gray-900 mb-4 break-words'>Description</h3>
+										<p className='text-base text-gray-700 leading-relaxed break-words'>{currentStudy.description}</p>
+									</div>
+								)}
+
+								{currentStudy.challenge && (
+									<div className='mb-8 max-w-full'>
+										<h3 className='text-xl font-medium text-gray-900 mb-4 break-words'>Challenge</h3>
+										<p className='text-base text-gray-700 leading-relaxed break-words'>{currentStudy.challenge}</p>
+									</div>
+								)}
+
+								{currentStudy.solution && (
+									<div className='mb-8 max-w-full'>
+										<h3 className='text-xl font-medium text-gray-900 mb-4 break-words'>Solution</h3>
+										<div className='text-base text-gray-700 leading-relaxed whitespace-pre-line break-words max-w-full'>{currentStudy.solution}</div>
+									</div>
+								)}
+
+								{currentStudy.results && (
+									<div className='mb-8 max-w-full'>
+										<h3 className='text-xl font-medium text-gray-900 mb-4 break-words'>Results</h3>
+										<p className='text-base text-gray-700 leading-relaxed break-words'>{currentStudy.results}</p>
+									</div>
+								)}
+							</div>
+						</div>
+					</div>
+				</div>
+
+				{/* Right column - Image (4 columns) */}
+				<div className='col-span-4 flex items-start justify-center pt-10'>
+					<div ref={imageRef} className='w-full max-w-[500px] sticky top-10'>
+						<Image src={currentStudy.image} alt={currentStudy.title} width={500} height={350} className='object-cover w-full h-auto' priority />
 					</div>
 				</div>
 			</div>
