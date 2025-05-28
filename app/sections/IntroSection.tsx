@@ -105,6 +105,25 @@ export default function IntroSection() {
 					</span>
 				);
 			}
+
+			// Check if this part contains an em dash and style it smaller
+			if (part.includes('—')) {
+				const dashParts = part.split('—');
+				const elements: React.ReactElement[] = [];
+				dashParts.forEach((dashPart, dashIndex) => {
+					if (dashIndex > 0) {
+						// Add the styled dash before each part (except the first)
+						elements.push(
+							<span key={`${i}-dash-${dashIndex}`} style={{ fontSize: '1em', fontWeight: '200', transform: 'scaleX(0.5)', display: 'inline-block' }}>
+								—
+							</span>
+						);
+					}
+					elements.push(<span key={`${i}-text-${dashIndex}`}>{dashPart}</span>);
+				});
+				return elements;
+			}
+
 			return <span key={i}>{part}</span>;
 		});
 	};
