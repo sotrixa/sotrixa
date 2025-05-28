@@ -1027,8 +1027,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 													<span className='font-medium text-gray-800'>{bulletTitle}</span>
 													{bulletContent && (
 														<>
-															{' '}
-															– <span className='text-gray-600 text-sm'>{bulletContent}</span>
+															<span className='text-xs font-serif'>–</span> <span className='text-gray-600 text-xs'>{bulletContent}</span>
 														</>
 													)}
 												</div>
