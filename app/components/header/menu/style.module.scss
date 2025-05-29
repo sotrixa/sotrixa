@@ -1,7 +1,7 @@
 .menu {
 	position: fixed;
 	display: flex;
-	z-index: 3;
+	z-index: 1000;
 	height: 100%;
 	width: 100%;
 	flex-direction: column;
@@ -23,7 +23,7 @@
 
 			&:hover {
 				path {
-					stroke: #d3fd50;
+					stroke: #38E4D3;
 				}
 			}
 		}
@@ -78,7 +78,7 @@
 			will-change: top;
 
 			.inner {
-				background-color: #d3fd50;
+				background-color: #38E4D3;
 				position: absolute;
 				white-space: nowrap;
 				height: 100%;
@@ -93,6 +93,7 @@
 					transition: opacity 0.3s;
 					position: relative;
 					opacity: 0;
+					padding-left: 10px;
 
 					&:nth-of-type(2) {
 						transition-delay: -4s;
@@ -124,7 +125,7 @@
 			}
 
 			.background {
-				background-color: #d3fd50;
+				background-color: #38E4D3;
 				position: absolute;
 				height: 100%;
 				width: 100%;

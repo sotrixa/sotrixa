@@ -148,7 +148,9 @@ export default function HomeSection() {
 							<span className={styles.white}>We are a </span>
 							<span className={styles.teal}>strategy lab</span>
 							<span className={styles.white}> for </span>
-							<span className={styles.yellow}>visionary thinkers</span>
+							<span className={styles.magenta}>visionary</span>
+							<span className={styles.white}> </span>
+							<span className={styles.yellow}>thinkers</span>
 							<span className={styles.white}>.</span>
 						</>
 					) : (
@@ -156,7 +158,9 @@ export default function HomeSection() {
 						<>
 							<span>We are a </span>
 							<span className={styles.teal}>strategy</span>
-							<span> lab for visionary </span>
+							<span> lab for </span>
+							<span className={styles.magenta}>visionary</span>
+							<span> </span>
 							<span className={styles.yellow}>thinkers</span>
 							<span className={styles.black}>.</span>
 						</>

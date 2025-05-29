@@ -24,8 +24,7 @@
 	font-weight: 700;
 	width: 50%;
 	position: relative;
-	mix-blend-mode: exclusion;
-	color: white;
+	color: black;
 	pointer-events: none;
 	display: flex;
 	flex-direction: column;
@@ -95,11 +94,15 @@
 }
 
 .teal {
-	color: #990024; /* Dark red/maroon for "People" */
+	color: #38E4D3 !important; /* Teal color for "strategy" */
 }
 
 .yellow {
-	color: #0033a0; /* Dark blue for "fascinating" */
+	color: #EFC851 !important; /* Yellow color for "thinkers" */
+}
+
+.magenta {
+	color: #D142E2 !important; /* Magenta color for "visionary" */
 }
 
 .black {
@@ -130,7 +133,7 @@
 }
 
 .white {
-	color: #fafafa;
+	color: #000000;
 }
 
 /* Responsive adjustments */

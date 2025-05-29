@@ -274,7 +274,7 @@ export default function ServicesSection() {
 						<div className='flex flex-col md:flex-row items-center justify-between mt-10 gap-8 sm:gap-12 py-8 sm:py-12'>
 							{/* Left side with colored text */}
 							<motion.div className='md:w-full' initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.1 }}>
-								<div className='text-3xl sm:text-5xl md:text-[57px] leading-tight font-bold max-w-[642px]'>
+								<div className='text-3xl sm:text-5xl md:text-[57px] leading-tight font-black max-w-[642px]'>
 									{/* Simplified title rendering to prevent duplication */}
 									{(() => {
 										let lastIndex = 0;

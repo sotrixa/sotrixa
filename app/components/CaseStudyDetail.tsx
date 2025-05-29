@@ -176,11 +176,11 @@ export default function CaseStudyDetail({ study, activeService, caseStudies, onC
 	return (
 		<div ref={detailRef} className='w-full min-h-screen bg-white relative mt-32' onKeyDown={handleKeyDown} tabIndex={0}>
 			{/* 2-column grid layout */}
-			<div className='grid grid-cols-12 gap-8 min-h-screen px-8'>
-				{/* Left column - Content (8 columns) */}
-				<div className='col-span-8'>
+			<div className='grid grid-cols-12 gap-4 min-h-screen px-8'>
+				{/* Left column - Content (6 columns) */}
+				<div className='col-span-6 relative'>
 					{/* Content container */}
-					<div className='pt-20 z-10 bg-white h-[calc(100vh-200px)] overflow-y-auto max-w-full'>
+					<div className='mt-20 mb-[-20rem] bg-white h-[calc(100vh-300px)] overflow-y-auto max-w-full relative z-0'>
 						{/* Navigation row with both buttons */}
 						<div ref={navRef} className='flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mb-8 relative z-20 max-w-full'>
 							{/* Back button */}
@@ -251,8 +251,8 @@ export default function CaseStudyDetail({ study, activeService, caseStudies, onC
 					</div>
 				</div>
 
-				{/* Right column - Image (4 columns) */}
-				<div className='col-span-4 flex items-start justify-center pt-10'>
+				{/* Right column - Image (6 columns) */}
+				<div className='col-span-6 flex items-start justify-center pt-10'>
 					<div ref={imageRef} className='w-full max-w-[500px] sticky top-10'>
 						<Image src={currentStudy.image} alt={currentStudy.title} width={500} height={350} className='object-cover w-full h-auto' priority />
 					</div>

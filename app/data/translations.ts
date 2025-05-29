@@ -30,8 +30,8 @@ export const translations: Translations = {
 		bg: 'Проучването също трябва да бъде',
 	},
 	'introSection.title': {
-		en: 'Every {{strategy:#D142E2}} has a {{rhythm:#71DEC6}}\n—ours begins by {{listening:#F4DD65}}',
-		bg: 'Всяка {{strategy:#D142E2}} има свой {{rhythm:#71DEC6}}\n—нашата започва със {{listening:#F4DD65}}',
+		en: 'Every {{strategy:#38E4D3}} has a {{rhythm:#D142E2}}\n—ours begins by {{listening:#EFC851}}',
+		bg: 'Всяка {{strategy:#38E4D3}} има свой {{rhythm:#D142E2}}\n—нашата започва със {{listening:#EFC851}}',
 	},
 	'introSection.subheading': {
 		en: 'SOTRIXA in 60 seconds',
@@ -42,16 +42,16 @@ export const translations: Translations = {
 		bg: 'Всеки проект се превръща в жива история, разгръщаща се чрез изследване, структура, стратегия и дизайн -формираща всичко от вашата основа до това как сте възприемани и запомнени.',
 	},
 	'servicesSection.title': {
-		en: 'The way we work is {{layered:#F4DD65}}, {{intentional:#D142E2}}, and deeply {{aligned:#71DEC6}}',
-		bg: 'Начинът, по който работим, е {{layered:#F4DD65}}, {{intentional:#D142E2}} и дълбоко {{aligned:#71DEC6}}.',
+		en: 'The way we work is {{layered:#EFC851}}, {{intentional:#D142E2}}, and deeply {{aligned:#38E4D3}}',
+		bg: 'Начинът, по който работим, е {{layered:#EFC851}}, {{intentional:#D142E2}} и дълбоко {{aligned:#38E4D3}}.',
 	},
 	'servicesSection.subtitle': {
 		en: 'We move from insight to structure, strategy to story—building identities and experiences that hold together and move forward.',
 		bg: 'Преминаваме от прозрение към структура, от стратегия към история—изграждайки идентичности и преживявания, които се свързват и вървят напред.',
 	},
 	'caseStudySection.title': {
-		en: 'We {{build:#F4DD65}} with {{purpose:#D142E2}}—and every outcome reflects the {{thinking:#71DDC6}} behind it',
-		bg: 'Ние {{build:#F4DD65}} с {{purpose:#D142E2}}—и всеки резултат отразява {{thinking:#71DDC6}} зад него',
+		en: 'We {{build:#EFC851}} with {{purpose:#D142E2}}—and every outcome reflects the {{thinking:#38E4D3}} behind it',
+		bg: 'Ние {{build:#EFC851}} с {{purpose:#D142E2}}—и всеки резултат отразява {{thinking:#38E4D3}} зад него',
 	},
 	'caseStudySection.subtitle': {
 		en: 'A glimpse into how we shape strategy, identity, and experience with intention',

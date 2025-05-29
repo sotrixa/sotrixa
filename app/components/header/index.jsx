@@ -11,6 +11,11 @@ export default function Header() {
 	const [isScrolled, setIsScrolled] = useState(false);
 	const headerRef = useRef(null);
 
+	// Debug logging for menu state
+	useEffect(() => {
+		console.log('Menu state changed:', menuIsOpen);
+	}, [menuIsOpen]);
+
 	useEffect(() => {
 		const handleScroll = () => {
 			const scrolled = window.scrollY > 0;
@@ -66,12 +71,15 @@ export default function Header() {
 		};
 	}, []);
 
+	const openMenu = () => {
+		console.log('openMenu function called!');
+		setMenuIsOpen(true);
+	};
+
 	return (
 		<div className={styles.header} ref={headerRef} role='navigation' aria-label='Main Navigation'>
 			<Burger
-				openMenu={() => {
-					setMenuIsOpen(true);
-				}}
+				openMenu={openMenu}
 				isMenuOpen={menuIsOpen}
 				isScrolled={isScrolled}
 			/>

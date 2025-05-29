@@ -5,14 +5,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 export default function ({ openMenu, isMenuOpen = false, isScrolled = false }) {
 	if (isMenuOpen) return null;
 
+	const handleClick = (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+		console.log('Burger menu clicked!');
+		openMenu();
+	};
+
 	return (
 		<motion.div
 			initial={{ opacity: 1 }}
 			animate={{ opacity: 1 }}
 			exit={{ opacity: 0 }}
-			onClick={() => {
-				openMenu();
-			}}
+			onClick={handleClick}
 			className={`${styles.button} burgerMenu`}
 		>
 			<div className={styles.background}></div>

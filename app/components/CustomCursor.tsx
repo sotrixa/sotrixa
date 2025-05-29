@@ -39,7 +39,20 @@ export default function CustomCursor() {
 			// Check if the element under the cursor is clickable
 			const target = e.target as HTMLElement;
 
-			const isClickableElement = !!(target.tagName === 'A' || target.tagName === 'BUTTON' || target.closest('a') || target.closest('button') || target.classList.contains('cursor-pointer') || target.closest('.cursor-pointer') || target.getAttribute('role') === 'button' || target.closest('[role="button"]') || target.closest('[onClick]') || target.closest('.clickable') || window.getComputedStyle(target).cursor === 'pointer');
+			const isClickableElement = !!(
+				target.tagName === 'A' || 
+				target.tagName === 'BUTTON' || 
+				target.closest('a') || 
+				target.closest('button') || 
+				target.classList.contains('cursor-pointer') || 
+				target.closest('.cursor-pointer') || 
+				target.getAttribute('role') === 'button' || 
+				target.closest('[role="button"]') || 
+				target.closest('[onClick]') || 
+				target.closest('.clickable') ||
+				target.closest('.burgerMenu') ||
+				window.getComputedStyle(target).cursor === 'pointer'
+			);
 
 			setIsClickable(isClickableElement);
 		};

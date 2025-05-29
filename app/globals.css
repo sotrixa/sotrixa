@@ -4,6 +4,12 @@
 	* {
 		cursor: none !important;
 	}
+	
+	/* Ensure burger menu is always clickable */
+	.burgerMenu, .burgerMenu * {
+		cursor: pointer !important;
+		pointer-events: auto !important;
+	}
 }
 
 :root {

@@ -2,12 +2,11 @@
 import styles from '../style.module.scss';
 import { motion } from 'framer-motion';
 import { mountAnim, rotateX } from '../../anim';
-import Image from 'next/image';
 import { useRef, useState } from 'react';
 import gsap from 'gsap';
 
 export default function link({ data, index, onClick }) {
-	const { title, description, images } = data;
+	const { title, description } = data;
 	const outer = useRef(null);
 	const inner = useRef(null);
 	const [isTouched, setIsTouched] = useState(false);
@@ -93,13 +92,6 @@ export default function link({ data, index, onClick }) {
 					{[...Array(2)].map((_, index) => {
 						return (
 							<div key={index} className={styles.container}>
-								<div className={styles.imageContainer}>
-									<Image src={`/images/${images[0]}`} fill alt='image' />
-								</div>
-								<p>{description}</p>
-								<div className={styles.imageContainer}>
-									<Image src={`/images/${images[1]}`} fill alt='image' />
-								</div>
 								<p>{description}</p>
 							</div>
 						);

@@ -91,8 +91,15 @@ export default function IntroSection() {
 	};
 
 	const renderColoredText = (text: string) => {
-		// Parse the text with color markers {{word:#color}}
-		const parts = text.split(/(\{\{.*?\}\})/g);
+		console.log('Original text:', JSON.stringify(text));
+		
+		// Fix em dash spacing first - using hair spaces for minimal spacing
+		const fixedText = text.replace(/\s*—\s*/g, '\u200A—\u200A');
+		console.log('Fixed text:', JSON.stringify(fixedText));
+		
+		// Parse the text with color markers {{word:#color}} while preserving spaces
+		const parts = fixedText.split(/(\{\{.*?\}\})/g);
+		console.log('Split parts:', parts);
 
 		return parts.map((part, i) => {
 			// Check if this part is a color marker
@@ -112,18 +119,20 @@ export default function IntroSection() {
 				const elements: React.ReactElement[] = [];
 				dashParts.forEach((dashPart, dashIndex) => {
 					if (dashIndex > 0) {
-						// Add the styled dash before each part (except the first)
+						// Add the styled dash with consistent spacing before each part (except the first)
 						elements.push(
-							<span key={`${i}-dash-${dashIndex}`} style={{ fontSize: '1em', fontWeight: '200', transform: 'scaleX(0.5)', display: 'inline-block' }}>
+							<span key={`${i}-dash-${dashIndex}`} style={{ fontSize: '1em', fontWeight: '200', transform: 'scaleX(0.5)', display: 'inline-block', margin: '0 0.02em' }}>
 								—
 							</span>
 						);
 					}
+					// Preserve the exact text content including spaces
 					elements.push(<span key={`${i}-text-${dashIndex}`}>{dashPart}</span>);
 				});
 				return elements;
 			}
 
+			// Return the text part as-is, preserving ALL spaces
 			return <span key={i}>{part}</span>;
 		});
 	};
@@ -132,8 +141,8 @@ export default function IntroSection() {
 	const titleText = getText('introSection.title', 'en').split('\n');
 	const firstLine = titleText[0] || '';
 	const secondLine = titleText[1] || '';
-	// Join both lines into one for single line display
-	const fullTitle = `${firstLine} ${secondLine}`;
+	// Join both lines for rendering
+	const fullTitle = `${firstLine} ${secondLine}`.trim();
 	const subheadingText = getText('introSection.subheading', 'en');
 	const testimonialText = getText('introSection.testimonial', 'en');
 
@@ -235,7 +244,7 @@ export default function IntroSection() {
 
 							{/* Subheading in its own row */}
 							<div className='w-full mt-6 pl-10'>
-								<p className='text-lg md:text-xl font-serif'>{subheadingText}</p>
+								<p className='text-2xl sm:text-3xl md:text-xl font-medium'>{subheadingText}</p>
 
 								{/* Mobile-only play button */}
 								<button type='button' className='block md:hidden mt-4 bg-white rounded-full p-2 shadow-lg cursor-pointer hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-[#d142e2] group' onClick={handlePlayClick} aria-label='Play Sotrixa introduction video'>

@@ -157,11 +157,7 @@ export default function ContactSection() {
 					<div className='lg:col-span-2 space-y-4 mt-8 lg:mt-16' ref={contactInfoRef} style={{ opacity: animationsCreated ? undefined : 1 }}>
 						{/* Contact Information */}
 						<div className='space-y-3'>
-							<div className='mb-6 text-left' ref={headingRef} style={{ opacity: animationsCreated ? undefined : 1 }}>
-								<h2 className='text-3xl font-medium mb-2'>Contact</h2>
-								<div className='w-40 h-0.5 bg-black mb-3'></div>
-								<p className='text-gray-600 max-w-lg mx-auto text-sm'>Get in touch and let&apos;s discuss your project.</p>
-							</div>
+							
 							<div>
 								<p className='text-xs uppercase tracking-wider font-medium text-gray-500 mb-2'>Contact Information</p>
 
