@@ -151,7 +151,6 @@ export default function HomeSection() {
 							<span className={styles.magenta}>visionary</span>
 							<span className={styles.white}> </span>
 							<span className={styles.yellow}>thinkers</span>
-							<span className={styles.white}>.</span>
 						</>
 					) : (
 						// Original layout for desktop
@@ -162,7 +161,6 @@ export default function HomeSection() {
 							<span className={styles.magenta}>visionary</span>
 							<span> </span>
 							<span className={styles.yellow}>thinkers</span>
-							<span className={styles.black}>.</span>
 						</>
 					)}
 				</h1>
