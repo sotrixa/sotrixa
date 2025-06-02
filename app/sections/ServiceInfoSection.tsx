@@ -1056,9 +1056,11 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 													<span className='font-medium text-gray-800'>{bulletTitle}</span>
 													{bulletContent && (
 														<>
+															{' '}
 															<span className="inline-block" style={{ fontSize: '1em', fontWeight: '200', transform: 'scaleX(0.5)' }}>
 																–
-															</span>{' '}
+															</span>
+															{' '}
 															<span className='text-gray-600 text-xs'>{renderTextWithStyledDashes(bulletContent)}</span>
 														</>
 													)}
