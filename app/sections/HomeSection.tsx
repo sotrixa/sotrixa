@@ -5,7 +5,6 @@ import styles from './HomeSection.module.css';
 import { gsap } from 'gsap';
 import { useLanguage } from '../data/LanguageContext';
 import { getText } from '../data/translations';
-import LanguageSwitcher from '../components/LanguageSwitcher';
 
 // Extend Window interface for navigation controls
 declare global {
@@ -144,8 +143,6 @@ export default function HomeSection() {
 
 	return (
 		<div id='home' ref={containerRef} className={styles.container}>
-			<LanguageSwitcher />
-
 			<div ref={bodyRef} className={styles.body}>
 				<h1 ref={headingRef} className={styles.heading}>
 					{isMobile ? (

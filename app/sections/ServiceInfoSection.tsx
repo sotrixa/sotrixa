@@ -795,8 +795,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 			);
 		}
 
-		// Initial particle animation
-		animateParticles();
+		// Removed initial particle animation - particles will only appear when services change
 
 		// Capture the splitTextRefs.current value inside the effect to use in cleanup
 		const splitTextRefsCurrent = splitTextRefs.current;

@@ -5,7 +5,6 @@ import { gsap } from 'gsap';
 import { useLanguage } from '../../data/LanguageContext';
 import { getText } from '../../data/translations';
 import Link from 'next/link';
-import LanguageSwitcher from '../../components/LanguageSwitcher';
 
 const MobileHome: React.FC = () => {
 	const [windowWidth, setWindowWidth] = useState(0);
@@ -107,8 +106,6 @@ const MobileHome: React.FC = () => {
 
 	return (
 		<div id='home' ref={containerRef} className='relative min-h-screen w-full overflow-hidden flex items-center justify-center bg-[#fafafa]'>
-			<LanguageSwitcher />
-
 			<div ref={bodyRef} className='relative z-10 flex flex-col items-center text-center px-5 py-16 max-w-md mx-auto'>
 				<h1 ref={headingRef} className='text-[2.2rem] sm:text-[2.5rem] font-bold leading-tight mb-6 text-black'>
 					<span className='inline'>We are a </span>
