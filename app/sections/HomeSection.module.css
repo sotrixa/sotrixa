@@ -50,7 +50,7 @@
 
 .video {
 	width: 70%;
-	height: 50vh;
+	height: 60vh;
 	object-fit: cover;
 	position: relative;
 	z-index: 2;
