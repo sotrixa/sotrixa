@@ -33,6 +33,24 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 	const timelineRef = useRef<gsap.core.Timeline | null>(null);
 	const [svgWidth, setSvgWidth] = useState(500); // Default width until client-side hydration
 	const [activeDotIndex, setActiveDotIndex] = useState(0); // Track active dot index
+	const [isMenuOpen, setIsMenuOpen] = useState(false); // Track navigation menu state
+
+	// Listen for navigation menu state changes
+	useEffect(() => {
+		// Listen for the custom event dispatched by the Header component
+		const handleNavigationMenuStateChange = (event: Event) => {
+			const customEvent = event as CustomEvent;
+			if (customEvent.detail && typeof customEvent.detail.isOpen === 'boolean') {
+				setIsMenuOpen(customEvent.detail.isOpen);
+			}
+		};
+
+		document.addEventListener('navigationMenuStateChange', handleNavigationMenuStateChange);
+
+		return () => {
+			document.removeEventListener('navigationMenuStateChange', handleNavigationMenuStateChange);
+		};
+	}, []);
 
 	// Update SVG width after component mounts (client-side only)
 	useEffect(() => {
@@ -353,8 +371,27 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 	const svgHeight = 80;
 
 	return (
-		<div ref={containerRef} className='fixed bottom-10 left-1/2 -translate-x-1/2 z-[1000] pointer-events-auto max-w-[100vw]' style={{ opacity: 1 }}>
-			<svg ref={svgRef} width={svgWidth} height={svgHeight} viewBox={`0 0 ${svgWidth} ${svgHeight}`} fill='none' xmlns='http://www.w3.org/2000/svg' style={{ filter: 'drop-shadow(0px 0px 5px rgba(0,0,0,0.2))', opacity: 1 }} className='w-full h-auto'>
+		<div 
+			ref={containerRef} 
+			className={`fixed bottom-10 left-1/2 -translate-x-1/2 pointer-events-auto max-w-[100vw] transition-all duration-300 ${
+				isMenuOpen ? 'z-[999] opacity-0 pointer-events-none' : 'z-[1000] opacity-100'
+			}`}
+			style={{ 
+				display: isMenuOpen ? 'none' : 'block'
+			}}
+		>
+			<svg 
+				ref={svgRef} 
+				width={svgWidth} 
+				height={svgHeight} 
+				viewBox={`0 0 ${svgWidth} ${svgHeight}`} 
+				fill='none' 
+				xmlns='http://www.w3.org/2000/svg' 
+				style={{ 
+					filter: 'drop-shadow(0px 0px 5px rgba(0,0,0,0.2))'
+				}} 
+				className='w-full h-auto'
+			>
 				{/* Background glow */}
 				<path d={pathData} stroke='rgba(0,0,0,0.2)' strokeWidth='8' strokeLinecap='round' fill='none' />
 

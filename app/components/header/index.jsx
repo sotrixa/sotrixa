@@ -14,6 +14,12 @@ export default function Header() {
 	// Debug logging for menu state
 	useEffect(() => {
 		console.log('Menu state changed:', menuIsOpen);
+		
+		// Dispatch custom event for menu state change
+		const event = new CustomEvent('navigationMenuStateChange', {
+			detail: { isOpen: menuIsOpen }
+		});
+		document.dispatchEvent(event);
 	}, [menuIsOpen]);
 
 	useEffect(() => {
