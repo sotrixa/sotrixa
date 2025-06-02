@@ -44,17 +44,18 @@
 	align-items: center;
 	justify-content: center;
 	z-index: 1;
-	background-color: #fafafa;
+	background-color: transparent;
 	flex-shrink: 0;
 }
 
 .video {
-	width: 100%;
-	height: 100%;
+	width: 70%;
+	height: 50vh;
 	object-fit: cover;
 	position: relative;
 	z-index: 2;
 	max-width: 100%;
+	border-radius: 12px;
 }
 
 .heading {

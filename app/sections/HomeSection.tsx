@@ -29,6 +29,7 @@ export default function HomeSection() {
 	const buttonsRef = useRef<HTMLDivElement>(null);
 	const videoContainerRef = useRef<HTMLDivElement>(null);
 	const gridRef = useRef<HTMLDivElement>(null);
+	const videoRef = useRef<HTMLVideoElement>(null);
 	const [isMobile, setIsMobile] = useState(false);
 
 	useEffect(() => {
@@ -122,6 +123,35 @@ export default function HomeSection() {
 
 		return () => clearTimeout(animationTimeout);
 	}, [isMobile]);
+
+	// Ensure video loops continuously
+	useEffect(() => {
+		const video = videoRef.current;
+		if (!video) return;
+
+		const handleVideoEnd = () => {
+			video.currentTime = 0;
+			video.play().catch(console.error);
+		};
+
+		const handleVideoError = () => {
+			// Retry playing the video if there's an error
+			setTimeout(() => {
+				video.play().catch(console.error);
+			}, 1000);
+		};
+
+		video.addEventListener('ended', handleVideoEnd);
+		video.addEventListener('error', handleVideoError);
+		
+		// Ensure video plays initially
+		video.play().catch(console.error);
+
+		return () => {
+			video.removeEventListener('ended', handleVideoEnd);
+			video.removeEventListener('error', handleVideoError);
+		};
+	}, []);
 
 	const getBlocks = () => {
 		// Fewer blocks on mobile for better performance
@@ -217,6 +247,7 @@ export default function HomeSection() {
 					playsInline
 					// Lower video quality on mobile devices for better performance
 					poster={isMobile ? '/video/home-page-poster.jpg' : undefined}
+					ref={videoRef}
 				>
 					<source src={isMobile ? '/video/Sotrixa-Home-2.mp4' : '/video/Sotrixa-Home-2.mp4'} type='video/mp4' />
 					Your browser does not support the video tag.
