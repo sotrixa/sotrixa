@@ -164,6 +164,23 @@ export default function IntroSection() {
 		return elements;
 	};
 
+	const renderTestimonialWithStyledDash = (text: string) => {
+		// Apply the same dash styling to testimonial text
+		if (text.includes('—')) {
+			const parts = text.split('—');
+			return (
+				<>
+					{parts[0]}
+					<span style={{ fontSize: '1em', fontWeight: '200', transform: 'scaleX(0.5)', display: 'inline-block' }}>
+						–
+					</span>
+					{parts[1]}
+				</>
+			);
+		}
+		return text;
+	};
+
 	// Split the title into two parts
 	const titleText = getText('introSection.title', 'en').split('\n');
 	const firstLine = titleText[0] || '';
@@ -285,7 +302,7 @@ export default function IntroSection() {
 
 							{/* Mobile-only testimonial */}
 							<div className='block md:hidden mt-6'>
-								<p className='text-sm leading-tight py-2 px-3 rounded-md'>{testimonialText}</p>
+								<p className='text-sm leading-tight py-2 px-3 rounded-md'>{renderTestimonialWithStyledDash(testimonialText)}</p>
 							</div>
 						</motion.div>
 					</div>
@@ -298,7 +315,7 @@ export default function IntroSection() {
 							{/* Desktop-only testimonial */}
 							<div className='hidden md:block absolute bottom-0 left-0 right-0 text-center'>
 								<div className='mt-4'>
-									<p className='text-lg max-w-xl mx-auto'>{testimonialText}</p>
+									<p className='text-lg max-w-xl mx-auto'>{renderTestimonialWithStyledDash(testimonialText)}</p>
 								</div>
 							</div>
 						</div>

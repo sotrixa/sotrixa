@@ -10,6 +10,29 @@ export default function CreatedToMatterSection() {
 	const titleRef = useRef<HTMLDivElement>(null);
 	const contentRef = useRef<HTMLDivElement>(null);
 
+	// Function to render text with styled dashes
+	const renderTextWithStyledDash = (text: string) => {
+		// Apply the same dash styling as IntroSection
+		if (text.includes('—')) {
+			const parts = text.split('—');
+			const elements: React.ReactNode[] = [];
+			
+			parts.forEach((part, index) => {
+				elements.push(<span key={`text-${index}`}>{part}</span>);
+				if (index < parts.length - 1) {
+					elements.push(
+						<span key={`dash-${index}`} style={{ fontSize: '1em', fontWeight: '200', transform: 'scaleX(0.5)', display: 'inline-block' }}>
+							–
+						</span>
+					);
+				}
+			});
+			
+			return elements;
+		}
+		return text;
+	};
+
 	// Animate the background grid
 	useEffect(() => {
 		if (!backgroundRef.current) return;
@@ -124,13 +147,13 @@ export default function CreatedToMatterSection() {
 					{/* Content paragraphs */}
 					<div ref={contentRef} className='grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12'>
 						<motion.div className='text-lg sm:text-xl leading-relaxed space-y-6' initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
-							<p>Empowering bold ideas with strategies that align vision, purpose, and growth. Sotrixa partners with visionary entrepreneurs, creatives, and changemakers—those building with purpose and seeking clarity along the way.</p>
-							<p>We work closely to translate bold ideas into aligned, authentic strategies that are ready for real-world growth.</p>
+							<p>{renderTextWithStyledDash('Empowering bold ideas with strategies that align vision, purpose, and growth. Sotrixa partners with visionary entrepreneurs, creatives, and changemakers—those building with purpose and seeking clarity along the way.')}</p>
+							<p>{renderTextWithStyledDash('We work closely to translate bold ideas into aligned, authentic strategies that are ready for real-world growth.')}</p>
 						</motion.div>
 
 						<motion.div className='text-lg sm:text-xl leading-relaxed space-y-6' initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
-							<p>Through deep research, sharp analysis, and strategic design, vision becomes structure—turning potential into direction, and ambition into action.</p>
-							<p>Beyond client work, Sotrixa invests in artistic and educational initiatives, giving under- resourced children access to imagination, learning, and creative self-expression. Because the future needs more creators—and every child deserves a space to dream.</p>
+							<p>{renderTextWithStyledDash('Through deep research, sharp analysis, and strategic design, vision becomes structure—turning potential into direction, and ambition into action.')}</p>
+							<p>{renderTextWithStyledDash('Beyond client work, Sotrixa invests in artistic and educational initiatives, giving under- resourced children access to imagination, learning, and creative self-expression. Because the future needs more creators—and every child deserves a space to dream.')}</p>
 						</motion.div>
 					</div>
 				</div>

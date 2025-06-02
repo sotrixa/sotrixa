@@ -218,7 +218,7 @@ export default function HomeSection() {
 					// Lower video quality on mobile devices for better performance
 					poster={isMobile ? '/video/home-page-poster.jpg' : undefined}
 				>
-					<source src={isMobile ? '/video/home-page-video-mobile.mp4' : '/video/home-page-video.mp4'} type='video/mp4' />
+					<source src={isMobile ? '/video/Sotrixa-Home-2.mp4' : '/video/Sotrixa-Home-2.mp4'} type='video/mp4' />
 					Your browser does not support the video tag.
 				</video>
 			</div>
