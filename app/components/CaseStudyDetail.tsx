@@ -41,20 +41,6 @@ export default function CaseStudyDetail({ study, activeService, caseStudies, onC
 		setCurrentStudy(study);
 	}, [study]);
 
-	// Update current study when activeService changes
-	useEffect(() => {
-		if (caseStudies && caseStudies[activeService] && caseStudies[activeService].length > 0) {
-			const firstStudy = caseStudies[activeService][0];
-			setCurrentStudy(firstStudy);
-
-			// Force content to be visible in case animations failed
-			if (contentRef.current) {
-				contentRef.current.style.opacity = '1';
-				contentRef.current.style.transform = 'translateY(0)';
-			}
-		}
-	}, [activeService, caseStudies]);
-
 	// Transition to next case study with animation
 	const goToNextCaseStudy = (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
@@ -79,8 +65,8 @@ export default function CaseStudyDetail({ study, activeService, caseStudies, onC
 
 		setIsAnimating(true);
 
-		// Find current study in the flat array
-		const currentIndex = allCaseStudies.findIndex((item) => item.study.title === currentStudy.title && item.service === activeService);
+		// Find current study in the flat array by title only (since titles should be unique)
+		const currentIndex = allCaseStudies.findIndex((item) => item.study.title === currentStudy.title);
 
 		// Get next study (cycle back to 0 if at the end)
 		const nextIndex = currentIndex < allCaseStudies.length - 1 ? currentIndex + 1 : 0;
