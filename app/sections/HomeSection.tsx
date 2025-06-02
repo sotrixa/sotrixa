@@ -89,9 +89,9 @@ export default function HomeSection() {
 				tl.fromTo(buttonsRef.current, { y: 10 }, { y: 0, duration: 0.5 }, '-=0.2');
 
 				// Video container animation - start from visible but slightly offset
-				// Only do horizontal animation on desktop
+				// Simple fade in animation for desktop (no horizontal movement)
 				if (!isMobile) {
-					tl.fromTo(videoContainerRef.current, { x: 30 }, { x: 0, duration: 1 }, '-=0.8');
+					tl.fromTo(videoContainerRef.current, { autoAlpha: 0.8, scale: 1.05 }, { autoAlpha: 1, scale: 1, duration: 1 }, '-=0.8');
 				} else {
 					// For mobile, fade in the background video with a slight scale effect
 					tl.fromTo(videoContainerRef.current, { autoAlpha: 0.7, scale: 1.05 }, { autoAlpha: 1, scale: 1, duration: 1 }, '-=0.8');
