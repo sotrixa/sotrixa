@@ -51,6 +51,12 @@ export default function HomeSection() {
 		// Skip on server side
 		if (typeof window === 'undefined') return;
 
+		// Immediately hide grid elements on mount to prevent flash
+		if (gridRef.current) {
+			const columns = gridRef.current.querySelectorAll(`.${styles.column}`);
+			gsap.set(columns, { autoAlpha: 0 });
+		}
+
 		// Short delay to ensure DOM is fully rendered
 		const animationTimeout = setTimeout(() => {
 			if (!containerRef.current) return;

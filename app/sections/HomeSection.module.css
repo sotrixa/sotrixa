@@ -134,6 +134,7 @@
 	height: 100%;
 	display: flex;
 	flex-direction: column;
+	opacity: 0; /* Initially hidden to prevent flash */
 }
 
 .column > div {

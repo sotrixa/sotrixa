@@ -218,7 +218,7 @@ export default function CaseStudySection() {
 				<div className='grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-6 case-studies-grid' style={{ display: showDetail ? 'none' : 'grid' }}>
 					{/* Left column - 5/12 width */}
 					<div className='lg:col-span-6 px-6 sm:pl-8 md:pl-12 lg:pl-16 lg:pr-8 pb-8 lg:pb-16 flex flex-col items-start justify-center h-full'>
-						<h2 className='mt-6 lg:mt-10 case-studies-title text-2xl md:text-6xl font-bold text-black text-left w-full'>
+						<h2 className='mt-6 lg:mt-10 case-studies-title text-2xl md:text-6xl font-black text-black text-left w-full'>
 							{/* Render title with colored words */}
 							{(() => {
 								let lastIndex = 0;
