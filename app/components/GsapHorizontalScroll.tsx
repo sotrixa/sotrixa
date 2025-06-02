@@ -103,7 +103,7 @@ export default function GsapHorizontalScroll({ children }: GsapHorizontalScrollP
 			// Logo breathing effect
 			.to(logoRef.current, {
 				scale: 1.05,
-				duration: 2,
+				duration: 1.5,
 				ease: 'sine.inOut',
 				repeat: -1,
 				yoyo: true
