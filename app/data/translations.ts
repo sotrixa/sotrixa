@@ -30,28 +30,28 @@ export const translations: Translations = {
 		bg: 'Проучването също трябва да бъде',
 	},
 	'introSection.title': {
-		en: 'Every {{strategy:#38E4D3}} has a {{rhythm:#D142E2}}\n—ours begins by {{listening:#EFC851}}',
-		bg: 'Всяка {{strategy:#38E4D3}} има свой {{rhythm:#D142E2}}\n—нашата започва със {{listening:#EFC851}}',
+		en: 'Every {{strategy:#53EBDD}} has a {{rhythm:#DD53EB}}\n—ours begins by {{listening:#EBDD53}}',
+		bg: 'Всяка {{strategy:#53EBDD}} има свой {{rhythm:#DD53EB}}\n—нашата започва със {{listening:#EBDD53}}',
 	},
 	'introSection.subheading': {
 		en: 'SOTRIXA in 60 seconds',
 		bg: 'SOTRIXA за 60 секунди',
 	},
 	'introSection.testimonial': {
-		en: "Each project becomes a living story, unfolding through research, structure, strategy, and design - shaping everything from your foundation to how you're seen and remembered",
-		bg: 'Всеки проект се превръща в жива история, разгръщаща се чрез изследване, структура, стратегия и дизайн -формираща всичко от вашата основа до това как сте възприемани и запомнени.',
+		en: "Each project becomes a living story, unfolding through research, structure, strategy, and design — shaping everything from your foundation to how you're seen and remembered",
+		bg: 'Всеки проект се превръща в жива история, разгръщаща се чрез изследване, структура, стратегия и дизайн — формираща всичко от вашата основа до това как сте възприемани и запомнени.',
 	},
 	'servicesSection.title': {
-		en: 'The way we work is {{layered:#EFC851}}, {{intentional:#D142E2}}, and deeply {{aligned:#38E4D3}}',
-		bg: 'Начинът, по който работим, е {{layered:#EFC851}}, {{intentional:#D142E2}} и дълбоко {{aligned:#38E4D3}}.',
+		en: 'The way we work is {{layered:#EBDD53}}, {{intentional:#DD53EB}}, and deeply {{aligned:#53EBDD}}',
+		bg: 'Начинът, по който работим, е {{layered:#EBDD53}}, {{intentional:#DD53EB}} и дълбоко {{aligned:#53EBDD}}.',
 	},
 	'servicesSection.subtitle': {
-		en: 'We move from insight to structure, strategy to story—building identities and experiences that hold together and move forward.',
+		en: 'We move from insight to structure, strategy to story — building identities and experiences that hold together and move forward.',
 		bg: 'Преминаваме от прозрение към структура, от стратегия към история—изграждайки идентичности и преживявания, които се свързват и вървят напред.',
 	},
 	'caseStudySection.title': {
-		en: 'We {{build:#EFC851}} with {{purpose:#D142E2}}—and every outcome reflects the {{thinking:#38E4D3}} behind it',
-		bg: 'Ние {{build:#EFC851}} с {{purpose:#D142E2}}—и всеки резултат отразява {{thinking:#38E4D3}} зад него',
+		en: 'We {{build:#EBDD53}} with {{purpose:#DD53EB}}—and every outcome reflects the {{thinking:#53EBDD}} behind it',
+		bg: 'Ние {{build:#EBDD53}} с {{purpose:#DD53EB}}—и всеки резултат отразява {{thinking:#53EBDD}} зад него',
 	},
 	'caseStudySection.subtitle': {
 		en: 'A glimpse into how we shape strategy, identity, and experience with intention',

@@ -91,58 +91,85 @@ export default function IntroSection() {
 	};
 
 	const renderColoredText = (text: string) => {
-		console.log('Original text:', JSON.stringify(text));
-		
-		// Fix em dash spacing first - using hair spaces for minimal spacing
-		const fixedText = text.replace(/\s*—\s*/g, '\u200A—\u200A');
-		console.log('Fixed text:', JSON.stringify(fixedText));
-		
-		// Parse the text with color markers {{word:#color}} while preserving spaces
-		const parts = fixedText.split(/(\{\{.*?\}\})/g);
-		console.log('Split parts:', parts);
+		// Parse the colored text exactly like CaseStudySection
+		const colorPattern = /\{\{([^:]+):([^}]+)\}\}/g;
+		const coloredWords: { word: string; color: string }[] = [];
 
-		return parts.map((part, i) => {
-			// Check if this part is a color marker
-			const match = part.match(/\{\{(.*?):(.*?)\}\}/);
-			if (match) {
-				const [, word, color] = match;
-				return (
-					<span key={i} style={{ color }}>
-						{word}
+		let match;
+		let plainText = text;
+
+		while ((match = colorPattern.exec(text)) !== null) {
+			const [fullMatch, word, color] = match;
+			coloredWords.push({ word, color });
+			plainText = plainText.replace(fullMatch, word);
+		}
+
+		// Render using the same logic as CaseStudySection
+		let lastIndex = 0;
+		const elements: React.ReactNode[] = [];
+
+		// Sort colored words by their position in the original text
+		const sortedWords = [...coloredWords].sort((a, b) => plainText.indexOf(a.word) - plainText.indexOf(b.word));
+
+		// Process each colored word
+		sortedWords.forEach(({ word, color }, i) => {
+			const wordIndex = plainText.indexOf(word, lastIndex);
+
+			// Add text before the colored word
+			if (wordIndex > lastIndex) {
+				const textBefore = plainText.substring(lastIndex, wordIndex);
+				// Check if text contains em dash and style it smaller
+				if (textBefore.includes('—')) {
+					const parts = textBefore.split('—');
+					elements.push(<span key={`text-${i}-before`}>{parts[0]}</span>);
+					elements.push(
+						<span key={`dash-${i}`} style={{ fontSize: '1em', fontWeight: '200', transform: 'scaleX(0.5)', display: 'inline-block' }}>
+							–
+						</span>
+					);
+					if (parts[1]) elements.push(<span key={`text-${i}-after`}>{parts[1]}</span>);
+				} else {
+					elements.push(<span key={`text-${i}`}>{textBefore}</span>);
+				}
+			}
+
+			// Add the colored word
+			elements.push(
+				<span key={`colored-${i}`} style={{ color }}>
+					{word}
+				</span>
+			);
+
+			lastIndex = wordIndex + word.length;
+		});
+
+		// Add any remaining text
+		if (lastIndex < plainText.length) {
+			const remainingText = plainText.substring(lastIndex);
+			// Check if remaining text contains em dash and style it smaller
+			if (remainingText.includes('—')) {
+				const parts = remainingText.split('—');
+				elements.push(<span key='text-end-before'>{parts[0]}</span>);
+				elements.push(
+					<span key='dash-end' style={{ fontSize: '0.6em', fontWeight: '200', transform: 'scaleX(0.5)', display: 'inline-block' }}>
+						–
 					</span>
 				);
+				if (parts[1]) elements.push(<span key='text-end-after'>{parts[1]}</span>);
+			} else {
+				elements.push(<span key='text-end'>{remainingText}</span>);
 			}
+		}
 
-			// Check if this part contains an em dash and style it smaller
-			if (part.includes('—')) {
-				const dashParts = part.split('—');
-				const elements: React.ReactElement[] = [];
-				dashParts.forEach((dashPart, dashIndex) => {
-					if (dashIndex > 0) {
-						// Add the styled dash with consistent spacing before each part (except the first)
-						elements.push(
-							<span key={`${i}-dash-${dashIndex}`} style={{ fontSize: '1em', fontWeight: '200', transform: 'scaleX(0.5)', display: 'inline-block', margin: '0 0.02em' }}>
-								—
-							</span>
-						);
-					}
-					// Preserve the exact text content including spaces
-					elements.push(<span key={`${i}-text-${dashIndex}`}>{dashPart}</span>);
-				});
-				return elements;
-			}
-
-			// Return the text part as-is, preserving ALL spaces
-			return <span key={i}>{part}</span>;
-		});
+		return elements;
 	};
 
 	// Split the title into two parts
 	const titleText = getText('introSection.title', 'en').split('\n');
 	const firstLine = titleText[0] || '';
 	const secondLine = titleText[1] || '';
-	// Join both lines for rendering
-	const fullTitle = `${firstLine} ${secondLine}`.trim();
+	// Join both lines for rendering - no space needed since secondLine starts with dash
+	const fullTitle = `${firstLine}${secondLine}`.trim();
 	const subheadingText = getText('introSection.subheading', 'en');
 	const testimonialText = getText('introSection.testimonial', 'en');
 

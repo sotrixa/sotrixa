@@ -160,13 +160,11 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 			particlesRef.current.removeChild(particlesRef.current.firstChild);
 		}
 
-		// Colors matching ServicesSection gradient
+		// Colors matching the new color scheme
 		const colors = [
-			'bg-[#f4dd65]', // yellow
-			'bg-[#d142e2]', // purple
-			'bg-[#70DFC6]', // teal
-			'bg-[#F5A623]', // orange
-			'bg-[#9F7AEA]', // lavender
+			'bg-[#EBDD53]', // yellow
+			'bg-[#DD53EB]', // purple
+			'bg-[#53EBDD]', // green
 		];
 
 		// Create variety of particle shapes
@@ -359,7 +357,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 
 		// Create a flash effect
 		const flashOverlay = document.createElement('div');
-		flashOverlay.className = 'absolute inset-0 bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] pointer-events-none z-50';
+		flashOverlay.className = 'absolute inset-0 bg-gradient-to-r from-[#EBDD53] via-[#DD53EB] to-[#53EBDD] pointer-events-none z-50';
 		flashOverlay.style.opacity = '0';
 		sectionDivRef.current.appendChild(flashOverlay);
 
@@ -512,34 +510,34 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 		// Define color mappings for each service
 		const colorMappings: Record<string, Record<string, string>> = {
 			RESEARCH: {
-				research: 'text-[#D142E2]',
-				signals: 'text-[#71DDC6]',
-				strategies: 'text-[#F4DD65]',
+				research: 'text-[#DD53EB]',
+				signals: 'text-[#53EBDD]',
+				strategies: 'text-[#EBDD53]',
 			},
 			'BUSINESS ARCHITECTURE': {
-				vision: 'text-[#D142E2]',
-				structured: 'text-[#71DDC6]',
-				growth: 'text-[#F4DD65]',
+				vision: 'text-[#DD53EB]',
+				structured: 'text-[#53EBDD]',
+				growth: 'text-[#EBDD53]',
 			},
 			'BESPOKE STRATEGY CREATION': {
-				vision: 'text-[#D142E2]',
-				clarity: 'text-[#71DDC6]',
-				purpose: 'text-[#F4DD65]',
+				vision: 'text-[#DD53EB]',
+				clarity: 'text-[#53EBDD]',
+				purpose: 'text-[#EBDD53]',
 			},
 			BRANDING: {
-				Bringing: 'text-[#D142E2]',
-				story: 'text-[#71DDC6]',
-				emotionally: 'text-[#F4DD65]',
+				Bringing: 'text-[#DD53EB]',
+				story: 'text-[#53EBDD]',
+				emotionally: 'text-[#EBDD53]',
 			},
 			MARKETING: {
-				presence: 'text-[#D142E2]',
-				strategies: 'text-[#71DDC6]',
-				move: 'text-[#F4DD65]',
+				presence: 'text-[#DD53EB]',
+				strategies: 'text-[#53EBDD]',
+				move: 'text-[#EBDD53]',
 			},
 			'WEBSITE DEVELOPMENT': {
-				websites: 'text-[#D142E2]',
-				feeling: 'text-[#71DDC6]',
-				experience: 'text-[#F4DD65]',
+				websites: 'text-[#DD53EB]',
+				feeling: 'text-[#53EBDD]',
+				experience: 'text-[#EBDD53]',
 			},
 		};
 
@@ -687,7 +685,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 							x: 2, // Slight shift right
 							opacity: 1,
 							scale: 1.05, // Slight scale up
-							color: '#d142e2', // Match the purple from gradient
+							color: '#DD53EB', // Match the new purple color
 							stagger: 0.01, // Faster stagger for more professional feel
 							duration: 0.25,
 							ease: 'power2.out',
@@ -725,18 +723,18 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 			if (titleRef) {
 				const service = ['CREATED TO MATTER', 'RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRANDING', 'MARKETING', 'WEBSITE DEVELOPMENT'][index];
 
-				// Set initial styles - change blue to gradient purple
+				// Set initial styles - using new purple color
 				gsap.set(titleRef, {
 					letterSpacing: '0.05em',
-					color: activeService === service ? '#d142e2' : '#333', // Changed from blue to purple, and #000 to #333
+					color: activeService === service ? '#DD53EB' : '#333', // Using new purple color
 					fontWeight: 'bold',
-					textShadow: activeService === service ? '0 0 3px rgba(209,66,226,0.3)' : 'none', // Updated shadow color
+					textShadow: activeService === service ? '0 0 3px rgba(221,83,235,0.3)' : 'none', // Updated shadow color
 				});
 
 				// If there's an active service on initial load, animate its text
 				if (activeService === service) {
 					gsap.to(titleRef, {
-						color: '#d142e2', // Changed from blue to purple
+						color: '#DD53EB', // Using new purple color
 						fontWeight: 'bold',
 						duration: 0.3,
 					});
@@ -926,7 +924,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 				{/* Left side with strategy heading and services list */}
 				<div className='w-full md:w-1/2 p-4 md:p-8 flex flex-col justify-center min-h-screen md:min-h-full' ref={leftSideRef}>
 					<div className='mb-6' ref={logoRef}>
-						<button onClick={handleBackToServices} ref={backButtonRef} className='group flex items-center space-x-2 cursor-pointer text-black hover:text-[#f4dd65] transition-colors duration-300'>
+						<button onClick={handleBackToServices} ref={backButtonRef} className='group flex items-center space-x-2 cursor-pointer text-black hover:text-[#EBDD53] transition-colors duration-300'>
 							<svg xmlns='http://www.w3.org/2000/svg' className='h-5 w-5 transform transition-transform duration-300 group-hover:-translate-x-1' viewBox='0 0 20 20' fill='currentColor'>
 								<path fillRule='evenodd' d='M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z' clipRule='evenodd' />
 							</svg>
@@ -936,7 +934,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 
 					<div className='mb-6'>
 						<h1 className='!text-4xl md:!text-5xl lg:!text-5xl font-bold mb-0' ref={headingRef}>
-							{activeService && serviceContents[activeService] ? renderStyledTitle(serviceContents[activeService].title, activeService) : <span className='text-transparent bg-clip-text bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6]'>{currentContent.title}</span>}
+							{activeService && serviceContents[activeService] ? renderStyledTitle(serviceContents[activeService].title, activeService) : <span className='text-transparent bg-clip-text bg-gradient-to-r from-[#EBDD53] via-[#DD53EB] to-[#53EBDD]'>{currentContent.title}</span>}
 						</h1>
 					</div>
 
@@ -963,13 +961,13 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 									animateLetterStagger(prevIndex);
 									animateParticles();
 								}}
-								className='group flex items-center space-x-3 text-black hover:text-[#d142e2] transition-all duration-300'
+								className='group flex items-center space-x-3 text-black hover:text-[#DD53EB] transition-all duration-300'
 								aria-label='Previous service'
 							>
 								<svg xmlns='http://www.w3.org/2000/svg' className='h-6 w-6 transition-colors duration-300' viewBox='0 0 20 20' fill='currentColor'>
 									<path fillRule='evenodd' d='M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z' clipRule='evenodd' />
 								</svg>
-								<span className='text-sm font-medium tracking-wide transition-colors duration-300'>Previous service</span>
+								<span className='text-sm font-medium tracking-wide transition-colors duration-300'>Previous Service</span>
 							</button>
 
 							{/* Service dots indicator */}
@@ -1017,7 +1015,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 									animateLetterStagger(nextIndex);
 									animateParticles();
 								}}
-								className='group flex items-center space-x-3 text-black hover:text-[#d142e2] transition-all duration-300'
+								className='group flex items-center space-x-3 text-black hover:text-[#DD53EB] transition-all duration-300'
 								aria-label='Next service'
 							>
 								<span className='text-sm font-medium tracking-wide transition-colors duration-300'>See next Service</span>
@@ -1053,7 +1051,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 
 										return (
 											<div key={index} className='flex items-start group hover:translate-x-1 transition-transform duration-300 py-[1px]'>
-												<span className='text-[#d142e2] text-xs mr-1.5 mt-[3px] opacity-90 group-hover:opacity-100 flex-shrink-0'>•</span>
+												<span className='text-[#DD53EB] text-xs mr-1.5 mt-[3px] opacity-90 group-hover:opacity-100 flex-shrink-0'>•</span>
 												<div className='text-gray-700 leading-snug'>
 													<span className='font-medium text-gray-800'>{bulletTitle}</span>
 													{bulletContent && (

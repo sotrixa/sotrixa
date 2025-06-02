@@ -275,7 +275,7 @@ export default function ServicesSection() {
 							{/* Left side with colored text */}
 							<motion.div className='md:w-full' initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.1 }}>
 								<div className='text-3xl sm:text-5xl md:text-[57px] leading-tight font-black max-w-[642px]'>
-									{/* Simplified title rendering to prevent duplication */}
+									{/* Enhanced title rendering with proper dash styling */}
 									{(() => {
 										let lastIndex = 0;
 										const elements = [];
@@ -289,7 +289,20 @@ export default function ServicesSection() {
 
 											// Add text before the colored word
 											if (wordIndex > lastIndex) {
-												elements.push(<span key={`text-${i}`}>{rawTitleText.substring(lastIndex, wordIndex)}</span>);
+												const textBefore = rawTitleText.substring(lastIndex, wordIndex);
+												// Check if text contains em dash and style it smaller
+												if (textBefore.includes('—')) {
+													const parts = textBefore.split('—');
+													elements.push(<span key={`text-${i}-before`}>{parts[0]}</span>);
+													elements.push(
+														<span key={`dash-${i}`} style={{ fontSize: '0.6em', fontWeight: '200', transform: 'scaleX(0.5)', display: 'inline-block' }}>
+															–
+														</span>
+													);
+													if (parts[1]) elements.push(<span key={`text-${i}-after`}>{parts[1]}</span>);
+												} else {
+													elements.push(<span key={`text-${i}`}>{textBefore}</span>);
+												}
 											}
 
 											// Add the colored word
@@ -304,13 +317,51 @@ export default function ServicesSection() {
 
 										// Add any remaining text
 										if (lastIndex < rawTitleText.length) {
-											elements.push(<span key='text-end'>{rawTitleText.substring(lastIndex)}</span>);
+											const remainingText = rawTitleText.substring(lastIndex);
+											// Check if remaining text contains em dash and style it smaller
+											if (remainingText.includes('—')) {
+												const parts = remainingText.split('—');
+												elements.push(<span key='text-end-before'>{parts[0]}</span>);
+												elements.push(
+													<span key='dash-end' style={{ fontSize: '0.6em', fontWeight: '200', transform: 'scaleX(0.5)', display: 'inline-block' }}>
+														–
+													</span>
+												);
+												if (parts[1]) elements.push(<span key='text-end-after'>{parts[1]}</span>);
+											} else {
+												elements.push(<span key='text-end'>{remainingText}</span>);
+											}
 										}
 
 										return elements;
 									})()}
 									<br />
-									<span className='text-black text-2xl sm:text-3xl md:text-xl font-medium mt-6 block'>{subtitleTranslation}</span>
+									<span className='text-black text-2xl sm:text-3xl md:text-xl font-medium mt-6 block'>
+										{/* Enhanced subtitle rendering with proper dash styling */}
+										{(() => {
+											// Handle em dashes in subtitle
+											if (subtitleTranslation.includes('—')) {
+												const parts = subtitleTranslation.split('—');
+												const elements: React.ReactNode[] = [];
+												
+												parts.forEach((part, index) => {
+													elements.push(<span key={`subtitle-${index}`}>{part}</span>);
+													// Add styled dash between parts (except after the last part)
+													if (index < parts.length - 1) {
+														elements.push(
+															<span key={`subtitle-dash-${index}`} style={{ fontSize: '0.6em', fontWeight: '200', transform: 'scaleX(0.5)', display: 'inline-block' }}>
+																–
+															</span>
+														);
+													}
+												});
+												
+												return elements;
+											} else {
+												return subtitleTranslation;
+											}
+										})()}
+									</span>
 								</div>
 							</motion.div>
 

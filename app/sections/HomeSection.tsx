@@ -149,21 +149,21 @@ export default function HomeSection() {
 						// Simplified layout for mobile
 						<>
 							<span className={styles.white}>We are a </span>
-							<span className={styles.teal}>strategy lab</span>
+							<span style={{ color: '#53EBDD' }}>strategy lab</span>
 							<span className={styles.white}> for </span>
-							<span className={styles.magenta}>visionary</span>
+							<span style={{ color: '#DD53EB' }}>visionary</span>
 							<span className={styles.white}> </span>
-							<span className={styles.yellow}>thinkers</span>
+							<span style={{ color: '#EBDD53' }}>thinkers</span>
 						</>
 					) : (
 						// Original layout for desktop
 						<>
 							<span>We are a </span>
-							<span className={styles.teal}>strategy</span>
+							<span style={{ color: '#53EBDD' }}>strategy</span>
 							<span> lab for </span>
-							<span className={styles.magenta}>visionary</span>
+							<span style={{ color: '#DD53EB' }}>visionary</span>
 							<span> </span>
-							<span className={styles.yellow}>thinkers</span>
+							<span style={{ color: '#EBDD53' }}>thinkers</span>
 						</>
 					)}
 				</h1>
