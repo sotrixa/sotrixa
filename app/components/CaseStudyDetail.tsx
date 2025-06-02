@@ -22,12 +22,11 @@ type CaseStudy = {
 
 type CaseStudyDetailProps = {
 	study: CaseStudy;
-	activeService: string;
 	caseStudies: Record<string, CaseStudy[]>;
 	onClose: () => void;
 };
 
-export default function CaseStudyDetail({ study, activeService, caseStudies, onClose }: CaseStudyDetailProps) {
+export default function CaseStudyDetail({ study, caseStudies, onClose }: CaseStudyDetailProps) {
 	const detailRef = useRef<HTMLDivElement>(null);
 	const titleRef = useRef<HTMLHeadingElement>(null);
 	const imageRef = useRef<HTMLDivElement>(null);
