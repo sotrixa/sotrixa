@@ -50,12 +50,20 @@
 
 .video {
 	width: 70%;
-	height: 60vh;
-	object-fit: cover;
+	height: 52vh;
+	object-fit: fill;
 	position: relative;
 	z-index: 2;
 	max-width: 100%;
 	border-radius: 12px;
+	margin: 0;
+	padding: 0;
+	border: none;
+	outline: none;
+	display: block;
+	background: transparent;
+	transform: scale(1.05) translateY(-2%); /* Slightly scale and move up to crop any black bars */
+	overflow: hidden; /* Hide any overflow from the scaling */
 }
 
 .heading {

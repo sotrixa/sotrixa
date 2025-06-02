@@ -249,7 +249,7 @@ export default function HomeSection() {
 					poster={isMobile ? '/video/home-page-poster.jpg' : undefined}
 					ref={videoRef}
 				>
-					<source src={isMobile ? '/video/Sotrixa-Home-2.mp4' : '/video/Sotrixa-Home-2.mp4'} type='video/mp4' />
+					<source src={isMobile ? '/video/home-video-v2.mp4' : '/video/home-video-v2.mp4'} type='video/mp4' />
 					Your browser does not support the video tag.
 				</video>
 			</div>
