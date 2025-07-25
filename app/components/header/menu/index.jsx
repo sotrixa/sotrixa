@@ -119,10 +119,10 @@ export default function index({ closeMenu }) {
 			</div>
 
 			<motion.div variants={opacity} {...mountAnim} custom={0.5} className={styles.footer}>
-				<a>FB</a>
-				<a>IG</a>
-				<a>IN</a>
-				<a>BE</a>
+				
+				<a>Instagram</a>
+				<a>LinkedIn</a>
+			
 			</motion.div>
 		</motion.div>
 	);

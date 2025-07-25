@@ -159,7 +159,7 @@ export default function ContactSection() {
 						<div className='space-y-3'>
 							
 							<div>
-								<p className='text-xs uppercase tracking-wider font-medium text-gray-500 mb-2'>Contact Information</p>
+								<p className='text-xs uppercase tracking-wider font-medium text-gray-500 mb-2'>Get in touch with us</p>
 
 								<div className='space-y-1.5'>
 									<div className='flex items-center space-x-3'>
@@ -172,19 +172,15 @@ export default function ContactSection() {
 									</div>
 
 									<div className='flex items-center space-x-3'>
-										<div className='w-6 h-6 flex items-center justify-center border border-gray-200 rounded-full'>
-											<span className='text-xs'>📱</span>
-										</div>
-										<a href='tel:+15551234567' className='text-gray-700 hover:text-black transition-colors text-sm'>
-											+1 (555) 123-4567
-										</a>
+										
+										
 									</div>
 
 									<div className='flex items-center space-x-3'>
 										<div className='w-6 h-6 flex items-center justify-center border border-gray-200 rounded-full'>
 											<span className='text-xs'>📍</span>
 										</div>
-										<p className='text-gray-700 text-sm'>Tech Hub, Innovation Square</p>
+										<p className='text-gray-700 text-sm'>Sofia, Bulgaria</p>
 									</div>
 								</div>
 							</div>
@@ -192,7 +188,7 @@ export default function ContactSection() {
 							<div>
 								<p className='text-xs uppercase tracking-wider font-medium text-gray-500 mb-2'>Follow Us</p>
 								<div className='flex space-x-2'>
-									{['Twitter', 'LinkedIn', 'Instagram', 'GitHub'].map((platform) => (
+									{['Instagram', 'LinkedIn'].map((platform) => (
 										<a key={platform} href='#' className='w-6 h-6 flex items-center justify-center border border-gray-200 rounded-full text-gray-600 hover:bg-gray-100 hover:border-gray-300 transition-colors text-xs' aria-label={platform}>
 											{platform[0]}
 										</a>
