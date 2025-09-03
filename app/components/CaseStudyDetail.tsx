@@ -197,16 +197,8 @@ export default function CaseStudyDetail({ study, caseStudies, onClose }: CaseStu
 
 						<div ref={contentRef} className='space-y-8 pb-16 max-w-full'>
 							<div className='detail-content space-y-12 max-w-full'>
-								{currentStudy.subtitle && (
-									<div className='mb-8 max-w-full'>
-										<h3 className='text-xl font-medium text-gray-900 mb-4 break-words'>Overview</h3>
-										<p className='text-base text-gray-700 leading-relaxed break-words'>{currentStudy.subtitle}</p>
-									</div>
-								)}
-
 								{currentStudy.description && (
 									<div className='mb-8 max-w-full'>
-										<h3 className='text-xl font-medium text-gray-900 mb-4 break-words'>Description</h3>
 										<p className='text-base text-gray-700 leading-relaxed break-words'>{currentStudy.description}</p>
 									</div>
 								)}

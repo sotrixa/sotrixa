@@ -57,6 +57,17 @@ const caseStudies: CaseStudiesData = {
 			results: 'The new brand identity and strategic plan allowed her to connect meaningfully with clients, positioning her practice for growth and sustainability.',
 		},
 	],
+	'International Cosmetics Brand': [
+		{
+			title: 'International Cosmetics Brand',
+			subtitle: 'A newly established somatic therapist',
+			image: '/case-studies/sports-direct-1.jpg',
+			description: 'An international cosmetics company with a growing global presence was looking to evaluate the effectiveness of its internal employee programs and benefits—seeking to understand how they were received across the organization and what could be improved.',
+			challenge: 'Despite continued business growth, several employee loyalty initiatives and internal benefits programs were underperforming. Engagement and perceived value varied across departments, making it difficult to assess impact or guide future improvements.',
+			solution: "Research: Conducted in-depth, one-to-one interviews with employees across different levels and departments to uncover honest perspectives, unmet needs, and areas of friction within existing programs.",
+			results: 'The research surfaced key disconnects in perception, communication, and relevance. Sotrixa provided actionable recommendations to refine current initiatives and introduce strategic adjustments—leading to stronger alignment between employee expectations and company offerings.',
+		},
+	],
 };
 
 export default function CaseStudySection() {
