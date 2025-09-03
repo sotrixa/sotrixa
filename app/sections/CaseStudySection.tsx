@@ -60,7 +60,7 @@ const caseStudies: CaseStudiesData = {
 	'International Cosmetics Brand': [
 		{
 			title: 'International Cosmetics Brand',
-			subtitle: 'A newly established somatic therapist',
+			subtitle: 'An international cosmetics company with a growing global presence.',
 			image: '/case-studies/sports-direct-1.jpg',
 			description: 'An international cosmetics company with a growing global presence was looking to evaluate the effectiveness of its internal employee programs and benefits—seeking to understand how they were received across the organization and what could be improved.',
 			challenge: 'Despite continued business growth, several employee loyalty initiatives and internal benefits programs were underperforming. Engagement and perceived value varied across departments, making it difficult to assess impact or guide future improvements.',
