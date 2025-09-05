@@ -1,129 +1,34 @@
 'use client';
 
 import { useRef, useState, useEffect, useCallback } from 'react';
+import { motion } from 'framer-motion';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
 import MobileServiceInfoSection from './MobileServiceInfoSection';
+import { getText, parseColoredText, Language } from '../../data/translations';
 
-// Register ScrollTrigger plugin
-if (typeof window !== 'undefined') {
-	gsap.registerPlugin(ScrollTrigger);
-}
-
-function MobileServicesSectionComponent() {
-	const sectionRef = useRef<HTMLDivElement>(null);
+export default function MobileServicesSection() {
 	const servicesRef = useRef<HTMLDivElement>(null);
 	const serviceItemsRef = useRef<(HTMLDivElement | null)[]>([]);
-	const gifRef = useRef<HTMLDivElement>(null);
+	const sectionContainerRef = useRef<HTMLDivElement>(null);
 	const backgroundRef = useRef<HTMLDivElement>(null);
-	const [activeServiceIndex, setActiveServiceIndex] = useState(0);
-	const [isDetailView, setIsDetailView] = useState(false);
+	const [activeServiceIndex, setActiveServiceIndex] = useState(-1);
 	const [showServiceInfo, setShowServiceInfo] = useState(false);
+	const [language] = useState<Language>('en');
+	
+	// EXACT SAME SERVICES AS DESKTOP
+	const services = ['RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRANDING', 'MARKETING', 'WEBSITE DEVELOPMENT'];
+
+	const isAnimating = useRef(false);
 	const isScrolling = useRef(false);
 
-	// Store navigation history to ensure correct back flow
-	const navigationHistory = useRef<{
-		fromListToDetail: boolean;
-		fromDetailToInfo: boolean;
-	}>({
-		fromListToDetail: false,
-		fromDetailToInfo: false,
-	});
+	// Get title and subtitle from translations - EXACT SAME AS DESKTOP
+	const titleTranslation = getText('servicesSection.title', language);
+	const subtitleTranslation = getText('servicesSection.subtitle', language);
 
-	// Services data - matches desktop version
-	const services = ['CREATED TO MATTER', 'RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRANDING', 'MARKETING', 'WEBSITE DEVELOPMENT'];
+	// Parse the colored text in title - EXACT SAME AS DESKTOP
+	const { text: rawTitleText, coloredWords } = parseColoredText(titleTranslation);
 
-	// Service descriptions - matches desktop version
-	const serviceDescriptions = ['Empowering bold ideas with strategies that align vision, purpose, and growth.', 'Deep research, nuanced insight, and future-facing signals that shape powerful strategies.', 'Turning vision into a structured, evolving business - ready for real-world growth.', 'Precision-crafted roadmaps that move your vision forward with clarity, coherence, and purpose.', 'Bringing your business true story to life - visually, verbally, and emotionally.', 'Expanding your presence with soulful marketing strategies that resonate and move.', 'Crafting websites where form meets feeling, and strategy becomes tangible experience.'];
-
-	// Set up refs for service items
-	useEffect(() => {
-		serviceItemsRef.current = serviceItemsRef.current.slice(0, services.length);
-	}, [services.length]);
-
-	// Function to animate detail view entrance when returning from service info
-	const animateDetailViewEntrance = useCallback(() => {
-		if (!isDetailView) return;
-
-		// Get the detail view container
-		const detailViewContainer = document.querySelector('.detail-view-container');
-		if (!detailViewContainer) return;
-
-		// Create entrance animation
-		gsap.fromTo(
-			detailViewContainer,
-			{
-				opacity: 0.8,
-				y: 10,
-			},
-			{
-				opacity: 1,
-				y: 0,
-				duration: 0.4,
-				ease: 'power2.out',
-			}
-		);
-	}, [isDetailView]);
-
-	// Track state changes between service info and detail view
-	useEffect(() => {
-		// When returning from service info, ensure detail view is visible if we came from detail view
-		if (!showServiceInfo && isDetailView && navigationHistory.current.fromDetailToInfo) {
-			// This means we just returned from service info to detail view
-			// Apply entrance animation with slight delay to ensure DOM is ready
-			setTimeout(() => {
-				animateDetailViewEntrance();
-			}, 50);
-		}
-
-		// When returning to list view from detail view
-		if (!isDetailView && navigationHistory.current.fromListToDetail) {
-			// Reset navigation path
-			navigationHistory.current.fromListToDetail = false;
-		}
-	}, [showServiceInfo, isDetailView, animateDetailViewEntrance]);
-
-	// Effect to handle scrolling prevention
-	useEffect(() => {
-		// Get body element
-		const body = document.body;
-
-		// Prevent scrolling when showing service info or in detail view
-		if (showServiceInfo || isDetailView) {
-			// Save current scroll position
-			const scrollY = window.scrollY;
-
-			// Add no-scroll class and inline styles
-			body.style.position = 'fixed';
-			body.style.top = `-${scrollY}px`;
-			body.style.width = '100%';
-			body.style.overflowY = 'hidden';
-		} else {
-			// Re-enable scrolling when returning to main view
-			const scrollY = body.style.top;
-			body.style.position = '';
-			body.style.top = '';
-			body.style.width = '';
-			body.style.overflowY = '';
-
-			// Restore scroll position
-			if (scrollY) {
-				window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
-			}
-		}
-
-		// Cleanup function
-		return () => {
-			body.style.position = '';
-			body.style.top = '';
-			body.style.width = '';
-			body.style.overflowY = '';
-		};
-	}, [showServiceInfo, isDetailView, animateDetailViewEntrance]);
-
-	// Debounced service index setter to prevent rapid changes
+	// Debounced service index setter - EXACT SAME AS DESKTOP
 	const debouncedSetActiveServiceIndex = useCallback((value: React.SetStateAction<number>) => {
 		if (isScrolling.current) return;
 
@@ -133,15 +38,51 @@ function MobileServicesSectionComponent() {
 		// Reset scrolling flag after animation completes
 		setTimeout(() => {
 			isScrolling.current = false;
-		}, 500);
+		}, 700); // Slightly longer than animation duration
 	}, []);
 
-	// Get random position within boundaries
+	// Handle service click - EXACT SAME LOGIC AS DESKTOP
+	const handleServiceClick = useCallback(
+		(index: number) => {
+			if (isAnimating.current) return;
+
+			isAnimating.current = true;
+			debouncedSetActiveServiceIndex(index);
+
+			// Animate to service info after a delay
+			setTimeout(() => {
+				setShowServiceInfo(true);
+				isAnimating.current = false;
+			}, 600);
+		},
+		[debouncedSetActiveServiceIndex]
+	);
+
+	// Handle back from service info - EXACT SAME AS DESKTOP
+	const handleBackFromServiceInfo = () => {
+		// Create animation sequence for smooth transition back
+		const tl = gsap.timeline({
+			onComplete: () => {
+				setShowServiceInfo(false);
+			},
+		});
+
+		// Fade out animation before returning to services
+		tl.to('.service-info-container', {
+			opacity: 0.8,
+			scale: 0.98,
+			duration: 0.3,
+			ease: 'power2.inOut',
+		});
+	};
+
+	// Get random position within boundaries - EXACT SAME AS DESKTOP
 	const getRandomPosition = () => {
-		const maxX = 70;
-		const maxY = 60;
-		const minX = 20;
-		const minY = 20;
+		// Ensure values stay within the screen boundaries (with padding)
+		const maxX = 80; // Max percentage of screen width
+		const maxY = 70; // Max percentage of screen height
+		const minX = 10; // Min percentage from left
+		const minY = 10; // Min percentage from top
 
 		return {
 			x: Math.floor(Math.random() * (maxX - minX) + minX),
@@ -149,348 +90,187 @@ function MobileServicesSectionComponent() {
 		};
 	};
 
-	// GSAP Floating Animation for GIF
+	// Set up refs for service items
 	useEffect(() => {
-		if (!gifRef.current || isDetailView) return;
-
-		// Kill any existing animations
-		gsap.killTweensOf(gifRef.current);
-
-		// Get random initial position
-		const initialPos = getRandomPosition();
-
-		// Create floating animation
-		const tl = gsap.timeline({
-			repeat: -1,
-			repeatRefresh: true,
-			onRepeat: () => {
-				// Change GIF positions on each loop
-				const newPos = getRandomPosition();
-				gsap.to(gifRef.current, {
-					left: `${newPos.x}%`,
-					top: `${newPos.y}%`,
-					duration: 6,
-					ease: 'power1.inOut',
-				});
-			},
-		});
-
-		// Set initial position
-		gsap.set(gifRef.current, {
-			left: `${initialPos.x}%`,
-			top: `${initialPos.y}%`,
-			xPercent: -50,
-			yPercent: -50,
-			rotate: Math.random() * 8 - 4,
-		});
-
-		// Floating animation
-		tl.to(gifRef.current, {
-			x: '+=30',
-			y: '-=20',
-			rotate: Math.random() * 8 - 4,
-			duration: 4 + Math.random() * 2,
-			ease: 'sine.inOut',
-		})
-			.to(gifRef.current, {
-				x: '-=40',
-				y: '+=30',
-				rotate: Math.random() * 8 - 4,
-				duration: 5 + Math.random() * 2,
-				ease: 'sine.inOut',
-			})
-			.to(gifRef.current, {
-				x: '+=10',
-				y: '-=10',
-				rotate: Math.random() * 8 - 4,
-				duration: 3 + Math.random() * 2,
-				ease: 'sine.inOut',
-			});
-
-		return () => {
-			tl.kill();
-		};
-	}, [activeServiceIndex, isDetailView]);
-
-	// Animate the background grid
-	useEffect(() => {
-		if (!backgroundRef.current) return;
-
-		gsap.fromTo(
-			backgroundRef.current,
-			{
-				opacity: 0,
-				scale: 0.95,
-			},
-			{
-				opacity: 0.4,
-				scale: 1,
-				duration: 1.2,
-				ease: 'power2.out',
-			}
-		);
-
-		// Subtle continuous movement
-		gsap.to(backgroundRef.current, {
-			backgroundPosition: '100% 100%',
-			duration: 90,
-			ease: 'none',
-			repeat: -1,
-		});
-	}, []);
-
-	// Main service list animations
-	useEffect(() => {
-		if (!servicesRef.current) return;
-
-		// Staggered animation for service items
-		serviceItemsRef.current.forEach((item, index) => {
-			if (!item) return;
-
-			gsap.fromTo(
-				item,
-				{
-					opacity: 0,
-					y: 20,
-				},
-				{
-					opacity: 1,
-					y: 0,
-					duration: 0.4,
-					delay: 0.1 + index * 0.08,
-					scrollTrigger: {
-						trigger: item,
-						start: 'top 85%',
-						toggleActions: 'play none none reverse',
-					},
-				}
-			);
-		});
-
-		return () => {
-			ScrollTrigger.getAll().forEach((trigger) => trigger.kill(true));
-		};
-	}, [isDetailView]);
-
-	// Handle service selection
-	const handleServiceClick = (index: number) => {
-		debouncedSetActiveServiceIndex(index);
-
-		// Set navigation history
-		navigationHistory.current.fromListToDetail = true;
-		navigationHistory.current.fromDetailToInfo = false;
-
-		// Smooth transition without flash
-		const tl = gsap.timeline();
-		tl.to(gifRef.current, {
-			opacity: 0,
-			scale: 0.8,
-			duration: 0.3,
-			ease: 'power1.out',
-			onComplete: () => {
-				setIsDetailView(true);
-			},
-		});
-	};
-
-	// Handle back button click
-	const handleBackClick = () => {
-		// Reset navigation history
-		navigationHistory.current.fromListToDetail = false;
-		navigationHistory.current.fromDetailToInfo = false;
-
-		setIsDetailView(false);
-
-		// Restore GIF animation after switching back to list view
-		if (gifRef.current) {
-			gsap.to(gifRef.current, {
-				opacity: 1,
-				scale: 1,
-				duration: 0.5,
-				ease: 'power2.out',
-			});
-		}
-	};
-
-	// Handle service info link click
-	const handleServiceInfoClick = (e: React.MouseEvent) => {
-		e.preventDefault();
-
-		// Set navigation history
-		navigationHistory.current.fromDetailToInfo = true;
-
-		// Create smooth transition
-		const tl = gsap.timeline({
-			onComplete: () => {
-				setShowServiceInfo(true);
-			},
-		});
-
-		// Fade out the current view before showing service info
-		tl.to('.detail-view-container', {
-			opacity: 0.8,
-			y: -10,
-			duration: 0.3,
-			ease: 'power2.inOut',
-		});
-	};
-
-	// Handle back from service info
-	const handleBackFromServiceInfo = () => {
-		setShowServiceInfo(false);
-		setIsDetailView(false);
-		navigationHistory.current.fromListToDetail = false;
-		navigationHistory.current.fromDetailToInfo = false;
-
-		// Scroll to the services section after overlay closes
-		setTimeout(() => {
-			const section = document.getElementById('mobile-services');
-			if (section) {
-				section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-			}
-		}, 100);
-	};
-
-	// Reset scroll position on view changes
-	useEffect(() => {
-		// Reset scroll position when changing views
-		if (typeof window !== 'undefined') {
-			window.scrollTo(0, 0);
-		}
-	}, [isDetailView, showServiceInfo]);
+		serviceItemsRef.current = serviceItemsRef.current.slice(0, services.length);
+	}, [services.length]);
 
 	return (
 		<>
 			{showServiceInfo ? (
-				<div className='fixed inset-0 z-[200] w-full h-full bg-[#FAFAFA] overflow-auto service-info-container'>
+				<div className='relative'>
 					<MobileServiceInfoSection onBackClick={handleBackFromServiceInfo} activeService={services[activeServiceIndex]} />
 				</div>
 			) : (
-				<section ref={sectionRef} id='mobile-services' className='relative min-h-screen py-10 pt-[100px] overflow-hidden bg-[#FAFAFA] text-black'>
-					{/* Minimalist grid background */}
+				<section id='mobile-services' className='bg-[#FAFAFA] text-black p-4 sm:p-6 relative overflow-hidden min-h-screen'>
+					{/* EXACT SAME BACKGROUND AS DESKTOP - Minimalist grid background */}
 					<div
 						ref={backgroundRef}
 						className='absolute inset-0 z-0'
 						style={{
 							backgroundImage: `
-								linear-gradient(to right, rgba(150,150,150,0.12) 1px, transparent 1px),
-								linear-gradient(to bottom, rgba(150,150,150,0.12) 1px, transparent 1px)
+								linear-gradient(to right, rgba(150,150,150,0.15) 1px, transparent 1px),
+								linear-gradient(to bottom, rgba(150,150,150,0.15) 1px, transparent 1px)
 							`,
-							backgroundSize: '30px 30px',
+							backgroundSize: '40px 40px',
 							backgroundPosition: '0 0',
 						}}
 					>
-						{/* Decorative elements */}
-						<div className='absolute top-[15%] left-[10%] w-[60px] h-[60px] border-2 border-gray-300 rounded-full opacity-20 transform rotate-45'></div>
-						<div className='absolute bottom-[20%] right-[5%] w-[80px] h-[80px] border-2 border-gray-300 rounded-full opacity-20 transform -rotate-12'></div>
+						{/* EXACT SAME DECORATIVE ELEMENTS AS DESKTOP - Gear-like decorative elements */}
+						<div className='absolute top-[20%] left-[15%] w-[60px] sm:w-[80px] h-[60px] sm:h-[80px] border-2 border-gray-300 rounded-full opacity-25 transform rotate-45'></div>
+						<div className='absolute top-[15%] left-[12%] w-[40px] sm:w-[60px] h-[40px] sm:h-[60px] border-2 border-gray-300 rounded-full opacity-20'></div>
+						<div className='absolute bottom-[25%] right-[10%] w-[80px] sm:w-[100px] h-[80px] sm:h-[100px] border-2 border-gray-300 rounded-full opacity-25 transform -rotate-12'></div>
 
-						{/* Abstract lines */}
-						<div className='absolute top-[25%] left-0 w-[20%] h-[1px] bg-gradient-to-r from-transparent via-gray-400 to-transparent opacity-30'></div>
-						<div className='absolute bottom-[35%] right-0 w-[25%] h-[1px] bg-gradient-to-l from-transparent via-gray-400 to-transparent opacity-30'></div>
+						{/* EXACT SAME ABSTRACT LINES AS DESKTOP */}
+						<div className='absolute top-[30%] left-0 w-[25%] h-[2px] bg-gradient-to-r from-transparent via-gray-400 to-transparent opacity-30'></div>
+						<div className='absolute bottom-[40%] right-0 w-[30%] h-[2px] bg-gradient-to-l from-transparent via-gray-400 to-transparent opacity-30'></div>
 
-						{/* Dots grid in corner */}
+						{/* EXACT SAME DOTS GRID AS DESKTOP */}
 						<div
-							className='absolute top-0 right-0 w-[120px] h-[120px] opacity-15'
+							className='absolute top-0 right-0 w-[100px] sm:w-[150px] h-[100px] sm:h-[150px] opacity-20'
 							style={{
-								backgroundImage: 'radial-gradient(circle, rgba(100,100,100,0.6) 1.5px, transparent 1.5px)',
-								backgroundSize: '15px 15px',
+								backgroundImage: 'radial-gradient(circle, rgba(100,100,100,0.7) 2px, transparent 2px)',
+								backgroundSize: '20px 20px',
 							}}
 						></div>
 					</div>
 
-					<div className='relative container mx-auto px-4 z-10'>
-						{/* Floating GIF - positioned randomly and hidden in detail view */}
-						<div
-							ref={gifRef}
-							className='absolute w-[150px] h-[100px] z-10 drop-shadow-xl transform-gpu pointer-events-none'
-							style={{
-								filter: 'drop-shadow(0 10px 10px rgba(0,0,0,0.15))',
-								visibility: isDetailView ? 'hidden' : 'visible',
-							}}
-						>
-							<motion.div key={activeServiceIndex} initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }} className='w-full h-full relative'>
-								<Image src={`/gif/service${activeServiceIndex + 1}.gif`} alt={`${services[activeServiceIndex]} visualization`} fill style={{ objectFit: 'cover' }} className='rounded-lg border-2 border-white' priority />
+					{/* Container div with ref */}
+					<div ref={sectionContainerRef} className='relative w-full h-full' style={{ zIndex: 2 }}>
+						<div className='flex flex-col items-center justify-center mt-10 gap-8 py-8 min-h-screen'>
+							{/* EXACT SAME TITLE SECTION AS DESKTOP - Mobile optimized layout */}
+							<motion.div className='w-full text-center' initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.1 }}>
+								<div className='text-2xl sm:text-3xl md:text-4xl leading-tight font-black max-w-full px-4'>
+									{/* EXACT SAME TITLE RENDERING LOGIC AS DESKTOP */}
+									{(() => {
+										let lastIndex = 0;
+										const elements = [];
+
+										// Sort colored words by their position in the original text
+										const sortedWords = [...coloredWords].sort((a, b) => rawTitleText.indexOf(a.word) - rawTitleText.indexOf(b.word));
+
+										// Process each colored word
+										sortedWords.forEach(({ word, color }, i) => {
+											const wordIndex = rawTitleText.indexOf(word, lastIndex);
+
+											// Add text before the colored word
+											if (wordIndex > lastIndex) {
+												const textBefore = rawTitleText.substring(lastIndex, wordIndex);
+												// Check if text contains em dash and style it smaller
+												if (textBefore.includes('—')) {
+													const parts = textBefore.split('—');
+													elements.push(<span key={`text-${i}-before`}>{parts[0]}</span>);
+													elements.push(
+														<span key={`dash-${i}`} style={{ fontSize: '0.6em', fontWeight: '200', transform: 'scaleX(0.5)', display: 'inline-block' }}>
+															–
+														</span>
+													);
+													if (parts[1]) elements.push(<span key={`text-${i}-after`}>{parts[1]}</span>);
+												} else {
+													elements.push(<span key={`text-${i}`}>{textBefore}</span>);
+												}
+											}
+
+											// Add the colored word
+											elements.push(
+												<span key={`colored-${i}`} style={{ color }}>
+													{word}
+												</span>
+											);
+
+											lastIndex = wordIndex + word.length;
+										});
+
+										// Add any remaining text
+										if (lastIndex < rawTitleText.length) {
+											const remainingText = rawTitleText.substring(lastIndex);
+											// Check if remaining text contains em dash and style it smaller
+											if (remainingText.includes('—')) {
+												const parts = remainingText.split('—');
+												elements.push(<span key='text-end-before'>{parts[0]}</span>);
+												elements.push(
+													<span key='dash-end' style={{ fontSize: '0.6em', fontWeight: '200', transform: 'scaleX(0.5)', display: 'inline-block' }}>
+														–
+													</span>
+												);
+												if (parts[1]) elements.push(<span key='text-end-after'>{parts[1]}</span>);
+											} else {
+												elements.push(<span key='text-end'>{remainingText}</span>);
+											}
+										}
+
+										return elements;
+									})()}
+									<br />
+									<span className='text-black text-lg sm:text-xl font-medium mt-4 block'>
+										{/* EXACT SAME SUBTITLE RENDERING AS DESKTOP */}
+										{(() => {
+											// Handle em dashes in subtitle
+											if (subtitleTranslation.includes('—')) {
+												const parts = subtitleTranslation.split('—');
+												const elements: React.ReactNode[] = [];
+												
+												parts.forEach((part, index) => {
+													elements.push(<span key={`subtitle-${index}`}>{part}</span>);
+													// Add styled dash between parts (except after the last part)
+													if (index < parts.length - 1) {
+														elements.push(
+															<span key={`subtitle-dash-${index}`} style={{ fontSize: '0.6em', fontWeight: '200', transform: 'scaleX(0.5)', display: 'inline-block' }}>
+																–
+															</span>
+														);
+													}
+												});
+												
+												return elements;
+											} else {
+												return subtitleTranslation;
+											}
+										})()}
+									</span>
+								</div>
 							</motion.div>
-						</div>
 
-						<AnimatePresence mode='wait'>
-							{!isDetailView ? (
-								/* Services List View */
-								<motion.div key='services-list' initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }} className='pt-6'>
-									<div className='mb-8'>
-										<div className='text-2xl sm:text-3xl font-bold max-w-[90%] mb-6'>
-											<span>Strategic Services</span>
-											<span className='bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] text-transparent bg-clip-text'> For Your Business</span>
-										</div>
-										<p className='text-base text-gray-600 mb-8'>Tailored solutions that align with your vision and drive growth.</p>
-									</div>
-
-									{/* Cool gradient title with slogan */}
-									<div className='space-y-2 w-full mb-6'>
-										<h2 className='text-xl font-bold tracking-tight relative overflow-hidden'>
-											<span className='bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] text-transparent bg-clip-text animate-pulse'>You need it - we do it!</span>
-										</h2>
-										<div className='h-1 w-full bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] rounded-full'></div>
-									</div>
-
-									{/* Services list */}
-									<div ref={servicesRef} className='space-y-4 mt-6'>
+							{/* EXACT SAME SERVICES LIST AS DESKTOP - Mobile optimized layout */}
+							<motion.div 
+								key='services-list' 
+								className='w-full' 
+								initial={{ opacity: 0, x: 50 }} 
+								animate={{ opacity: 1, x: 0 }} 
+								exit={{ opacity: 0, x: -50 }} 
+								transition={{ duration: 0.5 }} 
+								ref={servicesRef}
+							>
+								<div className='flex flex-col items-center text-center space-y-6 p-4'>
+									{/* EXACT SAME SERVICES MAPPING AS DESKTOP */}
+									<div className='w-full space-y-6'>
 										{services.map((service, index) => (
 											<div
 												key={service}
-												className={`cursor-pointer transform transition-all duration-300 ${index === activeServiceIndex ? 'text-black font-bold text-2xl -translate-y-1' : 'text-gray-500 font-medium text-lg'}`}
+												className={`cursor-pointer transform transition-all duration-300 ${
+													index === activeServiceIndex 
+														? 'text-black font-black text-xl sm:text-2xl -translate-y-1' 
+														: 'text-gray-500 font-bold text-lg sm:text-xl hover:text-gray-700 hover:-translate-y-1'
+												}`}
 												onClick={() => handleServiceClick(index)}
 												ref={(el) => {
 													if (el) serviceItemsRef.current[index] = el;
 												}}
 											>
 												<span>{service}</span>
+												{/* EXACT SAME ACTIVE INDICATOR AS DESKTOP */}
+												{index === activeServiceIndex && (
+													<div className='h-1 w-24 sm:w-32 bg-[#d142e2] rounded-full mt-1 transform transition-all duration-300 mx-auto'></div>
+												)}
 											</div>
 										))}
 									</div>
-								</motion.div>
-							) : (
-								/* Service Detail View */
-								<motion.div key='service-detail' initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }} transition={{ duration: 0.4 }} className='pt-6 detail-view-container'>
-									{/* Back button */}
-									<button onClick={handleBackClick} className='text-gray-500 hover:text-black transition-colors flex items-center space-x-2 mb-6 py-2'>
-										<svg xmlns='http://www.w3.org/2000/svg' className='h-5 w-5' viewBox='0 0 20 20' fill='currentColor'>
-											<path fillRule='evenodd' d='M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z' clipRule='evenodd' />
-										</svg>
-										<span>Back to services</span>
-									</button>
-
-									{/* Service title with gradient */}
-									<div className='space-y-2 mb-6'>
-										<motion.h1 className='text-3xl font-bold tracking-tight' initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.4 }}>
-											<span className='bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] text-transparent bg-clip-text'>{services[activeServiceIndex]}</span>
-										</motion.h1>
-										<div className='h-1 w-2/3 bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] rounded-full'></div>
-									</div>
-
-									{/* Service description */}
-									<motion.p className='text-base text-gray-700 mb-8' initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.4 }}>
-										{serviceDescriptions[activeServiceIndex]}
-									</motion.p>
-
-									{/* Links section */}
-									<motion.div className='flex flex-col space-y-4 mt-6 pt-4 border-t border-gray-200 w-full' initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.4 }}>
-										<h3 className='text-sm uppercase tracking-widest text-gray-400'>Explore More</h3>
-										<a href='#' className='group flex items-center space-x-2 text-lg font-medium text-black touch-action-manipulation' onClick={handleServiceInfoClick} style={{ touchAction: 'manipulation' }} aria-label={`Explore more details about ${services[activeServiceIndex]}`}>
-											<span>Learn More</span>
-											<svg xmlns='http://www.w3.org/2000/svg' className='h-5 w-5 transform transition-transform group-hover:translate-x-1' viewBox='0 0 20 20' fill='currentColor'>
-												<path fillRule='evenodd' d='M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z' clipRule='evenodd' />
-											</svg>
-										</a>
-									</motion.div>
-								</motion.div>
-							)}
-						</AnimatePresence>
+								</div>
+							</motion.div>
+						</div>
 					</div>
 				</section>
 			)}
 		</>
 	);
 }
-
-export default MobileServicesSectionComponent;

@@ -81,7 +81,7 @@ function MobileLayoutComponent({ children }: Props) {
 					{/* Logo container with proper padding */}
 					<div className='h-full flex items-center pointer-events-auto pt-4'>
 						<Link href='/' className='z-50 pb-5'>
-							<Image src='/sotrixa-logo.webp' alt='Sotrixa Logo' width={90} height={36} className='transition-all duration-300' style={{ filter: isScrolled && !menuIsOpen ? 'none' : 'brightness(0) invert(0)' }} priority />
+							<Image src='/sotrixa-logo.webp' alt='Sotrixa Logo' width={50} height={36} className='transition-all duration-300' style={{ filter: isScrolled && !menuIsOpen ? 'none' : 'brightness(0) invert(0)' }} priority />
 						</Link>
 					</div>
 

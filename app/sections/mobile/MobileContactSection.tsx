@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useContactForm } from '../../lib/hooks/useContactForm';
 
 // Register ScrollTrigger plugin once
 if (typeof window !== 'undefined') {
@@ -15,6 +16,9 @@ export default function MobileContactSection() {
 	const formRef = useRef<HTMLFormElement>(null);
 	const contactInfoRef = useRef<HTMLDivElement>(null);
 	const [animationsInitialized, setAnimationsInitialized] = useState(false);
+
+	// Contact form hook
+	const { formData, isSubmitting, isSuccess, error, handleInputChange, handleSubmit } = useContactForm();
 
 	useEffect(() => {
 		if (typeof window === 'undefined') return;
@@ -93,7 +97,7 @@ export default function MobileContactSection() {
 	}, []);
 
 	return (
-		<section id='mobile-contact' className='bg-[#FAFAFA] text-black py-12 px-4'>
+		<section id='mobile-contact' className='bg-[#FAFAFA] text-black py-12 px-4 mt-[-10rem]'>
 			<div className='max-w-sm mx-auto'>
 				<div ref={headingRef} className='mb-8 text-center' style={{ opacity: animationsInitialized ? undefined : 1 }}>
 					<h2 className='text-3xl font-medium mb-2'>Contact</h2>
@@ -117,18 +121,9 @@ export default function MobileContactSection() {
 
 							<div className='flex items-center space-x-3'>
 								<div className='w-8 h-8 flex items-center justify-center border border-gray-200 rounded-full'>
-									<span className='text-sm'>📱</span>
-								</div>
-								<a href='tel:+15551234567' className='text-gray-700 hover:text-black transition-colors text-sm'>
-									+1 (555) 123-4567
-								</a>
-							</div>
-
-							<div className='flex items-center space-x-3'>
-								<div className='w-8 h-8 flex items-center justify-center border border-gray-200 rounded-full'>
 									<span className='text-sm'>📍</span>
 								</div>
-								<p className='text-gray-700 text-sm'>Tech Hub, Innovation Square</p>
+								<p className='text-gray-700 text-sm'>Sofia, Bulgaria</p>
 							</div>
 						</div>
 					</div>
@@ -136,7 +131,7 @@ export default function MobileContactSection() {
 					<div>
 						<p className='text-sm uppercase tracking-wider font-medium text-gray-500 mb-3'>Follow Us</p>
 						<div className='flex space-x-2'>
-							{['Twitter', 'LinkedIn', 'Instagram', 'GitHub'].map((platform) => (
+							{['Instagram', 'LinkedIn'].map((platform) => (
 								<a key={platform} href='#' className='w-8 h-8 flex items-center justify-center border border-gray-200 rounded-full text-gray-600 hover:bg-gray-100 hover:border-gray-300 transition-colors' aria-label={platform}>
 									{platform[0]}
 								</a>
@@ -145,38 +140,105 @@ export default function MobileContactSection() {
 					</div>
 				</div>
 
-				<form ref={formRef} className='space-y-4' style={{ opacity: animationsInitialized ? undefined : 1 }}>
+				{/* Success Message */}
+				{isSuccess && (
+					<div className='mb-4 p-3 bg-green-50 border border-green-200 rounded-md'>
+						<p className='text-green-800 text-sm font-medium'>✓ Message sent successfully!</p>
+						<p className='text-green-600 text-xs mt-1'>We&apos;ll get back to you soon.</p>
+					</div>
+				)}
+
+				{/* Error Message */}
+				{error && (
+					<div className='mb-4 p-3 bg-red-50 border border-red-200 rounded-md'>
+						<p className='text-red-800 text-sm font-medium'>⚠ {error}</p>
+						<p className='text-red-600 text-xs mt-1'>Please try again or contact us directly.</p>
+					</div>
+				)}
+
+				<form ref={formRef} onSubmit={handleSubmit} className='space-y-4' style={{ opacity: animationsInitialized ? undefined : 1 }}>
 					<div>
 						<label htmlFor='name' className='block mb-1 text-sm font-medium text-gray-700'>
-							Name
+							Name *
 						</label>
-						<input type='text' id='name' className='w-full px-3 py-2 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800' placeholder='John Doe' />
+						<input 
+							type='text' 
+							id='name' 
+							name='name'
+							value={formData.name}
+							onChange={handleInputChange}
+							className='w-full px-3 py-2 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800' 
+							placeholder='John Doe' 
+							required
+							disabled={isSubmitting}
+						/>
 					</div>
 
 					<div>
 						<label htmlFor='email' className='block mb-1 text-sm font-medium text-gray-700'>
-							Email
+							Email *
 						</label>
-						<input type='email' id='email' className='w-full px-3 py-2 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800' placeholder='john@example.com' />
+						<input 
+							type='email' 
+							id='email' 
+							name='email'
+							value={formData.email}
+							onChange={handleInputChange}
+							className='w-full px-3 py-2 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800' 
+							placeholder='john@example.com' 
+							required
+							disabled={isSubmitting}
+						/>
 					</div>
 
 					<div>
 						<label htmlFor='subject' className='block mb-1 text-sm font-medium text-gray-700'>
-							Subject
+							Subject *
 						</label>
-						<input type='text' id='subject' className='w-full px-3 py-2 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800' placeholder='Project inquiry' />
+						<input 
+							type='text' 
+							id='subject' 
+							name='subject'
+							value={formData.subject}
+							onChange={handleInputChange}
+							className='w-full px-3 py-2 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800' 
+							placeholder='Project inquiry' 
+							required
+							disabled={isSubmitting}
+						/>
 					</div>
 
 					<div>
 						<label htmlFor='message' className='block mb-1 text-sm font-medium text-gray-700'>
-							Message
+							Message *
 						</label>
-						<textarea id='message' rows={3} className='w-full px-3 py-2 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800' placeholder='Tell us about your project...'></textarea>
+						<textarea 
+							id='message' 
+							name='message'
+							value={formData.message}
+							onChange={handleInputChange}
+							rows={3} 
+							className='w-full px-3 py-2 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800 resize-none' 
+							placeholder='Tell us about your project...'
+							required
+							disabled={isSubmitting}
+						></textarea>
 					</div>
 
 					<div>
-						<button type='submit' className='w-full px-4 py-2.5 bg-black text-white font-medium rounded-md hover:bg-gray-800 transition-colors'>
-							Send Message
+						<button 
+							type='submit' 
+							disabled={isSubmitting}
+							className='w-full px-4 py-2.5 bg-black text-white font-medium rounded-md hover:bg-gray-800 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2'
+						>
+							{isSubmitting ? (
+								<>
+									<div className='w-4 h-4 border border-white border-t-transparent rounded-full animate-spin'></div>
+									Sending...
+								</>
+							) : (
+								'Send Message'
+							)}
 						</button>
 					</div>
 				</form>

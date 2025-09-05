@@ -66,13 +66,27 @@ export default function Navigation() {
 				<div className='flex justify-between items-center'>
 					{/* Logo */}
 					<Link href={getLogoHref()} className='transition-transform duration-300 hover:scale-105'>
-						<Image src='/sotrixa-logo.webp' alt='Sotrixa Logo' width={isMobile ? 100 : 120} height={isMobile ? 33 : 40} className='transition-all duration-300' />
+						<Image 
+							src='/sotrixa-logo.webp' 
+							alt='Sotrixa Logo' 
+							width={isMobile ? 20 : 120} 
+							height={isMobile ? 20 : 40} 
+							className='transition-all duration-300' 
+							priority
+						/>
 					</Link>
+					
+					{/* Mobile Menu - only show on mobile and position it within the white container */}
+					{isMobile && (
+						<div className='relative'>
+							<Header />
+						</div>
+					)}
 				</div>
 			</div>
 
-			{/* Sliding Stairs Menu */}
-			<Header />
+			{/* Desktop Sliding Stairs Menu - only show on desktop */}
+			{!isMobile && <Header />}
 		</nav>
 	);
 }

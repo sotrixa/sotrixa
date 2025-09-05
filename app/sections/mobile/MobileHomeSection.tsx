@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { useLanguage } from '../../data/LanguageContext';
 import { getText } from '../../data/translations';
-import Link from 'next/link';
+
 
 const MobileHome: React.FC = () => {
 	const [windowWidth, setWindowWidth] = useState(0);
@@ -105,7 +105,7 @@ const MobileHome: React.FC = () => {
 	};
 
 	return (
-		<div id='home' ref={containerRef} className='relative min-h-screen w-full overflow-hidden flex items-center justify-center bg-[#fafafa]'>
+		<div id='mobile-home' ref={containerRef} className='relative min-h-screen w-full overflow-hidden flex items-center justify-center bg-[#fafafa]'>
 			<div ref={bodyRef} className='relative z-10 flex flex-col items-center text-center px-4 sm:px-6 md:px-8 py-12 sm:py-16 md:py-20 max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl mx-auto'>
 				<h1 ref={headingRef} className='text-[2rem] xs:text-[2.2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] font-bold leading-tight mb-4 sm:mb-6 md:mb-8 text-black'>
 					<span className='inline'>We are a </span>
@@ -121,21 +121,57 @@ const MobileHome: React.FC = () => {
 				</p>
 
 				<div ref={buttonsRef} className='flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4 mb-4 w-full max-w-md'>
-					<Link href='#contact' className='w-full sm:w-auto'>
-						<button className='w-full sm:w-auto py-3 sm:py-3.5 px-6 sm:px-8 bg-black text-white hover:bg-gray-800 transition-colors font-medium rounded-md touch-manipulation text-sm sm:text-base'>
-							{getText('homeSection.talkToUs', language)}
-						</button>
-					</Link>
-					<Link href='#services' className='w-full sm:w-auto'>
-						<button className='w-full sm:w-auto py-3 sm:py-3.5 px-6 sm:px-8 bg-transparent border-2 border-black text-black hover:bg-black hover:text-white transition-colors font-medium rounded-md touch-manipulation text-sm sm:text-base'>
-							What we do
-						</button>
-					</Link>
-					<Link href='#case-studies' className='w-full sm:w-auto'>
-						<button className='w-full sm:w-auto py-3 sm:py-3.5 px-6 sm:px-8 bg-transparent border-2 border-black text-black hover:bg-black hover:text-white transition-colors font-medium rounded-md touch-manipulation text-sm sm:text-base'>
-							{getText('homeSection.seeOurWork', language)}
-						</button>
-					</Link>
+					<button
+						className='w-full sm:w-auto py-3 sm:py-3.5 px-6 sm:px-8 bg-black text-white hover:bg-gray-800 transition-colors font-medium rounded-md touch-manipulation text-sm sm:text-base'
+						onClick={() => {
+							// Navigate to Contact section for mobile
+							const contactSection = document.getElementById('mobile-contact');
+							if (contactSection) {
+								contactSection.scrollIntoView({ 
+									behavior: 'smooth',
+									block: 'start'
+								});
+							} else {
+								console.warn('Contact section not found');
+							}
+						}}
+					>
+						{getText('homeSection.talkToUs', language)}
+					</button>
+					<button
+						className='w-full sm:w-auto py-3 sm:py-3.5 px-6 sm:px-8 bg-transparent border-2 border-black text-black hover:bg-black hover:text-white transition-colors font-medium rounded-md touch-manipulation text-sm sm:text-base'
+						onClick={() => {
+							// Navigate to Services section for mobile
+							const servicesSection = document.getElementById('mobile-services');
+							if (servicesSection) {
+								servicesSection.scrollIntoView({ 
+									behavior: 'smooth',
+									block: 'start'
+								});
+							} else {
+								console.warn('Services section not found');
+							}
+						}}
+					>
+						What we do
+					</button>
+					<button
+						className='w-full sm:w-auto py-3 sm:py-3.5 px-6 sm:px-8 bg-transparent border-2 border-black text-black hover:bg-black hover:text-white transition-colors font-medium rounded-md touch-manipulation text-sm sm:text-base'
+						onClick={() => {
+							// Navigate to Case Studies section for mobile
+							const caseStudiesSection = document.getElementById('mobile-case-studies');
+							if (caseStudiesSection) {
+								caseStudiesSection.scrollIntoView({ 
+									behavior: 'smooth',
+									block: 'start'
+								});
+							} else {
+								console.warn('Case Studies section not found');
+							}
+						}}
+					>
+						{getText('homeSection.seeOurWork', language)}
+					</button>
 				</div>
 			</div>
 

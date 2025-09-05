@@ -94,20 +94,29 @@
 /* Mobile specific adjustments */
 @media screen and (max-width: 768px) {
 	.button {
-		width: 100px; /* Larger width for mobile */
-		height: 100px; /* Larger height for mobile */
-		padding: 10px;
+		width: 80px; /* Smaller width for mobile to fit in nav */
+		height: 60px; /* Smaller height for mobile to fit in nav */
+		padding: 8px;
+		position: static; /* Use static positioning on mobile to stay in container */
+		right: auto;
+		top: auto;
+		background-color: transparent; /* Remove background on mobile since it's in white container */
 
 		p {
-			font-size: 16px;
-			margin-bottom: 10px;
+			font-size: 14px;
+			margin-bottom: 6px;
+			color: black; /* Black text on mobile since it's in white container */
 		}
 
 		svg {
-			width: 48px;
-			height: 7px;
-			right: 25px;
-			top: 25px;
+			width: 40px;
+			height: 6px;
+			right: 15px;
+			top: 15px;
+			
+			line {
+				stroke: black; /* Black lines on mobile since it's in white container */
+			}
 		}
 	}
 }

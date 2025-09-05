@@ -2,15 +2,10 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
+import Section from '../../components/Section';
 import CaseStudyDetailMobile from './CaseStudyDetailMobile';
 import { getText, parseColoredText, Language } from '../../data/translations';
-
-// Register ScrollTrigger plugin
-if (typeof window !== 'undefined') {
-	gsap.registerPlugin(ScrollTrigger);
-}
 
 // Define case study data type
 type CaseStudy = {
@@ -27,181 +22,87 @@ type CaseStudiesData = {
 	[key: string]: CaseStudy[];
 };
 
-// Define case study data - matches desktop version
+// Define case study data - EXACT SAME AS DESKTOP
 const caseStudies: CaseStudiesData = {
-	'CREATED TO MATTER': [
+	HOSPITALITY: [
 		{
-			title: 'Created to Matter',
-			subtitle: 'Strategic foundation',
-			image: '/case-studies/created-to-matter.jpg',
-			description: 'Empowering bold ideas with strategies that align vision, purpose, and growth.',
-			challenge: 'Connecting business objectives with meaningful market impact in a saturated landscape.',
-			solution: 'We developed a purpose-driven approach that unified business goals with genuine market needs.',
-			results: 'Established a foundation for sustainable growth with clear purpose and direction.',
+			title: 'Hospitality Business',
+			subtitle: 'A well-established hospitality business in Bulgaria',
+			image: '/case-studies/brand-a.jpg',
+			description: 'A well-established hospitality business in Bulgaria sought new avenues for expansion and strategic growth. With a strong foundation, the goal was to uncover actionable insights to inform future development.',
+			challenge: 'Despite a solid market presence, the business needed fresh strategies to navigate an evolving, competitive hospitality landscape.',
+			solution: "We launched a comprehensive research initiative to guide decision-making:\n\n- Research: Conducted in-depth analysis of the competitive landscape, including trend scanning and forecasting, to uncover emerging opportunities.\n- Bespoke Strategy Creation: Developed a tailored, actionable strategy aligned with the business's strengths and market insights.",
+			results: 'Our efforts identified high-potential growth areas based on current trends. The bespoke strategy offered clear direction, enabling informed expansion decisions.',
 		},
 	],
-	RESEARCH: [
+	'ITALIAN CONCEPT': [
 		{
-			title: 'Sports Direct',
-			subtitle: 'Getting in touch with Gen Z',
-			image: '/case-studies/sports-direct-1.jpg',
-			description: 'A comprehensive research project to understand Gen Z consumer behavior and preferences for Sports Direct, leading to a strategic marketing overhaul.',
-			challenge: 'Sports Direct needed to reconnect with younger consumers who were gravitating toward more trendy athletic brands.',
-			solution: 'We conducted extensive interviews, surveys, and social media analysis to develop detailed customer personas and journey maps specifically for Gen Z shoppers.',
-			results: 'Our insights led to a 28% increase in Gen Z engagement and a 15% boost in sales among the 18-24 demographic within six months of implementation.',
-		},
-		{
-			title: 'Sports Direct',
-			subtitle: 'Getting in touch with Gen Z',
-			image: '/case-studies/sports-direct-2.jpg',
-			description: 'A follow-up campaign that built on our initial research to create targeted digital experiences for the Gen Z audience.',
-			challenge: 'Converting initial engagement into long-term brand loyalty with a demographic known for constantly shifting preferences.',
-			solution: 'We developed an omnichannel approach that integrated social media, influencer partnerships, and in-store experiences tailored to Gen Z values and shopping habits.',
-			results: 'The campaign achieved a 32% increase in repeat purchases and boosted social media following by a 45% among the target demographic.',
-		},
-	],
-	'BUSINESS ARCHITECTURE': [
-		{
-			title: 'Business Client',
-			subtitle: 'Planning for success',
+			title: 'Italian Concept Store',
+			subtitle: 'A specialty retailer introducing Italian lifestyle products',
 			image: '/case-studies/business.jpg',
-			description: 'Turning vision into a structured, evolving business—ready for real-world growth.',
-			challenge: 'The client needed a robust business architecture that would create a foundation for sustainable growth.',
-			solution: 'We developed a detailed business architecture with operational structures and organizational frameworks.',
-			results: 'The client achieved their 18-month goals within 12 months with a scalable business model.',
+			description: 'A specialty retailer introducing Italian lifestyle products to the Bulgarian market aimed to deepen customer engagement and strengthen brand recognition.',
+			challenge: 'While offering high-quality products, the store struggled to establish a cohesive brand presence and connect meaningfully with customers.',
+			solution: "We undertook a strategic repositioning process:​\n\n- Research: Conducted an in-depth analysis of the local retail landscape, exploring customer preferences, market trends, and opportunities for differentiation.​\n- Marketing Plan Development: Crafted a targeted marketing strategy aligned with the store's offerings and audience, defining clear objectives, channels, and engagement steps.",
+			results: "Our work revealed the store's unique market position, enabling stronger customer connection. A clear, research-based marketing strategy laid a foundation for lasting success.",
 		},
 	],
-	'BESPOKE STRATEGY CREATION': [
+	'WELLNESS PRACTICE': [
 		{
-			title: 'Strategy Client',
-			subtitle: 'Custom strategy development',
-			image: '/case-studies/strategy.jpg',
-			description: 'A tailored business strategy to help a mid-sized company expand into new markets while maintaining their unique value proposition.',
-			challenge: 'The client needed to grow without compromising their specialized approach or diluting their brand in highly competitive new territories.',
-			solution: 'We created a phased expansion strategy with careful market analysis and positioning that protected their core differentiation.',
-			results: 'Successful entry into three new markets with 22% year-over-year growth while maintaining customer satisfaction ratings.',
+			title: 'Wellness Practice',
+			subtitle: 'A newly established somatic therapist',
+			image: '/case-studies/sports-direct-1.jpg',
+			description: 'A newly established somatic therapist sought to define her distinctive healing approach and attract aligned clients through a strong, resonant presence.',
+			challenge: 'Launching in a niche market required communicating the unique value of her services and creating a brand identity capable of building trust.',
+			solution: "We guided the practice's development across key areas:​\n\n- Research: Analyzed the local wellness landscape to uncover gaps and opportunities.​\n- Business Architecture: Designed and positioned her service offerings to reflect her methodology.​\n- Branding: Developed a visual and verbal identity capturing the practice's essence and authenticity.​\n- Marketing Strategy: Crafted a marketing plan focused on resonant channels and messaging.",
+			results: 'The new brand identity and strategic plan allowed her to connect meaningfully with clients, positioning her practice for growth and sustainability.',
 		},
 	],
-	BRANDING: [
+	'International Cosmetics Brand': [
 		{
-			title: 'Brand A',
-			subtitle: 'Brand strategy development',
-			image: '/case-studies/brand-a.jpg',
-			description: 'A complete brand transformation for a legacy company looking to modernize while maintaining their core values and customer base.',
-			challenge: 'Brand A struggled with an outdated image despite having quality products, leading to declining market share among younger consumers.',
-			solution: 'We developed a refreshed brand identity with new visual language, messaging, and positioning that honored their heritage while signaling innovation.',
-		},
-		{
-			title: 'Brand Z',
-			subtitle: 'Brand strategy development',
-			image: '/case-studies/brand-a.jpg',
-			description: 'A complete brand transformation for a legacy company looking to modernize while maintaining their core values and customer base.',
-			challenge: 'Brand A struggled with an outdated image despite having quality products, leading to declining market share among younger consumers.',
-			solution: 'We developed a refreshed brand identity with new visual language, messaging, and positioning that honored their heritage while signaling innovation.',
-		},
-	],
-	MARKETING: [
-		{
-			title: 'Marketing Client',
-			subtitle: 'Reaching new audiences',
-			image: '/case-studies/marketing.jpg',
-			description: 'An integrated marketing campaign that helped an established B2B company successfully pivot to reach B2C customers.',
-			challenge: 'The client had strong industry reputation but no recognition among consumers, requiring a complete marketing approach shift.',
-			solution: 'We designed a multi-channel marketing strategy that leveraged their existing credibility while building consumer-focused messaging and touchpoints.',
-			results: 'Achieved 85% brand awareness in target consumer segments within 12 months and exceeded new revenue targets by 30%.',
-		},
-		{
-			title: 'Marketing Client 2',
-			subtitle: 'Reaching new audiences',
-			image: '/case-studies/marketing.jpg',
-			description: 'An integrated marketing campaign that helped an established B2B company successfully pivot to reach B2C customers.',
-			challenge: 'The client had strong industry reputation but no recognition among consumers, requiring a complete marketing approach shift.',
-			solution: 'We designed a multi-channel marketing strategy that leveraged their existing credibility while building consumer-focused messaging and touchpoints.',
-			results: 'Achieved 85% brand awareness in target consumer segments within 12 months and exceeded new revenue targets by 30%.',
-		},
-	],
-	'WEBSITE DEVELOPMENT': [
-		{
-			title: 'Web Client',
-			subtitle: 'Digital experience',
-			image: '/case-studies/website.jpg',
-			description: 'Crafting websites where form meets feeling, and strategy becomes tangible experience.',
-			challenge: 'Creating a website that not only looks beautiful but effectively communicates the brand story and drives conversions.',
-			solution: 'We developed a custom website with seamless UX, interactive elements, and strategic content placement.',
-			results: 'The new website increased user engagement by 40% and conversion rates by 25% within the first quarter.',
+			title: 'International Cosmetics Brand',
+			subtitle: 'An international cosmetics company with a growing global presence.',
+			image: '/case-studies/sports-direct-1.jpg',
+			description: 'An international cosmetics company with a growing global presence was looking to evaluate the effectiveness of its internal employee programs and benefits—seeking to understand how they were received across the organization and what could be improved.',
+			challenge: 'Despite continued business growth, several employee loyalty initiatives and internal benefits programs were underperforming. Engagement and perceived value varied across departments, making it difficult to assess impact or guide future improvements.',
+			solution: "Research: Conducted in-depth, one-to-one interviews with employees across different levels and departments to uncover honest perspectives, unmet needs, and areas of friction within existing programs.",
+			results: 'The research surfaced key disconnects in perception, communication, and relevance. Sotrixa provided actionable recommendations to refine current initiatives and introduce strategic adjustments—leading to stronger alignment between employee expectations and company offerings.',
 		},
 	],
 };
 
 export default function MobileCaseStudySection() {
 	const sectionRef = useRef<HTMLDivElement>(null);
-	const [activeService, setActiveService] = useState<string>('CREATED TO MATTER');
-	const [, setCurrentSlide] = useState(0);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const [activeService, setActiveService] = useState<string>('HOSPITALITY');
 	const sliderRef = useRef<HTMLDivElement>(null);
 	const [selectedStudy, setSelectedStudy] = useState<CaseStudy | null>(null);
+	// New state to control visibility of detail view
 	const [showDetail, setShowDetail] = useState(false);
 	const [language] = useState<Language>('en');
 
-	// Get title and subtitle from translations
+	// Navigation state for carousel - EXACT SAME AS DESKTOP but mobile optimized
+	const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+	const [slidesPerView, setSlidesPerView] = useState(1);
+
+	// Get title and subtitle from translations - EXACT SAME AS DESKTOP
 	const titleTranslation = getText('caseStudySection.title', language);
 	const subtitleTranslation = getText('caseStudySection.subtitle', language);
 
-	// Parse the colored text in title
+	// Parse the colored text in title - EXACT SAME AS DESKTOP
 	const { text: rawTitleText, coloredWords } = parseColoredText(titleTranslation);
 
-	const handleServiceClick = (service: string) => {
-		// Reset selected study when changing service
-		setSelectedStudy(null);
+	// Update slides per view on resize - MOBILE OPTIMIZED
+	useEffect(() => {
+		const updateSlidesPerView = () => {
+			setSlidesPerView(window.innerWidth >= 640 ? 1 : 1); // Always 1 for mobile
+		};
 
-		// Prevent animation if the service is already active
-		if (service === activeService) return;
+		// Set initial value
+		updateSlidesPerView();
 
-		// Animate service change
-		const ctx = gsap.context(() => {
-			// Dim all services
-			gsap.to('.service-item', {
-				opacity: 0.5,
-				duration: 0.3,
-				ease: 'power2.out',
-			});
-
-			// Wait a moment and set the new active service
-			gsap.delayedCall(0.2, () => {
-				setActiveService(service);
-				setCurrentSlide(0); // Reset to first slide when changing service
-
-				// Restore opacity
-				gsap.to('.service-item', {
-					opacity: 1,
-					duration: 0.3,
-					delay: 0.1,
-					ease: 'power2.in',
-				});
-
-				// Animate images in
-				gsap.fromTo('.slider-item', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'power3.out' });
-			});
-		}, sectionRef);
-
-		return () => ctx.revert();
-	};
-
-	const nextSlide = useCallback(() => {
-		if (sliderRef.current) {
-			sliderRef.current.scrollBy({
-				left: 250,
-				behavior: 'smooth',
-			});
-		}
-	}, []);
-
-	const prevSlide = useCallback(() => {
-		if (sliderRef.current) {
-			sliderRef.current.scrollBy({
-				left: -250,
-				behavior: 'smooth',
-			});
-		}
+		// Add resize listener
+		window.addEventListener('resize', updateSlidesPerView);
+		return () => window.removeEventListener('resize', updateSlidesPerView);
 	}, []);
 
 	const handleStudyClick = (study: CaseStudy) => {
@@ -209,22 +110,18 @@ export default function MobileCaseStudySection() {
 		setSelectedStudy(study);
 		// Then show the detail view
 		setShowDetail(true);
-		// Hide the main page content
-		document.body.style.overflow = 'hidden';
 	};
 
 	const handleCloseDetail = () => {
 		// First hide the detail view
 		setShowDetail(false);
-		// Restore scroll
-		document.body.style.overflow = '';
 		// After a delay, clear the selected study
 		setTimeout(() => {
 			setSelectedStudy(null);
 		}, 400); // Match this with animation duration
 	};
 
-	// Use GSAP for animations
+	// Use GSAP for animations - EXACT SAME AS DESKTOP
 	useEffect(() => {
 		if (!sectionRef.current || !caseStudies) return;
 
@@ -234,28 +131,69 @@ export default function MobileCaseStudySection() {
 			});
 
 			// Animate main title and description
-			tl.fromTo('.case-studies-title, .case-studies-description', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, stagger: 0.2 });
+			tl.fromTo('.case-studies-title, .case-studies-description', { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, stagger: 0.2 });
 
 			// Animate services with stagger
-			tl.fromTo('.service-item', { x: -30, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, stagger: 0.15 }, '-=0.4');
+			tl.fromTo('.service-item', { x: -50, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, stagger: 0.15 }, '-=0.4');
 
 			// Animate slider
 			tl.fromTo('.slider-container', { scale: 0.95, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.7 }, '-=0.3');
-
-			// Animate navigation controls
-			tl.fromTo('.nav-controls', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6 }, '-=0.4');
 		}, sectionRef);
 
 		return () => ctx.revert();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [caseStudies]);
+
+	// Get all case studies - EXACT SAME AS DESKTOP
+	const getAllSlides = useCallback(() => {
+		return Object.values(caseStudies).flat();
 	}, []);
 
-	// Calculate all slides to display for the active service
-	const getVisibleSlides = useCallback(() => {
-		const slides = caseStudies[activeService] || [];
-		return slides;
-	}, [activeService]);
+	// Navigation functions - EXACT SAME AS DESKTOP
+	const goToPrevious = () => {
+		setCurrentSlideIndex((prev) => Math.max(0, prev - slidesPerView));
+	};
 
-	// After initial render, apply GSAP animations based on showDetail state
+	const goToNext = () => {
+		const allSlides = getAllSlides();
+		const maxIndex = Math.max(0, allSlides.length - slidesPerView);
+		setCurrentSlideIndex((prev) => Math.min(maxIndex, prev + slidesPerView));
+	};
+
+	// Check if navigation buttons should be disabled - EXACT SAME AS DESKTOP
+	const isPrevDisabled = currentSlideIndex === 0;
+	const isNextDisabled = () => {
+		const allSlides = getAllSlides();
+		return currentSlideIndex >= allSlides.length - slidesPerView;
+	};
+
+	// Get visible slides based on current index - EXACT SAME AS DESKTOP
+	const getVisibleSlides = useCallback(() => {
+		const allSlides = Object.values(caseStudies).flat();
+		return allSlides.slice(currentSlideIndex, currentSlideIndex + slidesPerView);
+	}, [currentSlideIndex, slidesPerView]);
+
+	// Handle slide changes with GSAP - EXACT SAME AS DESKTOP
+	useEffect(() => {
+		if (sliderRef.current) {
+			// Get all slide items
+			const slideItems = sliderRef.current.querySelectorAll('.slider-item');
+
+			// Simple fade-in animation without flashing
+			gsap.set(slideItems, { opacity: 1, y: 0 });
+			gsap.fromTo(
+				slideItems,
+				{ scale: 0.98 },
+				{
+					scale: 1,
+					duration: 0.3,
+					ease: 'power2.out',
+				}
+			);
+		}
+	}, [currentSlideIndex]);
+
+	// After initial render, apply GSAP animations based on showDetail state - EXACT SAME AS DESKTOP
 	useEffect(() => {
 		if (!sectionRef.current) return;
 
@@ -280,39 +218,19 @@ export default function MobileCaseStudySection() {
 				display: 'none',
 			});
 
-			gsap.fromTo('.case-studies-grid', { opacity: 0, y: 0, display: 'block' }, { opacity: 1, y: 0, duration: 0.4, delay: 0.1, ease: 'power2.out' });
+			gsap.fromTo('.case-studies-grid', { opacity: 0, y: 0, display: 'grid' }, { opacity: 1, y: 0, duration: 0.4, delay: 0.1, ease: 'power2.out' });
 		}
 	}, [showDetail]);
 
 	return (
-		<>
-			{/* Full case study detail view - overlay over the entire page */}
-			{showDetail && selectedStudy && (
-				<div className='fixed inset-0 z-50 bg-white h-full'>
-					<CaseStudyDetailMobile
-						study={selectedStudy}
-						activeService={activeService}
-						caseStudies={caseStudies}
-						onClose={handleCloseDetail}
-						onServiceChange={(service) => {
-							setActiveService(service);
-							// Select the first case study of the new service
-							if (caseStudies[service]?.length > 0) {
-								setSelectedStudy(caseStudies[service][0]);
-							}
-						}}
-					/>
-				</div>
-			)}
-
-			{/* Main section content */}
-			<section ref={sectionRef} id='mobile-case-studies' className='min-h-screen py-10 px-4 bg-white text-black'>
-				<div className='max-w-lg mx-auto'>
-					{/* Grid view */}
-					<div className='case-studies-grid'>
-						{/* Title Section */}
-						<h2 className='case-studies-title text-2xl font-bold text-black mb-2'>
-							{/* Render title with colored words */}
+		<Section id='mobile-case-studies' className='bg-white text-black pt-6 sm:pt-8 md:pt-12 lg:pt-16 overflow-visible'>
+			<div ref={sectionRef} className='w-full max-w-none'>
+				{/* Grid view - EXACT SAME AS DESKTOP but mobile optimized */}
+				<div className='grid grid-cols-1 gap-0 case-studies-grid' style={{ display: showDetail ? 'none' : 'grid' }}>
+					{/* Left column - EXACT SAME CONTENT AS DESKTOP but mobile layout */}
+					<div className='px-4 sm:px-6 md:pl-8 lg:pl-12 xl:pl-16 lg:pr-6 xl:pr-8 pb-6 sm:pb-8 lg:pb-16 flex flex-col items-start justify-center h-full'>
+						<h2 className='mt-[-14rem] sm:mt-6 lg:mt-10 case-studies-title text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-6xl font-black text-black text-left w-full'>
+							{/* EXACT SAME TITLE RENDERING LOGIC AS DESKTOP */}
 							{(() => {
 								let lastIndex = 0;
 								const elements = [];
@@ -326,7 +244,20 @@ export default function MobileCaseStudySection() {
 
 									// Add text before the colored word
 									if (wordIndex > lastIndex) {
-										elements.push(<span key={`text-${i}`}>{rawTitleText.substring(lastIndex, wordIndex)}</span>);
+										const textBefore = rawTitleText.substring(lastIndex, wordIndex);
+										// Check if text contains em dash and style it smaller
+										if (textBefore.includes('—')) {
+											const parts = textBefore.split('—');
+											elements.push(<span key={`text-${i}-before`}>{parts[0]}</span>);
+											elements.push(
+												<span key={`dash-${i}`} style={{ fontSize: '1em', fontWeight: '200', transform: 'scaleX(0.5)', display: 'inline-block' }}>
+													–
+												</span>
+											);
+											if (parts[1]) elements.push(<span key={`text-${i}-after`}>{parts[1]}</span>);
+										} else {
+											elements.push(<span key={`text-${i}`}>{textBefore}</span>);
+										}
 									}
 
 									// Add the colored word
@@ -341,70 +272,66 @@ export default function MobileCaseStudySection() {
 
 								// Add any remaining text
 								if (lastIndex < rawTitleText.length) {
-									elements.push(<span key='text-end'>{rawTitleText.substring(lastIndex)}</span>);
+									const remainingText = rawTitleText.substring(lastIndex);
+									// Check if remaining text contains em dash and style it smaller
+									if (remainingText.includes('—')) {
+										const parts = remainingText.split('—');
+										elements.push(<span key='text-end-before'>{parts[0]}</span>);
+										elements.push(
+											<span key='dash-end' style={{ fontSize: '0.6em', fontWeight: '200', transform: 'scaleX(0.5)', display: 'inline-block' }}>
+												–
+											</span>
+										);
+										if (parts[1]) elements.push(<span key='text-end-after'>{parts[1]}</span>);
+									} else {
+										elements.push(<span key='text-end'>{remainingText}</span>);
+									}
 								}
 
 								return elements;
 							})()}
 						</h2>
-						<p className='case-studies-description text-base mb-6'>{subtitleTranslation}</p>
+						<p className='case-studies-description text-base sm:text-lg md:text-xl lg:text-xl xl:text-xl text-left w-full pt-2 sm:pt-3'>{subtitleTranslation}</p>
+					</div>
 
-						{/* Service Selection */}
-						<div className='w-full space-y-2 mb-8'>
-							{Object.keys(caseStudies).map((service) => (
-								<div
-									key={service}
-									className={`service-item cursor-pointer transform transition-all duration-300 
-                                ${activeService === service ? 'text-black font-bold text-xl -translate-y-1' : 'text-gray-500 font-medium text-base hover:text-gray-800 hover:-translate-y-1'}`}
-									onClick={() => handleServiceClick(service)}
-								>
-									{activeService === service ? (
-										<span className='relative'>
-											{service}
-											<span className='absolute bottom-1 left-0 w-full h-1 bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] rounded-full opacity-40'></span>
-										</span>
-									) : (
-										<span>{service}</span>
-									)}
-								</div>
-							))}
-						</div>
+					{/* Right column - EXACT SAME AS DESKTOP but mobile layout */}
+					<div className='relative pr-0 mt-4 sm:mt-6'>
+						{/* Case studies container - EXACT SAME AS DESKTOP */}
+						<div className='relative overflow-hidden h-auto'>
+							{/* Navigation arrows - EXACT SAME AS DESKTOP */}
+							<div className='absolute left-0 top-1/2 -translate-y-1/2 z-10 flex flex-col gap-2 sm:gap-3 pl-1 sm:pl-2'>
+								<button onClick={goToPrevious} disabled={isPrevDisabled} className={`w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 flex items-center justify-center transition-all duration-200 ${isPrevDisabled ? 'opacity-30 cursor-not-allowed' : 'opacity-70 hover:opacity-100 hover:scale-110 active:scale-95'}`} aria-label='Previous case study'>
+									<svg width='24' height='24' className='sm:w-7 sm:h-7 lg:w-8 lg:h-8' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2'>
+										<path d='M15 18l-6-6 6-6' />
+									</svg>
+								</button>
+								<button onClick={goToNext} disabled={isNextDisabled()} className={`w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 flex items-center justify-center transition-all duration-200 ${isNextDisabled() ? 'opacity-30 cursor-not-allowed' : 'opacity-70 hover:opacity-100 hover:scale-110 active:scale-95'}`} aria-label='Next case study'>
+									<svg width='24' height='24' className='sm:w-7 sm:h-7 lg:w-8 lg:h-8' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2'>
+										<path d='M9 18l6-6-6-6' />
+									</svg>
+								</button>
+							</div>
 
-						{/* Navigation controls */}
-						<div className='flex justify-center space-x-4 mb-4 nav-controls'>
-							<button onClick={prevSlide} className='bg-white bg-opacity-90 text-black p-3 rounded-full shadow-md flex items-center justify-center border border-gray-200'>
-								<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
-									<path d='m15 18-6-6 6-6' />
-								</svg>
-							</button>
-							<button onClick={nextSlide} className='bg-white bg-opacity-90 text-black p-3 rounded-full shadow-md flex items-center justify-center border border-gray-200'>
-								<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
-									<path d='m9 6 6 6-6 6' />
-								</svg>
-							</button>
-						</div>
-
-						{/* Case Study Slider */}
-						<div className='relative overflow-x-auto overflow-y-visible h-auto'>
-							<div ref={sliderRef} className='slider-container flex flex-nowrap gap-4 w-max pb-8 pt-2' style={{ scrollBehavior: 'smooth', touchAction: 'pan-x' }}>
+							{/* EXACT SAME SLIDER AS DESKTOP */}
+							<div ref={sliderRef} className='slider-container flex gap-3 sm:gap-4 md:gap-6 px-3 sm:px-4 pb-4 sm:pb-6 pt-2 sm:pt-3 ml-12 sm:ml-14 lg:ml-16'>
 								{getVisibleSlides().map((study, index) => (
-									<div key={index} className='slider-item flex-shrink-0 w-[280px] space-y-3 cursor-pointer transition-transform duration-300 hover:-translate-y-2' onClick={() => handleStudyClick(study)}>
-										{/* Image container */}
-										<div className='h-[320px] rounded-lg border border-gray-200 shadow-md overflow-hidden'>
+									<div key={`${currentSlideIndex}-${index}`} className='slider-item flex-shrink-0 w-full sm:w-[280px] md:w-[320px] lg:w-1/2 space-y-3 sm:space-y-4 cursor-pointer transition-transform duration-300 hover:-translate-y-2' onClick={() => handleStudyClick(study)}>
+										{/* Image container - EXACT SAME AS DESKTOP */}
+										<div className='h-[200px] xs:h-[220px] sm:h-[240px] md:h-[280px] lg:h-[320px] xl:h-[380px] rounded-lg border border-gray-200 shadow-md overflow-hidden'>
 											<div className='relative w-full h-full'>
 												<Image src={study.image} alt={study.title} className='object-cover hover:scale-105 transition-transform duration-300' fill style={{ objectFit: 'cover' }} priority={index === 0} />
 
-												{/* Overlay with view details button */}
+												{/* Overlay with view details button - EXACT SAME AS DESKTOP */}
 												<div className='absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center opacity-0 hover:opacity-100'>
-													<span className='px-4 py-2 bg-white text-black font-bold rounded-lg transform scale-95 hover:scale-100 transition-transform text-sm'>View Details</span>
+													<span className='px-3 py-1.5 sm:px-4 sm:py-2 md:px-6 md:py-3 bg-white text-black font-bold rounded-lg transform scale-95 hover:scale-100 transition-transform text-xs sm:text-sm md:text-base'>View Details</span>
 												</div>
 											</div>
 										</div>
 
-										{/* Title and description below the image */}
-										<div className='space-y-1 px-1'>
-											<h3 className='text-lg font-bold'>{study.title}</h3>
-											<p className='text-sm text-gray-600'>{study.subtitle}</p>
+										{/* Title and description below the image - EXACT SAME AS DESKTOP */}
+										<div className='space-y-1 sm:space-y-2 px-1 sm:px-2'>
+											<h3 className='text-base sm:text-lg lg:text-xl font-bold leading-tight'>{study.title}</h3>
+											<p className='text-sm sm:text-base text-gray-600 leading-tight'>{study.subtitle}</p>
 										</div>
 									</div>
 								))}
@@ -412,7 +339,14 @@ export default function MobileCaseStudySection() {
 						</div>
 					</div>
 				</div>
-			</section>
-		</>
+
+				{/* Detail view - MOBILE OPTIMIZED OVERLAY */}
+				{selectedStudy && (
+					<div className='px-3 sm:px-4 md:px-8 lg:px-12 xl:px-20 py-4 sm:py-6 lg:py-10 case-study-detail-container' style={{ display: showDetail ? 'block' : 'none' }}>
+						<CaseStudyDetailMobile study={selectedStudy} caseStudies={caseStudies} onClose={handleCloseDetail} />
+					</div>
+				)}
+			</div>
+		</Section>
 	);
 }

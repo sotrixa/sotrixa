@@ -171,5 +171,5 @@ function MobileIntroSectionComponent() {
 		</>
 	);
 }
-
 export default MobileIntroSectionComponent;
+
