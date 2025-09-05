@@ -106,42 +106,52 @@ const MobileHome: React.FC = () => {
 
 	return (
 		<div id='home' ref={containerRef} className='relative min-h-screen w-full overflow-hidden flex items-center justify-center bg-[#fafafa]'>
-			<div ref={bodyRef} className='relative z-10 flex flex-col items-center text-center px-5 py-16 max-w-md mx-auto'>
-				<h1 ref={headingRef} className='text-[2.2rem] sm:text-[2.5rem] font-bold leading-tight mb-6 text-black'>
+			<div ref={bodyRef} className='relative z-10 flex flex-col items-center text-center px-4 sm:px-6 md:px-8 py-12 sm:py-16 md:py-20 max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl mx-auto'>
+				<h1 ref={headingRef} className='text-[2rem] xs:text-[2.2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] font-bold leading-tight mb-4 sm:mb-6 md:mb-8 text-black'>
 					<span className='inline'>We are a </span>
-					<span className='inline text-[#39E4D3] bg-black p-2 rounded-4xl'>strategy</span>
-					<span className='inline'> lab for visionary </span>
-					<span className='inline text-[#ffd044] bg-black p-2 rounded-4xl'>thinkers</span>
-					<span className='inline'>.</span>
+					<span className='inline text-[#53EBDD] bg-black px-2 py-1 sm:px-3 sm:py-2 rounded-lg mr-1'>strategy</span>
+					<span className='inline'> lab for </span>
+					<span className='inline text-[#DD53EB] bg-black px-2 py-1 sm:px-3 sm:py-2 rounded-lg mr-1'>visionary</span>
+					<span className='inline'> </span>
+					<span className='inline text-[#EBDD53] bg-black px-2 py-1 sm:px-3 sm:py-2 rounded-lg'>thinkers</span>
 				</h1>
 
-				<p ref={paragraphRef} className='text-base sm:text-lg mb-8 text-black'>
+				<p ref={paragraphRef} className='text-sm sm:text-base md:text-lg lg:text-xl mb-6 sm:mb-8 md:mb-10 text-black max-w-full sm:max-w-md md:max-w-lg'>
 					{getText('homeSection.paragraph', language)}
 				</p>
 
-				<div ref={buttonsRef} className='flex flex-wrap justify-center gap-3 mb-4'>
-					<Link href='#contact'>
-						<button className='py-3 px-6 bg-[#39E4D3] text-white hover:bg-[#33c9b9] transition-colors font-medium rounded-md touch-manipulation'>{getText('homeSection.talkToUs', language)}</button>
+				<div ref={buttonsRef} className='flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4 mb-4 w-full max-w-md'>
+					<Link href='#contact' className='w-full sm:w-auto'>
+						<button className='w-full sm:w-auto py-3 sm:py-3.5 px-6 sm:px-8 bg-black text-white hover:bg-gray-800 transition-colors font-medium rounded-md touch-manipulation text-sm sm:text-base'>
+							{getText('homeSection.talkToUs', language)}
+						</button>
 					</Link>
-					<Link href='#case-studies'>
-						<button className='py-3 px-6 border border-black text-black hover:bg-black/5 transition-colors font-medium rounded-md touch-manipulation'>{getText('homeSection.seeOurWork', language)}</button>
+					<Link href='#services' className='w-full sm:w-auto'>
+						<button className='w-full sm:w-auto py-3 sm:py-3.5 px-6 sm:px-8 bg-transparent border-2 border-black text-black hover:bg-black hover:text-white transition-colors font-medium rounded-md touch-manipulation text-sm sm:text-base'>
+							What we do
+						</button>
+					</Link>
+					<Link href='#case-studies' className='w-full sm:w-auto'>
+						<button className='w-full sm:w-auto py-3 sm:py-3.5 px-6 sm:px-8 bg-transparent border-2 border-black text-black hover:bg-black hover:text-white transition-colors font-medium rounded-md touch-manipulation text-sm sm:text-base'>
+							{getText('homeSection.seeOurWork', language)}
+						</button>
 					</Link>
 				</div>
 			</div>
 
-			{/* Video background - styled like desktop version */}
-			<div ref={videoContainerRef} className='absolute inset-0 w-full h-full z-0 pointer-events-none'>
+			{/* Video background - responsive sizing */}
+			<div ref={videoContainerRef} className='absolute inset-0 w-full h-full z-0 pointer-events-none opacity-80 sm:opacity-90'>
 				<video className='absolute inset-0 w-full h-full object-cover' autoPlay loop muted playsInline poster='/video/home-page-poster.jpg'>
-					<source src='/video/home-page-video.mp4' type='video/mp4' />
+					<source src='/video/Sotrixa-Final-Video-compr.mp4' type='video/mp4' />
 					Your browser does not support the video tag.
 				</video>
 			</div>
 
-			{/* Grid background effect - optimized with fewer columns */}
-			<div ref={gridRef} className='absolute inset-0 z-1 opacity-10 pointer-events-none'>
+			{/* Grid background effect - responsive columns */}
+			<div ref={gridRef} className='absolute inset-0 z-1 opacity-5 sm:opacity-10 pointer-events-none'>
 				<div className='flex h-full'>
 					{windowWidth > 0 &&
-						[...Array(10).keys()].map((_, index) => (
+						[...Array(windowWidth < 600 ? 8 : windowWidth < 900 ? 12 : 16).keys()].map((_, index) => (
 							<div key={'column_' + index} className='grid-column flex-1 h-full'>
 								{getBlocks()}
 							</div>

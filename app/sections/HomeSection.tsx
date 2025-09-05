@@ -36,7 +36,8 @@ export default function HomeSection() {
 		const handleResize = () => {
 			const width = window.innerWidth;
 			setWindowWidth(width);
-			setIsMobile(width <= 768);
+			// Consistent with main page mobile detection
+			setIsMobile(width < 1024);
 		};
 
 		// Initial call

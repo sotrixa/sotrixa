@@ -159,13 +159,20 @@
 }
 
 /* Responsive adjustments */
-@media (max-width: 1200px) {
-	.container {
+@media (max-width: 1400px) {
+	.heading {
+		font-size: 4rem;
 	}
+	
+	.subheading {
+		font-size: 3.5rem;
+	}
+}
 
+@media (max-width: 1200px) {
 	.container .body {
 		width: 48%;
-		padding-left: 2rem;
+		padding-left: 1.5rem;
 	}
 
 	.videoContainer {
@@ -182,25 +189,40 @@
 	}
 }
 
-/* Tablet breakpoint before mobile */
+/* Tablet breakpoint - improved intermediate sizing */
+@media (max-width: 1024px) {
+	.heading {
+		font-size: 3rem;
+	}
+	
+	.subheading {
+		font-size: 2.5rem;
+	}
+}
+
+/* Small tablet breakpoint */
 @media (max-width: 900px) {
 	.container {
 		flex-direction: column;
 		justify-content: center;
-		gap: 2rem;
+		gap: 1.5rem;
 	}
 
 	.container .body {
 		width: 100%;
 		text-align: center;
-		padding: 0 2rem;
+		padding: 0 1.5rem;
 	}
 
 	.videoContainer {
 		width: 100%;
-		height: 80%;
+		height: 75%;
 		position: relative;
 		padding: 0;
+	}
+	
+	.heading {
+		font-size: 2.8rem;
 	}
 }
 
@@ -208,6 +230,7 @@
 @media (max-width: 768px) {
 	.container {
 		position: relative;
+		gap: 1rem;
 	}
 
 	.container .body {
@@ -216,6 +239,7 @@
 		align-items: center;
 		text-align: center;
 		z-index: 3;
+		padding: 0 1rem;
 	}
 
 	.videoContainer {
@@ -241,15 +265,35 @@
 	.heading {
 		font-size: 2.5rem;
 		text-align: center;
+		line-height: 1.2;
 	}
 
 	.paragraph {
 		text-align: center;
 		max-width: 90%;
-		margin: 0 auto 2rem auto;
+		margin: 0 auto 1.5rem auto;
+		font-size: 0.9rem;
+		line-height: 1.4;
 	}
 
 	.buttons {
 		justify-content: center;
+		gap: 0.5rem;
+	}
+}
+
+/* Extra small mobile screens */
+@media (max-width: 480px) {
+	.heading {
+		font-size: 2rem;
+	}
+	
+	.paragraph {
+		font-size: 0.85rem;
+		max-width: 95%;
+	}
+	
+	.container .body {
+		padding: 0 0.75rem;
 	}
 }

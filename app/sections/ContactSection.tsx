@@ -150,13 +150,13 @@ export default function ContactSection() {
 	};
 
 	return (
-		<Section id='contact' className='bg-[#FAFAFA] text-black min-h-screen flex items-center justify-center pt-20 pb-24'>
-			<div className='w-full px-1r sm:px-1 lg:px-1 xl:px-1 max-w-7xl mx-auto'>
-				<div className='grid grid-cols-1 lg:grid-cols-5 gap-6 items-start'>
+		<Section id='contact' className='bg-[#FAFAFA] text-black min-h-screen flex items-center justify-center pt-12 sm:pt-16 md:pt-20 pb-16 sm:pb-20 md:pb-24'>
+			<div className='w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 max-w-7xl mx-auto'>
+				<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6 md:gap-8 items-start'>
 					{/* Left Column - Contact Content */}
-					<div className='lg:col-span-2 space-y-4 mt-8 lg:mt-16' ref={contactInfoRef} style={{ opacity: animationsCreated ? undefined : 1 }}>
+					<div className='md:col-span-1 lg:col-span-2 space-y-3 sm:space-y-4 mt-4 sm:mt-6 md:mt-8 lg:mt-16' ref={contactInfoRef} style={{ opacity: animationsCreated ? undefined : 1 }}>
 						{/* Contact Information */}
-						<div className='space-y-3'>
+						<div className='space-y-2 sm:space-y-3'>
 							
 							<div>
 								<p className='text-xs uppercase tracking-wider font-medium text-gray-500 mb-2'>Get in touch with us</p>
@@ -215,20 +215,20 @@ export default function ContactSection() {
 								</div>
 							)}
 
-							<form onSubmit={handleSubmit} className='space-y-2.5'>
-								<div className='grid grid-cols-1 md:grid-cols-2 gap-2.5'>
+							<form onSubmit={handleSubmit} className='space-y-2 sm:space-y-2.5'>
+								<div className='grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5'>
 									<div ref={addToFormRefs} style={{ opacity: animationsCreated ? undefined : 1 }}>
 										<label htmlFor='name' className='block mb-1 text-xs font-medium text-gray-700'>
 											Name *
 										</label>
-										<input type='text' id='name' name='name' value={formData.name} onChange={handleInputChange} className='w-full px-3 py-1.5 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800 text-sm' placeholder='John Doe' required disabled={isSubmitting} />
+										<input type='text' id='name' name='name' value={formData.name} onChange={handleInputChange} className='w-full px-3 py-1.5 sm:py-2 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800 text-sm' placeholder='John Doe' required disabled={isSubmitting} />
 									</div>
 
 									<div ref={addToFormRefs} style={{ opacity: animationsCreated ? undefined : 1 }}>
 										<label htmlFor='email' className='block mb-1 text-xs font-medium text-gray-700'>
 											Email *
 										</label>
-										<input type='email' id='email' name='email' value={formData.email} onChange={handleInputChange} className='w-full px-3 py-1.5 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800 text-sm' placeholder='john@example.com' required disabled={isSubmitting} />
+										<input type='email' id='email' name='email' value={formData.email} onChange={handleInputChange} className='w-full px-3 py-1.5 sm:py-2 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800 text-sm' placeholder='john@example.com' required disabled={isSubmitting} />
 									</div>
 								</div>
 
@@ -236,18 +236,18 @@ export default function ContactSection() {
 									<label htmlFor='subject' className='block mb-1 text-xs font-medium text-gray-700'>
 										Subject *
 									</label>
-									<input type='text' id='subject' name='subject' value={formData.subject} onChange={handleInputChange} className='w-full px-3 py-1.5 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800 text-sm' placeholder='Project inquiry' required disabled={isSubmitting} />
+									<input type='text' id='subject' name='subject' value={formData.subject} onChange={handleInputChange} className='w-full px-3 py-1.5 sm:py-2 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800 text-sm' placeholder='Project inquiry' required disabled={isSubmitting} />
 								</div>
 
 								<div ref={addToFormRefs} style={{ opacity: animationsCreated ? undefined : 1 }}>
 									<label htmlFor='message' className='block mb-1 text-xs font-medium text-gray-700'>
 										Message *
 									</label>
-									<textarea id='message' name='message' value={formData.message} onChange={handleInputChange} rows={2} className='w-full px-3 py-1.5 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800 text-sm resize-none' placeholder='Tell us about your project...' required disabled={isSubmitting}></textarea>
+									<textarea id='message' name='message' value={formData.message} onChange={handleInputChange} rows={3} className='w-full px-3 py-1.5 sm:py-2 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800 text-sm resize-none' placeholder='Tell us about your project...' required disabled={isSubmitting}></textarea>
 								</div>
 
 								<div ref={addToFormRefs} style={{ opacity: animationsCreated ? undefined : 1 }}>
-									<button type='submit' disabled={isSubmitting} className='px-4 py-1.5 bg-black text-white font-medium rounded-md hover:bg-gray-800 transition-colors text-sm disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2'>
+									<button type='submit' disabled={isSubmitting} className='px-4 sm:px-5 py-1.5 sm:py-2 bg-black text-white font-medium rounded-md hover:bg-gray-800 transition-colors text-sm disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2'>
 										{isSubmitting ? (
 											<>
 												<div className='w-3 h-3 border border-white border-t-transparent rounded-full animate-spin'></div>
@@ -263,9 +263,9 @@ export default function ContactSection() {
 					</div>
 
 					{/* Right Column - Image */}
-					<div className='lg:col-span-3 flex items-center justify-end' ref={imageRef} style={{ opacity: animationsCreated ? undefined : 1 }}>
-						<div className='relative w-full max-w-lg aspect-square rounded-lg overflow-hidden bg-gray-50 ml-auto'>
-							<Image src='/contact-page-1.png' alt='Contact us' fill className='object-contain' sizes='(max-width: 1024px) 70vw, 50vw' priority />
+					<div className='md:col-span-1 lg:col-span-3 flex items-center justify-center md:justify-end mt-6 md:mt-0' ref={imageRef} style={{ opacity: animationsCreated ? undefined : 1 }}>
+						<div className='relative w-full max-w-sm sm:max-w-md lg:max-w-lg aspect-square rounded-lg overflow-hidden bg-gray-50 md:ml-auto'>
+							<Image src='/contact-page-1.png' alt='Contact us' fill className='object-contain' sizes='(max-width: 640px) 90vw, (max-width: 768px) 70vw, (max-width: 1024px) 50vw, 40vw' priority />
 						</div>
 					</div>
 				</div>

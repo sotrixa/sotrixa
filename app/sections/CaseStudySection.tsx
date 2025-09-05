@@ -223,13 +223,13 @@ export default function CaseStudySection() {
 	}, [showDetail]);
 
 	return (
-		<Section id='case-study' className='bg-white text-black pt-8 md:pt-16 overflow-visible'>
+		<Section id='case-study' className='bg-white text-black pt-6 sm:pt-8 md:pt-12 lg:pt-16 overflow-visible'>
 			<div ref={sectionRef} className='w-full max-w-none'>
 				{/* Grid view - set initial display style based on selected study */}
 				<div className='grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-6 case-studies-grid' style={{ display: showDetail ? 'none' : 'grid' }}>
-					{/* Left column - 5/12 width */}
-					<div className='lg:col-span-6 px-6 sm:pl-8 md:pl-12 lg:pl-16 lg:pr-8 pb-8 lg:pb-16 flex flex-col items-start justify-center h-full'>
-						<h2 className='mt-6 lg:mt-10 case-studies-title text-2xl md:text-6xl font-black text-black text-left w-full'>
+					{/* Left column - responsive layout */}
+					<div className='lg:col-span-6 px-4 sm:px-6 md:pl-8 lg:pl-12 xl:pl-16 lg:pr-6 xl:pr-8 pb-6 sm:pb-8 lg:pb-16 flex flex-col items-start justify-center h-full'>
+						<h2 className='mt-4 sm:mt-6 lg:mt-10 case-studies-title text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-6xl font-black text-black text-left w-full'>
 							{/* Render title with colored words */}
 							{(() => {
 								let lastIndex = 0;
@@ -291,46 +291,46 @@ export default function CaseStudySection() {
 								return elements;
 							})()}
 						</h2>
-						<p className='case-studies-description text-lg md:text-xl text-left w-full pt-3'>{subtitleTranslation}</p>
+						<p className='case-studies-description text-base sm:text-lg md:text-xl lg:text-xl xl:text-xl text-left w-full pt-2 sm:pt-3'>{subtitleTranslation}</p>
 					</div>
 
-					{/* Right column - 7/12 width, extending to the right edge */}
-					<div className='lg:col-span-6 relative pr-0 mt-6 lg:-mt-16'>
+					{/* Right column - responsive layout */}
+					<div className='lg:col-span-6 relative pr-0 mt-4 sm:mt-6 lg:-mt-8 xl:-mt-16'>
 						{/* Case studies container */}
 						<div className='relative overflow-hidden h-auto'>
-							{/* Navigation arrows - positioned on the left side */}
-							<div className='absolute left-0 top-1/2 -translate-y-1/2 z-10 flex flex-col gap-3 pl-2'>
-								<button onClick={goToPrevious} disabled={isPrevDisabled} className={`w-14 h-14 flex items-center justify-center transition-all duration-200 ${isPrevDisabled ? 'opacity-30 cursor-not-allowed' : 'opacity-70 hover:opacity-100 hover:scale-110 active:scale-95'}`} aria-label='Previous case study'>
-									<svg width='32' height='32' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2'>
+							{/* Navigation arrows - responsive positioning */}
+							<div className='absolute left-0 top-1/2 -translate-y-1/2 z-10 flex flex-col gap-2 sm:gap-3 pl-1 sm:pl-2'>
+								<button onClick={goToPrevious} disabled={isPrevDisabled} className={`w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 flex items-center justify-center transition-all duration-200 ${isPrevDisabled ? 'opacity-30 cursor-not-allowed' : 'opacity-70 hover:opacity-100 hover:scale-110 active:scale-95'}`} aria-label='Previous case study'>
+									<svg width='24' height='24' className='sm:w-7 sm:h-7 lg:w-8 lg:h-8' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2'>
 										<path d='M15 18l-6-6 6-6' />
 									</svg>
 								</button>
-								<button onClick={goToNext} disabled={isNextDisabled()} className={`w-14 h-14 flex items-center justify-center transition-all duration-200 ${isNextDisabled() ? 'opacity-30 cursor-not-allowed' : 'opacity-70 hover:opacity-100 hover:scale-110 active:scale-95'}`} aria-label='Next case study'>
-									<svg width='32' height='32' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2'>
+								<button onClick={goToNext} disabled={isNextDisabled()} className={`w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 flex items-center justify-center transition-all duration-200 ${isNextDisabled() ? 'opacity-30 cursor-not-allowed' : 'opacity-70 hover:opacity-100 hover:scale-110 active:scale-95'}`} aria-label='Next case study'>
+									<svg width='24' height='24' className='sm:w-7 sm:h-7 lg:w-8 lg:h-8' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2'>
 										<path d='M9 18l6-6-6-6' />
 									</svg>
 								</button>
 							</div>
 
-							<div ref={sliderRef} className='slider-container flex gap-4 md:gap-6 px-4 pb-6 pt-3 ml-16'>
+							<div ref={sliderRef} className='slider-container flex gap-3 sm:gap-4 md:gap-6 px-3 sm:px-4 pb-4 sm:pb-6 pt-2 sm:pt-3 ml-12 sm:ml-14 lg:ml-16'>
 								{getVisibleSlides().map((study, index) => (
-									<div key={`${currentSlideIndex}-${index}`} className='slider-item flex-shrink-0 w-full lg:w-1/2 space-y-4 cursor-pointer transition-transform duration-300 hover:-translate-y-2' onClick={() => handleStudyClick(study)}>
+									<div key={`${currentSlideIndex}-${index}`} className='slider-item flex-shrink-0 w-full sm:w-[280px] md:w-[320px] lg:w-1/2 space-y-3 sm:space-y-4 cursor-pointer transition-transform duration-300 hover:-translate-y-2' onClick={() => handleStudyClick(study)}>
 										{/* Image container */}
-										<div className='h-[240px] sm:h-[280px] md:h-[340px] lg:h-[380px] rounded-lg border border-gray-200 shadow-md overflow-hidden'>
+										<div className='h-[200px] xs:h-[220px] sm:h-[240px] md:h-[280px] lg:h-[320px] xl:h-[380px] rounded-lg border border-gray-200 shadow-md overflow-hidden'>
 											<div className='relative w-full h-full'>
 												<Image src={study.image} alt={study.title} className='object-cover hover:scale-105 transition-transform duration-300' fill style={{ objectFit: 'cover' }} priority={index === 0} />
 
 												{/* Overlay with view details button */}
 												<div className='absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center opacity-0 hover:opacity-100'>
-													<span className='px-4 py-2 sm:px-6 sm:py-3 bg-white text-black font-bold rounded-lg transform scale-95 hover:scale-100 transition-transform text-sm sm:text-base'>View Details</span>
+													<span className='px-3 py-1.5 sm:px-4 sm:py-2 md:px-6 md:py-3 bg-white text-black font-bold rounded-lg transform scale-95 hover:scale-100 transition-transform text-xs sm:text-sm md:text-base'>View Details</span>
 												</div>
 											</div>
 										</div>
 
 										{/* Title and description below the image */}
-										<div className='space-y-1 sm:space-y-2 px-2'>
-											<h3 className='text-lg sm:text-xl font-bold'>{study.title}</h3>
-											<p className='text-sm sm:text-base text-gray-600'>{study.subtitle}</p>
+										<div className='space-y-1 sm:space-y-2 px-1 sm:px-2'>
+											<h3 className='text-base sm:text-lg lg:text-xl font-bold leading-tight'>{study.title}</h3>
+											<p className='text-sm sm:text-base text-gray-600 leading-tight'>{study.subtitle}</p>
 										</div>
 									</div>
 								))}
@@ -341,7 +341,7 @@ export default function CaseStudySection() {
 
 				{/* Detail view - always render but control visibility with CSS */}
 				{selectedStudy && (
-					<div className='px-4 sm:px-8 md:px-12 lg:px-20 py-6 lg:py-10 case-study-detail-container' style={{ display: showDetail ? 'block' : 'none' }}>
+					<div className='px-3 sm:px-4 md:px-8 lg:px-12 xl:px-20 py-4 sm:py-6 lg:py-10 case-study-detail-container' style={{ display: showDetail ? 'block' : 'none' }}>
 						<CaseStudyDetail study={selectedStudy} caseStudies={caseStudies} onClose={handleCloseDetail} />
 					</div>
 				)}

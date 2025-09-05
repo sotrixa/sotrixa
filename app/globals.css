@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
 	* {
 		cursor: none !important;
 	}
@@ -48,8 +48,8 @@ body {
 	scrollbar-width: none; /* Firefox */
 }
 
-/* Mobile optimization styles */
-@media (max-width: 767px) {
+/* Mobile and tablet optimization styles */
+@media (max-width: 1023px) {
 	html,
 	body {
 		overflow-x: hidden;
@@ -58,5 +58,22 @@ body {
 
 	.custom-cursor {
 		display: none !important;
+	}
+}
+
+/* Tablet optimization styles */
+@media (min-width: 768px) and (max-width: 1023px) {
+	/* Ensure proper tablet experience */
+	html,
+	body {
+		-webkit-overflow-scrolling: touch;
+	}
+}
+
+/* Desktop optimization */
+@media (min-width: 1024px) {
+	/* Desktop specific optimizations */
+	html {
+		scroll-behavior: smooth;
 	}
 }

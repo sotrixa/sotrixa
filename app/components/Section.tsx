@@ -9,8 +9,8 @@ interface SectionProps {
 }
 
 export default function Section({ children, className = '', id }: SectionProps) {
-	// Check if device is mobile
-	const isMobile = typeof window !== 'undefined' && (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768);
+	// Check if device is mobile using standard breakpoint
+	const isMobile = typeof window !== 'undefined' && (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 1024);
 
 	return (
 		<section

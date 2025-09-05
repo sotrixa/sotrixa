@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React from 'react';
 import GsapHorizontalScroll from '@/app/components/GsapHorizontalScroll';
 import KeyboardControls from '@/app/components/KeyboardControls';
 import HomeSection from '@/app/sections/HomeSection';
@@ -25,51 +25,35 @@ const MobileContactSection = dynamic(() => import('@/app/sections/mobile/MobileC
 export default function Home() {
 	// Sections for the pagination
 	const sections = ['Home', 'Intro', 'Services', 'Case Study', 'Contact'];
-	const [isMobile, setIsMobile] = useState(false);
 
-	useEffect(() => {
-		const handleResize = () => {
-			setIsMobile(window.innerWidth < 768);
-		};
-
-		// Initial call
-		handleResize();
-
-		window.addEventListener('resize', handleResize);
-		return () => window.removeEventListener('resize', handleResize);
-	}, []);
-
-	// Render mobile layout when on smaller screens
-	if (isMobile) {
-		return (
-			<MobileLayout>
-				<MobileHomeSection />
-				<MobileIntroSection />
-				<MobileServicesSection />
-				<MobileCaseStudySection />
-				<MobileContactSection />
-			</MobileLayout>
-		);
-	}
-
-	// Desktop horizontal scroll layout
 	return (
 		<>
-			{/* Direct inclusion of pagination with the new design */}
-			<ScrollPathPagination sections={sections} activeSection={0} />
+			{/* Mobile layout - hidden on desktop with Tailwind classes */}
+			<div className='block lg:hidden'>
+				<MobileLayout>
+					<MobileHomeSection />
+					<MobileIntroSection />
+					<MobileServicesSection />
+					<MobileCaseStudySection />
+					<MobileContactSection />
+				</MobileLayout>
+			</div>
 
-			<main className='relative bg-black min-h-screen'>
-				<KeyboardControls />
-				<Navigation />
-
-				<GsapHorizontalScroll>
-					<HomeSection />
-					<IntroSection />
-					<ServicesSection />
-					<CaseStudySection />
-					<ContactSection />
-				</GsapHorizontalScroll>
-			</main>
+			{/* Desktop layout - hidden on mobile/tablet with Tailwind classes */}
+			<div className='hidden lg:block'>
+				<ScrollPathPagination sections={sections} activeSection={0} />
+				<main className='relative bg-black min-h-screen'>
+					<KeyboardControls />
+					<Navigation />
+					<GsapHorizontalScroll>
+						<HomeSection />
+						<IntroSection />
+						<ServicesSection />
+						<CaseStudySection />
+						<ContactSection />
+					</GsapHorizontalScroll>
+				</main>
+			</div>
 		</>
 	);
 }
