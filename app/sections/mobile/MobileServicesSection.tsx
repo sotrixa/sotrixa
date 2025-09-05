@@ -76,19 +76,6 @@ export default function MobileServicesSection() {
 		});
 	};
 
-	// Get random position within boundaries - EXACT SAME AS DESKTOP
-	const getRandomPosition = () => {
-		// Ensure values stay within the screen boundaries (with padding)
-		const maxX = 80; // Max percentage of screen width
-		const maxY = 70; // Max percentage of screen height
-		const minX = 10; // Min percentage from left
-		const minY = 10; // Min percentage from top
-
-		return {
-			x: Math.floor(Math.random() * (maxX - minX) + minX),
-			y: Math.floor(Math.random() * (maxY - minY) + minY),
-		};
-	};
 
 	// Set up refs for service items
 	useEffect(() => {
