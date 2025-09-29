@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, RefObject, Dispatch, SetStateAction, MutableRefObject, useState } from 'react';
+import { useEffect, RefObject, Dispatch, SetStateAction, MutableRefObject } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 

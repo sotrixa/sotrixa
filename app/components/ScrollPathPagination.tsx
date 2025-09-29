@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
@@ -34,6 +35,50 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 	const [svgWidth, setSvgWidth] = useState(500); // Default width until client-side hydration
 	const [activeDotIndex, setActiveDotIndex] = useState(0); // Track active dot index
 	const [isMenuOpen, setIsMenuOpen] = useState(false); // Track navigation menu state
+	const [mounted, setMounted] = useState(false); // Track if component is mounted
+	
+	// Mount tracking
+	useEffect(() => {
+		setMounted(true);
+		return () => setMounted(false);
+	}, []);
+	
+	// FORCE position to bottom with JavaScript - override ANY CSS interference
+	useEffect(() => {
+		if (!mounted) return;
+		
+		const forcePosition = () => {
+			if (containerRef.current) {
+				const element = containerRef.current;
+				element.style.position = 'absolute';
+				element.style.bottom = '40px';
+				element.style.left = '50%';
+				element.style.transform = 'translateX(-50%)';
+				element.style.zIndex = '9999';
+				element.style.top = 'auto';
+				element.style.right = 'auto';
+			}
+		};
+		
+		// Force position immediately
+		forcePosition();
+		
+		// Force position on every animation frame to override any changes
+		const interval = setInterval(forcePosition, 16); // ~60fps
+		
+		// Force position on window resize
+		const handleResize = () => {
+			forcePosition();
+		};
+		
+		window.addEventListener('resize', handleResize);
+		
+		// Cleanup
+		return () => {
+			clearInterval(interval);
+			window.removeEventListener('resize', handleResize);
+		};
+	}, [mounted]);
 
 	// Listen for navigation menu state changes
 	useEffect(() => {
@@ -370,16 +415,20 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 	// Adjust SVG height to accommodate the labels
 	const svgHeight = 80;
 
-	return (
+	// Don't render on server or before mount
+	if (!mounted || typeof window === 'undefined') {
+		return null;
+	}
+
+	// Render using portal directly to body to bypass ALL container constraints
+	return createPortal(
 		<div 
 			ref={containerRef} 
-			className={`absolute left-1/2 pointer-events-auto max-w-[100vw] transition-all duration-300 scroll-path-pagination ${
+			className={`fixed left-1/2 pointer-events-auto max-w-[100vw] transition-all duration-300 scroll-path-pagination ${
 				isMenuOpen ? 'z-[999] opacity-0 pointer-events-none' : 'z-[1000] opacity-100'
 			}`}
 			style={{ 
-				display: isMenuOpen ? 'none' : 'block',
-				bottom: '40px',
-				transform: 'translateX(-50%)'
+				display: isMenuOpen ? 'none' : 'block'
 			}}
 		>
 			<svg 
@@ -441,6 +490,7 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 					</g>
 				))}
 			</svg>
-		</div>
+		</div>,
+		document.body
 	);
 }
