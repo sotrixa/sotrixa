@@ -30,6 +30,7 @@ declare global {
 export default function GsapHorizontalScroll({ children }: GsapHorizontalScrollProps) {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [isInitialized, setIsInitialized] = useState(false);
+	const [needsVerticalScroll, setNeedsVerticalScroll] = useState(false);
 	
 	// Loading animation refs
 	const loadingRef = useRef<HTMLDivElement>(null);
@@ -146,6 +147,33 @@ export default function GsapHorizontalScroll({ children }: GsapHorizontalScrollP
 		}
 	}, [isInitialized]);
 
+	// Check if vertical scroll is needed based on viewport height
+	useEffect(() => {
+		const checkVerticalScroll = () => {
+			if (typeof window !== 'undefined') {
+				const viewportHeight = window.innerHeight;
+				const restrictiveThreshold = 600; // Same as event handlers
+				const needsScroll = viewportHeight < restrictiveThreshold;
+				
+				// Also check if there's actually scrollable content
+				if (containerRef.current && needsScroll) {
+					const container = containerRef.current;
+					const hasScrollableContent = container.scrollHeight > container.clientHeight;
+					setNeedsVerticalScroll(needsScroll && hasScrollableContent);
+				} else {
+					setNeedsVerticalScroll(false);
+				}
+			}
+		};
+
+		checkVerticalScroll();
+		window.addEventListener('resize', checkVerticalScroll);
+
+		return () => {
+			window.removeEventListener('resize', checkVerticalScroll);
+		};
+	}, []);
+
 	// Expose navigation controls for other components to use
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
@@ -167,11 +195,24 @@ export default function GsapHorizontalScroll({ children }: GsapHorizontalScrollP
 	return (
 		<>
 			{/* Main container */}
-			<div ref={containerRef} className='fixed inset-0 overflow-hidden'>
+			<div 
+				ref={containerRef} 
+				className={`fixed inset-0 ${needsVerticalScroll ? 'overflow-x-auto overflow-y-auto' : 'overflow-x-hidden overflow-y-hidden'}`} 
+				style={{ minHeight: '800px' }}
+			>
 				{/* Horizontal scroll wrapper */}
-				<div ref={wrapperRef} className='h-full flex flex-nowrap' style={{ willChange: 'transform', transform: 'translateX(0px)' }}>
+				<div 
+					ref={wrapperRef} 
+					className='h-full flex flex-nowrap' 
+					style={{ 
+						willChange: 'transform', 
+						transform: 'translateX(0px)', 
+						minHeight: '800px',
+						width: needsVerticalScroll ? `${sectionsCount * 100}vw` : '100%' // Make content wider when scrollbars needed
+					}}
+				>
 					{/* Sections container */}
-					<div ref={sectionsRef} className='flex flex-nowrap h-full'>
+					<div ref={sectionsRef} className='flex flex-nowrap h-full' style={{ minHeight: '800px' }}>
 						{children}
 					</div>
 				</div>

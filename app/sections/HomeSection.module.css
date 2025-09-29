@@ -1,6 +1,7 @@
 .container {
 	display: flex;
-	height: 100vh;
+	height: 100dvh; /* Use dynamic viewport height */
+	min-height: 800px; /* Minimum height to prevent shrinking */
 	align-items: center;
 	justify-content: space-between;
 	background-color: #fafafa;
@@ -50,7 +51,8 @@
 
 .video {
 	width: 70%;
-	height: 52vh;
+	height: 52dvh; /* Use dynamic viewport height */
+	min-height: 400px; /* Minimum height to prevent shrinking */
 	object-fit: fill;
 	position: relative;
 	z-index: 2;

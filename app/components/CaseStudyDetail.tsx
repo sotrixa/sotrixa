@@ -159,13 +159,13 @@ export default function CaseStudyDetail({ study, caseStudies, onClose }: CaseStu
 	};
 
 	return (
-		<div ref={detailRef} className='w-full min-h-screen bg-white relative mt-32' onKeyDown={handleKeyDown} tabIndex={0}>
+		<div ref={detailRef} className='w-full bg-white relative mt-32' style={{ minHeight: 'max(100vh, 800px)' }} onKeyDown={handleKeyDown} tabIndex={0}>
 			{/* 2-column grid layout */}
-			<div className='grid grid-cols-12 gap-4 min-h-screen px-8'>
+			<div className='grid grid-cols-12 gap-4 px-8' style={{ minHeight: 'max(100vh, 800px)' }}>
 				{/* Left column - Content (6 columns) */}
 				<div className='col-span-6 relative'>
 					{/* Content container */}
-					<div className='mt-20 mb-[-20rem] bg-white h-[calc(100vh-300px)] overflow-y-auto max-w-full relative z-0'>
+					<div className='mt-20 mb-[-20rem] bg-white overflow-y-auto max-w-full relative z-0' style={{ height: 'max(calc(100vh - 300px), 500px)' }}>
 						{/* Navigation row with both buttons */}
 						<div ref={navRef} className='flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mb-8 relative z-20 max-w-full'>
 							{/* Back button */}

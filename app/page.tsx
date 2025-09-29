@@ -41,8 +41,7 @@ export default function Home() {
 
 			{/* Desktop layout - hidden on mobile/tablet with Tailwind classes */}
 			<div className='hidden lg:block'>
-				<ScrollPathPagination sections={sections} activeSection={0} />
-				<main className='relative bg-black min-h-screen'>
+				<main className='relative bg-black min-h-screen overflow-y-auto overflow-x-hidden'>
 					<KeyboardControls />
 					<Navigation />
 					<GsapHorizontalScroll>
@@ -53,6 +52,7 @@ export default function Home() {
 						<ContactSection />
 					</GsapHorizontalScroll>
 				</main>
+				<ScrollPathPagination sections={sections} activeSection={0} />
 			</div>
 		</>
 	);

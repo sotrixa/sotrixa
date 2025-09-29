@@ -373,11 +373,13 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 	return (
 		<div 
 			ref={containerRef} 
-			className={`fixed bottom-10 left-1/2 -translate-x-1/2 pointer-events-auto max-w-[100vw] transition-all duration-300 ${
+			className={`absolute left-1/2 pointer-events-auto max-w-[100vw] transition-all duration-300 scroll-path-pagination ${
 				isMenuOpen ? 'z-[999] opacity-0 pointer-events-none' : 'z-[1000] opacity-100'
 			}`}
 			style={{ 
-				display: isMenuOpen ? 'none' : 'block'
+				display: isMenuOpen ? 'none' : 'block',
+				bottom: '40px',
+				transform: 'translateX(-50%)'
 			}}
 		>
 			<svg 

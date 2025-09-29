@@ -231,6 +231,23 @@ export function useEventHandlers({ containerRef, sectionsRef, activeIndex, isAni
 
 		// Handle wheel events for snapping navigation
 		const handleWheel = (e: WheelEvent) => {
+			// Simple check: only allow vertical scroll if viewport is significantly reduced
+			// AND we're holding Shift key (manual override) OR the content is actually overflowing
+			const isViewportReduced = window.innerHeight < 600; // More restrictive threshold
+			const isShiftHeld = e.shiftKey;
+			const container = containerRef.current;
+			
+			if ((isViewportReduced || isShiftHeld) && container) {
+				const hasVerticalOverflow = container.scrollHeight > container.clientHeight;
+				const canScrollDown = container.scrollTop < container.scrollHeight - container.clientHeight;
+				const canScrollUp = container.scrollTop > 0;
+				
+				// Only allow vertical scroll if there's actual overflow and we can scroll in that direction
+				if (hasVerticalOverflow && ((e.deltaY > 0 && canScrollDown) || (e.deltaY < 0 && canScrollUp))) {
+					return; // Allow native vertical scrolling
+				}
+			}
+
 			// Skip if target is in case study section
 			const target = e.target as HTMLElement;
 			if (isInCaseStudySection(target)) {
@@ -251,7 +268,7 @@ export function useEventHandlers({ containerRef, sectionsRef, activeIndex, isAni
 				return;
 			}
 
-			// Only prevent default when we're handling the scroll
+			// Only prevent default when we're handling the scroll (normal horizontal behavior)
 			e.preventDefault();
 
 			if (isAnimating.current) return;

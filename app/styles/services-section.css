@@ -5,7 +5,8 @@
 
 /* Make sure the entire container is scrollable */
 .services-section-container {
-	min-height: 100vh;
+	min-height: 100dvh; /* Use dynamic viewport height */
+	height: max(100vh, 800px); /* Ensure minimum height */
 	width: 100%;
 	overflow-y: auto;
 	position: relative;
@@ -135,10 +136,10 @@
 		line-height: 1.25;
 		width: 100%;
 		padding-left: 5rem;
-		min-height: 300vh; /* Make section tall enough to enable scrolling */
+		min-height: max(300vh, 2400px); /* Make section tall enough to enable scrolling with minimum */
 	}
 	section:last-of-type {
-		min-height: 100vh;
+		min-height: max(100vh, 800px); /* Ensure minimum height */
 		display: flex;
 		place-items: center;
 		width: 100%;
@@ -165,7 +166,7 @@
 		padding-inline: 0;
 		margin: 0;
 		list-style-type: none;
-		min-height: 200vh; /* Make list tall enough for scrolling */
+		min-height: max(200vh, 1600px); /* Make list tall enough for scrolling with minimum */
 		display: flex;
 		flex-direction: column;
 		justify-content: space-around;
@@ -198,7 +199,7 @@
 
 @layer demo {
 	header {
-		min-height: 100vh;
+		min-height: max(100vh, 800px); /* Ensure minimum height */
 		display: flex;
 		place-items: center;
 		width: 100%;
@@ -269,7 +270,7 @@
 		display: grid;
 		place-items: center;
 		background: light-dark(white, black);
-		min-height: 100vh;
+		min-height: max(100vh, 800px); /* Ensure minimum height */
 		font-family: 'Geist', 'SF Pro Text', 'SF Pro Icons', 'AOS Icons', 'Helvetica Neue', Helvetica, Arial, sans-serif, system-ui;
 	}
 
@@ -277,7 +278,7 @@
 		--size: 45px;
 		--line: color-mix(in hsl, canvasText, transparent 70%);
 		content: '';
-		height: 100vh;
+		height: max(100vh, 800px); /* Ensure minimum height */
 		width: 100vw;
 		position: fixed;
 		background: linear-gradient(90deg, var(--line) 1px, transparent 1px var(--size)) 50% 50% / var(--size) var(--size), linear-gradient(var(--line) 1px, transparent 1px var(--size)) 50% 50% / var(--size) var(--size);

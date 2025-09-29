@@ -206,9 +206,10 @@ export default function ParallaxContainer({ children }: ParallaxContainerProps) 
 				}, 100);
 			}
 
-			// Make scrollbar disappear but still allow scrolling on mobile
+			// Allow vertical scrolling but prevent horizontal scrolling
 			if (!isMobile) {
-				document.body.style.overflow = 'hidden';
+				document.body.style.overflowX = 'hidden';
+				document.body.style.overflowY = 'auto';
 			}
 
 			return () => {
@@ -232,7 +233,8 @@ export default function ParallaxContainer({ children }: ParallaxContainerProps) 
 					window.removeEventListener('keydown', handleKeyDown);
 				}
 				if (!isMobile) {
-					document.body.style.overflow = '';
+					document.body.style.overflowX = '';
+					document.body.style.overflowY = '';
 				}
 			};
 		}
@@ -241,22 +243,24 @@ export default function ParallaxContainer({ children }: ParallaxContainerProps) 
 	return (
 		<div
 			ref={containerRef}
-			className={`fixed inset-0 overflow-x-auto ${isMobile ? 'overflow-y-auto' : 'overflow-y-hidden'} scrollbar-hide parallax-container`}
+			className={`fixed inset-0 overflow-x-auto overflow-y-auto scrollbar-hide parallax-container`}
 			style={{
 				WebkitOverflowScrolling: 'touch',
 				msOverflowStyle: 'none',
 				scrollbarWidth: 'none',
 				cursor: isDragging ? 'grabbing' : 'grab',
+				minHeight: '800px',
 			}}
 		>
 			<div
 				className='flex h-screen'
 				style={{
 					width: `${sectionsCount * 100}vw`,
+					minHeight: '800px',
 				}}
 			>
 				{React.Children.map(children, (child, index) => (
-					<div key={index} className='w-screen h-screen flex-shrink-0'>
+					<div key={index} className='w-screen h-screen flex-shrink-0' style={{ minHeight: '800px' }}>
 						{child}
 					</div>
 				))}
