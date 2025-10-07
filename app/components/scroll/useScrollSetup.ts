@@ -18,7 +18,6 @@ export function useScrollSetup() {
 					name: 'GSDevTools',
 					init() {
 						// This is just to trigger license check
-						console.log('GSAP initialized with token');
 					},
 				});
 			}

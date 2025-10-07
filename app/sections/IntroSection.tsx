@@ -213,8 +213,8 @@ export default function IntroSection() {
 		return (
 			<>
 				{/* Desktop-only image */}
-				<div className='hidden md:block'>
-					<Image src='/intro-section.webp' alt='Sotrixa research visualization' fill className='object-contain scale-150' priority />
+				<div className='hidden md:block relative h-[420px]'>
+					<Image src='/intro-section.webp' alt='Sotrixa research visualization' fill className='object-contain scale-150' sizes='(max-width: 768px) 100vw, 50vw' priority />
 				</div>
 
 				{/* Desktop-only play button */}

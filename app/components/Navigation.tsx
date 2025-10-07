@@ -20,7 +20,6 @@ export default function Navigation() {
 		const handleScroll = () => {
 			const scrolled = window.scrollY > 0;
 			setIsScrolled(scrolled);
-			console.log('Scroll detected:', { scrollY: window.scrollY, isMobile, isScrolled: scrolled });
 		};
 
 		// Set initial values
@@ -70,8 +69,9 @@ export default function Navigation() {
 							src='/sotrixa-logo.webp' 
 							alt='Sotrixa Logo' 
 							width={isMobile ? 20 : 120} 
-							height={isMobile ? 20 : 40} 
+							height={isMobile ? 20 : 100} 
 							className='transition-all duration-300' 
+							style={{ width: "auto", height: isMobile ? "20px" : "100px" }}
 							priority
 						/>
 					</Link>

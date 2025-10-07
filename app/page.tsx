@@ -52,12 +52,9 @@ export default function Home() {
 						<ContactSection />
 					</GsapHorizontalScroll>
 				</main>
-			</div>
-			
-			{/* ScrollPathPagination - completely independent, outside any containers */}
-			<div className='hidden lg:block'>
 				<ScrollPathPagination sections={sections} activeSection={0} />
 			</div>
+		
 		</>
 	);
 }

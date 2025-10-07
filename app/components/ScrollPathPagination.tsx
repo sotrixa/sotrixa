@@ -36,49 +36,67 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 	const [activeDotIndex, setActiveDotIndex] = useState(0); // Track active dot index
 	const [isMenuOpen, setIsMenuOpen] = useState(false); // Track navigation menu state
 	const [mounted, setMounted] = useState(false); // Track if component is mounted
+	const [isMobile, setIsMobile] = useState(false); // Track if device is mobile
 	
-	// Mount tracking
+	// Mount tracking and mobile detection
 	useEffect(() => {
 		setMounted(true);
-		return () => setMounted(false);
+		
+		// Check if device is mobile (screen width < 1024px)
+		const checkMobile = () => {
+			setIsMobile(window.innerWidth < 1024);
+		};
+		
+		// Check initially
+		checkMobile();
+		
+		// Listen for resize events to update mobile state
+		window.addEventListener('resize', checkMobile);
+		
+		return () => {
+			setMounted(false);
+			window.removeEventListener('resize', checkMobile);
+		};
 	}, []);
 	
-	// FORCE position to bottom with JavaScript - override ANY CSS interference
+	// CALCULATE EXACT POSITION ONCE AND NEVER CHANGE IT
 	useEffect(() => {
 		if (!mounted) return;
+		
+		// Calculate the EXACT pixel position from document top ONCE
+		const initialViewportHeight = window.innerHeight;
+		const exactTopPosition = initialViewportHeight - 160; // Move it up more from bottom
 		
 		const forcePosition = () => {
 			if (containerRef.current) {
 				const element = containerRef.current;
-				element.style.position = 'absolute';
-				element.style.bottom = '40px';
-				element.style.left = '50%';
-				element.style.transform = 'translateX(-50%)';
-				element.style.zIndex = '9999';
-				element.style.top = 'auto';
-				element.style.right = 'auto';
+				
+				// FORCE EXACT PIXEL POSITION THAT NEVER CHANGES
+				element.style.setProperty('position', 'absolute', 'important');
+				element.style.setProperty('top', `${exactTopPosition}px`, 'important');
+				element.style.setProperty('left', '50%', 'important');
+				element.style.setProperty('transform', 'translateX(-50%)', 'important');
+				element.style.setProperty('z-index', '99999', 'important');
+				element.style.setProperty('bottom', 'unset', 'important');
+				element.style.setProperty('right', 'unset', 'important');
+				element.style.setProperty('pointer-events', 'auto', 'important');
+				element.style.setProperty('display', isMenuOpen ? 'none' : 'block', 'important');
+				element.style.setProperty('width', 'auto', 'important');
+				element.style.setProperty('height', 'auto', 'important');
+				element.style.setProperty('margin', '0', 'important');
+				element.style.setProperty('padding', '0', 'important');
 			}
 		};
 		
-		// Force position immediately
+		// Force position immediately and constantly
 		forcePosition();
-		
-		// Force position on every animation frame to override any changes
-		const interval = setInterval(forcePosition, 16); // ~60fps
-		
-		// Force position on window resize
-		const handleResize = () => {
-			forcePosition();
-		};
-		
-		window.addEventListener('resize', handleResize);
+		const interval = setInterval(forcePosition, 10);
 		
 		// Cleanup
 		return () => {
 			clearInterval(interval);
-			window.removeEventListener('resize', handleResize);
 		};
-	}, [mounted]);
+	}, [mounted, isMenuOpen]);
 
 	// Listen for navigation menu state changes
 	useEffect(() => {
@@ -97,20 +115,15 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 		};
 	}, []);
 
-	// Update SVG width after component mounts (client-side only)
+	// Set SVG width once based on desktop size - NO responsive behavior
 	useEffect(() => {
 		// Safe to access window here (client-side only)
-		// Set to approximately half the screen width
-		const calculatedWidth = window.innerWidth * 0.5;
-		setSvgWidth(calculatedWidth);
+		// Set to a fixed desktop-appropriate width (no responsive behavior)
+		const desktopWidth = Math.max(window.innerWidth * 0.5, 600); // Minimum 600px, or half screen width
+		setSvgWidth(desktopWidth);
 
-		const handleResize = () => {
-			const newWidth = window.innerWidth * 0.5;
-			setSvgWidth(newWidth);
-		};
-
-		window.addEventListener('resize', handleResize);
-		return () => window.removeEventListener('resize', handleResize);
+		// NO resize listener - we want it to maintain desktop size
+		// regardless of viewport changes
 	}, []);
 
 	// Setup all animations when component mounts
@@ -415,8 +428,8 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 	// Adjust SVG height to accommodate the labels
 	const svgHeight = 80;
 
-	// Don't render on server or before mount
-	if (!mounted || typeof window === 'undefined') {
+	// Don't render on server, before mount, or on mobile
+	if (!mounted || typeof window === 'undefined' || isMobile) {
 		return null;
 	}
 
@@ -424,11 +437,10 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 	return createPortal(
 		<div 
 			ref={containerRef} 
-			className={`fixed left-1/2 pointer-events-auto max-w-[100vw] transition-all duration-300 scroll-path-pagination ${
-				isMenuOpen ? 'z-[999] opacity-0 pointer-events-none' : 'z-[1000] opacity-100'
-			}`}
+			className="scroll-path-pagination"
 			style={{ 
-				display: isMenuOpen ? 'none' : 'block'
+				display: isMenuOpen ? 'none' : 'block',
+				pointerEvents: 'auto'
 			}}
 		>
 			<svg 

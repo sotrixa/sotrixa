@@ -8,7 +8,6 @@ export default function ({ openMenu, isMenuOpen = false, isScrolled = false }) {
 	const handleClick = (e) => {
 		e.preventDefault();
 		e.stopPropagation();
-		console.log('Burger menu clicked!');
 		openMenu();
 	};
 

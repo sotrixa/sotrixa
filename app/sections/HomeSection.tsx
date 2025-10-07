@@ -247,7 +247,6 @@ export default function HomeSection() {
 					muted
 					playsInline
 					// Lower video quality on mobile devices for better performance
-					poster={isMobile ? '/video/home-page-poster.jpg' : undefined}
 					ref={videoRef}
 				>
 					<source src={isMobile ? '/video/Sotrixa-Final-Video-compr.mp4' : '/video/Sotrixa-Final-Video-compr.mp4'} type='video/mp4' />

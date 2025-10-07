@@ -802,7 +802,10 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 			// Clean up all animations
 			gsap.killTweensOf(sectionDivCurrent);
 			gsap.killTweensOf(dividerLineCurrent);
-			gsap.killTweensOf('.service-item');
+			const serviceItems = document.querySelectorAll('.service-item');
+			if (serviceItems.length > 0) {
+				gsap.killTweensOf(serviceItems);
+			}
 			if (gridBackgroundCurrent) {
 				gsap.killTweensOf(gridBackgroundCurrent);
 			}

@@ -133,8 +133,11 @@ export default function CaseStudySection() {
 			// Animate main title and description
 			tl.fromTo('.case-studies-title, .case-studies-description', { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, stagger: 0.2 });
 
-			// Animate services with stagger
-			tl.fromTo('.service-item', { x: -50, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, stagger: 0.15 }, '-=0.4');
+			// Animate services with stagger (only if elements exist)
+			const serviceItems = document.querySelectorAll('.service-item');
+			if (serviceItems.length > 0) {
+				tl.fromTo(serviceItems, { x: -50, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, stagger: 0.15 }, '-=0.4');
+			}
 
 			// Animate slider
 			tl.fromTo('.slider-container', { scale: 0.95, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.7 }, '-=0.3');
@@ -207,16 +210,22 @@ export default function CaseStudySection() {
 				display: 'none',
 			});
 
-			gsap.fromTo('.case-study-detail-container', { opacity: 0, y: 20, display: 'block' }, { opacity: 1, y: 0, duration: 0.4, delay: 0.1, ease: 'power2.out' });
+			const detailContainer = document.querySelector('.case-study-detail-container');
+			if (detailContainer) {
+				gsap.fromTo(detailContainer, { opacity: 0, y: 20, display: 'block' }, { opacity: 1, y: 0, duration: 0.4, delay: 0.1, ease: 'power2.out' });
+			}
 		} else {
 			// Hide detail view and show grid view
-			gsap.to('.case-study-detail-container', {
-				opacity: 0,
-				y: 20,
-				duration: 0.3,
-				ease: 'power2.in',
-				display: 'none',
-			});
+			const detailContainer = document.querySelector('.case-study-detail-container');
+			if (detailContainer) {
+				gsap.to(detailContainer, {
+					opacity: 0,
+					y: 20,
+					duration: 0.3,
+					ease: 'power2.in',
+					display: 'none',
+				});
+			}
 
 			gsap.fromTo('.case-studies-grid', { opacity: 0, y: 0, display: 'grid' }, { opacity: 1, y: 0, duration: 0.4, delay: 0.1, ease: 'power2.out' });
 		}
@@ -318,7 +327,7 @@ export default function CaseStudySection() {
 										{/* Image container */}
 										<div className='h-[200px] xs:h-[220px] sm:h-[240px] md:h-[280px] lg:h-[320px] xl:h-[380px] rounded-lg border border-gray-200 shadow-md overflow-hidden'>
 											<div className='relative w-full h-full'>
-												<Image src={study.image} alt={study.title} className='object-cover hover:scale-105 transition-transform duration-300' fill style={{ objectFit: 'cover' }} priority={index === 0} />
+												<Image src={study.image} alt={study.title} className='object-cover hover:scale-105 transition-transform duration-300' fill style={{ objectFit: 'cover' }} sizes='(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw' priority={index === 0} />
 
 												{/* Overlay with view details button */}
 												<div className='absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center opacity-0 hover:opacity-100'>

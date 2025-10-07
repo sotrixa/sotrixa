@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { OptimizedImage } from '@/app/lib/image-optimization';
+import Image from 'next/image';
 import { generateBreadcrumbSchema } from '@/app/lib/seo';
 
 export const metadata: Metadata = {
@@ -70,11 +70,12 @@ export default function CaseStudiesPage() {
 								className="group block bg-gray-50 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300"
 							>
 								<div className="aspect-video relative">
-									<OptimizedImage
+									<Image
 										src={study.image}
 										alt={`${study.title} - Sotrixa Case Study`}
 										className="object-cover group-hover:scale-105 transition-transform duration-300"
 										fill
+										sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 									/>
 									<div className="absolute top-4 left-4">
 										<span className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium">

@@ -31,11 +31,9 @@ export const useAnimations = ({ activeServiceIndex, serviceItemsRef, servicesRef
 		const timeline = gsap.timeline({
 			onStart: () => {
 				isAnimating.current = true;
-				console.log('Animation started');
 			},
 			onComplete: () => {
 				isAnimating.current = false;
-				console.log('Animation completed');
 			},
 			// Add some delay before setting animation as complete
 			delay: 0.1,
@@ -125,7 +123,6 @@ export const useAnimations = ({ activeServiceIndex, serviceItemsRef, servicesRef
 		tl.current = timeline;
 
 		// Log the current active service for debugging
-		console.log(`Active service changed to: ${activeServiceIndex + 1} of ${services.length}`);
 	}, [activeServiceIndex, services.length, serviceItemsRef, servicesRef, isAnimating]);
 
 	return { tl };

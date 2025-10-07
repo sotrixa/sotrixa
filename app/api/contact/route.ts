@@ -38,9 +38,15 @@ export async function POST(request: NextRequest) {
 
 		// Initialize Resend
 		const resend = new Resend(process.env.RESEND_API_KEY);
+		
+		console.log('📧 Sending emails for contact form submission:');
+		console.log('- From:', process.env.FROM_EMAIL);
+		console.log('- To (notification):', process.env.TO_EMAIL);
+		console.log('- To (response):', email);
+		console.log('- Customer name:', name);
 
-		// Send email using Resend
-		const emailResult = await resend.emails.send({
+		// Send notification email to company
+		const notificationResult = await resend.emails.send({
 			from: process.env.FROM_EMAIL || 'onboarding@resend.dev',
 			to: process.env.TO_EMAIL || 'hello@company.com',
 			subject: `New Contact Form Submission: ${subject}`,
@@ -68,16 +74,66 @@ export async function POST(request: NextRequest) {
 			`,
 		});
 
-		if (emailResult.error) {
-			console.error('Resend error:', emailResult.error);
-			return NextResponse.json({ success: false, error: 'Failed to send email' }, { status: 500 });
+		if (notificationResult.error) {
+			console.error('❌ Resend notification error:', notificationResult.error);
+			return NextResponse.json({ success: false, error: 'Failed to send notification email' }, { status: 500 });
+		}
+		
+		console.log('✅ Notification email sent successfully:', notificationResult.data?.id);
+
+		// Send automated response email to customer
+		const responseResult = await resend.emails.send({
+			from: process.env.FROM_EMAIL || 'onboarding@resend.dev',
+			to: email, // Send to the customer's email
+			subject: 'Thank you for reaching out!',
+			html: `
+				<div style="font-family: 'Georgia', serif; max-width: 600px; margin: 0 auto; padding: 40px 20px; background-color: #fafafa;">
+					<div style="background-color: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+						<h2 style="color: #333; margin-bottom: 30px; font-size: 24px; font-weight: 300;">Dear ${name},</h2>
+						
+						<p style="color: #555; line-height: 1.8; font-size: 16px; margin-bottom: 20px;">
+							Thank you for reaching out — your message has found its way to us.
+						</p>
+						
+						<p style="color: #555; line-height: 1.8; font-size: 16px; margin-bottom: 20px;">
+							We'll get back to you shortly with a response crafted especially for you.
+						</p>
+						
+						<p style="color: #555; line-height: 1.8; font-size: 16px; margin-bottom: 30px;">
+							Wishing you a bright and inspiring day ahead!
+						</p>
+						
+						<div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee;">
+							<p style="color: #333; margin-bottom: 15px; font-size: 16px;">Kind regards,</p>
+							<div style="margin-top: 10px;">
+								<img src="${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/44444.png" alt="Petya Manchorova - Sotrixa Signature" style="max-width: 300px; height: auto; display: block;" />
+							</div>
+						</div>
+					</div>
+					
+					<div style="text-align: center; margin-top: 20px;">
+						<p style="color: #888; font-size: 12px;">
+							This is an automated response. Please do not reply to this email.
+						</p>
+					</div>
+				</div>
+			`,
+		});
+
+		if (responseResult.error) {
+			console.error('❌ Resend response error:', responseResult.error);
+			// Don't fail the entire request if the response email fails
+			// The notification email to the company is more critical
+		} else {
+			console.log('✅ Response email sent successfully:', responseResult.data?.id);
 		}
 
 		return NextResponse.json(
 			{
 				success: true,
-				message: 'Email sent successfully',
-				id: emailResult.data?.id,
+				message: 'Emails sent successfully',
+				notificationId: notificationResult.data?.id,
+				responseId: responseResult.data?.id,
 			},
 			{ status: 200 }
 		);

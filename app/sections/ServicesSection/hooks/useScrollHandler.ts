@@ -67,14 +67,11 @@ export const useScrollHandler = ({ activeServiceIndex, setActiveServiceIndex, se
 			if (activeServiceIndex < services.length - 1) {
 				// Move to next service
 				setActiveServiceIndex((prev) => prev + 1);
-				console.log(`Moving to next service: ${activeServiceIndex + 2}`);
 			} else if (!hasCompletedServices.current) {
 				hasCompletedServices.current = true;
-				console.log('Completed all services, scroll down again to continue');
 			} else {
 				const nextPanel = window.horizontalScrollControls?.nextPanel;
 				if (nextPanel) {
-					console.log('Moving to next panel');
 					nextPanel();
 					hasCompletedServices.current = false;
 					// setActiveServiceIndex(0);
@@ -101,12 +98,10 @@ export const useScrollHandler = ({ activeServiceIndex, setActiveServiceIndex, se
 			if (activeServiceIndex > 0) {
 				// Move to previous service
 				setActiveServiceIndex((prev) => prev - 1);
-				console.log(`Moving to previous service: ${activeServiceIndex}`);
 				hasCompletedServices.current = false;
 			} else {
 				const prevPanel = window.horizontalScrollControls?.prevPanel;
 				if (prevPanel) {
-					console.log('Moving to previous panel');
 					prevPanel();
 				}
 			}

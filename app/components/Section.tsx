@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface SectionProps {
 	children: React.ReactNode;
@@ -9,19 +9,39 @@ interface SectionProps {
 }
 
 export default function Section({ children, className = '', id }: SectionProps) {
-	// Check if device is mobile using standard breakpoint
-	const isMobile = typeof window !== 'undefined' && (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 1024);
+	const [isMobile, setIsMobile] = useState(false);
+	const [mounted, setMounted] = useState(false);
+
+	useEffect(() => {
+		setMounted(true);
+		
+		// Check if device is mobile using standard breakpoint
+		const checkMobile = () => {
+			const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 1024;
+			setIsMobile(mobile);
+		};
+		
+		checkMobile();
+		window.addEventListener('resize', checkMobile);
+		
+		return () => {
+			window.removeEventListener('resize', checkMobile);
+		};
+	}, []);
+
+	// Use consistent default values during SSR and initial client render
+	const sectionStyle = {
+		width: '100vw',
+		scrollSnapAlign: 'start' as const,
+		// Default to hidden during SSR, then update on client
+		overflowY: (mounted && isMobile) ? 'visible' as const : 'hidden' as const,
+	};
 
 	return (
 		<section
 			id={id}
 			className={`min-h-screen w-screen flex-shrink-0 flex items-center justify-center p-0 ${className}`}
-			style={{
-				width: '100vw',
-				scrollSnapAlign: 'start',
-				// Only hide overflow on desktop, allow scrolling on mobile
-				overflowY: isMobile ? 'visible' : 'hidden',
-			}}
+			style={sectionStyle}
 		>
 			<div className='w-full'>{children}</div>
 		</section>

@@ -21,15 +21,19 @@ export default function ParallaxContainer({ children }: ParallaxContainerProps) 
 		if (typeof window !== 'undefined') {
 			// Convert vertical wheel events to horizontal scrolling with smoother behavior
 			const handleWheel = (e: WheelEvent) => {
-				// Always prevent default browser scrolling
-				e.preventDefault();
-
 				// Get the container
 				const container = containerRef.current;
 				if (!container) return;
 
-				// Check if we're in the services section
+				// Check if we're in the contact section - COMPLETELY IGNORE
 				const target = e.target as Element;
+				const contactSection = target.closest('#contact');
+				if (contactSection) {
+					// Let the contact section handle its own events completely
+					return;
+				}
+
+				// Check if we're in the services section
 				const servicesSection = target.closest('#services');
 
 				// If we're in the services section and it has scroll lock enabled
@@ -43,6 +47,9 @@ export default function ParallaxContainer({ children }: ParallaxContainerProps) 
 					}
 				}
 
+				// Always prevent default browser scrolling for non-contact sections
+				e.preventDefault();
+
 				// Normal horizontal scrolling for all other cases
 				const scrollAmount = e.deltaY * 1.5;
 				container.scrollLeft += scrollAmount;
@@ -52,6 +59,14 @@ export default function ParallaxContainer({ children }: ParallaxContainerProps) 
 			const handleKeyDown = (e: KeyboardEvent) => {
 				const container = containerRef.current;
 				if (!container) return;
+
+				// Check if we're in the contact section - COMPLETELY IGNORE
+				const target = e.target as Element;
+				const contactSection = target.closest('#contact');
+				if (contactSection) {
+					// Let the contact section handle its own keyboard events
+					return;
+				}
 
 				// Direct scroll for speed - full screen width
 				const scrollAmount = window.innerWidth;
@@ -74,6 +89,11 @@ export default function ParallaxContainer({ children }: ParallaxContainerProps) 
 				// Only allow dragging when explicitly clicking on the background itself
 				const target = e.target as Element;
 
+				// NEVER interfere with contact section
+				if (target.closest('#contact')) {
+					return;
+				}
+
 				// If clicking on anything but the container itself, don't start dragging
 				if (
 					target !== containerRef.current &&
@@ -85,6 +105,9 @@ export default function ParallaxContainer({ children }: ParallaxContainerProps) 
 						target.closest('a') ||
 						target.closest('[role="button"]') ||
 						target.closest('input') ||
+						target.closest('textarea') ||
+						target.closest('select') ||
+						target.closest('form') ||
 						target.closest('video') ||
 						target.closest('svg') ||
 						// Or if it has any event handlers
@@ -107,6 +130,11 @@ export default function ParallaxContainer({ children }: ParallaxContainerProps) 
 				// Similar approach - only allow dragging on the container background
 				const target = e.target as Element;
 
+				// NEVER interfere with contact section
+				if (target.closest('#contact')) {
+					return;
+				}
+
 				// If touching anything but the container itself, don't start dragging
 				if (
 					target !== containerRef.current &&
@@ -118,6 +146,9 @@ export default function ParallaxContainer({ children }: ParallaxContainerProps) 
 						target.closest('a') ||
 						target.closest('[role="button"]') ||
 						target.closest('input') ||
+						target.closest('textarea') ||
+						target.closest('select') ||
+						target.closest('form') ||
 						target.closest('video') ||
 						target.closest('svg') ||
 						// Or if it has any event handlers
@@ -140,7 +171,13 @@ export default function ParallaxContainer({ children }: ParallaxContainerProps) 
 				// If the click is not on a recognized interactive element, prevent default
 				// This ensures no accidental jumps
 				const target = e.target as Element;
-				if (target !== containerRef.current && !(target.tagName === 'BUTTON' || target.closest('button') || target.closest('a') || target.closest('[role="button"]') || target.closest('input') || target.closest('video'))) {
+				
+				// NEVER interfere with contact section
+				if (target.closest('#contact')) {
+					return;
+				}
+				
+				if (target !== containerRef.current && !(target.tagName === 'BUTTON' || target.closest('button') || target.closest('a') || target.closest('[role="button"]') || target.closest('input') || target.closest('textarea') || target.closest('select') || target.closest('form') || target.closest('video'))) {
 					// Prevent any default behavior for non-interactive elements
 					e.preventDefault();
 					e.stopPropagation();

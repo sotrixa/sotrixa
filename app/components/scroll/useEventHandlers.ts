@@ -98,11 +98,11 @@ export function useEventHandlers({ containerRef, sectionsRef, activeIndex, isAni
 			const style = document.createElement('style');
 			style.setAttribute('data-horizontal-drag', 'true');
 			style.innerHTML = `
-				.horizontal-drag-enabled.is-dragging *:not(#case-study *) {
+				.horizontal-drag-enabled.is-dragging *:not(#case-study *, #contact *) {
 					user-select: none !important;
 					-webkit-user-select: none !important;
 				}
-				.horizontal-drag-enabled.is-dragging *:not(#case-study *, a, button, [role="button"]) {
+				.horizontal-drag-enabled.is-dragging *:not(#case-study *, #contact *, a, button, [role="button"], input, textarea, select) {
 					pointer-events: none !important;
 				}
 				.horizontal-drag-enabled.is-dragging {
@@ -121,6 +121,18 @@ export function useEventHandlers({ containerRef, sectionsRef, activeIndex, isAni
 				}
 				#case-study .cursor-grabbing {
 					cursor: grabbing !important;
+				}
+				/* Explicitly ensure contact section elements are unaffected */
+				#contact * {
+					user-select: text !important;
+					pointer-events: auto !important;
+				}
+				#contact input, #contact textarea, #contact button, #contact a, #contact [role="button"] {
+					cursor: auto !important;
+					pointer-events: auto !important;
+				}
+				#contact input:focus, #contact textarea:focus {
+					outline: auto !important;
 				}
 			`;
 			document.head.appendChild(style);
@@ -264,7 +276,6 @@ export function useEventHandlers({ containerRef, sectionsRef, activeIndex, isAni
 
 			if (isServicesSection || servicesHasControl) {
 				// Don't handle wheel events on services section - let the ServicesSection component handle it
-				console.log('Main scroll system bypassing wheel event - services section is active');
 				return;
 			}
 

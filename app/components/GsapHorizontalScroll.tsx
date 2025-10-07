@@ -240,18 +240,25 @@ export default function GsapHorizontalScroll({ children }: GsapHorizontalScrollP
 					
 					{/* Floating particles effect */}
 					<div className='absolute inset-0 overflow-hidden'>
-						{[...Array(20)].map((_, i) => (
-							<div
-								key={i}
-								className='absolute w-1 h-1 bg-white rounded-full opacity-20'
-								style={{
-									left: `${Math.random() * 100}%`,
-									top: `${Math.random() * 100}%`,
-									animationDelay: `${Math.random() * 3}s`,
-									animation: 'float 6s ease-in-out infinite'
-								}}
-							/>
-						))}
+						{[...Array(20)].map((_, i) => {
+							// Use deterministic values based on index to avoid hydration mismatch
+							const leftPosition = (i * 5.26) % 100; // Deterministic spread
+							const topPosition = ((i * 7.89) % 100); // Deterministic spread
+							const delay = (i * 0.15) % 3; // Deterministic delay
+							
+							return (
+								<div
+									key={i}
+									className='absolute w-1 h-1 bg-white rounded-full opacity-20'
+									style={{
+										left: `${leftPosition}%`,
+										top: `${topPosition}%`,
+										animationDelay: `${delay}s`,
+										animation: 'float 6s ease-in-out infinite'
+									}}
+								/>
+							);
+						})}
 					</div>
 					
 					{/* Main content container */}
