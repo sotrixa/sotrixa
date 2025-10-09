@@ -925,7 +925,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 
 			<div ref={sectionDivRef} className='flex flex-col md:flex-row w-full h-full relative z-20 mx-auto my-8 mt-0'>
 				{/* Left side with strategy heading and services list */}
-				<div className='w-full md:w-1/2 p-4 md:p-8 flex flex-col justify-center min-h-screen md:min-h-full' ref={leftSideRef}>
+				<div className='w-full md:w-1/2 p-4 md:p-4 flex flex-col justify-center min-h-screen md:min-h-full' ref={leftSideRef}>
 					<div className='mb-6' ref={logoRef}>
 						<button onClick={handleBackToServices} ref={backButtonRef} className='group flex items-center space-x-2 cursor-pointer text-black hover:text-[#EBDD53] transition-colors duration-300'>
 							<svg xmlns='http://www.w3.org/2000/svg' className='h-5 w-5 transform transition-transform duration-300 group-hover:-translate-x-1' viewBox='0 0 20 20' fill='currentColor'>
@@ -1036,7 +1036,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 				</div>
 
 				{/* Right side with services details */}
-				<div className='w-full md:w-1/2 p-4 md:p-8 flex flex-col justify-start' ref={rightSideRef}>
+				<div className='w-full md:w-1/2 p-4 md:p-0 flex flex-col justify-start' ref={rightSideRef}>
 					<AnimatePresence mode='wait'>
 						<motion.div ref={rightContentRef} key={activeService} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.5 }}>
 							<h3 ref={servicesTitleRef} className='text-2xl font-black mb-6 text-black'>

@@ -206,10 +206,10 @@ export default function ContactSection() {
 
 	return (
 		<Section id='contact' className='bg-[#FAFAFA] text-black min-h-screen flex items-center justify-center pt-12 sm:pt-16 md:pt-20 pb-16 sm:pb-20 md:pb-24'>
-			<div className='w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 max-w-7xl mx-auto'>
-				<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6 md:gap-8 items-start'>
+			<div className='w-full px-4 sm:px-6 md:px-10 mx-auto'>
+				<div className='grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8 items-start'>
 					{/* Left Column - Contact Content */}
-					<div className='md:col-span-1 lg:col-span-2 space-y-3 sm:space-y-4 mt-4 sm:mt-6 md:mt-8 lg:mt-16' ref={contactInfoRef} style={{ opacity: animationsCreated ? undefined : 1 }}>
+					<div className='space-y-3 sm:space-y-4 mt-4 sm:mt-6 md:mt-8 lg:mt-16' ref={contactInfoRef} style={{ opacity: animationsCreated ? undefined : 1 }}>
 						{/* Contact Information */}
 						<div className='space-y-2 sm:space-y-3'>
 							
@@ -414,7 +414,7 @@ export default function ContactSection() {
 					</div>
 
 					{/* Right Column - Image */}
-					<div className='md:col-span-1 lg:col-span-3 flex items-center justify-center md:justify-end mt-6 md:mt-0' ref={imageRef} style={{ opacity: animationsCreated ? undefined : 1 }}>
+					<div className='flex items-center justify-center md:justify-end mt-6 md:mt-0' ref={imageRef} style={{ opacity: animationsCreated ? undefined : 1 }}>
 						<div className='relative w-full max-w-sm sm:max-w-md lg:max-w-lg aspect-square rounded-lg overflow-hidden bg-gray-50 md:ml-auto'>
 							<Image src='/contact-page-1.png' alt='Contact us' fill className='object-contain' sizes='(max-width: 640px) 90vw, (max-width: 768px) 70vw, (max-width: 1024px) 50vw, 40vw' priority />
 						</div>

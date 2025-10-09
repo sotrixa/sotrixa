@@ -235,9 +235,9 @@ export default function CaseStudySection() {
 		<Section id='case-study' className='bg-white text-black pt-6 sm:pt-8 md:pt-12 lg:pt-16 overflow-visible'>
 			<div ref={sectionRef} className='w-full max-w-none'>
 				{/* Grid view - set initial display style based on selected study */}
-				<div className='grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-6 case-studies-grid' style={{ display: showDetail ? 'none' : 'grid' }}>
+				<div className='grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-6 case-studies-grid' style={{ display: showDetail ? 'none' : 'grid' }}>
 					{/* Left column - responsive layout */}
-					<div className='lg:col-span-6 px-4 sm:px-6 md:pl-8 lg:pl-12 xl:pl-16 lg:pr-6 xl:pr-8 pb-6 sm:pb-8 lg:pb-16 flex flex-col items-start justify-center h-full'>
+					<div className='px-4 sm:px-6 md:pl-10 pb-6 sm:pb-8 lg:pb-16 flex flex-col items-start justify-center h-full'>
 						<h2 className='mt-4 sm:mt-6 lg:mt-10 case-studies-title text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-6xl font-black text-black text-left w-full'>
 							{/* Render title with colored words */}
 							{(() => {
@@ -304,7 +304,7 @@ export default function CaseStudySection() {
 					</div>
 
 					{/* Right column - responsive layout */}
-					<div className='lg:col-span-6 relative pr-0 mt-4 sm:mt-6 lg:-mt-8 xl:-mt-16'>
+					<div className='relative pr-0 mt-4 sm:mt-6 lg:-mt-8 xl:-mt-16'>
 						{/* Case studies container */}
 						<div className='relative overflow-hidden h-auto'>
 							{/* Navigation arrows - responsive positioning */}

@@ -65,7 +65,7 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 		
 		// Calculate the EXACT pixel position from document top ONCE
 		const initialViewportHeight = window.innerHeight;
-		const exactTopPosition = initialViewportHeight - 160; // Move it up more from bottom
+		const exactTopPosition = initialViewportHeight - 120; // Move it down a bit from bottom
 		
 		const forcePosition = () => {
 			if (containerRef.current) {

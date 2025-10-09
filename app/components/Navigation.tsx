@@ -61,7 +61,7 @@ export default function Navigation() {
 
 	return (
 		<nav style={navStyle}>
-			<div className={`${isMobile ? 'px-4 py-3' : 'px-20 py-4'} transition-all duration-300`}>
+			<div className={`${isMobile ? 'px-4 py-3' : 'px-8 py-4'} transition-all duration-300`}>
 				<div className='flex justify-between items-center'>
 					{/* Logo */}
 					<Link href={getLogoHref()} className='transition-transform duration-300 hover:scale-105'>

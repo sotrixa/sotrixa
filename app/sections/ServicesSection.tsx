@@ -234,7 +234,7 @@ export default function ServicesSection() {
 					<ServiceInfoSection onBackClick={handleBackFromServiceInfo} activeService={services[activeServiceIndex]} />
 				</div>
 			) : (
-				<Section id='services' className='bg-[#FAFAFA] text-black p-4 sm:p-25 relative overflow-hidden'>
+				<Section id='services' className='bg-[#FAFAFA] text-black p-4 pl-10 relative overflow-hidden'>
 					{/* Minimalist grid background */}
 					<div
 						ref={backgroundRef}
