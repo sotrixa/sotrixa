@@ -30,7 +30,7 @@ export default function ServicesSection() {
 	const [activeServiceIndex, setActiveServiceIndex] = useState(-1);
 	const [showServiceInfo, setShowServiceInfo] = useState(false);
 	const [language] = useState<Language>('en');
-	const services = ['RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRANDING', 'MARKETING', 'WEBSITE DEVELOPMENT'];
+	const services = ['RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRAND STORYTELLING', 'MARKETING', 'WEBSITE DEVELOPMENT'];
 
 	const sectionIndex = 2; // Position of services section in the page layout
 	const hasCompletedServices = useRef(false);

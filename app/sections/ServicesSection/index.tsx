@@ -14,7 +14,7 @@ export default function ServicesSection() {
 	const serviceItemsRef = useRef<(HTMLDivElement | null)[]>([]);
 	const [activeServiceIndex, setActiveServiceIndex] = useState(0);
 	const [isDetailView, setIsDetailView] = useState(false);
-	const services = ['RESEARCH', 'BRANDING', 'BUSINESS PLANNING', 'BESOKE STRATEGY', 'MARKETING', 'WEBSITE DEVELOPMENT'];
+	const services = ['RESEARCH', 'BRAND STORYTELLING', 'BUSINESS PLANNING', 'BESOKE STRATEGY', 'MARKETING', 'WEBSITE DEVELOPMENT'];
 	const sectionIndex = 2; // Position of services section in the page layout
 	const hasCompletedServices = useRef(false);
 	const isAnimating = useRef(false);
