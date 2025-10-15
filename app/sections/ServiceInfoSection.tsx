@@ -134,7 +134,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 			title: 'Precision–crafted roadmaps that move your vision forward with clarity, coherence, and purpose',
 			description: ['No two businesses move at the same rhythm.​', 'At Sotrixa, strategy honors your unique goals, capacity, and context–designing roadmaps that are intelligent, flexible, and fully aligned with your evolution.​', 'Whether you are launching something new, expanding reach, refining an offer, or exploring partnerships, each strategic layer moves vision into structured, sustainable momentum.​', 'From go–to–market approaches and visibility plans to audience engagement, growth models, and positioning strategies–every element is crafted to create meaningful forward motion.'],
 		},
-		BRANDING: {
+		'BRAND STORYTELLING': {
 			title: "Bringing your business's true story to life–visually, verbally, and emotionally",
 			description: ['A brand is the memory, the feeling, the story people carry after they meet you.​', 'At Sotrixa, branding is an act of alignment: we listen deeply to what your business is becoming and translate that into visual and verbal identities that feel alive and true.​', 'We create logos, color palettes, typography, design elements, and voice and tone guidelines–crafted with precision and emotional resonance.​', 'More than an aesthetic, your brand becomes an invitation: a true reflection of your story, ready to connect and inspire.'],
 		},
@@ -336,7 +336,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 			{ name: 'RESEARCH', icon: '🔍' },
 			{ name: 'BUSINESS ARCHITECTURE', icon: '🏛️' },
 			{ name: 'BESPOKE STRATEGY CREATION', icon: '🧩' },
-			{ name: 'BRANDING', icon: '✨' },
+			{ name: 'BRAND STORYTELLING', icon: '✨' },
 			{ name: 'MARKETING', icon: '📊' },
 			{ name: 'WEBSITE DEVELOPMENT', icon: '💻' },
 		],
@@ -524,7 +524,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 				clarity: 'text-[#53EBDD]',
 				purpose: 'text-[#EBDD53]',
 			},
-			BRANDING: {
+			'BRAND STORYTELLING': {
 				Bringing: 'text-[#DD53EB]',
 				story: 'text-[#53EBDD]',
 				emotionally: 'text-[#EBDD53]',
@@ -677,7 +677,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 				const serviceItem = titleRef.closest('.service-item');
 				if (serviceItem) {
 					serviceItem.addEventListener('mouseenter', () => {
-						if (activeService === ['CREATED TO MATTER', 'RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRANDING', 'MARKETING', 'WEBSITE DEVELOPMENT'][index]) return;
+						if (activeService === ['CREATED TO MATTER', 'RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRAND STORYTELLING', 'MARKETING', 'WEBSITE DEVELOPMENT'][index]) return;
 
 						// Enhanced hover animation
 						gsap.to(chars, {
@@ -694,7 +694,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 					});
 
 					serviceItem.addEventListener('mouseleave', () => {
-						if (activeService === ['CREATED TO MATTER', 'RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRANDING', 'MARKETING', 'WEBSITE DEVELOPMENT'][index]) return;
+						if (activeService === ['CREATED TO MATTER', 'RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRAND STORYTELLING', 'MARKETING', 'WEBSITE DEVELOPMENT'][index]) return;
 
 						// Smoother reset animation
 						gsap.to(chars, {
@@ -721,7 +721,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 		// Initialize text styles for service titles based on current activeService
 		serviceTitleRefs.current.forEach((titleRef, index) => {
 			if (titleRef) {
-				const service = ['CREATED TO MATTER', 'RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRANDING', 'MARKETING', 'WEBSITE DEVELOPMENT'][index];
+				const service = ['CREATED TO MATTER', 'RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRAND STORYTELLING', 'MARKETING', 'WEBSITE DEVELOPMENT'][index];
 
 				// Set initial styles - using new purple color
 				gsap.set(titleRef, {
@@ -821,6 +821,10 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 			splitTextRefsCurrent.forEach((split) => {
 				if (split && split.revert) split.revert();
 			});
+
+			// Reset service title refs
+			serviceTitleRefs.current = [];
+			splitTextRefs.current = [];
 
 			// Kill all ScrollTriggers
 			if (typeof ScrollTrigger !== 'undefined') {

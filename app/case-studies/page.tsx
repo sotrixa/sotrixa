@@ -15,7 +15,7 @@ const caseStudies = [
 		title: 'Brand Strategy Transformation',
 		description: 'Complete brand strategy and visual identity redesign for a growing tech startup.',
 		image: '/case-studies/brand-a.jpg',
-		category: 'Branding',
+		category: 'Brand Storytelling',
 		href: '/case-studies/brand-strategy',
 	},
 	{
