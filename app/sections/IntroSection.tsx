@@ -193,7 +193,8 @@ export default function IntroSection() {
 				</>
 			);
 		}
-		return text;
+		// Apply dash styling for other testimonial text
+		return renderTestimonialWithStyledDash(text);
 	};
 
 	// Split the title into two parts
