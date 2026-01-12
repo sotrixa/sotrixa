@@ -9,6 +9,7 @@ import ReactDOM from 'react-dom';
 
 export default function IntroSection() {
 	const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+	const [isVideoHovered, setIsVideoHovered] = useState(false);
 	const videoRef = useRef<HTMLVideoElement>(null);
 	const desktopVideoRef = useRef<HTMLVideoElement>(null);
 
@@ -181,6 +182,20 @@ export default function IntroSection() {
 		return text;
 	};
 
+	const renderTestimonial = (text: string) => {
+		// Split "The Lab by SOTRIXA" to format it properly
+		if (text.includes('by SOTRIXA')) {
+			return (
+				<>
+					<strong>The Lab</strong>
+					<br />
+					by SOTRIXA
+				</>
+			);
+		}
+		return text;
+	};
+
 	// Split the title into two parts
 	const titleText = getText('introSection.title', 'en').split('\n');
 	const firstLine = titleText[0] || '';
@@ -194,7 +209,7 @@ export default function IntroSection() {
 	const renderVideoContent = () => {
 		if (isVideoPlaying) {
 			return (
-				<div className='relative w-full h-full bg-black rounded-xl overflow-hidden shadow-lg'>
+				<div className='relative w-full h-full bg-black rounded-xl overflow-hidden shadow-lg z-20' onMouseEnter={() => setIsVideoHovered(true)} onMouseLeave={() => setIsVideoHovered(false)}>
 					<button className='absolute top-4 right-4 bg-white/90 rounded-full cursor-pointer p-2 hover:bg-white transition-colors z-10 shadow-lg focus:outline-none focus:ring-2 focus:ring-white group' onClick={handleCloseVideo} aria-label='Close video'>
 						<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round' className='w-6 h-6 text-black group-hover:scale-110 transition-transform'>
 							<line x1='18' y1='6' x2='6' y2='18'></line>
@@ -202,8 +217,8 @@ export default function IntroSection() {
 						</svg>
 					</button>
 
-					<video ref={desktopVideoRef} className='w-full h-full object-contain rounded-xl' controls autoPlay playsInline onError={() => console.error('Desktop video failed to load')} tabIndex={0}>
-						<source src='/video/home-page-video.mp4' type='video/mp4' />
+					<video ref={desktopVideoRef} className='w-full h-full object-cover rounded-xl' controls={isVideoHovered} autoPlay playsInline onError={() => console.error('Desktop video failed to load')} tabIndex={0}>
+						<source src='/video/Sotrixa-final.mp4' type='video/mp4' />
 						<p className='p-4 text-white text-center'>Your browser does not support the video tag. Please use a modern browser to view this video.</p>
 					</video>
 				</div>
@@ -240,7 +255,7 @@ export default function IntroSection() {
 		// Use portal to render the overlay at the document body level
 		return ReactDOM.createPortal(
 			<div className='fixed inset-0 z-[9999] bg-black/35 flex items-center justify-center md:hidden' style={{ top: 0, left: 0, right: 0, bottom: 0 }}>
-				<div className='relative w-[90%] aspect-video mx-auto max-w-lg max-h-[80vh]'>
+				<div className='relative w-[90%] aspect-video mx-auto max-w-lg max-h-[80vh]' onMouseEnter={() => setIsVideoHovered(true)} onMouseLeave={() => setIsVideoHovered(false)}>
 					<button className='absolute top-4 right-4 bg-white/90 rounded-full cursor-pointer p-2 z-10 shadow-lg focus:outline-none focus:ring-2 focus:ring-white group' onClick={handleCloseVideo} aria-label='Close video'>
 						<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round' className='w-5 h-5 text-black group-hover:scale-110 transition-transform'>
 							<line x1='18' y1='6' x2='6' y2='18'></line>
@@ -248,8 +263,8 @@ export default function IntroSection() {
 						</svg>
 					</button>
 
-					<video ref={videoRef} className='w-full h-full object-contain' controls autoPlay playsInline onError={() => console.error('Mobile video failed to load')} tabIndex={0}>
-						<source src='/video/home-page-video.mp4' type='video/mp4' />
+					<video ref={videoRef} className='w-full h-full object-contain' controls={isVideoHovered} autoPlay playsInline onError={() => console.error('Mobile video failed to load')} tabIndex={0}>
+						<source src='/video/Sotrixa-final.mp4' type='video/mp4' />
 						<p className='p-4 text-white text-center'>Your browser does not support the video tag. Please use a modern browser to view this video.</p>
 					</video>
 				</div>
@@ -302,7 +317,7 @@ export default function IntroSection() {
 
 							{/* Mobile-only testimonial */}
 							<div className='block md:hidden mt-6'>
-								<p className='text-sm leading-tight py-2 px-3 rounded-md'>{renderTestimonialWithStyledDash(testimonialText)}</p>
+								<p className='text-sm leading-tight py-2 px-3 rounded-md'>{renderTestimonial(testimonialText)}</p>
 							</div>
 						</motion.div>
 					</div>
@@ -315,7 +330,7 @@ export default function IntroSection() {
 							{/* Desktop-only testimonial */}
 							<div className='hidden md:block absolute bottom-0 left-0 right-0 text-center'>
 								<div className='mt-4'>
-									<p className='text-lg max-w-xl mx-auto'>{renderTestimonialWithStyledDash(testimonialText)}</p>
+									<p className='text-lg max-w-xl mx-auto'>{renderTestimonial(testimonialText)}</p>
 								</div>
 							</div>
 						</div>

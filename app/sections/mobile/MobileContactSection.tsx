@@ -131,7 +131,7 @@ export default function MobileContactSection() {
 					<div>
 						<p className='text-sm uppercase tracking-wider font-medium text-gray-500 mb-3'>Follow Us</p>
 						<div className='flex space-x-2'>
-							{['Instagram', 'LinkedIn'].map((platform) => (
+							{['Instagram'/* , 'LinkedIn' */].map((platform) => (
 								<a key={platform} href='#' className='w-8 h-8 flex items-center justify-center border border-gray-200 rounded-full text-gray-600 hover:bg-gray-100 hover:border-gray-300 transition-colors' aria-label={platform}>
 									{platform[0]}
 								</a>

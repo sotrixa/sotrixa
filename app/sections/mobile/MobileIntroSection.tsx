@@ -9,6 +9,7 @@ import ScrollToTopButtonComponent from '../../components/ScrollToTopButton';
 
 function MobileIntroSectionComponent() {
 	const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+	const [isVideoHovered, setIsVideoHovered] = useState(false);
 	const videoRef = useRef<HTMLVideoElement>(null);
 	const { language } = useLanguage();
 
@@ -104,7 +105,7 @@ function MobileIntroSectionComponent() {
 		// Use portal to render the overlay at the document body level
 		return ReactDOM.createPortal(
 			<div className='fixed inset-0 z-[9999] bg-black/35 flex items-center justify-center' style={{ top: 0, left: 0, right: 0, bottom: 0 }}>
-				<div className='relative w-[90%] aspect-video mx-auto max-w-lg max-h-[80vh]'>
+				<div className='relative w-[90%] aspect-video mx-auto max-w-lg max-h-[80vh]' onMouseEnter={() => setIsVideoHovered(true)} onMouseLeave={() => setIsVideoHovered(false)} onTouchStart={() => setIsVideoHovered(true)} onTouchEnd={() => setIsVideoHovered(false)}>
 					<button className='absolute top-4 right-4 bg-white/90 rounded-full cursor-pointer p-2 z-10 shadow-lg focus:outline-none focus:ring-2 focus:ring-white group' onClick={handleCloseVideo} aria-label='Close video'>
 						<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round' className='w-5 h-5 text-black group-hover:scale-110 transition-transform'>
 							<line x1='18' y1='6' x2='6' y2='18'></line>
@@ -112,8 +113,8 @@ function MobileIntroSectionComponent() {
 						</svg>
 					</button>
 
-					<video ref={videoRef} className='w-full h-full object-contain' controls autoPlay playsInline onError={() => console.error('Mobile video failed to load')} tabIndex={0}>
-						<source src='/video/home-page-video.mp4' type='video/mp4' />
+					<video ref={videoRef} className='w-full h-full object-cover' controls={isVideoHovered} autoPlay playsInline onError={() => console.error('Mobile video failed to load')} tabIndex={0}>
+						<source src='/video/Sotrixa-final.mp4' type='video/mp4' />
 						<p className='p-4 text-white text-center'>Your browser does not support the video tag. Please use a modern browser to view this video.</p>
 					</video>
 				</div>

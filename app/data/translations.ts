@@ -34,11 +34,11 @@ export const translations: Translations = {
 		bg: 'Всяка {{strategy:#53EBDD}} има свой {{rhythm:#DD53EB}}\n—нашата започва със {{listening:#EBDD53}}',
 	},
 	'introSection.subheading': {
-		en: 'SOTRIXA in 60 seconds',
+		en: 'See how it unfolds',
 		bg: 'SOTRIXA за 60 секунди',
 	},
 	'introSection.testimonial': {
-		en: "Each project becomes a living story, unfolding through research, structure, strategy, and design — shaping everything from your foundation to how you're seen and remembered",
+		en: "The Lab by SOTRIXA",
 		bg: 'Всеки проект се превръща в жива история, разгръщаща се чрез изследване, структура, стратегия и дизайн — формираща всичко от вашата основа до това как сте възприемани и запомнени.',
 	},
 	'servicesSection.title': {
@@ -50,7 +50,7 @@ export const translations: Translations = {
 		bg: 'Преминаваме от прозрение към структура, от стратегия към история—изграждайки идентичности и преживявания, които се свързват и вървят напред.',
 	},
 	'caseStudySection.title': {
-		en: 'We {{build:#EBDD53}} with {{purpose:#DD53EB}}—and every outcome reflects the {{thinking:#53EBDD}} behind it',
+		en: 'We {{build:#EBDD53}} with {{purpose:#DD53EB}}—and every outcome reflects the `{{thinking:#53EBDD}} behind it',
 		bg: 'Ние {{build:#EBDD53}} с {{purpose:#DD53EB}}—и всеки резултат отразява {{thinking:#53EBDD}} зад него',
 	},
 	'caseStudySection.subtitle': {

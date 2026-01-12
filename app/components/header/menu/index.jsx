@@ -122,7 +122,7 @@ export default function index({ closeMenu }) {
 				
 			       <div className='p-4 flex gap-4'>
 				   <a href="https://www.instagram.com/sotrixa" target="_blank" rel="noopener noreferrer" className='uppercase'>Instagram</a>
-				   <a href="https://www.linkedin.com/sotrixa" target="_blank" rel="noopener noreferrer" className='uppercase'>LinkedIn</a>
+				   {/* <a href="https://www.linkedin.com/sotrixa" target="_blank" rel="noopener noreferrer" className='uppercase'>LinkedIn</a> */}
 				   </div>
 			
 			</motion.div>
