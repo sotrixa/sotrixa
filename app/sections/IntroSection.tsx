@@ -252,6 +252,8 @@ export default function IntroSection() {
 	// Mobile fullscreen video overlay
 	const renderMobileVideoOverlay = () => {
 		if (!isVideoPlaying) return null;
+		// Only render on mobile to prevent duplicate video elements
+		if (typeof window !== 'undefined' && window.innerWidth >= 768) return null;
 
 		// Use portal to render the overlay at the document body level
 		return ReactDOM.createPortal(
@@ -296,15 +298,15 @@ export default function IntroSection() {
 					<div className='w-full py-5 px-4 flex flex-col items-center md:items-start md:px-6'>
 						<motion.div className='w-full max-w-md md:max-w-none text-left md:text-left space-y-2 md:space-y-6 md:bg-transparent p-4 rounded-lg md:p-0 md:rounded-none md:shadow-none' initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8 }}>
 							{/* Title with optimized font sizes */}
-							<div className='mb-6 md:pt-30 md:mb-8 pl-4'>
+							<div className='mb-6 md:pt-14 md:mb-8 pl-4'>
 								<div className='space-y-2 md:space-y-4'>
 									<h1 className='text-[2.5rem] md:text-[3.7rem] font-black leading-tight md:leading-none block'>{renderColoredText(fullTitle)}</h1>
 								</div>
 							</div>
 
 							{/* Subheading in its own row */}
-							<div className='w-full mt-6 pl-10'>
-								<p className='text-2xl sm:text-3xl md:text-xl font-medium'>{subheadingText}</p>
+							<div className='w-full mt-6'>
+								<p className=' pl-5'>{subheadingText}</p>
 
 								{/* Mobile-only play button */}
 								<button type='button' className='block md:hidden mt-4 bg-white rounded-full p-2 shadow-lg cursor-pointer hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-[#d142e2] group' onClick={handlePlayClick} aria-label='Play Sotrixa introduction video'>

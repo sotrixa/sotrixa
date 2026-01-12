@@ -165,7 +165,7 @@ export default function CaseStudyDetail({ study, caseStudies, onClose }: CaseStu
 				{/* Left column - Content (6 columns) */}
 				<div className='col-span-6 relative'>
 					{/* Content container */}
-					<div className='mt-20 mb-[-20rem] bg-white overflow-y-auto max-w-full relative z-0' style={{ height: 'max(calc(100vh - 300px), 500px)' }}>
+					<div className='mt-20 bg-white overflow-y-auto max-w-full relative z-10' style={{ height: 'max(calc(97vh - 300px), 500px)' }}>
 						{/* Navigation row with both buttons */}
 						<div ref={navRef} className='flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mb-8 relative z-20 max-w-full'>
 							{/* Back button */}
@@ -229,8 +229,8 @@ export default function CaseStudyDetail({ study, caseStudies, onClose }: CaseStu
 				</div>
 
 				{/* Right column - Image (6 columns) */}
-				<div className='col-span-6 flex items-start justify-center pt-10'>
-					<div ref={imageRef} className='w-full max-w-[500px] sticky top-10'>
+				<div className='col-span-6 flex items-start justify-center pt-20'>
+					<div ref={imageRef} className='w-full max-w-[500px] sticky top-20'>
 						<Image src={currentStudy.image} alt={currentStudy.title} width={500} height={350} className='object-cover w-full h-auto' priority />
 					</div>
 				</div>
