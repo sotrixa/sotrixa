@@ -187,9 +187,9 @@ export default function IntroSection() {
 		if (text.includes('by SOTRIXA')) {
 			return (
 				<>
-					<strong>The Lab</strong>
+					<span className='text-[#76cccb] font-extrabold text-2xl'>THE LAB</span>
 					<br />
-					by SOTRIXA
+					<span className='text-[#583c48] text-base font-extrabold'>BY SOTRIXA</span>
 				</>
 			);
 		}
@@ -229,16 +229,16 @@ export default function IntroSection() {
 		return (
 			<>
 				{/* Desktop-only image */}
-				<div className='hidden md:block relative h-[420px]'>
-					<Image src='/intro-section.webp' alt='Sotrixa research visualization' fill className='object-contain scale-150' sizes='(max-width: 768px) 100vw, 50vw' priority />
+				<div className='hidden md:block relative h-[400px]'>
+					<Image src='/About-us-cover.svg' alt='Sotrixa research visualization' fill className='object-contain scale-150' sizes='(max-width: 768px) 100vw, 50vw' priority />
 				</div>
 
 				{/* Desktop-only play button */}
-				<div className='absolute md:-top-20 md:left-10 inset-0 hidden md:flex items-center justify-center pointer-events-none'>
-					<div className='pointer-events-auto'>
-						<button type='button' className='rounded-full p-3 shadow-lg cursor-pointer hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-[#d142e2] group' onClick={handlePlayClick} aria-label='Play Sotrixa introduction video'>
+				<div className='absolute md:-top-38 md:left-12 inset-0 hidden md:flex items-center justify-center pointer-events-none'>
+					<div className='pointer-events-auto pt-16 pr-8'>
+						<button type='button' className='rounded-full p-3 shadow-lg cursor-pointer hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-[#583c48] group' onClick={handlePlayClick} aria-label='Play Sotrixa introduction video'>
 							<div className='w-10 h-10 flex items-center justify-center group-hover:scale-110 transition-transform'>
-								<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' className='w-6 h-6 text-[#d142e2]'>
+								<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' className='w-32 h-32 text-[#583c48]'>
 									<path d='M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z' />
 								</svg>
 							</div>
@@ -327,11 +327,11 @@ export default function IntroSection() {
 
 					{/* Desktop-only video container with proper spacing */}
 					<motion.div className='hidden md:block relative' initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.5 }}>
-						<div className='relative w-full h-[420px] md:px-6'>
-							{renderVideoContent()}
+						<div className='relative w-full md:px-6'>
+							<div className='h-[420px]'>{renderVideoContent()}</div>
 
 							{/* Desktop-only testimonial */}
-							<div className='hidden md:block absolute bottom-0 left-0 right-0 text-center'>
+							<div className='hidden md:block text-center'>
 								<div className='mt-4'>
 									<p className='text-lg max-w-xl mx-auto'>{renderTestimonial(testimonialText)}</p>
 								</div>

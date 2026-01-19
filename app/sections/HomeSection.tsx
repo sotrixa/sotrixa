@@ -249,7 +249,7 @@ export default function HomeSection() {
 					// Lower video quality on mobile devices for better performance
 					ref={videoRef}
 				>
-					<source src={isMobile ? '/video/Sotrixa-Final-Video-compr.mp4' : '/video/Sotrixa-Final-Video-compr_1.mp4'} type='video/mp4' />
+					<source src={isMobile ? '/video/Sotrixa Home Page Animation.mp4' : '/video/Sotrixa Home Page Animation.mp4'} type='video/mp4' />
 					Your browser does not support the video tag.
 				</video>
 			</div>

@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Section from '../components/Section';
@@ -416,7 +415,14 @@ export default function ContactSection() {
 					{/* Right Column - Image */}
 					<div className='flex items-center justify-center md:justify-end mt-6 md:mt-0' ref={imageRef} style={{ opacity: animationsCreated ? undefined : 1 }}>
 						<div className='relative w-full max-w-sm sm:max-w-md lg:max-w-lg aspect-square rounded-lg overflow-hidden bg-gray-50 md:ml-auto'>
-							<Image src='/contact-page-1.png' alt='Contact us' fill className='object-contain' sizes='(max-width: 640px) 90vw, (max-width: 768px) 70vw, (max-width: 1024px) 50vw, 40vw' priority />
+							<video
+								src='/video/Sotrixa Contact Page Animation.mp4'
+								autoPlay
+								loop
+								muted
+								playsInline
+								className='w-full h-full object-contain'
+							/>
 						</div>
 					</div>
 				</div>
