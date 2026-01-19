@@ -195,7 +195,7 @@ export default function CaseStudyDetail({ study, caseStudies, onClose }: CaseStu
 							{currentStudy.title}
 						</h2>
 
-						<div ref={contentRef} className='space-y-8 pb-16 max-w-full'>
+						<div ref={contentRef} className='space-y-8 pb-40 max-w-full'>
 							<div className='detail-content space-y-12 max-w-full'>
 								{currentStudy.description && (
 									<div className='mb-8 max-w-full'>

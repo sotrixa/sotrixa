@@ -62,22 +62,18 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 	// CALCULATE EXACT POSITION ONCE AND NEVER CHANGE IT
 	useEffect(() => {
 		if (!mounted) return;
-		
-		// Calculate the EXACT pixel position from document top ONCE
-		const initialViewportHeight = window.innerHeight;
-		const exactTopPosition = initialViewportHeight - 120; // Move it down a bit from bottom
-		
+
 		const forcePosition = () => {
 			if (containerRef.current) {
 				const element = containerRef.current;
-				
-				// FORCE EXACT PIXEL POSITION THAT NEVER CHANGES
-				element.style.setProperty('position', 'absolute', 'important');
-				element.style.setProperty('top', `${exactTopPosition}px`, 'important');
+
+				// FORCE FIXED POSITION AT BOTTOM OF VIEWPORT
+				element.style.setProperty('position', 'fixed', 'important');
+				element.style.setProperty('bottom', '40px', 'important');
 				element.style.setProperty('left', '50%', 'important');
 				element.style.setProperty('transform', 'translateX(-50%)', 'important');
 				element.style.setProperty('z-index', '99999', 'important');
-				element.style.setProperty('bottom', 'unset', 'important');
+				element.style.setProperty('top', 'unset', 'important');
 				element.style.setProperty('right', 'unset', 'important');
 				element.style.setProperty('pointer-events', 'none', 'important');
 				element.style.setProperty('display', isMenuOpen ? 'none' : 'block', 'important');
@@ -87,11 +83,11 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 				element.style.setProperty('padding', '0', 'important');
 			}
 		};
-		
+
 		// Force position immediately and constantly
 		forcePosition();
 		const interval = setInterval(forcePosition, 10);
-		
+
 		// Cleanup
 		return () => {
 			clearInterval(interval);
