@@ -50,10 +50,10 @@
 }
 
 .video {
-	width: 70%;
-	height: 52dvh; /* Use dynamic viewport height */
-	min-height: 400px; /* Minimum height to prevent shrinking */
-	object-fit: fill;
+	width: 85%;
+	height: 60dvh; /* Use dynamic viewport height */
+	min-height: 450px; /* Minimum height to prevent shrinking */
+	object-fit: contain;
 	position: relative;
 	z-index: 2;
 	max-width: 100%;
@@ -64,8 +64,6 @@
 	outline: none;
 	display: block;
 	background: transparent;
-	transform: scale(1.05) translateY(-2%); /* Slightly scale and move up to crop any black bars */
-	overflow: hidden; /* Hide any overflow from the scaling */
 }
 
 .heading {

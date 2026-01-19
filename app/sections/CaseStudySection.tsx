@@ -323,7 +323,7 @@ export default function CaseStudySection() {
 
 							<div ref={sliderRef} className='slider-container flex gap-3 sm:gap-4 md:gap-6 px-3 sm:px-4 pb-4 sm:pb-6 pt-2 sm:pt-3 ml-12 sm:ml-14 lg:ml-16'>
 								{getVisibleSlides().map((study, index) => (
-									<div key={`${currentSlideIndex}-${index}`} className='slider-item flex-shrink-0 w-full sm:w-[280px] md:w-[320px] lg:w-1/2 space-y-3 sm:space-y-4 cursor-pointer transition-transform duration-300 hover:-translate-y-2' onClick={() => handleStudyClick(study)}>
+									<div key={`${currentSlideIndex}-${index}`} className='slider-item flex-shrink-0 w-full sm:w-[280px] md:w-[320px] lg:w-1/2 space-y-3 sm:space-y-4 cursor-pointer transition-transform duration-300 hover:-translate-y-2 select-text' onClick={() => handleStudyClick(study)}>
 										{/* Image container */}
 										<div className='h-[200px] xs:h-[220px] sm:h-[240px] md:h-[280px] lg:h-[320px] xl:h-[380px] rounded-lg border border-gray-200 shadow-md overflow-hidden'>
 											<div className='relative w-full h-full'>

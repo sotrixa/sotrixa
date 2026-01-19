@@ -413,8 +413,8 @@ export default function ContactSection() {
 					</div>
 
 					{/* Right Column - Image */}
-					<div className='flex items-center justify-center md:justify-end mt-6 md:mt-0' ref={imageRef} style={{ opacity: animationsCreated ? undefined : 1 }}>
-						<div className='relative w-full max-w-sm sm:max-w-md lg:max-w-lg aspect-square rounded-lg overflow-hidden bg-gray-50 md:ml-auto'>
+					<div className='flex items-center justify-center mt-6 md:mt-16 md:pr-6' ref={imageRef} style={{ opacity: animationsCreated ? undefined : 1 }}>
+						<div className='relative w-full max-w-xs sm:max-w-sm lg:max-w-md aspect-square rounded-lg overflow-hidden bg-gray-50'>
 							<video
 								src='/video/Sotrixa Contact Page Animation.mp4'
 								autoPlay

@@ -229,13 +229,13 @@ export default function IntroSection() {
 		return (
 			<>
 				{/* Desktop-only image */}
-				<div className='hidden md:block relative h-[400px]'>
-					<Image src='/About-us-cover.svg' alt='Sotrixa research visualization' fill className='object-contain scale-150' sizes='(max-width: 768px) 100vw, 50vw' priority />
+				<div className='hidden md:block relative h-[450px] mt-[-4rem]'>
+					<Image src='/About-us-cover.svg' alt='Sotrixa research visualization' fill className='object-contain' sizes='(max-width: 768px) 100vw, 50vw' priority />
 				</div>
 
 				{/* Desktop-only play button */}
-				<div className='absolute md:-top-38 md:left-12 inset-0 hidden md:flex items-center justify-center pointer-events-none'>
-					<div className='pointer-events-auto pt-16 pr-8'>
+				<div className='absolute inset-0 hidden md:flex items-center justify-center pointer-events-none'>
+					<div className='pointer-events-auto -mt-8'>
 						<button type='button' className='rounded-full p-3 shadow-lg cursor-pointer hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-[#583c48] group' onClick={handlePlayClick} aria-label='Play Sotrixa introduction video'>
 							<div className='w-10 h-10 flex items-center justify-center group-hover:scale-110 transition-transform'>
 								<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' className='w-32 h-32 text-[#583c48]'>
@@ -298,7 +298,7 @@ export default function IntroSection() {
 					<div className='w-full py-5 px-4 flex flex-col items-center md:items-start md:px-6'>
 						<motion.div className='w-full max-w-md md:max-w-none text-left md:text-left space-y-2 md:space-y-6 md:bg-transparent p-4 rounded-lg md:p-0 md:rounded-none md:shadow-none' initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8 }}>
 							{/* Title with optimized font sizes */}
-							<div className='mb-6 md:pt-14 md:mb-8 pl-4'>
+							<div className='mb-6 md:pt-16 md:mb-8 pl-4'>
 								<div className='space-y-2 md:space-y-4'>
 									<h1 className='text-[2.5rem] md:text-[3.7rem] font-black leading-tight md:leading-none block'>{renderColoredText(fullTitle)}</h1>
 								</div>

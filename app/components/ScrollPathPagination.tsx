@@ -79,7 +79,7 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 				element.style.setProperty('z-index', '99999', 'important');
 				element.style.setProperty('bottom', 'unset', 'important');
 				element.style.setProperty('right', 'unset', 'important');
-				element.style.setProperty('pointer-events', 'auto', 'important');
+				element.style.setProperty('pointer-events', 'none', 'important');
 				element.style.setProperty('display', isMenuOpen ? 'none' : 'block', 'important');
 				element.style.setProperty('width', 'auto', 'important');
 				element.style.setProperty('height', 'auto', 'important');
@@ -435,12 +435,12 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 
 	// Render using portal directly to body to bypass ALL container constraints
 	return createPortal(
-		<div 
-			ref={containerRef} 
+		<div
+			ref={containerRef}
 			className="scroll-path-pagination"
-			style={{ 
+			style={{
 				display: isMenuOpen ? 'none' : 'block',
-				pointerEvents: 'auto'
+				pointerEvents: 'none'
 			}}
 		>
 			<svg 
@@ -475,6 +475,7 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 					<g
 						key={`dot-${index}`}
 						className='cursor-pointer'
+						style={{ pointerEvents: 'auto' }}
 						onClick={() => {
 							if (window.horizontalScrollControls) {
 								window.horizontalScrollControls.navigateToPanel(index);
