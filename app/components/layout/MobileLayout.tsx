@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import ScrollToTopButton from '@/app/components/ScrollToTopButton';
+import ScrollToTopButton from '@/app/components/scroll/ScrollToTopButton';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Burger from '@/app/components/header/burger';

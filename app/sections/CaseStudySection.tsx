@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
 import Image from 'next/image';
-import Section from '../components/Section';
-import CaseStudyDetail from '../components/CaseStudyDetail';
+import Section from '../components/layout/Section';
+import CaseStudyDetail from '../components/case-studies/CaseStudyDetail';
 import { getText, parseColoredText, Language } from '../data/translations';
 
 // Define case study data type

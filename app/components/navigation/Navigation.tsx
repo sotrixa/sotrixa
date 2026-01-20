@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import Header from './header';
+import Header from '../header';
 import { useState, useEffect, CSSProperties } from 'react';
 import { usePathname } from 'next/navigation';
 

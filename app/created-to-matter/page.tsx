@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import CreatedToMatterSection from '../sections/CreatedToMatterSection';
-import Navigation from '@/app/components/Navigation';
+import Navigation from '@/app/components/navigation/Navigation';
 import dynamic from 'next/dynamic';
 import { generateServiceSchema, generateBreadcrumbSchema } from '@/app/lib/seo';
 
 // Use a wrapper component for MobileLayout
-const MobileLayout = dynamic(() => import('@/app/components/MobileLayout').then((mod) => ({ default: mod.default })), { ssr: false });
+const MobileLayout = dynamic(() => import('@/app/components/layout/MobileLayout').then((mod) => ({ default: mod.default })), { ssr: false });
 
 export default function CreatedToMatterPage() {
 	const [isMobile, setIsMobile] = useState(false);

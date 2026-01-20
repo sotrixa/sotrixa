@@ -1,12 +1,12 @@
 'use client';
 
 import { useState, useRef, RefObject, useEffect } from 'react';
-import { GsapHorizontalScrollProps } from './scroll/types';
-import { useNavigationControls } from './scroll/useNavigationControls';
-import { useScrollSetup } from './scroll/useScrollSetup';
-import { useScrollInitializer } from './scroll/useScrollInitializer';
-import { useEventHandlers } from './scroll/useEventHandlers';
-import ScrollNavigation from './scroll/ScrollNavigation';
+import { GsapHorizontalScrollProps } from '../scroll/types';
+import { useNavigationControls } from '../scroll/useNavigationControls';
+import { useScrollSetup } from '../scroll/useScrollSetup';
+import { useScrollInitializer } from '../scroll/useScrollInitializer';
+import { useEventHandlers } from '../scroll/useEventHandlers';
+import ScrollNavigation from '../scroll/ScrollNavigation';
 import gsap from 'gsap';
 import Image from 'next/image';
 

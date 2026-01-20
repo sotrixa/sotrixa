@@ -1,19 +1,19 @@
 'use client';
 
 import React from 'react';
-import GsapHorizontalScroll from '@/app/components/GsapHorizontalScroll';
-import KeyboardControls from '@/app/components/KeyboardControls';
+import GsapHorizontalScroll from '@/app/components/animation/GsapHorizontalScroll';
+import KeyboardControls from '@/app/components/scroll/KeyboardControls';
 import HomeSection from '@/app/sections/HomeSection';
 import IntroSection from '@/app/sections/IntroSection';
 import ServicesSection from '@/app/sections/ServicesSection';
-import ScrollPathPagination from '@/app/components/ScrollPathPagination';
+import ScrollPathPagination from '@/app/components/scroll/ScrollPathPagination';
 import CaseStudySection from '@/app/sections/CaseStudySection';
 import ContactSection from '@/app/sections/ContactSection';
-import Navigation from '@/app/components/Navigation';
+import Navigation from '@/app/components/navigation/Navigation';
 import dynamic from 'next/dynamic';
 
 // Use a wrapper component for MobileLayout
-const MobileLayout = dynamic(() => import('@/app/components/MobileLayout').then((mod) => ({ default: mod.default })), { ssr: false });
+const MobileLayout = dynamic(() => import('@/app/components/layout/MobileLayout').then((mod) => ({ default: mod.default })), { ssr: false });
 
 // Dynamic imports for mobile components
 const MobileHomeSection = dynamic(() => import('@/app/sections/mobile/MobileHomeSection').then((mod) => ({ default: mod.default })), { ssr: false });

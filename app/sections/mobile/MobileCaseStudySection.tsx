@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
 import Image from 'next/image';
-import Section from '../../components/Section';
+import Section from '../../components/layout/Section';
 import CaseStudyDetailMobile from './CaseStudyDetailMobile';
 import { getText, parseColoredText, Language } from '../../data/translations';
 

@@ -5,7 +5,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '../../data/LanguageContext';
 import { getText } from '../../data/translations';
 import ReactDOM from 'react-dom';
-import ScrollToTopButtonComponent from '../../components/ScrollToTopButton';
+import ScrollToTopButtonComponent from '../../components/scroll/ScrollToTopButton';
 
 function MobileIntroSectionComponent() {
 	const [isVideoPlaying, setIsVideoPlaying] = useState(false);

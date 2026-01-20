@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Section from '../components/Section';
+import Section from '../components/layout/Section';
 import { useContactForm } from '../lib/hooks/useContactForm';
 
 export default function ContactSection() {
