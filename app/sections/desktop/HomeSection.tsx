@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import styles from './HomeSection.module.css';
 import { gsap } from 'gsap';
 import { useLanguage } from '../../data/LanguageContext';
 import { getText } from '../../data/translations';
@@ -76,7 +75,7 @@ export default function HomeSection() {
 
 		// Immediately hide grid elements on mount to prevent flash
 		if (gridRef.current) {
-			const columns = gridRef.current.querySelectorAll(`.${styles.column}`);
+			const columns = gridRef.current.querySelectorAll('[data-grid-column]');
 			gsap.set(columns, { autoAlpha: 0 });
 		}
 
@@ -92,7 +91,7 @@ export default function HomeSection() {
 
 				// Grid animation
 				if (gridRef.current) {
-					const columns = gridRef.current.querySelectorAll(`.${styles.column}`);
+					const columns = gridRef.current.querySelectorAll('[data-grid-column]');
 					// Use fewer columns on mobile for better performance
 					const visibleColumns = isMobile ? Array.from(columns).slice(0, isMobile ? 10 : 20) : columns;
 
@@ -166,7 +165,7 @@ export default function HomeSection() {
 
 		video.addEventListener('ended', handleVideoEnd);
 		video.addEventListener('error', handleVideoError);
-		
+
 		// Ensure video plays initially
 		video.play().catch(console.error);
 
@@ -183,7 +182,13 @@ export default function HomeSection() {
 		const limitedBlocks = isMobile ? Math.min(nbOfBlocks, 15) : nbOfBlocks;
 
 		return [...Array(limitedBlocks).keys()].map((_, index) => {
-			return <div key={index} onMouseEnter={(e) => colorize(e.target as HTMLDivElement)} />;
+			return (
+				<div
+					key={index}
+					className="flex-1 w-full transition-colors duration-300"
+					onMouseEnter={(e) => colorize(e.target as HTMLDivElement)}
+				/>
+			);
 		});
 	};
 
@@ -195,17 +200,27 @@ export default function HomeSection() {
 	};
 
 	return (
-		<div id='home' ref={containerRef} className={styles.container}>
-			<div ref={bodyRef} className={styles.body}>
-				<h1 ref={headingRef} className={styles.heading}>
+		<div
+			id='home'
+			ref={containerRef}
+			className="flex items-center justify-between bg-[#fafafa] overflow-hidden relative w-screen max-[900px]:flex-col max-[900px]:justify-center max-[900px]:gap-6 max-md:gap-4"
+		>
+			<div
+				ref={bodyRef}
+				className="text-left font-bold w-1/2 relative text-black pointer-events-none flex flex-col gap-2 z-[2] shrink-0 pl-12 max-[1200px]:w-[48%] max-[1200px]:pl-6 max-[900px]:w-full max-[900px]:text-center max-[900px]:px-6 max-md:w-full max-md:justify-center max-md:items-center max-md:text-center max-md:z-[3] max-md:px-4 max-[480px]:px-3"
+			>
+				<h1
+					ref={headingRef}
+					className="text-6xl font-black leading-tight m-0 pointer-events-auto max-[1400px]:text-6xl max-[1200px]:text-[3.5rem] max-[1024px]:text-5xl max-[900px]:text-[2.8rem] max-md:text-[2.5rem] max-md:text-center max-md:leading-tight max-[480px]:text-4xl"
+				>
 					{isMobile ? (
 						// Simplified layout for mobile
 						<>
-							<span className={styles.white}>We are a </span>
+							<span className="text-black">We are a </span>
 							<span style={{ color: '#53EBDD' }}>strategy lab</span>
-							<span className={styles.white}> for </span>
+							<span className="text-black"> for </span>
 							<span style={{ color: '#DD53EB' }}>visionary</span>
-							<span className={styles.white}> </span>
+							<span className="text-black"> </span>
 							<span style={{ color: '#EBDD53' }}>thinkers</span>
 						</>
 					) : (
@@ -221,12 +236,18 @@ export default function HomeSection() {
 					)}
 				</h1>
 
-				<p ref={paragraphRef} className={styles.paragraph}>
+				<p
+					ref={paragraphRef}
+					className="text-xl leading-relaxed max-w-[36rem] font-normal m-0 mb-8 pointer-events-auto max-md:text-center max-md:max-w-[90%] max-md:mx-auto max-md:mb-6 max-md:text-sm max-md:leading-snug max-[480px]:text-[0.85rem] max-[480px]:max-w-[95%]"
+				>
 					{getText('homeSection.paragraph', language)}
 				</p>
-				<div ref={buttonsRef} className={styles.buttons}>
+				<div
+					ref={buttonsRef}
+					className="flex gap-8 pointer-events-auto max-md:justify-center max-md:gap-2"
+				>
 					<button
-						className={styles.button}
+						className="text-base font-medium cursor-pointer bg-transparent border-none p-0 hover:underline"
 						onClick={() => {
 							// Navigate to Contact section (index 4)
 							if (window.horizontalScrollControls) {
@@ -237,7 +258,7 @@ export default function HomeSection() {
 						{getText('homeSection.talkToUs', language)}
 					</button>
 					<button
-						className={styles.button}
+						className="text-base font-medium cursor-pointer bg-transparent border-none p-0 hover:underline"
 						onClick={() => {
 							// Navigate to Services section (index 2)
 							if (window.horizontalScrollControls) {
@@ -248,7 +269,7 @@ export default function HomeSection() {
 						What we do
 					</button>
 					<button
-						className={styles.button}
+						className="text-base font-medium cursor-pointer bg-transparent border-none p-0 hover:underline"
 						onClick={() => {
 							// Navigate to Case Study section (index 3)
 							if (window.horizontalScrollControls) {
@@ -261,14 +282,16 @@ export default function HomeSection() {
 				</div>
 			</div>
 
-			<div ref={videoContainerRef} className={styles.videoContainer}>
+			<div
+				ref={videoContainerRef}
+				className="w-[45%] relative h-full overflow-hidden flex items-center justify-center z-[1] bg-[#fafafa] shrink-0 max-[1200px]:w-[45%] max-[1200px]:h-full max-[900px]:w-full max-[900px]:h-3/4 max-[900px]:relative max-[900px]:p-0 max-md:absolute max-md:w-full max-md:h-full max-md:left-0 max-md:top-0 max-md:z-[1] max-md:bg-transparent"
+			>
 				<video
-					className={styles.video}
+					className="w-[85%] object-contain relative z-[2] max-w-full m-0 p-0 border-none outline-none shadow-none block bg-transparent overflow-hidden max-md:w-full max-md:h-full max-md:object-cover"
 					autoPlay
 					loop
 					muted
 					playsInline
-					// Lower video quality on mobile devices for better performance
 					ref={videoRef}
 				>
 					<source src={isMobile ? '/video/Sotrixa Home Page Animation.mp4' : '/video/Sotrixa Home Page Animation.mp4'} type='video/mp4' />
@@ -276,10 +299,17 @@ export default function HomeSection() {
 				</video>
 			</div>
 
-			<div ref={gridRef} className={styles.grid}>
+			<div
+				ref={gridRef}
+				className="absolute top-0 left-0 h-full w-full grid grid-cols-[repeat(40,1fr)] -z-[1] pointer-events-none max-md:-z-[2] max-[1024px]:grid-cols-[repeat(10,1fr)]"
+			>
 				{windowWidth > 0 &&
 					[...Array(isMobile ? 10 : 40).keys()].map((_, index) => (
-						<div key={'b_' + index} className={styles.column}>
+						<div
+							key={'b_' + index}
+							data-grid-column
+							className="h-full flex flex-col opacity-0"
+						>
 							{getBlocks()}
 						</div>
 					))}
