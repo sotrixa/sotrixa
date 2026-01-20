@@ -5,8 +5,8 @@
 
 /* Make sure the entire container is scrollable */
 .services-section-container {
-	min-height: 100dvh; /* Use dynamic viewport height */
-	height: max(100vh, 800px); /* Ensure minimum height */
+	/* Heights set by JavaScript - no vh units */
+	min-height: 800px; /* Fallback only */
 	width: 100%;
 	overflow-y: auto;
 	position: relative;

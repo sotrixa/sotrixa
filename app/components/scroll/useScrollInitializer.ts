@@ -82,19 +82,27 @@ export function useScrollInitializer({ containerRef, wrapperRef, sectionsRef, na
 			// Set initial scroll behavior
 			updateScrollBehavior();
 
-			// Set initial dimensions
+			// CAPTURE INITIAL VIEWPORT HEIGHT IN PIXELS - NEVER CHANGE IT
+			const initialHeight = window.innerHeight;
+			const fixedHeight = Math.max(initialHeight, 800); // Minimum 800px
+
+			// Set initial dimensions with FIXED PIXEL HEIGHT
 			gsap.set(wrapper, {
 				width: sections.length * 100 + 'vw',
-				height: '100dvh', // Use dynamic viewport height
-				minHeight: '800px', // Ensure minimum height
+				height: `${fixedHeight}px`, // FIXED PIXEL HEIGHT - will never recalculate
+				minHeight: `${fixedHeight}px`,
 			});
 
 			sections.forEach((section, i) => {
 				// Add data attribute for tracking
 				section.setAttribute('data-section-index', i.toString());
 
-				// Set each section to be full width
-				gsap.set(section, { width: '100vw' });
+				// Set each section to FIXED HEIGHT in pixels
+				gsap.set(section, {
+					width: '100vw',
+					height: `${fixedHeight}px`,
+					minHeight: `${fixedHeight}px`,
+				});
 			});
 
 			// Clear any existing ScrollTriggers to prevent duplicates

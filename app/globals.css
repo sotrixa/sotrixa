@@ -88,8 +88,7 @@ html, body {
 	background: var(--background);
 	color: var(--foreground);
 	font-family: Arial, Helvetica, sans-serif;
-	min-height: 100vh; /* Ensure minimum height */
-	height: 100%; /* Allow full height */
+	/* Heights set by JavaScript - no vh units */
 	/* Overflow will be controlled dynamically by JavaScript based on viewport height */
 }
 
@@ -165,21 +164,19 @@ html, body {
 		/* Overflow will be controlled dynamically by JavaScript */
 	}
 	
-	/* Prevent viewport height changes from shrinking elements */
-	.fixed, [class*="fixed"] {
-		min-height: 800px;
-	}
-	
+	/* DO NOT set min-height on fixed elements - JavaScript handles it */
+
 	/* LET JAVASCRIPT HANDLE ALL POSITIONING - NO CSS INTERFERENCE */
 	.scroll-path-pagination {
 		/* JavaScript will handle all positioning */
 		pointer-events: auto !important;
+		min-height: 0 !important;
+		max-height: none !important;
+		position: fixed !important;
+		bottom: 20px !important;
 	}
 	
-	/* Ensure sections maintain minimum size */
-	section, [id*="section"], [class*="section"] {
-		min-height: 800px;
-	}
+	/* Section heights set by JavaScript - no vh units */
 	
 	/* Show scrollbars when height is reduced */
 	@media (max-height: 600px) {

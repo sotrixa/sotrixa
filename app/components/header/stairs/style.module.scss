@@ -3,8 +3,8 @@
 	left: 0;
 	position: fixed;
 	z-index: 999;
-	height: 100dvh; /* Use dynamic viewport height */
-	min-height: 800px; /* Ensure minimum height */
+	/* Height set by JavaScript - DO NOT USE vh units */
+	min-height: 800px; /* Fallback only */
 	display: flex;
 	transition: all 1s;
 	pointer-events: none;

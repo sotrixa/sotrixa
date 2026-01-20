@@ -59,21 +59,26 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 		};
 	}, []);
 	
-	// CALCULATE EXACT POSITION ONCE AND NEVER CHANGE IT
+	// LOCK POSITION IN PIXELS - CALCULATE ONCE AND NEVER CHANGE
 	useEffect(() => {
-		if (!mounted) return;
+		if (!mounted || typeof window === 'undefined') return;
+
+		// Capture initial viewport dimensions in pixels - ONCE
+		const initialHeight = window.innerHeight;
+		const fixedHeight = Math.max(initialHeight, 800);
+		const bottomPosition = fixedHeight - 20; // 20px from bottom of FIXED height
 
 		const forcePosition = () => {
 			if (containerRef.current) {
 				const element = containerRef.current;
 
-				// FORCE FIXED POSITION AT BOTTOM OF VIEWPORT
+				// FORCE FIXED POSITION USING PIXEL VALUES - NOT VIEWPORT-RELATIVE
 				element.style.setProperty('position', 'fixed', 'important');
-				element.style.setProperty('bottom', '40px', 'important');
+				element.style.setProperty('top', `${bottomPosition - 80}px`, 'important'); // Fixed pixel position from top
+				element.style.setProperty('bottom', 'unset', 'important'); // Don't use bottom (viewport-relative)
 				element.style.setProperty('left', '50%', 'important');
 				element.style.setProperty('transform', 'translateX(-50%)', 'important');
 				element.style.setProperty('z-index', '99999', 'important');
-				element.style.setProperty('top', 'unset', 'important');
 				element.style.setProperty('right', 'unset', 'important');
 				element.style.setProperty('pointer-events', 'none', 'important');
 				element.style.setProperty('display', isMenuOpen ? 'none' : 'block', 'important');
@@ -81,6 +86,11 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
 				element.style.setProperty('height', 'auto', 'important');
 				element.style.setProperty('margin', '0', 'important');
 				element.style.setProperty('padding', '0', 'important');
+				element.style.setProperty('max-height', 'none', 'important');
+				element.style.setProperty('min-height', '0', 'important');
+				element.style.setProperty('max-width', 'none', 'important');
+				element.style.setProperty('min-width', '0', 'important');
+				element.style.setProperty('overflow', 'visible', 'important');
 			}
 		};
 
