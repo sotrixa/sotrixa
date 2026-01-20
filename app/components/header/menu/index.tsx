@@ -4,13 +4,32 @@ import styles from './style.module.scss';
 import Link from './link';
 import { usePathname } from 'next/navigation';
 
+interface MenuItem {
+	title: string;
+	description: string;
+	images: string[];
+	sectionIndex?: number;
+	sectionId?: string;
+	path?: string;
+}
+
+interface MenuProps {
+	closeMenu: () => void;
+}
 
 // Type guard for horizontalScrollControls
-const hasHorizontalScrollControls = (win) => {
-	return 'horizontalScrollControls' in win && win.horizontalScrollControls !== undefined && typeof win.horizontalScrollControls.navigateToPanel === 'function';
+const hasHorizontalScrollControls = (win: Window): win is Window & { horizontalScrollControls: { navigateToPanel: (index: number) => void } } => {
+	return (
+		'horizontalScrollControls' in win &&
+		win.horizontalScrollControls !== undefined &&
+		typeof win.horizontalScrollControls === 'object' &&
+		win.horizontalScrollControls !== null &&
+		'navigateToPanel' in win.horizontalScrollControls &&
+		typeof (win.horizontalScrollControls as unknown as Record<string, unknown>).navigateToPanel === 'function'
+	);
 };
 
-const menu = [
+const menu: MenuItem[] = [
 	{
 		title: 'ABOUT US',
 		description: 'Our Story & Vision',
@@ -40,11 +59,11 @@ const menu = [
 	},
 ];
 
-export default function index({ closeMenu }) {
+export default function Menu({ closeMenu }: MenuProps) {
 	const pathname = usePathname();
 	const isOnMainPage = pathname === '/';
 
-	const handleNavigation = (item) => {
+	const handleNavigation = (item: MenuItem) => {
 		// Close menu first
 		closeMenu();
 
@@ -56,7 +75,7 @@ export default function index({ closeMenu }) {
 		// If it's a direct path, navigate to the page
 		if (item.path) {
 			setTimeout(() => {
-				window.location.href = item.path;
+				window.location.href = item.path!;
 			}, 300);
 			return;
 		}
@@ -73,17 +92,17 @@ export default function index({ closeMenu }) {
 		// On main page, use horizontal scroll controls if available
 		setTimeout(() => {
 			// Use the global navigation if available
-			if (hasHorizontalScrollControls(window)) {
+			if (hasHorizontalScrollControls(window) && item.sectionIndex !== undefined) {
 				window.horizontalScrollControls.navigateToPanel(item.sectionIndex);
 			} else {
 				// Fallback - try to find the element directly
-				const targetSection = document.getElementById(item.sectionId);
+				const targetSection = document.getElementById(item.sectionId || '');
 				if (targetSection) {
 					targetSection.scrollIntoView({ behavior: 'smooth' });
 				} else {
 					// Fallback to index-based selection if ID not found
 					const sections = document.querySelectorAll('section');
-					if (sections[item.sectionIndex]) {
+					if (item.sectionIndex !== undefined && sections[item.sectionIndex]) {
 						sections[item.sectionIndex].scrollIntoView({ behavior: 'smooth' });
 					}
 				}
@@ -119,12 +138,12 @@ export default function index({ closeMenu }) {
 			</div>
 
 			<motion.div variants={opacity} {...mountAnim} custom={0.5} className={styles.footer}>
-				
+
 			       <div className='p-4 flex gap-4'>
 				   <a href="https://www.instagram.com/sotrixa" target="_blank" rel="noopener noreferrer" className='uppercase'>Instagram</a>
 				   {/* <a href="https://www.linkedin.com/sotrixa" target="_blank" rel="noopener noreferrer" className='uppercase'>LinkedIn</a> */}
 				   </div>
-			
+
 			</motion.div>
 		</motion.div>
 	);

@@ -9,11 +9,11 @@ import { AnimatePresence } from 'framer-motion';
 export default function Header() {
 	const [menuIsOpen, setMenuIsOpen] = useState(false);
 	const [isScrolled, setIsScrolled] = useState(false);
-	const headerRef = useRef(null);
+	const headerRef = useRef<HTMLDivElement>(null);
 
 	// Debug logging for menu state
 	useEffect(() => {
-		
+
 		// Dispatch custom event for menu state change
 		const event = new CustomEvent('navigationMenuStateChange', {
 			detail: { isOpen: menuIsOpen }
@@ -42,8 +42,8 @@ export default function Header() {
 					// Find all burger menu text and change color
 					const menuText = headerRef.current.querySelector('.burgerMenu p');
 					if (menuText) {
-						menuText.style.color = 'black';
-						menuText.style.transition = 'color 0.3s ease';
+						(menuText as HTMLElement).style.color = 'black';
+						(menuText as HTMLElement).style.transition = 'color 0.3s ease';
 					}
 				} else {
 					headerRef.current.style.backgroundColor = 'transparent';
@@ -59,8 +59,8 @@ export default function Header() {
 					// Reset burger menu text color
 					const menuText = headerRef.current.querySelector('.burgerMenu p');
 					if (menuText) {
-						menuText.style.color = 'white';
-						menuText.style.transition = 'color 0.3s ease';
+						(menuText as HTMLElement).style.color = 'white';
+						(menuText as HTMLElement).style.transition = 'color 0.3s ease';
 					}
 				}
 			}
