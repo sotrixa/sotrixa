@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import Section from '../components/layout/Section';
+import Section from '../../components/layout/Section';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ServiceInfoSectionProps } from '@/app/types/services';

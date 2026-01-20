@@ -1,8 +1,8 @@
 'use client';
 
 import { useRef } from 'react';
-import Section from '../../components/layout/Section';
-import { useContactForm } from '../../lib/hooks/useContactForm';
+import Section from '../../../components/layout/Section';
+import { useContactForm } from '../../../lib/hooks/useContactForm';
 import { useContactAnimation } from './hooks/useContactAnimation';
 import { useForceInteractivity } from './hooks/useForceInteractivity';
 import { ContactInfo } from './components/ContactInfo';

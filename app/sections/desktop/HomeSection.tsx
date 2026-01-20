@@ -3,8 +3,8 @@
 import { useState, useEffect, useRef } from 'react';
 import styles from './HomeSection.module.css';
 import { gsap } from 'gsap';
-import { useLanguage } from '../data/LanguageContext';
-import { getText } from '../data/translations';
+import { useLanguage } from '../../data/LanguageContext';
+import { getText } from '../../data/translations';
 
 // Extend Window interface for navigation controls
 declare global {

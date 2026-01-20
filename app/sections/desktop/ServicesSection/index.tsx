@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import Section from '../../components/layout/Section';
+import Section from '../../../components/layout/Section';
 import { motion } from 'framer-motion';
 import { useScrollHandler } from './hooks/useScrollHandler';
 import { useAnimations } from './hooks/useAnimations';

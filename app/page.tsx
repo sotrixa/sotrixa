@@ -3,12 +3,12 @@
 import React from 'react';
 import GsapHorizontalScroll from '@/app/components/animation/GsapHorizontalScroll';
 import KeyboardControls from '@/app/components/scroll/KeyboardControls';
-import HomeSection from '@/app/sections/HomeSection';
-import IntroSection from '@/app/sections/IntroSection';
-import ServicesSection from '@/app/sections/ServicesSection';
+import HomeSection from '@/app/sections/desktop/HomeSection';
+import IntroSection from '@/app/sections/desktop/IntroSection';
+import ServicesSection from '@/app/sections/desktop/ServicesSection';
 import ScrollPathPagination from '@/app/components/scroll/ScrollPathPagination';
-import CaseStudySection from '@/app/sections/CaseStudySection';
-import ContactSection from '@/app/sections/ContactSection';
+import CaseStudySection from '@/app/sections/desktop/CaseStudySection';
+import ContactSection from '@/app/sections/desktop/ContactSection';
 import Navigation from '@/app/components/navigation/Navigation';
 import dynamic from 'next/dynamic';
 

@@ -1,10 +1,10 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Section from '../components/layout/Section';
+import Section from '../../components/layout/Section';
 import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
-import { getText } from '../data/translations';
+import { getText } from '../../data/translations';
 import ReactDOM from 'react-dom';
 
 export default function IntroSection() {

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import CreatedToMatterSection from '../sections/CreatedToMatterSection';
+import CreatedToMatterSection from '../sections/desktop/CreatedToMatterSection';
 import Navigation from '@/app/components/navigation/Navigation';
 import dynamic from 'next/dynamic';
 import { generateServiceSchema, generateBreadcrumbSchema } from '@/app/lib/seo';
