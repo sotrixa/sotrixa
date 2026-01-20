@@ -80,10 +80,15 @@ export default function Header() {
 		setMenuIsOpen(true);
 	};
 
+	const closeMenu = () => {
+		setMenuIsOpen(false);
+	};
+
 	return (
 		<div className={styles.header} ref={headerRef} role='navigation' aria-label='Main Navigation'>
 			<Burger
 				openMenu={openMenu}
+				closeMenu={closeMenu}
 				isMenuOpen={menuIsOpen}
 				isScrolled={isScrolled}
 			/>
