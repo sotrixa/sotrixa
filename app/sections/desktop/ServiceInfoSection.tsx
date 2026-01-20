@@ -183,7 +183,7 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
   }, [playExitAnimation]);
 
   return (
-    <Section id='services-info'>
+    <Section id='services-info' className='bg-white'>
       <BackgroundElements gridBackgroundRef={gridBackgroundRef} particlesRef={particlesRef} gearRefs={gearRefs} />
 
       <div ref={sectionDivRef} className='flex flex-col md:flex-row w-full h-full relative z-20 mx-auto my-8 mt-0'>
