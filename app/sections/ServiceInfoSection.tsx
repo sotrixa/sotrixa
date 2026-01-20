@@ -2,989 +2,219 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import Section from '../components/layout/Section';
-import { motion, AnimatePresence } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ServiceInfoSectionProps } from '@/app/types/services';
 import { LetterElements } from '@/app/types/animation';
-import { GearSVG } from './ServiceInfoSection/components/GearSVG';
-import { serviceContents, serviceItems } from './ServiceInfoSection/data/serviceContents';
+import { serviceContents } from './ServiceInfoSection/data/serviceContents';
+import { BackgroundElements } from './ServiceInfoSection/components/BackgroundElements';
+import { LeftPanel } from './ServiceInfoSection/components/LeftPanel';
+import { RightPanel } from './ServiceInfoSection/components/RightPanel';
+import { useParticleEffects } from './ServiceInfoSection/hooks/useParticleEffects';
+import { useServiceAnimation } from './ServiceInfoSection/hooks/useServiceAnimation';
 
 // Register ScrollTrigger plugin only
 if (typeof window !== 'undefined') {
-	gsap.registerPlugin(ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger);
 }
 
 export default function ServiceInfoSection({ onBackClick, activeService: initialActiveService }: ServiceInfoSectionProps) {
-	const sectionDivRef = useRef<HTMLDivElement>(null);
-	const leftSideRef = useRef<HTMLDivElement>(null);
-	const rightSideRef = useRef<HTMLDivElement>(null);
-	const headingRef = useRef<HTMLHeadingElement>(null);
-	const servicesGridRef = useRef<HTMLDivElement>(null);
-	const rightContentRef = useRef<HTMLDivElement>(null);
-	const logoRef = useRef<HTMLDivElement>(null);
-	const dividerLineRef = useRef<HTMLDivElement>(null);
-	const backButtonRef = useRef<HTMLButtonElement>(null);
-	const servicesTitleRef = useRef<HTMLHeadingElement>(null);
-	const particlesRef = useRef<HTMLDivElement>(null);
-	const gridBackgroundRef = useRef<HTMLDivElement>(null);
-	const gearRefs = useRef<Array<SVGSVGElement | null>>([]);
-
-	// Add state to track the active service
-	const [activeService, setActiveService] = useState<string | undefined>(initialActiveService);
-	// Store previous service for animations
-	const prevServiceRef = useRef<string | undefined>(initialActiveService);
-
-	// Add text element references for animations
-	const serviceTitleRefs = useRef<(HTMLHeadingElement | null)[]>([]);
-	// Update the type for the splitTextRefs
-	const splitTextRefs = useRef<LetterElements[]>([]);
-
-
-	// Service content definitions
-	// Get content based on active service or default to Research
-	const currentContent = activeService && serviceContents[activeService] ? serviceContents[activeService] : serviceContents['RESEARCH'];
-
-	// Create particles animation with colorful gradient-inspired particles
-	const createParticles = () => {
-		if (!particlesRef.current) return;
-
-		// Clear any existing particles first
-		while (particlesRef.current.firstChild) {
-			particlesRef.current.removeChild(particlesRef.current.firstChild);
-		}
-
-		// Colors matching the new color scheme
-		const colors = [
-			'bg-[#EBDD53]', // yellow
-			'bg-[#DD53EB]', // purple
-			'bg-[#53EBDD]', // green
-		];
-
-		// Create variety of particle shapes
-		const shapes = [
-			'rounded-full', // circle
-			'rounded-sm', // near square
-			'rounded-lg', // rounded square
-		];
-
-		// Create new particles
-		for (let i = 0; i < 50; i++) {
-			const particle = document.createElement('div');
-			const color = colors[Math.floor(Math.random() * colors.length)];
-			const shape = shapes[Math.floor(Math.random() * shapes.length)];
-
-			particle.className = `absolute ${shape} ${color} opacity-0`;
-
-			// Vary the size
-			const size = Math.random() * 8 + 2;
-			particle.style.width = `${size}px`;
-			particle.style.height = `${size}px`;
-
-			// Add a subtle shadow for more depth
-			particle.style.boxShadow = '0 1px 2px rgba(0,0,0,0.1)';
-
-			particlesRef.current.appendChild(particle);
-
-			// Random position, making sure particles are within the container
-			const x = Math.random() * 100; // percentage across width
-			const y = Math.random() * 100; // percentage across height
-
-			gsap.set(particle, {
-				x: `${x}%`,
-				y: `${y}%`,
-				opacity: 0,
-				scale: 0,
-				rotation: Math.random() * 360, // random rotation for more dynamic feel
-			});
-		}
-	};
-
-	// Animate particles when service changes
-	const animateParticles = () => {
-		if (!particlesRef.current) return;
-
-		const particles = particlesRef.current.children;
-
-		gsap.to(particles, {
-			opacity: 0,
-			scale: 0,
-			duration: 0.2,
-			onComplete: () => {
-				// Reset positions for next animation
-				for (let i = 0; i < particles.length; i++) {
-					const particle = particles[i];
-					const x = Math.random() * 100;
-					const y = Math.random() * 100;
-
-					gsap.set(particle, {
-						x: `${x}%`,
-						y: `${y}%`,
-					});
-				}
-
-				// Animate particles outward from center
-				gsap.to(particles, {
-					opacity: function () {
-						return Math.random() * 0.5 + 0.1;
-					},
-					scale: function () {
-						return Math.random() * 1 + 0.5;
-					},
-					duration: 1.5,
-					stagger: 0.02,
-					ease: 'power3.out',
-
-					onComplete: () => {
-						// Fade out slowly
-						gsap.to(particles, {
-							opacity: 0,
-							duration: 2,
-							stagger: 0.01,
-							ease: 'power2.in',
-						});
-					},
-				});
-			},
-		});
-	};
-
-	// Update animateLetterStagger function to work with our custom implementation
-	const animateLetterStagger = (index: number) => {
-		if (!serviceTitleRefs.current[index] || !splitTextRefs.current[index]) return;
-
-		const split = splitTextRefs.current[index];
-
-		// Timeline for letter animations
-		const letterTl = gsap.timeline();
-
-		// Animation sequence for vertical orientation
-		letterTl
-			// First slide sideways for vertical orientation
-			.to(split.chars, {
-				x: -15,
-				rotationY: -90,
-				opacity: 0,
-				stagger: 0.03,
-				duration: 0.3,
-				ease: 'back.in(2)',
-			})
-			// Then bring them back with color
-			.to(
-				split.chars,
-				{
-					x: 0,
-					rotationY: 0,
-					opacity: 1,
-					color: '#d142e2',
-					stagger: 0.03,
-					duration: 0.3,
-					ease: 'elastic.out(1, 0.5)',
-					fontWeight: 'bold',
-				},
-				'+=0.1'
-			)
-			// Add a slight wave effect at the end
-			.to(
-				split.chars,
-				{
-					x: -3,
-					stagger: {
-						each: 0.02,
-						from: 'start',
-						grid: 'auto',
-						ease: 'sine.inOut',
-					},
-					duration: 0.2,
-					ease: 'sine.inOut',
-					repeat: 1,
-					yoyo: true,
-				},
-				'-=0.2'
-			);
-
-		return letterTl;
-	};
-
-	// Update resetLetterAnimation for horizontal movement
-	const resetLetterAnimation = (index: number) => {
-		if (!splitTextRefs.current[index]) return;
-
-		const split = splitTextRefs.current[index];
-
-		gsap.to(split.chars, {
-			x: 0,
-			opacity: 1,
-			color: '#000',
-			fontWeight: 'bold',
-			rotationY: 0,
-			duration: 0.3,
-			stagger: 0.02,
-			ease: 'power1.out',
-		});
-	};
-
-	// Define service items with icons using useMemo
-
-	// Function to handle exit animations (will be used by parent component)
-	const playExitAnimation = () => {
-		if (!sectionDivRef.current) return;
-
-		const tl = gsap.timeline();
-
-		// Trigger particle effect for exit
-		animateParticles();
-
-		// Collect all carousel items
-		const carouselItems = Array.from(servicesGridRef.current?.querySelectorAll('.service-item') || []);
-
-		// Create a flash effect
-		const flashOverlay = document.createElement('div');
-		flashOverlay.className = 'absolute inset-0 bg-gradient-to-r from-[#EBDD53] via-[#DD53EB] to-[#53EBDD] pointer-events-none z-50';
-		flashOverlay.style.opacity = '0';
-		sectionDivRef.current.appendChild(flashOverlay);
-
-		// Flash effect
-		tl.to(flashOverlay, {
-			opacity: 0.1,
-			duration: 0.2,
-			ease: 'power1.in',
-			onComplete: () => {
-				gsap.to(flashOverlay, {
-					opacity: 0,
-					duration: 0.5,
-					ease: 'power2.out',
-					onComplete: () => {
-						if (flashOverlay.parentNode) {
-							flashOverlay.parentNode.removeChild(flashOverlay);
-						}
-					},
-				});
-			},
-		});
-
-		// Stylish exit animation adapted for vertical carousel
-		tl.to(
-			carouselItems,
-			{
-				x: -20,
-				opacity: 0,
-				stagger: 0.03,
-				duration: 0.4,
-				ease: 'power2.in',
-			},
-			'-=0.1'
-		)
-			.to(
-				headingRef.current,
-				{
-					y: -15,
-					opacity: 0,
-					duration: 0.3,
-					ease: 'power2.in',
-				},
-				'-=0.3'
-			)
-			.to(
-				rightContentRef.current,
-				{
-					opacity: 0,
-					y: 15,
-					duration: 0.4,
-					ease: 'power2.in',
-				},
-				'-=0.3'
-			)
-			.to(
-				sectionDivRef.current,
-				{
-					opacity: 0,
-					scale: 0.98,
-					duration: 0.4,
-					ease: 'power3.in',
-				},
-				'-=0.2'
-			);
-
-		return tl;
-	};
-
-	// Function to handle back button click
-	const handleBackToServices = () => {
-		// Play exit animation first
-		const tl = gsap.timeline({
-			onComplete: () => {
-				// Call the provided callback when animation completes
-				if (onBackClick) {
-					onBackClick();
-				} else if (typeof window !== 'undefined' && window.goBackToServices) {
-					// Fallback to global function if available
-					window.goBackToServices();
-				}
-			},
-		});
-
-		// Enhanced exit animation with particles
-		animateParticles();
-
-		// Collect all carousel items
-		const carouselItems = Array.from(servicesGridRef.current?.querySelectorAll('.service-item') || []);
-
-		// Create a wave-like exit animation for vertical carousel
-		tl.to(carouselItems, {
-			x: -30,
-			opacity: 0,
-			stagger: 0.03,
-			duration: 0.3,
-			ease: 'power2.in',
-		})
-			.to(
-				headingRef.current,
-				{
-					y: -20,
-					opacity: 0,
-					duration: 0.3,
-					ease: 'power2.in',
-				},
-				'-=0.2'
-			)
-			.to(
-				rightContentRef.current?.children || [],
-				{
-					y: 20,
-					opacity: 0,
-					stagger: 0.03,
-					duration: 0.3,
-					ease: 'power2.in',
-				},
-				'-=0.4'
-			)
-			.to(sectionDivRef.current, {
-				opacity: 0,
-				scale: 0.95,
-				duration: 0.4,
-				ease: 'power3.inOut',
-			});
-
-		return tl;
-	};
-
-	// Function to render text with styled dashes
-	const renderTextWithStyledDashes = (text: string) => {
-		// Handle all types of dashes: regular hyphen (-), en dash (–), and em dash (—)
-		const parts = text.split(/(—|–|-)/g);
-
-		return parts.map((part, i) => {
-			// Check if this part is any type of dash
-			if (part === '—' || part === '–' || part === '-') {
-				return (
-					<span key={i} className="inline-block" style={{ fontSize: '1em', fontWeight: '200', transform: 'scaleX(0.5)' }}>
-						–
-					</span>
-				);
-			}
-
-			return <span key={i}>{part}</span>;
-		});
-	};
-
-	// Function to render title with colored keywords
-	const renderStyledTitle = (title: string, service: string) => {
-		// Define color mappings for each service
-		const colorMappings: Record<string, Record<string, string>> = {
-			RESEARCH: {
-				research: 'text-[#DD53EB]',
-				signals: 'text-[#53EBDD]',
-				strategies: 'text-[#EBDD53]',
-			},
-			'BUSINESS ARCHITECTURE': {
-				vision: 'text-[#DD53EB]',
-				structured: 'text-[#53EBDD]',
-				growth: 'text-[#EBDD53]',
-			},
-			'BESPOKE STRATEGY CREATION': {
-				vision: 'text-[#DD53EB]',
-				clarity: 'text-[#53EBDD]',
-				purpose: 'text-[#EBDD53]',
-			},
-			'BRAND STORYTELLING': {
-				Bringing: 'text-[#DD53EB]',
-				story: 'text-[#53EBDD]',
-				emotionally: 'text-[#EBDD53]',
-			},
-			MARKETING: {
-				presence: 'text-[#DD53EB]',
-				strategies: 'text-[#53EBDD]',
-				move: 'text-[#EBDD53]',
-			},
-			'WEBSITE DEVELOPMENT': {
-				websites: 'text-[#DD53EB]',
-				feeling: 'text-[#53EBDD]',
-				experience: 'text-[#EBDD53]',
-			},
-		};
-
-		const colors = colorMappings[service] || {};
-
-		// First handle all types of dashes, then apply color styling
-		const dashParts = title.split(/(—|–|-)/g);
-
-		return (
-			<span>
-				{dashParts.map((dashPart, dashIndex) => {
-					// If this part is any type of dash, style it consistently
-					if (dashPart === '—' || dashPart === '–' || dashPart === '-') {
-						return (
-							<span key={dashIndex} className="inline-block" style={{ fontSize: '1em', fontWeight: '200', transform: 'scaleX(0.5)' }}>
-								–
-							</span>
-						);
-					}
-
-					// For non-dash parts, apply color styling
-					const words = dashPart.split(' ');
-					return words.map((word, wordIndex) => {
-						// Remove punctuation to check for color mapping
-						const cleanWord = word.replace(/[.,!?;:]$/, '');
-						const punctuation = word.match(/[.,!?;:]$/)?.[0] || '';
-						const colorClass = colors[cleanWord];
-
-						return (
-							<span key={`${dashIndex}-${wordIndex}`}>
-								{colorClass ? <span className={colorClass}>{cleanWord}</span> : cleanWord}
-								{punctuation}
-								{wordIndex < words.length - 1 ? ' ' : ''}
-							</span>
-						);
-					});
-				})}
-			</span>
-		);
-	};
-
-	useEffect(() => {
-		if (!sectionDivRef.current) return;
-
-		// Capture ref values at the beginning of the effect
-		const sectionDivCurrent = sectionDivRef.current;
-		const dividerLineCurrent = dividerLineRef.current;
-		const gridBackgroundCurrent = gridBackgroundRef.current;
-		const gearRefsCurrent = [...gearRefs.current]; // Create a copy of the current array
-
-		// Initialize particles
-		createParticles();
-
-		// Animate the grid background
-		if (gridBackgroundCurrent) {
-			// Initial position
-			gsap.set(gridBackgroundCurrent, {
-				backgroundPosition: '0px 0px',
-			});
-
-			// Create continuous animation for grid movement
-			gsap.to(gridBackgroundCurrent, {
-				backgroundPosition: '40px 40px',
-				duration: 8,
-				ease: 'linear',
-				repeat: -1, // Infinite repetition
-			});
-		}
-
-		// Animate the gears with continuous rotation
-		gearRefsCurrent.forEach((gearRef, index) => {
-			if (!gearRef) return;
-
-			// Set initial rotation
-			gsap.set(gearRef, {
-				rotation: Math.random() * 360,
-				transformOrigin: 'center center',
-			});
-
-			// Create rotation animation with alternating directions
-			gsap.to(gearRef, {
-				rotation: index % 2 === 0 ? '+=360' : '-=360', // Alternate rotation direction
-				duration: 20 + index * 5, // Vary the speed for each gear
-				ease: 'none',
-				repeat: -1,
-			});
-		});
-
-		// Define createLetterAnimations inside useEffect
-		const createLetterAnimations = () => {
-			serviceTitleRefs.current.forEach((titleRef, index) => {
-				if (!titleRef) return;
-
-				// Store the original text content
-				const originalText = titleRef.textContent || '';
-				// Clear the element
-				titleRef.innerHTML = '';
-
-				// Create spans for each character
-				const chars: HTMLSpanElement[] = [];
-
-				// Split text into individual letters and wrap in spans
-				originalText.split('').forEach((char) => {
-					const charSpan = document.createElement('span');
-					charSpan.className = 'letter-char';
-					charSpan.textContent = char;
-					charSpan.style.display = 'inline-block';
-					charSpan.style.willChange = 'transform, opacity';
-					charSpan.style.fontSize = 'inherit';
-					titleRef.appendChild(charSpan);
-					chars.push(charSpan);
-				});
-
-				// Create revert function to restore original text
-				const revert = () => {
-					if (titleRef) {
-						titleRef.innerHTML = originalText;
-					}
-				};
-
-				// Store reference to letter elements and revert function
-				splitTextRefs.current[index] = {
-					chars,
-					revert,
-				};
-
-				// Set initial state of all letters
-				gsap.set(chars, {
-					y: 0,
-					opacity: 1,
-					rotationX: 0,
-					rotationY: 0,
-					transformOrigin: 'center center',
-				});
-
-				// Add hover animation for each service item
-				const serviceItem = titleRef.closest('.service-item');
-				if (serviceItem) {
-					serviceItem.addEventListener('mouseenter', () => {
-						if (activeService === ['CREATED TO MATTER', 'RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRAND STORYTELLING', 'MARKETING', 'WEBSITE DEVELOPMENT'][index]) return;
-
-						// Enhanced hover animation
-						gsap.to(chars, {
-							y: -5, // Reduced movement from -15 to -5 for subtlety
-							x: 2, // Slight shift right
-							opacity: 1,
-							scale: 1.05, // Slight scale up
-							color: '#DD53EB', // Match the new purple color
-							stagger: 0.01, // Faster stagger for more professional feel
-							duration: 0.25,
-							ease: 'power2.out',
-							overwrite: true,
-						});
-					});
-
-					serviceItem.addEventListener('mouseleave', () => {
-						if (activeService === ['CREATED TO MATTER', 'RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRAND STORYTELLING', 'MARKETING', 'WEBSITE DEVELOPMENT'][index]) return;
-
-						// Smoother reset animation
-						gsap.to(chars, {
-							y: 0,
-							x: 0,
-							scale: 1,
-							opacity: 1,
-							color: '#333', // Dark gray instead of pure black for better readability
-							stagger: 0.01,
-							duration: 0.2,
-							ease: 'power1.out',
-							overwrite: true,
-						});
-					});
-				}
-			});
-		};
-
-		// Initialize split text animations after a slight delay to ensure DOM is ready
-		setTimeout(() => {
-			createLetterAnimations();
-		}, 100);
-
-		// Initialize text styles for service titles based on current activeService
-		serviceTitleRefs.current.forEach((titleRef, index) => {
-			if (titleRef) {
-				const service = ['CREATED TO MATTER', 'RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRAND STORYTELLING', 'MARKETING', 'WEBSITE DEVELOPMENT'][index];
-
-				// Set initial styles - using new purple color
-				gsap.set(titleRef, {
-					letterSpacing: '0.05em',
-					color: activeService === service ? '#DD53EB' : '#333', // Using new purple color
-					fontWeight: 'bold',
-					textShadow: activeService === service ? '0 0 3px rgba(221,83,235,0.3)' : 'none', // Updated shadow color
-				});
-
-				// If there's an active service on initial load, animate its text
-				if (activeService === service) {
-					gsap.to(titleRef, {
-						color: '#DD53EB', // Using new purple color
-						fontWeight: 'bold',
-						duration: 0.3,
-					});
-				}
-			}
-		});
-
-		// First animate in the back button with a bounce effect
-		gsap.fromTo(
-			backButtonRef.current,
-			{
-				opacity: 0,
-				x: -30,
-				scale: 0.9,
-			},
-			{
-				opacity: 1,
-				x: 0,
-				scale: 1,
-				duration: 0.6,
-				delay: 0.2,
-				ease: 'back.out(1.7)',
-			}
-		);
-
-		// Initial entrance animations for section components
-		if (sectionDivCurrent) {
-			gsap.fromTo(
-				sectionDivCurrent,
-				{
-					opacity: 0,
-					scale: 0.97,
-				},
-				{
-					opacity: 1,
-					scale: 1,
-					duration: 0.8,
-					ease: 'power3.out',
-				}
-			);
-		}
-
-		// Animate the divider line with glow effect
-		if (dividerLineCurrent) {
-			gsap.fromTo(
-				dividerLineCurrent,
-				{
-					scaleX: 0,
-					transformOrigin: 'left',
-				},
-				{
-					scaleX: 1,
-					duration: 0.8,
-					ease: 'power3.inOut',
-				}
-			);
-		}
-
-		// Removed initial particle animation - particles will only appear when services change
-
-		// Capture the splitTextRefs.current value inside the effect to use in cleanup
-		const splitTextRefsCurrent = splitTextRefs.current;
-
-		return () => {
-			// Clean up all animations
-			gsap.killTweensOf(sectionDivCurrent);
-			gsap.killTweensOf(dividerLineCurrent);
-			const serviceItems = document.querySelectorAll('.service-item');
-			if (serviceItems.length > 0) {
-				gsap.killTweensOf(serviceItems);
-			}
-			if (gridBackgroundCurrent) {
-				gsap.killTweensOf(gridBackgroundCurrent);
-			}
-
-			// Clean up gear animations using the captured array
-			gearRefsCurrent.forEach((gearRef) => {
-				if (gearRef) {
-					gsap.killTweensOf(gearRef);
-				}
-			});
-
-			// Revert split text using the captured value
-			splitTextRefsCurrent.forEach((split) => {
-				if (split && split.revert) split.revert();
-			});
-
-			// Reset service title refs
-			serviceTitleRefs.current = [];
-			splitTextRefs.current = [];
-
-			// Kill all ScrollTriggers
-			if (typeof ScrollTrigger !== 'undefined') {
-				ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-			}
-
-			// Simple cleanup - let browser handle removing listeners when elements are destroyed
-			// No need to explicitly remove listeners when component unmounts
-		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [onBackClick]); // activeService intentionally omitted to prevent "changed size between renders" error
-
-	// Make the function accessible to the parent
-	if (typeof window !== 'undefined') {
-		window.playServiceInfoExitAnimation = playExitAnimation;
-	}
-
-	return (
-		<Section id='service-info' className='bg-[#FAFAFA] text-black p-4 sm:p-6 relative overflow-hidden min-h-screen'>
-			{/* Animated grid background */}
-			<div
-				ref={gridBackgroundRef}
-				className='absolute inset-0 z-0 opacity-40'
-				style={{
-					backgroundImage: `
-						linear-gradient(to right, rgba(150,150,150,0.12) 1px, transparent 1px),
-						linear-gradient(to bottom, rgba(150,150,150,0.12) 1px, transparent 1px),
-						linear-gradient(45deg, rgba(150,150,150,0.05) 25%, transparent 25%, transparent 75%, rgba(150,150,150,0.05) 75%, rgba(150,150,150,0.05)),
-						linear-gradient(135deg, rgba(150,150,150,0.05) 25%, transparent 25%, transparent 75%, rgba(150,150,150,0.05) 75%, rgba(150,150,150,0.05))
-					`,
-					backgroundSize: '40px 40px, 40px 40px, 80px 80px, 80px 80px',
-					backgroundPosition: '0 0, 0 0, 0 0, 0 0',
-				}}
-			></div>
-
-			{/* Gear decorative elements */}
-			<div className='absolute top-[15%] left-[10%] z-0 opacity-25'>
-				<svg
-					ref={(el) => {
-						if (el) gearRefs.current[0] = el;
-					}}
-				>
-					<GearSVG size={180} toothCount={12} color='#888' opacity={0.25} />
-				</svg>
-			</div>
-
-			<div className='absolute top-[25%] left-[18%] z-0 opacity-20'>
-				<svg
-					ref={(el) => {
-						if (el) gearRefs.current[1] = el;
-					}}
-				>
-					<GearSVG size={120} toothCount={10} color='#666' opacity={0.2} />
-				</svg>
-			</div>
-
-			<div className='absolute bottom-[30%] right-[15%] z-0 opacity-25'>
-				<svg
-					ref={(el) => {
-						if (el) gearRefs.current[2] = el;
-					}}
-				>
-					<GearSVG size={200} toothCount={16} color='#888' opacity={0.25} />
-				</svg>
-			</div>
-
-			<div className='absolute bottom-[20%] right-[25%] z-0 opacity-20'>
-				<svg
-					ref={(el) => {
-						if (el) gearRefs.current[3] = el;
-					}}
-				>
-					<GearSVG size={150} toothCount={14} color='#777' opacity={0.15} />
-				</svg>
-			</div>
-
-			<div className='absolute top-[60%] left-[5%] z-0 opacity-15'>
-				<svg
-					ref={(el) => {
-						if (el) gearRefs.current[4] = el;
-					}}
-				>
-					<GearSVG size={100} toothCount={8} color='#999' opacity={0.15} />
-				</svg>
-			</div>
-
-			{/* Abstract lines */}
-			<div className='absolute top-[30%] left-0 w-[25%] h-[2px] bg-gradient-to-r from-transparent via-gray-400 to-transparent opacity-30'></div>
-			<div className='absolute bottom-[40%] right-0 w-[30%] h-[2px] bg-gradient-to-l from-transparent via-gray-400 to-transparent opacity-30'></div>
-
-			{/* Dots grid in one corner */}
-			<div
-				className='absolute top-0 right-0 w-[150px] sm:w-[300px] h-[150px] sm:h-[300px] opacity-20'
-				style={{
-					backgroundImage: 'radial-gradient(circle, rgba(100,100,100,0.7) 2px, transparent 2px)',
-					backgroundSize: '20px 20px',
-				}}
-			></div>
-
-			{/* Particles container for animated effects */}
-			<div ref={particlesRef} className='absolute inset-0 pointer-events-none z-10'></div>
-
-			<div ref={sectionDivRef} className='flex flex-col md:flex-row w-full h-full relative z-20 mx-auto my-8 mt-0'>
-				{/* Left side with strategy heading and services list */}
-				<div className='w-full md:w-1/2 p-4 md:p-4 flex flex-col justify-center min-h-screen md:min-h-full' ref={leftSideRef}>
-					<div className='mb-6' ref={logoRef}>
-						<button onClick={handleBackToServices} ref={backButtonRef} className='group flex items-center space-x-2 cursor-pointer text-black hover:text-[#EBDD53] transition-colors duration-300'>
-							<svg xmlns='http://www.w3.org/2000/svg' className='h-5 w-5 transform transition-transform duration-300 group-hover:-translate-x-1' viewBox='0 0 20 20' fill='currentColor'>
-								<path fillRule='evenodd' d='M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z' clipRule='evenodd' />
-							</svg>
-							<span className='text-sm uppercase tracking-widest'>RETURN TO SERVICES</span>
-						</button>
-					</div>
-
-					<div className='mb-6'>
-						<h1 className='!text-4xl md:!text-5xl lg:!text-5xl font-bold mb-0' ref={headingRef}>
-							{activeService && serviceContents[activeService] ? renderStyledTitle(serviceContents[activeService].title, activeService) : <span className='text-transparent bg-clip-text bg-gradient-to-r from-[#EBDD53] via-[#DD53EB] to-[#53EBDD]'>{currentContent.title}</span>}
-						</h1>
-					</div>
-
-					{/* Navigation arrows to change services */}
-					<div className='mt-12 relative' ref={servicesGridRef}>
-						{/* Navigation with arrows and dots */}
-						<div className='flex items-center justify-start space-x-6'>
-							{/* Left arrow with text */}
-							<button
-								onClick={() => {
-									const currentIndex = serviceItems.findIndex((item) => item.name === activeService);
-									const prevIndex = currentIndex > 0 ? currentIndex - 1 : serviceItems.length - 1;
-									const newService = serviceItems[prevIndex].name;
-
-									prevServiceRef.current = activeService;
-									setActiveService(newService);
-
-									// Reset previous service animation
-									if (serviceTitleRefs.current[currentIndex]) {
-										resetLetterAnimation(currentIndex);
-									}
-
-									// Animate new service
-									animateLetterStagger(prevIndex);
-									animateParticles();
-								}}
-								className='group flex items-center space-x-3 text-black hover:text-[#DD53EB] transition-all duration-300'
-								aria-label='Previous service'
-							>
-								<svg xmlns='http://www.w3.org/2000/svg' className='h-6 w-6 transition-colors duration-300' viewBox='0 0 20 20' fill='currentColor'>
-									<path fillRule='evenodd' d='M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z' clipRule='evenodd' />
-								</svg>
-								<span className='text-sm font-medium tracking-wide transition-colors duration-300'>Previous Service</span>
-							</button>
-
-							{/* Service dots indicator */}
-							<div className='flex space-x-2'>
-								{serviceItems.map((item, index) => (
-									<button
-										key={index}
-										className={`h-3 w-3 rounded-full transition-all ${activeService === item.name ? 'bg-black' : 'bg-gray-400 hover:bg-gray-500'}`}
-										onClick={() => {
-											const currentIndex = serviceItems.findIndex((service) => service.name === activeService);
-
-											prevServiceRef.current = activeService;
-											setActiveService(item.name);
-
-											// Reset previous service animation
-											if (serviceTitleRefs.current[currentIndex]) {
-												resetLetterAnimation(currentIndex);
-											}
-
-											// Animate new service
-											animateLetterStagger(index);
-											animateParticles();
-										}}
-										aria-label={`Go to ${item.name}`}
-									/>
-								))}
-							</div>
-
-							{/* Right arrow with text */}
-							<button
-								onClick={() => {
-									const currentIndex = serviceItems.findIndex((item) => item.name === activeService);
-									const nextIndex = currentIndex < serviceItems.length - 1 ? currentIndex + 1 : 0;
-									const newService = serviceItems[nextIndex].name;
-
-									prevServiceRef.current = activeService;
-									setActiveService(newService);
-
-									// Reset previous service animation
-									if (serviceTitleRefs.current[currentIndex]) {
-										resetLetterAnimation(currentIndex);
-									}
-
-									// Animate new service
-									animateLetterStagger(nextIndex);
-									animateParticles();
-								}}
-								className='group flex items-center space-x-3 text-black hover:text-[#DD53EB] transition-all duration-300'
-								aria-label='Next service'
-							>
-								<span className='text-sm font-medium tracking-wide transition-colors duration-300'>See next Service</span>
-								<svg xmlns='http://www.w3.org/2000/svg' className='h-6 w-6 transition-colors duration-300' viewBox='0 0 20 20' fill='currentColor'>
-									<path fillRule='evenodd' d='M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z' clipRule='evenodd' />
-								</svg>
-							</button>
-						</div>
-					</div>
-				</div>
-
-				{/* Divider line */}
-				<div className='relative md:h-full w-full md:w-[1px] h-[1px] my-4 md:my-0 mx-auto md:mx-0 flex-shrink-0'>
-					<div ref={dividerLineRef} className='absolute inset-0 bg-gray-200'></div>
-				</div>
-
-				{/* Right side with services details */}
-				<div className='w-full md:w-1/2 p-4 md:p-0 flex flex-col justify-start' ref={rightSideRef}>
-					<AnimatePresence mode='wait'>
-						<motion.div ref={rightContentRef} key={activeService} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.5 }}>
-							<h3 ref={servicesTitleRef} className='text-2xl font-black mb-6 text-black'>
-								{activeService || 'Services'}
-							</h3>
-
-							<div className='mb-8'>
-								{currentContent.description.map((paragraph, index) => {
-									// Group of bullet points
-									if (paragraph.startsWith('•')) {
-										// Extract content after the bullet point and dash
-										const parts = paragraph.substring(1).trim().split('–');
-										const bulletTitle = parts[0].trim();
-										const bulletContent = parts.length > 1 ? parts[1].trim() : '';
-
-										return (
-											<div key={index} className='flex items-start group hover:translate-x-1 transition-transform duration-300 py-[1px]'>
-												<span className='text-[#DD53EB] text-xs mr-1.5 mt-[3px] opacity-90 group-hover:opacity-100 flex-shrink-0'>•</span>
-												<div className='text-gray-700 leading-snug'>
-													<span className='font-medium text-gray-800'>{bulletTitle}</span>
-													{bulletContent && (
-														<>
-															{' '}
-															<span className="inline-block" style={{ fontSize: '1em', fontWeight: '200', transform: 'scaleX(0.5)' }}>
-																–
-															</span>
-															{' '}
-															<span className='text-gray-600 text-xs'>{renderTextWithStyledDashes(bulletContent)}</span>
-														</>
-													)}
-												</div>
-											</div>
-										);
-									}
-
-									// Header for list sections (like "What we uncover together:")
-									if (paragraph.endsWith(':​')) {
-										return (
-											<p key={index} className='text-gray-700 font-medium mt-4 mb-1.5'>
-												{paragraph}
-											</p>
-										);
-									}
-
-									// Empty line creates spacing
-									if (paragraph === '') {
-										return <div key={index} className='h-2'></div>;
-									}
-
-									// Regular paragraph
-									return (
-										<p key={index} className='text-gray-700 leading-relaxed mb-3'>
-											{renderTextWithStyledDashes(paragraph)}
-										</p>
-									);
-								})}
-							</div>
-						</motion.div>
-					</AnimatePresence>
-				</div>
-			</div>
-		</Section>
-	);
+  // Refs
+  const sectionDivRef = useRef<HTMLDivElement>(null);
+  const leftSideRef = useRef<HTMLDivElement>(null);
+  const rightSideRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const servicesGridRef = useRef<HTMLDivElement>(null);
+  const rightContentRef = useRef<HTMLDivElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
+  const dividerLineRef = useRef<HTMLDivElement>(null);
+  const backButtonRef = useRef<HTMLButtonElement>(null);
+  const servicesTitleRef = useRef<HTMLHeadingElement>(null);
+  const particlesRef = useRef<HTMLDivElement>(null);
+  const gridBackgroundRef = useRef<HTMLDivElement>(null);
+  const gearRefs = useRef<Array<SVGSVGElement | null>>([]);
+
+  // State
+  const [activeService, setActiveService] = useState<string | undefined>(initialActiveService);
+  const serviceTitleRefs = useRef<(HTMLHeadingElement | null)[]>([]);
+  const splitTextRefs = useRef<LetterElements[]>([]);
+
+  // Get current content
+  const currentContent = activeService && serviceContents[activeService] ? serviceContents[activeService] : serviceContents['RESEARCH'];
+
+  // Hooks
+  const { createParticles, animateParticles } = useParticleEffects({ particlesRef });
+  const { animateLetterStagger, resetLetterAnimation, playExitAnimation, handleBackToServices, createLetterAnimations } = useServiceAnimation({
+    sectionDivRef,
+    headingRef,
+    servicesGridRef,
+    rightContentRef,
+    serviceTitleRefs,
+    splitTextRefs,
+    activeService,
+    animateParticles,
+    onBackClick,
+  });
+
+  // Main useEffect for animations
+  useEffect(() => {
+    const sectionDivCurrent = sectionDivRef.current;
+
+    if (!sectionDivCurrent) return;
+
+    // Create particles
+    createParticles();
+
+    // Animate grid background
+    if (gridBackgroundRef.current) {
+      gsap.to(gridBackgroundRef.current, {
+        backgroundPosition: '100px 100px, 100px 100px, 200px 200px, 200px 200px',
+        duration: 60,
+        ease: 'linear',
+        repeat: -1,
+      });
+    }
+
+    // Animate gears with varied speeds and directions
+    gearRefs.current.forEach((gearRef, index) => {
+      if (!gearRef) return;
+
+      gsap.set(gearRef, {
+        transformOrigin: 'center center',
+      });
+
+      gsap.to(gearRef, {
+        rotation: index % 2 === 0 ? '+=360' : '-=360',
+        duration: 20 + index * 5,
+        ease: 'none',
+        repeat: -1,
+      });
+    });
+
+    // Initialize split text animations
+    setTimeout(() => {
+      createLetterAnimations();
+    }, 100);
+
+    // Initialize text styles for service titles
+    serviceTitleRefs.current.forEach((titleRef, index) => {
+      if (titleRef) {
+        const serviceNames = ['RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRAND STORYTELLING', 'MARKETING', 'WEBSITE DEVELOPMENT'];
+        const service = serviceNames[index];
+
+        gsap.set(titleRef, {
+          letterSpacing: '0.05em',
+          color: activeService === service ? '#DD53EB' : '#333',
+          fontWeight: 'bold',
+          textShadow: activeService === service ? '0 0 3px rgba(221,83,235,0.3)' : 'none',
+        });
+
+        if (activeService === service) {
+          gsap.to(titleRef, {
+            color: '#DD53EB',
+            fontWeight: 'bold',
+            duration: 0.3,
+          });
+        }
+      }
+    });
+
+    // Back button entrance animation
+    gsap.fromTo(
+      backButtonRef.current,
+      {
+        opacity: 0,
+        x: -30,
+        scale: 0.9,
+      },
+      {
+        opacity: 1,
+        x: 0,
+        scale: 1,
+        duration: 0.6,
+        delay: 0.2,
+        ease: 'back.out(1.7)',
+      }
+    );
+
+    // Initial entrance animations for section
+    gsap.fromTo(
+      sectionDivCurrent,
+      {
+        opacity: 0,
+        scale: 0.95,
+      },
+      {
+        opacity: 1,
+        scale: 1,
+        duration: 0.6,
+        delay: 0.3,
+        ease: 'power2.out',
+      }
+    );
+
+    // Divider line animation
+    if (dividerLineRef.current) {
+      gsap.fromTo(
+        dividerLineRef.current,
+        {
+          scaleY: 0,
+        },
+        {
+          scaleY: 1,
+          duration: 0.8,
+          delay: 0.4,
+          ease: 'power2.out',
+        }
+      );
+    }
+
+    // Cleanup
+    return () => {
+      splitTextRefs.current.forEach((split) => split?.revert());
+    };
+  }, [activeService, createParticles, createLetterAnimations]);
+
+  // Expose exit animation globally
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.playServiceInfoExitAnimation = playExitAnimation;
+    }
+  }, [playExitAnimation]);
+
+  return (
+    <Section id='services-info'>
+      <BackgroundElements gridBackgroundRef={gridBackgroundRef} particlesRef={particlesRef} gearRefs={gearRefs} />
+
+      <div ref={sectionDivRef} className='flex flex-col md:flex-row w-full h-full relative z-20 mx-auto my-8 mt-0'>
+        <LeftPanel
+          leftSideRef={leftSideRef}
+          logoRef={logoRef}
+          backButtonRef={backButtonRef}
+          headingRef={headingRef}
+          servicesGridRef={servicesGridRef}
+          activeService={activeService}
+          setActiveService={setActiveService}
+          handleBackToServices={handleBackToServices}
+          serviceTitleRefs={serviceTitleRefs}
+          resetLetterAnimation={resetLetterAnimation}
+          animateLetterStagger={animateLetterStagger}
+          animateParticles={animateParticles}
+        />
+
+        {/* Divider line */}
+        <div className='relative md:h-full w-full md:w-[1px] h-[1px] my-4 md:my-0 mx-auto md:mx-0 flex-shrink-0'>
+          <div ref={dividerLineRef} className='absolute inset-0 bg-gray-200' />
+        </div>
+
+        <RightPanel
+          rightSideRef={rightSideRef}
+          rightContentRef={rightContentRef}
+          servicesTitleRef={servicesTitleRef}
+          activeService={activeService}
+          currentContent={currentContent}
+        />
+      </div>
+    </Section>
+  );
 }
