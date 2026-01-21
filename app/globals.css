@@ -103,30 +103,34 @@ html, body {
 	scrollbar-width: none; /* Firefox */
 }
 
-/* Show scrollbars when height is reduced */
-@media (max-height: 600px) {
+/* Show scrollbars when height is reduced (viewport < min-height of 800px) */
+@media (max-height: 799px) {
 	.scrollbar-hide::-webkit-scrollbar {
 		display: block !important;
 		width: 12px;
 		height: 12px;
 	}
-	
+
 	.scrollbar-hide::-webkit-scrollbar-track {
 		background: #f1f1f1;
 	}
-	
+
 	.scrollbar-hide::-webkit-scrollbar-thumb {
 		background: #888;
 		border-radius: 6px;
 	}
-	
+
 	.scrollbar-hide::-webkit-scrollbar-thumb:hover {
 		background: #555;
 	}
-	
+
 	.scrollbar-hide {
 		-ms-overflow-style: auto !important;
 		scrollbar-width: auto !important;
+	}
+
+	html, body {
+		overflow: auto !important;
 	}
 }
 
@@ -149,6 +153,18 @@ html, body {
 	html,
 	body {
 		-webkit-overflow-scrolling: touch;
+	}
+}
+
+/* Small desktop screens (700-900px height) - common laptop sizes */
+@media (min-width: 1024px) and (max-height: 900px) and (min-height: 700px) {
+	html, body {
+		overflow-y: auto !important;
+	}
+
+	/* Ensure fixed bottom elements remain accessible */
+	.scroll-path-pagination {
+		bottom: 16px !important;
 	}
 }
 
@@ -178,8 +194,8 @@ html, body {
 	
 	/* Section heights set by JavaScript - no vh units */
 	
-	/* Show scrollbars when height is reduced */
-	@media (max-height: 600px) {
+	/* Show scrollbars when height is reduced (viewport < min-height of 800px) */
+	@media (max-height: 799px) {
 		html, body {
 			overflow: auto !important;
 		}

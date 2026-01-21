@@ -152,7 +152,7 @@ export default function GsapHorizontalScroll({ children }: GsapHorizontalScrollP
 		const checkVerticalScroll = () => {
 			if (typeof window !== 'undefined') {
 				const viewportHeight = window.innerHeight;
-				const restrictiveThreshold = 600; // Same as event handlers
+				const restrictiveThreshold = 800; // Match HeightLocker min-height
 				const needsScroll = viewportHeight < restrictiveThreshold;
 				
 				// Also check if there's actually scrollable content

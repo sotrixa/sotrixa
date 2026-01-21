@@ -63,8 +63,9 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
     if (!mounted || typeof window === 'undefined') return;
 
     const initialHeight = window.innerHeight;
-    const fixedHeight = Math.max(initialHeight, 800);
-    const bottomPosition = fixedHeight - 20;
+    // Use actual viewport height for positioning so timeline is visible on smaller screens
+    // The body still has 800px min-height for content, but timeline stays in viewport
+    const bottomPosition = initialHeight - 20;
 
     const forcePosition = () => {
       if (containerRef.current) {

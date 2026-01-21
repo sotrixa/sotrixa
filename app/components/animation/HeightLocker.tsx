@@ -20,6 +20,13 @@ export default function HeightLocker() {
     document.body.style.height = `${fixedHeight}px`;
     document.body.style.minHeight = `${fixedHeight}px`;
 
+    // Enable vertical scroll when viewport is smaller than min-height
+    // This allows users on smaller screens to scroll to see all content
+    if (initialHeight < 800) {
+      document.documentElement.style.overflow = 'auto';
+      document.body.style.overflow = 'auto';
+    }
+
     // Prevent any resize events from changing this
     // (no resize listener - we want it locked forever)
   }, []); // Run once on mount, never again
