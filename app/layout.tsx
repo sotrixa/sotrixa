@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import CustomCursor from './components/animation/CustomCursor';
+/* import CustomCursor from './components/animation/CustomCursor'; */
 import HeightLocker from './components/animation/HeightLocker';
 import { LanguageProvider } from './data/LanguageContext';
 import { generateMetadata, generateOrganizationSchema, generateWebsiteSchema } from './lib/seo';
@@ -45,7 +45,7 @@ export default function RootLayout({
 			<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
 				<HeightLocker />
 				<LanguageProvider>
-					<CustomCursor />
+					{/* <CustomCursor /> */}
 					{children}
 				</LanguageProvider>
 			</body>

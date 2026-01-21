@@ -14,7 +14,8 @@
 		padding: 20px;
 
 		svg {
-			cursor: pointer;
+			/* cursor: pointer; */
+		cursor: auto;
 			width: 100px;
 			height: 100px;
 			path {
@@ -40,7 +41,8 @@
 			border-top: 1px solid white;
 			display: flex;
 			justify-content: center;
-			cursor: pointer;
+			/* cursor: pointer; */
+			cursor: auto;
 			perspective: 80vw;
 			transform-origin: top;
 
@@ -140,13 +142,16 @@
 		justify-content: center;
 		gap: 10px;
 		padding: 20px;
+		border-top: 1px solid white;
+		margin-top: auto;
 
 		a {
 			font-size: 3vw;
 			border: 2px solid white;
 			padding: 0px 10px 0px 10px;
 			border-radius: 30px;
-			cursor: pointer;
+			/* cursor: pointer; */
+			cursor: auto;
 		}
 	}
 }

@@ -14,7 +14,8 @@
 	right: 0;
 	top: 0;
 	padding: 10px;
-	cursor: pointer !important;
+	/* cursor: pointer !important; */
+	cursor: auto;
 	z-index: 99999;
 	pointer-events: auto;
 	user-select: none;
@@ -29,7 +30,8 @@
 		height: 100%;
 		z-index: 10;
 		pointer-events: auto;
-		cursor: pointer;
+		/* cursor: pointer; */
+		cursor: auto;
 	}
 
 	p {

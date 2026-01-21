@@ -39,25 +39,25 @@ export const useAnimations = ({ activeServiceIndex, serviceItemsRef, servicesRef
 			delay: 0.1,
 		});
 
-		// Animate all service items with staggered timing for better effect
+		// Animate all service items with minimal transitions for less dynamic feel
 		serviceItemsRef.current.forEach((item, index) => {
 			if (!item) return;
 
-			// Calculate stagger timing based on distance from active item for smoother transition
-			const staggerDelay = Math.min(Math.abs(index - activeServiceIndex) * 0.05, 0.1);
+			// Minimal stagger delay
+			const staggerDelay = Math.min(Math.abs(index - activeServiceIndex) * 0.02, 0.05);
 
-			// Scale and highlight active item
+			// Subtle scale and highlight active item
 			if (index === activeServiceIndex) {
 				timeline.to(
 					item,
 					{
-						color: '#000000', // Changed to black
-						scale: 1.3, // Bigger scale for active item
+						color: '#000000',
+						scale: 1.05, // Very subtle scale increase
 						opacity: 1,
-						fontWeight: 800, // Make it bolder
-						letterSpacing: '0.05em', // Slightly increase letter spacing
-						duration: 0.5, // Increased for smoother transition
-						ease: 'power2.out', // Changed to a smoother, faster ease
+						fontWeight: 700, // Keep same weight
+						letterSpacing: 'normal', // No letter spacing change
+						duration: 0.25, // Quick transition
+						ease: 'power1.out', // Simple easing
 					},
 					staggerDelay
 				);
@@ -70,10 +70,10 @@ export const useAnimations = ({ activeServiceIndex, serviceItemsRef, servicesRef
 						color: '#000000',
 						scale: 1,
 						opacity: 1,
-						fontWeight: 700, // Return to normal weight
+						fontWeight: 700,
 						letterSpacing: 'normal',
-						duration: 0.4, // Increased for smoother transition
-						ease: 'power1.out', // Faster ease
+						duration: 0.25,
+						ease: 'power1.out',
 					},
 					staggerDelay
 				);
@@ -86,38 +86,28 @@ export const useAnimations = ({ activeServiceIndex, serviceItemsRef, servicesRef
 						color: '#000000',
 						scale: 1,
 						opacity: 0.6,
-						fontWeight: 700, // Return to normal weight
+						fontWeight: 700,
 						letterSpacing: 'normal',
-						duration: 0.4, // Increased for smoother transition
-						ease: 'power1.out', // Faster ease
+						duration: 0.25,
+						ease: 'power1.out',
 					},
 					staggerDelay
 				);
 			}
 		});
 
-		// Add enhanced bounce effect to the active item with smoother timing
+		// Removed bounce effect - now just a simple subtle lift
 		const activeItem = serviceItemsRef.current[activeServiceIndex];
 		if (activeItem) {
-			timeline
-				.to(
-					activeItem,
-					{
-						y: -8, // Slightly more pronounced bounce
-						duration: 0.3, // Increased for smoother bounce
-						ease: 'power2.out', // Faster ease out
-					},
-					0.2 // Start bounce later for better sequence
-				)
-				.to(
-					activeItem,
-					{
-						y: 0, // Return to original position
-						duration: 0.4, // Increased for smoother bounce return
-						ease: 'back.out(1.5)', // Snappier return with slight overshoot
-					},
-					0.5 // Increased to improve animation flow
-				);
+			timeline.to(
+				activeItem,
+				{
+					y: -2, // Very minimal lift
+					duration: 0.2, // Quick
+					ease: 'power1.out',
+				},
+				0.1 // Start immediately
+			);
 		}
 
 		tl.current = timeline;

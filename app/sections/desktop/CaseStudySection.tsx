@@ -330,7 +330,7 @@ export default function CaseStudySection() {
 												<Image src={study.image} alt={study.title} className='object-cover hover:scale-105 transition-transform duration-300' fill style={{ objectFit: 'cover' }} sizes='(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw' priority={index === 0} />
 
 												{/* Overlay with view details button */}
-												<div className='absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center opacity-0 hover:opacity-100'>
+												<div className='absolute inset-0 transition-all duration-300 flex items-center justify-center opacity-0 hover:opacity-100' style={{ backgroundColor: 'rgba(83, 235, 221, 0.3)' }}>
 													<span className='px-3 py-1.5 sm:px-4 sm:py-2 md:px-6 md:py-3 bg-white text-black font-bold rounded-lg transform scale-95 hover:scale-100 transition-transform text-xs sm:text-sm md:text-base'>View Details</span>
 												</div>
 											</div>

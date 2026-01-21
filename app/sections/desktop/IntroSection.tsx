@@ -1,6 +1,24 @@
 'use client';
 
 import { motion } from 'framer-motion';
+
+const desktopIconPulseAnimation = {
+	opacity: [0.8, 0.1, 0.8],
+	transition: {
+		duration: 2,
+		repeat: Infinity,
+		ease: 'easeInOut',
+	},
+};
+
+const mobileIconPulseAnimation = {
+	opacity: [0.8, 0.1, 0.8],
+	transition: {
+		duration: 2,
+		repeat: Infinity,
+		ease: 'easeInOut',
+	},
+};
 import Section from '../../components/layout/Section';
 import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
@@ -237,8 +255,9 @@ export default function IntroSection() {
 				<div className='absolute inset-0 hidden md:flex items-center justify-center pointer-events-none'>
 					<div className='pointer-events-auto -mt-8'>
 						<button type='button' className='rounded-full p-3 shadow-lg cursor-pointer hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-[#583c48] group' onClick={handlePlayClick} aria-label='Play Sotrixa introduction video'>
-							<div className='w-10 h-10 flex items-center justify-center group-hover:scale-110 transition-transform'>
-								<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' className='w-32 h-32 text-[#583c48]'>
+							<div className='w-10 h-10 flex items-center justify-center group-hover:scale-110 transition-transform relative'>
+								<motion.div className='absolute top-1/2 left-1/2 w-16 h-16 -translate-x-1/2 -translate-y-1/2 bg-white rounded-full pointer-events-none' animate={desktopIconPulseAnimation} />
+								<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' className='w-32 h-32 text-[#583c48] relative z-10'>
 									<path d='M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z' />
 								</svg>
 							</div>
@@ -310,8 +329,9 @@ export default function IntroSection() {
 
 								{/* Mobile-only play button */}
 								<button type='button' className='block md:hidden mt-4 bg-white rounded-full p-2 shadow-lg cursor-pointer hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-[#d142e2] group' onClick={handlePlayClick} aria-label='Play Sotrixa introduction video'>
-									<div className='w-7 h-7 flex items-center justify-center group-hover:scale-110 transition-transform'>
-										<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' className='w-4 h-4 text-[#d142e2]'>
+									<div className='w-7 h-7 flex items-center justify-center group-hover:scale-110 transition-transform relative'>
+										<motion.div className='absolute top-1/2 left-1/2 w-12 h-12 -translate-x-1/2 -translate-y-1/2 bg-white rounded-full pointer-events-none' animate={mobileIconPulseAnimation} />
+										<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' className='w-4 h-4 text-[#d142e2] relative z-10'>
 											<path d='M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z' />
 										</svg>
 									</div>
