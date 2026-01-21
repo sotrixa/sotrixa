@@ -267,7 +267,7 @@ export default function IntroSection() {
 					</button>
 
 					<video ref={videoRef} className='w-full h-full object-contain' controls={isVideoHovered} autoPlay playsInline onError={() => console.error('Mobile video failed to load')} tabIndex={0}>
-						<source src='/video/Sotrixa-final.mp4' type='video/mp4' />
+						<source src='/video/Sotrixa-final-subs.mp4' type='video/mp4' />
 						<p className='p-4 text-white text-center'>Your browser does not support the video tag. Please use a modern browser to view this video.</p>
 					</video>
 				</div>
