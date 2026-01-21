@@ -294,7 +294,7 @@ export default function HomeSection() {
 					playsInline
 					ref={videoRef}
 				>
-					<source src={isMobile ? '/video/Sotrixa Home Page Animation.mp4' : '/video/Sotrixa Home Page Animation.mp4'} type='video/mp4' />
+					<source src={isMobile ? '/Sotrixa-Home-Page.mp4' : '/Sotrixa-Home-Page.mp4'} type='video/mp4' />
 					Your browser does not support the video tag.
 				</video>
 			</div>
