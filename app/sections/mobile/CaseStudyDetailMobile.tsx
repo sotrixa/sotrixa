@@ -126,7 +126,7 @@ export default function CaseStudyDetailMobile({ study, onClose }: CaseStudyDetai
 				</div>
 
 				{/* Content Sections */}
-				<div ref={contentRef} className='space-y-8'>
+				<div ref={contentRef} className='space-y-8 pb-20'>
 					{/* Description */}
 					{study.description && (
 						<div>
