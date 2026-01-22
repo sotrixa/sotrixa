@@ -203,7 +203,7 @@ export default function HomeSection() {
 		<div
 			id='home'
 			ref={containerRef}
-			className="flex items-center justify-between bg-[#fafafa] overflow-hidden relative w-screen max-[900px]:flex-col max-[900px]:justify-center max-[900px]:gap-6 max-md:gap-4"
+			className="flex items-center justify-between bg-[#fbfbfb] overflow-hidden relative w-screen max-[900px]:flex-col max-[900px]:justify-center max-[900px]:gap-6 max-md:gap-4"
 		>
 			<div
 				ref={bodyRef}
@@ -284,7 +284,7 @@ export default function HomeSection() {
 
 			<div
 				ref={videoContainerRef}
-				className="w-[45%] relative h-full overflow-hidden flex items-center justify-center z-[1] bg-[#fafafa] shrink-0 max-[1200px]:w-[45%] max-[1200px]:h-full max-[900px]:w-full max-[900px]:h-3/4 max-[900px]:relative max-[900px]:p-0 max-md:absolute max-md:w-full max-md:h-full max-md:left-0 max-md:top-0 max-md:z-[1] max-md:bg-transparent"
+				className="w-[45%] relative h-full overflow-hidden flex items-center justify-center z-[1] bg-[#fbfbfb] shrink-0 max-[1200px]:w-[45%] max-[1200px]:h-full max-[900px]:w-full max-[900px]:h-3/4 max-[900px]:relative max-[900px]:p-0 max-md:absolute max-md:w-full max-md:h-full max-md:left-0 max-md:top-0 max-md:z-[1] max-md:bg-transparent"
 			>
 				<video
 					className="w-[85%] object-contain relative z-[2] max-w-full m-0 p-0 border-none outline-none shadow-none block bg-transparent overflow-hidden max-md:w-full max-md:h-full max-md:object-cover"
@@ -294,7 +294,7 @@ export default function HomeSection() {
 					playsInline
 					ref={videoRef}
 				>
-					<source src={isMobile ? '/Sotrixa-Home-Page.mp4' : '/Sotrixa-Home-Page.mp4'} type='video/mp4' />
+					<source src={isMobile ? '/video/Sotrixa Home Page Animation.mp4' : '/video/Sotrixa Home Page Animation.mp4'} type='video/mp4' />
 					Your browser does not support the video tag.
 				</video>
 			</div>
