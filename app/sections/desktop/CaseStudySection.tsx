@@ -232,13 +232,13 @@ export default function CaseStudySection() {
 	}, [showDetail]);
 
 	return (
-		<Section id='case-study' className='bg-white text-black pt-6 sm:pt-8 md:pt-12 lg:pt-16 overflow-visible'>
+		<Section id='case-study' className='bg-white text-black overflow-visible'>
 			<div ref={sectionRef} className='w-full max-w-none'>
 				{/* Grid view - set initial display style based on selected study */}
-				<div className='grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-6 case-studies-grid' style={{ display: showDetail ? 'none' : 'grid' }}>
+				<div className='grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-6 case-studies-grid items-center' style={{ display: showDetail ? 'none' : 'grid' }}>
 					{/* Left column - responsive layout */}
 					<div className='px-4 sm:px-6 md:pl-10 pb-6 sm:pb-8 lg:pb-16 flex flex-col items-start justify-center h-full'>
-						<h2 className='mt-4 sm:mt-6 lg:mt-10 case-studies-title text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-6xl font-black text-black text-left w-full'>
+						<h1 className='case-studies-title font-black text-black text-left w-full m-0' style={{ fontSize: 'clamp(1rem, 5.5vw, 4rem)' }}>
 							{/* Render title with colored words */}
 							{(() => {
 								let lastIndex = 0;
@@ -299,7 +299,7 @@ export default function CaseStudySection() {
 
 								return elements;
 							})()}
-						</h2>
+						</h1>
 						<p className='case-studies-description text-base sm:text-lg md:text-xl lg:text-xl xl:text-xl text-left w-full pt-2 sm:pt-3'>{subtitleTranslation}</p>
 					</div>
 

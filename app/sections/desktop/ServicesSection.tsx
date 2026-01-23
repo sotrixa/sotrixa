@@ -234,7 +234,7 @@ export default function ServicesSection() {
 					<ServiceInfoSection onBackClick={handleBackFromServiceInfo} activeService={services[activeServiceIndex]} />
 				</div>
 			) : (
-				<Section id='services' className='bg-[#FAFAFA] text-black p-4 pl-10 relative overflow-hidden'>
+				<Section id='services' className='bg-[#FAFAFA] text-black relative overflow-hidden'>
 					{/* Minimalist grid background */}
 					<div
 						ref={backgroundRef}
@@ -268,13 +268,13 @@ export default function ServicesSection() {
 					</div>
 
 					{/* Container div with ref */}
-					<div ref={sectionContainerRef} className='relative w-full h-full' style={{ zIndex: 2 }}>
+					<div ref={sectionContainerRef} className='relative w-full h-full p-4 pl-10' style={{ zIndex: 2 }}>
 						{/* Removed the floating GIF section */}
 
-						<div className='flex flex-col md:flex-row items-center justify-between mt-10 gap-8 sm:gap-12 py-8 sm:py-12'>
+						<div className='flex flex-col md:flex-row items-center justify-between gap-8 sm:gap-12'>
 							{/* Left side with colored text */}
 							<motion.div className='md:w-full' initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.1 }}>
-								<div className='text-3xl sm:text-5xl md:text-[57px] leading-tight font-black max-w-[642px]'>
+								<h1 className='leading-tight font-black max-w-[642px] m-0' style={{ fontSize: 'clamp(1rem, 5.5vw, 4rem)' }}>
 									{/* Enhanced title rendering with proper dash styling */}
 									{(() => {
 										let lastIndex = 0;
@@ -362,7 +362,7 @@ export default function ServicesSection() {
 											}
 										})()}
 									</span>
-								</div>
+								</h1>
 							</motion.div>
 
 							{/* Right side with service list - removed conditional rendering for detail view */}

@@ -100,7 +100,7 @@ export default function CreatedToMatterSection() {
 	}, []);
 
 	return (
-		<Section id='created-to-matter' className='bg-[#FAFAFA] text-black p-4 sm:p-25 relative overflow-hidden'>
+		<Section id='created-to-matter' className='bg-[#FAFAFA] text-black relative overflow-hidden'>
 			{/* Minimalist grid background */}
 			<div
 				ref={backgroundRef}
@@ -133,14 +133,14 @@ export default function CreatedToMatterSection() {
 				></div>
 			</div>
 
-			<div className='relative w-full h-full py-16 sm:py-24' style={{ zIndex: 2 }}>
-				<div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
+			<div className='relative w-full h-full p-4 sm:p-25' style={{ zIndex: 2 }}>
+				<div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center'>
 					{/* Title section */}
-					<div ref={titleRef} className='mb-12 sm:mb-16'>
-						<h2 className='text-3xl sm:text-5xl md:text-[57px] leading-tight font-bold'>
+					<div ref={titleRef}>
+						<h1 className='leading-tight font-bold m-0' style={{ fontSize: 'clamp(1rem, 5.5vw, 4rem)' }}>
 							<span>Created to </span>
 							<span style={{ color: '#d142e2' }}>Matter</span>
-						</h2>
+						</h1>
 						<div className='h-1 w-32 sm:w-48 bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] rounded-full mt-4'></div>
 					</div>
 

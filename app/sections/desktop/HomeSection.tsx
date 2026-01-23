@@ -203,7 +203,7 @@ export default function HomeSection() {
 		<div
 			id='home'
 			ref={containerRef}
-			className="flex items-center justify-between bg-[#fbfbfb] overflow-hidden relative w-screen max-[900px]:flex-col max-[900px]:justify-center max-[900px]:gap-6 max-md:gap-4"
+			className="flex items-center justify-between bg-[#fbfbfb] overflow-hidden relative w-screen max-[900px]:flex-col max-[900px]:justify-center max-[900px]:gap-6 max-md:gap-4 min-h-screen"
 		>
 			<div
 				ref={bodyRef}
@@ -211,7 +211,8 @@ export default function HomeSection() {
 			>
 				<h1
 					ref={headingRef}
-					className="text-6xl font-black leading-tight m-0 pointer-events-auto max-[1400px]:text-6xl max-[1200px]:text-[3.5rem] max-[1024px]:text-5xl max-[900px]:text-[2.8rem] max-md:text-[2.5rem] max-md:text-center max-md:leading-tight max-[480px]:text-4xl"
+					className="font-black leading-tight m-0 pointer-events-auto max-md:text-center max-md:leading-tight"
+					style={{ fontSize: 'clamp(1rem, 5.5vw, 4rem)' }}
 				>
 					{isMobile ? (
 						// Simplified layout for mobile

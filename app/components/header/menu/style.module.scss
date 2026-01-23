@@ -63,8 +63,8 @@
 		p {
 			color: white;
 			text-transform: uppercase;
-			font-size: 8vw;
-			line-height: 8.2vw;
+			font-size: clamp(0.8rem, 5vw, 8rem);
+			line-height: clamp(0.85rem, 5.2vw, 8.4rem);
 			font-weight: 400;
 			margin: 0px;
 			text-decoration: none;
@@ -146,7 +146,7 @@
 		margin-top: auto;
 
 		a {
-			font-size: 3vw;
+			font-size: clamp(0.5rem, 2vw, 1.5rem);
 			border: 2px solid white;
 			padding: 0px 10px 0px 10px;
 			border-radius: 30px;
@@ -169,11 +169,6 @@
 		}
 
 		.body {
-			a,
-			p {
-				font-size: 2rem; /* Fixed size for better readability */
-				line-height: 2.2rem;
-			}
 
 			.outer {
 				.inner {
@@ -191,8 +186,7 @@
 			padding: 30px 0;
 
 			a {
-				font-size: 16px; /* Fixed size for better touch targets */
-				padding: 5px 15px;
+					padding: 5px 15px;
 			}
 		}
 	}

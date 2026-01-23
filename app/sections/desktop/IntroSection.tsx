@@ -313,13 +313,13 @@ export default function IntroSection() {
 					}}
 				/>
 
-				<div className='grid grid-cols-1 md:grid-cols-2 md:gap-8 relative z-10'>
-					<div className='w-full py-5 px-4 flex flex-col items-center md:items-start md:px-6'>
+				<div className='grid grid-cols-1 md:grid-cols-2 md:gap-8 relative z-10 items-center'>
+					<div className='w-full px-4 flex flex-col items-center md:items-center md:px-6'>
 						<motion.div className='w-full max-w-md md:max-w-none text-left md:text-left space-y-2 md:space-y-6 md:bg-transparent p-4 rounded-lg md:p-0 md:rounded-none md:shadow-none' initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8 }}>
 							{/* Title with optimized font sizes */}
-							<div className='mb-6 md:pt-16 md:mb-8 pl-4'>
+							<div className='mb-6 md:mb-8 pl-4'>
 								<div className='space-y-2 md:space-y-4'>
-									<h1 className='text-[2.5rem] md:text-[3.7rem] font-black leading-tight md:leading-none block'>{renderColoredText(fullTitle)}</h1>
+									<h1 className='font-black leading-tight md:leading-none block' style={{ fontSize: 'clamp(1rem, 5.5vw, 4rem)' }}>{renderColoredText(fullTitle)}</h1>
 								</div>
 							</div>
 

@@ -44,7 +44,7 @@ export default function ServicesSection() {
 			<div className='flex flex-col lg:flex-row items-center justify-between gap-8 sm:gap-10 md:gap-12 py-8 sm:py-10 md:py-12'>
 				{/* Left side with colored text */}
 				<motion.div className='lg:w-1/2 w-full' initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.1 }}>
-					<div className='text-2xl sm:text-3xl md:text-4xl lg:text-[38px] xl:text-[42px] leading-tight font-bold max-w-full lg:max-w-[642px]'>
+					<div className='leading-tight font-bold max-w-full lg:max-w-[642px]' style={{ fontSize: 'clamp(1rem, 5.5vw, 4rem)' }}>
 						<span className='text-black'>A full-service agency </span>
 						<br />
 						<span className='text-black'>specialising in </span>
