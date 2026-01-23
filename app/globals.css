@@ -161,11 +161,6 @@ html, body {
 	html, body {
 		overflow-y: auto !important;
 	}
-
-	/* Ensure fixed bottom elements remain accessible */
-	.scroll-path-pagination {
-		bottom: 16px !important;
-	}
 }
 
 /* Desktop optimization */
@@ -182,22 +177,24 @@ html, body {
 	
 	/* DO NOT set min-height on fixed elements - JavaScript handles it */
 
-	/* LET JAVASCRIPT HANDLE ALL POSITIONING - NO CSS INTERFERENCE */
+	/* Let inline styles handle positioning */
 	.scroll-path-pagination {
-		/* JavaScript will handle all positioning */
-		pointer-events: auto !important;
-		min-height: 0 !important;
-		max-height: none !important;
-		position: fixed !important;
-		bottom: 20px !important;
+		/* No CSS positioning - inline styles only */
 	}
-	
+
 	/* Section heights set by JavaScript - no vh units */
-	
+
 	/* Show scrollbars when height is reduced (viewport < min-height of 800px) */
 	@media (max-height: 799px) {
 		html, body {
 			overflow: auto !important;
 		}
+	}
+}
+
+/* Hide scroll path pagination on mobile and tablet */
+@media (max-width: 1023px) {
+	.scroll-path-pagination {
+		display: none !important;
 	}
 }

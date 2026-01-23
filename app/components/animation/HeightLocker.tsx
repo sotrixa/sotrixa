@@ -13,15 +13,14 @@ export default function HeightLocker() {
     // Function to update heights based on current viewport
     const updateHeights = () => {
       const currentHeight = window.innerHeight;
-      const fixedHeight = Math.max(currentHeight, 800); // Minimum 800px
 
-      // Set html and body to current viewport height
-      document.documentElement.style.height = `${fixedHeight}px`;
-      document.documentElement.style.minHeight = `${fixedHeight}px`;
-      document.body.style.height = `${fixedHeight}px`;
-      document.body.style.minHeight = `${fixedHeight}px`;
+      // Set html and body to ALWAYS match current viewport height
+      document.documentElement.style.height = `${currentHeight}px`;
+      document.documentElement.style.minHeight = `${currentHeight}px`;
+      document.body.style.height = `${currentHeight}px`;
+      document.body.style.minHeight = `${currentHeight}px`;
 
-      // Enable vertical scroll when viewport is smaller than min-height
+      // Enable vertical scroll when viewport is smaller than 800px
       // This allows users on smaller screens to scroll to see all content
       if (currentHeight < 800) {
         document.documentElement.style.overflow = 'auto';

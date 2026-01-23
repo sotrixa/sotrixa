@@ -39,65 +39,19 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
   const [activeDotIndex, setActiveDotIndex] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [topPosition, setTopPosition] = useState<number | null>(null);
+  const [useBottomPosition, setUseBottomPosition] = useState(true);
+  const initialHeightRef = useRef<number | null>(null);
 
-  // Mount tracking and mobile detection
+  // Mount tracking only
   useEffect(() => {
     setMounted(true);
 
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024);
-    };
-
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-
     return () => {
       setMounted(false);
-      window.removeEventListener('resize', checkMobile);
     };
   }, []);
 
-  // Position element based on current viewport height
-  useEffect(() => {
-    if (!mounted || typeof window === 'undefined') return;
-
-    const forcePosition = () => {
-      if (containerRef.current) {
-        // Get current viewport height for positioning
-        const currentHeight = window.innerHeight;
-        const bottomPosition = currentHeight - 20;
-
-        const element = containerRef.current;
-
-        element.style.setProperty('position', 'fixed', 'important');
-        element.style.setProperty('top', `${bottomPosition - 80}px`, 'important');
-        element.style.setProperty('bottom', 'unset', 'important');
-        element.style.setProperty('left', '50%', 'important');
-        element.style.setProperty('transform', 'translateX(-50%)', 'important');
-        element.style.setProperty('z-index', '99999', 'important');
-        element.style.setProperty('right', 'unset', 'important');
-        element.style.setProperty('pointer-events', 'none', 'important');
-        element.style.setProperty('display', isMenuOpen ? 'none' : 'block', 'important');
-        element.style.setProperty('width', 'auto', 'important');
-        element.style.setProperty('height', 'auto', 'important');
-        element.style.setProperty('margin', '0', 'important');
-        element.style.setProperty('padding', '0', 'important');
-        element.style.setProperty('max-height', 'none', 'important');
-        element.style.setProperty('min-height', '0', 'important');
-        element.style.setProperty('max-width', 'none', 'important');
-        element.style.setProperty('min-width', '0', 'important');
-        element.style.setProperty('overflow', 'visible', 'important');
-      }
-    };
-
-    forcePosition();
-    const interval = setInterval(forcePosition, 10);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [mounted, isMenuOpen]);
 
   // Listen for navigation menu state changes
   useEffect(() => {
@@ -120,6 +74,38 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
     const desktopWidth = Math.max(window.innerWidth * 0.5, 600);
     setSvgWidth(desktopWidth);
   }, []);
+
+  // Lock top position on mount and handle resize
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    // Store initial height
+    const initialHeight = window.innerHeight;
+    initialHeightRef.current = initialHeight;
+
+    // Calculate locked top position
+    const calculatedTop = initialHeight - 100; // 100 = svgHeight (80) + bottom spacing (20)
+    setTopPosition(calculatedTop);
+
+    const handleResize = () => {
+      const currentHeight = window.innerHeight;
+
+      // If back to full size or larger, use bottom positioning
+      if (initialHeightRef.current && currentHeight >= initialHeightRef.current) {
+        setUseBottomPosition(true);
+      } else {
+        // If smaller, use locked top position
+        setUseBottomPosition(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
 
   // Use custom hooks for scroll path and navigation
   useScrollPath({
@@ -145,8 +131,8 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
   // Adjust SVG height to accommodate the labels
   const svgHeight = 80;
 
-  // Don't render on server, before mount, or on mobile
-  if (!mounted || typeof window === 'undefined' || isMobile) {
+  // Don't render on server or before mount and position is calculated
+  if (!mounted || typeof window === 'undefined' || topPosition === null) {
     return null;
   }
 
@@ -156,8 +142,18 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
       ref={containerRef}
       className='scroll-path-pagination'
       style={{
-        display: isMenuOpen ? 'none' : 'block',
+        position: 'fixed',
+        ...(useBottomPosition
+          ? { bottom: '20px', top: 'auto' }
+          : { top: topPosition !== null ? `${topPosition}px` : 'auto', bottom: 'auto' }),
+        left: '50%',
+        transform: 'translateX(-50%)',
         pointerEvents: 'none',
+        display: isMenuOpen ? 'none' : 'block',
+        width: 'auto',
+        height: 'auto',
+        margin: 0,
+        padding: 0,
       }}
     >
       <PathSVG svgRef={svgRef} pathRef={pathRef} gearRef={gearRef} svgWidth={svgWidth} svgHeight={svgHeight} sections={sections}>
