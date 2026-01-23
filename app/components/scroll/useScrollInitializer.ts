@@ -36,17 +36,17 @@ export function useScrollInitializer({ containerRef, wrapperRef, sectionsRef, na
 
 		function checkIfVerticalScrollNeeded() {
 			if (typeof window === 'undefined') return false;
-			
+
 			// Use the same restrictive threshold as event handlers
 			const viewportHeight = window.innerHeight;
 			const restrictiveThreshold = 600; // More restrictive - only when really needed
-			
+
 			return viewportHeight < restrictiveThreshold;
 		}
 
 		function updateScrollBehavior() {
 			const needsVerticalScroll = checkIfVerticalScrollNeeded();
-			
+
 			if (!isMobile) {
 				if (needsVerticalScroll) {
 					// When height is reduced, enable both scrollbars
@@ -71,6 +71,31 @@ export function useScrollInitializer({ containerRef, wrapperRef, sectionsRef, na
 			}
 		}
 
+		function updateDimensions() {
+			const wrapper = wrapperRef.current;
+			if (!wrapper || !sectionsRef.current) return;
+
+			const sections = Array.from(sectionsRef.current.children);
+			const currentHeight = window.innerHeight;
+			const fixedHeight = Math.max(currentHeight, 800); // Minimum 800px
+
+			// Update wrapper dimensions
+			gsap.set(wrapper, {
+				width: sections.length * 100 + 'vw',
+				height: `${fixedHeight}px`,
+				minHeight: `${fixedHeight}px`,
+			});
+
+			// Update each section to match current viewport height
+			sections.forEach((section) => {
+				gsap.set(section, {
+					width: '100vw',
+					height: `${fixedHeight}px`,
+					minHeight: `${fixedHeight}px`,
+				});
+			});
+		}
+
 		function initScrolling() {
 			const container = containerRef.current;
 			const wrapper = wrapperRef.current;
@@ -82,27 +107,12 @@ export function useScrollInitializer({ containerRef, wrapperRef, sectionsRef, na
 			// Set initial scroll behavior
 			updateScrollBehavior();
 
-			// CAPTURE INITIAL VIEWPORT HEIGHT IN PIXELS - NEVER CHANGE IT
-			const initialHeight = window.innerHeight;
-			const fixedHeight = Math.max(initialHeight, 800); // Minimum 800px
+			// Initialize dimensions
+			updateDimensions();
 
-			// Set initial dimensions with FIXED PIXEL HEIGHT
-			gsap.set(wrapper, {
-				width: sections.length * 100 + 'vw',
-				height: `${fixedHeight}px`, // FIXED PIXEL HEIGHT - will never recalculate
-				minHeight: `${fixedHeight}px`,
-			});
-
+			// Add data attributes for tracking
 			sections.forEach((section, i) => {
-				// Add data attribute for tracking
 				section.setAttribute('data-section-index', i.toString());
-
-				// Set each section to FIXED HEIGHT in pixels
-				gsap.set(section, {
-					width: '100vw',
-					height: `${fixedHeight}px`,
-					minHeight: `${fixedHeight}px`,
-				});
 			});
 
 			// Clear any existing ScrollTriggers to prevent duplicates
@@ -113,9 +123,10 @@ export function useScrollInitializer({ containerRef, wrapperRef, sectionsRef, na
 			// Set initial state
 			gsap.set(wrapper, { x: 0 });
 
-			// Listen for resize events to update scroll behavior
+			// Listen for resize events to update scroll behavior AND dimensions
 			const handleResize = () => {
 				updateScrollBehavior();
+				updateDimensions();
 			};
 
 			window.addEventListener('resize', handleResize);

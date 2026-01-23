@@ -31,27 +31,39 @@ export default function HomeSection() {
 	const videoRef = useRef<HTMLVideoElement>(null);
 	const [isMobile, setIsMobile] = useState(false);
 
-	// LOCK INITIAL HEIGHT - capture once and never change
+	// Update container and video heights based on viewport
 	useEffect(() => {
 		if (typeof window === 'undefined') return;
 
-		// Capture initial viewport height in pixels
-		const initialHeight = window.innerHeight;
-		const fixedHeight = Math.max(initialHeight, 800); // Minimum 800px
+		const updateHeights = () => {
+			// Get current viewport height
+			const currentHeight = window.innerHeight;
+			const fixedHeight = Math.max(currentHeight, 800); // Minimum 800px
 
-		// Set container height in pixels - NEVER RECALCULATES
-		if (containerRef.current) {
-			containerRef.current.style.height = `${fixedHeight}px`;
-			containerRef.current.style.minHeight = `${fixedHeight}px`;
-		}
+			// Update container height
+			if (containerRef.current) {
+				containerRef.current.style.height = `${fixedHeight}px`;
+				containerRef.current.style.minHeight = `${fixedHeight}px`;
+			}
 
-		// Set video height (60% of viewport)
-		if (videoRef.current) {
-			const videoHeight = fixedHeight * 0.6;
-			videoRef.current.style.height = `${videoHeight}px`;
-			videoRef.current.style.minHeight = `${videoHeight}px`;
-		}
-	}, []); // Run once on mount, never again
+			// Update video height (60% of viewport)
+			if (videoRef.current) {
+				const videoHeight = fixedHeight * 0.6;
+				videoRef.current.style.height = `${videoHeight}px`;
+				videoRef.current.style.minHeight = `${videoHeight}px`;
+			}
+		};
+
+		// Update on mount
+		updateHeights();
+
+		// Update on resize
+		window.addEventListener('resize', updateHeights);
+
+		return () => {
+			window.removeEventListener('resize', updateHeights);
+		};
+	}, []);
 
 	useEffect(() => {
 		const handleResize = () => {

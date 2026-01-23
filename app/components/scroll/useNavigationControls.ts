@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useCallback, RefObject } from 'react';
+import { useRef, useCallback, RefObject, useEffect } from 'react';
 import { gsap } from 'gsap';
 
 type HTMLDivRef = RefObject<HTMLDivElement>;
@@ -99,6 +99,28 @@ export function useNavigationControls(sectionsCount: number) {
 			navigateToPanel(activeIndex.current - 1);
 		}
 	}, [navigateToPanel]);
+
+	// Handle resize to recalculate scroll position
+	useEffect(() => {
+		const handleResize = () => {
+			if (!wrapperRef.current || isAnimating.current) return;
+
+			// Recalculate target position based on current viewport and active section
+			const currentIndex = activeIndex.current;
+			const targetX = currentIndex * window.innerWidth;
+
+			// Update wrapper position without animation to keep it in sync with new dimensions
+			gsap.set(wrapperRef.current, {
+				x: -targetX,
+			});
+		};
+
+		window.addEventListener('resize', handleResize);
+
+		return () => {
+			window.removeEventListener('resize', handleResize);
+		};
+	}, []);
 
 	return {
 		activeIndex,

@@ -58,17 +58,16 @@ export default function ScrollPathPagination({ sections }: ScrollPathPaginationP
     };
   }, []);
 
-  // LOCK POSITION IN PIXELS - CALCULATE ONCE AND NEVER CHANGE
+  // Position element based on current viewport height
   useEffect(() => {
     if (!mounted || typeof window === 'undefined') return;
 
-    const initialHeight = window.innerHeight;
-    // Use actual viewport height for positioning so timeline is visible on smaller screens
-    // The body still has 800px min-height for content, but timeline stays in viewport
-    const bottomPosition = initialHeight - 20;
-
     const forcePosition = () => {
       if (containerRef.current) {
+        // Get current viewport height for positioning
+        const currentHeight = window.innerHeight;
+        const bottomPosition = currentHeight - 20;
+
         const element = containerRef.current;
 
         element.style.setProperty('position', 'fixed', 'important');
