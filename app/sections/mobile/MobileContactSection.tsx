@@ -100,7 +100,7 @@ export default function MobileContactSection() {
 		<section id='mobile-contact' className='bg-[#FAFAFA] text-black py-12 px-4 mt-[-10rem]'>
 			<div className='max-w-sm mx-auto'>
 				<div ref={headingRef} className='mb-8 text-center' style={{ opacity: animationsInitialized ? undefined : 1 }}>
-					<h2 className='text-3xl font-medium mb-2'>Contact</h2>
+					<h2 className='text-2xl font-medium mb-2 text-left' style={{ lineHeight: 1 }}>Contact</h2>
 					<div className='w-12 h-0.5 bg-black mx-auto mb-4'></div>
 					<p className='text-gray-600'>Get in touch and let&apos;s discuss your project.</p>
 				</div>

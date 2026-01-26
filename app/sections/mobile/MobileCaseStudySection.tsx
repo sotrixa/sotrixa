@@ -232,13 +232,13 @@ export default function MobileCaseStudySection() {
 	}, [showDetail]);
 
 	return (
-		<Section id='mobile-case-studies' className='bg-white text-black pt-6 sm:pt-8 md:pt-12 lg:pt-16 overflow-visible'>
+		<Section id='mobile-case-studies' className='bg-white text-black overflow-visible'>
 			<div ref={sectionRef} className='w-full max-w-none'>
 				{/* Grid view - EXACT SAME AS DESKTOP but mobile optimized */}
 				<div className='grid grid-cols-1 gap-0 case-studies-grid' style={{ display: showDetail ? 'none' : 'grid' }}>
 					{/* Left column - EXACT SAME CONTENT AS DESKTOP but mobile layout */}
-					<div className='px-4 sm:px-6 md:pl-8 lg:pl-12 xl:pl-16 lg:pr-6 xl:pr-8 pb-6 sm:pb-8 lg:pb-16 flex flex-col items-start justify-center h-full'>
-						<h2 className='mt-[-14rem] sm:mt-6 lg:mt-10 case-studies-title text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-6xl font-black text-black text-left w-full'>
+					<div className='px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-8 sm:py-10 md:py-12 flex flex-col items-start'>
+						<h2 className='case-studies-title text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-black text-black text-left w-full m-0' style={{ lineHeight: 1 }}>
 							{/* EXACT SAME TITLE RENDERING LOGIC AS DESKTOP */}
 							{(() => {
 								let lastIndex = 0;
@@ -300,7 +300,7 @@ export default function MobileCaseStudySection() {
 								return elements;
 							})()}
 						</h2>
-						<p className='case-studies-description text-base sm:text-lg md:text-xl lg:text-xl xl:text-xl text-left w-full pt-2 sm:pt-3'>{subtitleTranslation}</p>
+						<p className='case-studies-description text-sm sm:text-base md:text-lg lg:text-lg xl:text-lg text-left w-full pt-2 sm:pt-3'>{subtitleTranslation}</p>
 					</div>
 
 					{/* Right column - EXACT SAME AS DESKTOP but mobile layout */}
@@ -339,7 +339,7 @@ export default function MobileCaseStudySection() {
 
 										{/* Title and description below the image - EXACT SAME AS DESKTOP */}
 										<div className='space-y-1 sm:space-y-2 px-1 sm:px-2'>
-											<h3 className='text-base sm:text-lg lg:text-xl font-bold leading-tight'>{study.title}</h3>
+											<h3 className='text-sm sm:text-base lg:text-lg font-bold' style={{ lineHeight: 1 }}>{study.title}</h3>
 											<p className='text-sm sm:text-base text-gray-600 leading-tight'>{study.subtitle}</p>
 										</div>
 									</div>

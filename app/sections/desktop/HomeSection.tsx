@@ -223,8 +223,8 @@ export default function HomeSection() {
 			>
 				<h1
 					ref={headingRef}
-					className="font-black leading-tight m-0 pointer-events-auto max-md:text-center max-md:leading-tight"
-					style={{ fontSize: 'clamp(1rem, 5.5vw, 4rem)' }}
+					className="font-black m-0 pointer-events-auto text-left"
+					style={{ fontSize: 'clamp(0.9rem, 4vw, 4.5rem)', lineHeight: 1 }}
 				>
 					{isMobile ? (
 						// Simplified layout for mobile
@@ -251,7 +251,7 @@ export default function HomeSection() {
 
 				<p
 					ref={paragraphRef}
-					className="text-xl leading-relaxed max-w-[36rem] font-normal m-0 mb-8 pointer-events-auto max-md:text-center max-md:max-w-[90%] max-md:mx-auto max-md:mb-6 max-md:text-sm max-md:leading-snug max-[480px]:text-[0.85rem] max-[480px]:max-w-[95%]"
+					className="text-lg leading-relaxed max-w-[36rem] font-normal m-0 mb-8 pointer-events-auto max-md:text-center max-md:max-w-[90%] max-md:mx-auto max-md:mb-6 max-md:text-sm max-md:leading-snug max-[480px]:text-[0.85rem] max-[480px]:max-w-[95%]"
 				>
 					{getText('homeSection.paragraph', language)}
 				</p>

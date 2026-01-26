@@ -40,22 +40,17 @@ export default function ServicesSection() {
 	});
 
 	return (
-		<Section id='services' className='bg-white text-black px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16'>
-			<div className='flex flex-col lg:flex-row items-center justify-between gap-8 sm:gap-10 md:gap-12 py-8 sm:py-10 md:py-12'>
-				{/* Left side with colored text */}
-				<motion.div className='lg:w-1/2 w-full' initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.1 }}>
-					<div className='leading-tight font-bold max-w-full lg:max-w-[642px]' style={{ fontSize: 'clamp(1rem, 5.5vw, 4rem)' }}>
-						<span className='text-black'>A full-service agency </span>
-						<br />
-						<span className='text-black'>specialising in </span>
+		<Section id='services' className='bg-white text-black pl-12 max-[1200px]:pl-6 max-[900px]:px-6 max-md:px-4 max-[480px]:px-3'>
+			<div className='flex flex-col items-start justify-start gap-8 sm:gap-10 md:gap-12'>
+				{/* Left aligned title */}
+				<motion.div className='w-full' initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.1 }}>
+					<div className='font-bold text-left w-full m-0' style={{ fontSize: 'clamp(0.9rem, 4vw, 4.5rem)', lineHeight: 1 }}>
+						<span className='text-black'>A full-service agency specialising in </span>
 						<span className='text-[#f4dd65]'>brand</span>
 						<span className='text-black'>, </span>
-						<br />
 						<span className='text-[#d142e2]'>audience</span>
 						<span className='text-black'>, and </span>
-						<span className='text-[#70DFC6]'>creative </span>
-						<br />
-						<span className='text-[#70DFC6]'>research</span>
+						<span className='text-[#70DFC6]'>creative research</span>
 					</div>
 
 					{/* Navigation buttons */}

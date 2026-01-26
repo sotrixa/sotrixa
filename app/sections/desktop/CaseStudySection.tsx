@@ -131,7 +131,8 @@ export default function CaseStudySection() {
 			});
 
 			// Animate main title and description
-			tl.fromTo('.case-studies-title, .case-studies-description', { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, stagger: 0.2 });
+			tl.fromTo('.case-studies-title', { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 });
+		tl.fromTo('.case-studies-description', { y: 50, opacity: 0 }, { y: 40, opacity: 1, duration: 0.8 }, '-=0.6');
 
 			// Animate services with stagger (only if elements exist)
 			const serviceItems = document.querySelectorAll('.service-item');
@@ -235,10 +236,10 @@ export default function CaseStudySection() {
 		<Section id='case-study' className='bg-white text-black overflow-visible'>
 			<div ref={sectionRef} className='w-full max-w-none'>
 				{/* Grid view - set initial display style based on selected study */}
-				<div className='grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-6 case-studies-grid items-center' style={{ display: showDetail ? 'none' : 'grid' }}>
+				<div className='grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-6 case-studies-grid' style={{ display: showDetail ? 'none' : 'grid' }}>
 					{/* Left column - responsive layout */}
-					<div className='px-4 sm:px-6 md:pl-10 pb-6 sm:pb-8 lg:pb-16 flex flex-col items-start justify-center h-full'>
-						<h1 className='case-studies-title font-black text-black text-left w-full m-0' style={{ fontSize: 'clamp(0.9rem, 4.2vw, 3.5rem)' }}>
+					<div className='pl-12 max-[1200px]:pl-6 max-[900px]:px-6 max-md:px-4 max-[480px]:px-3 flex flex-col items-start'>
+						<h1 className='case-studies-title font-black text-black text-left w-full m-0' style={{ fontSize: 'clamp(0.8rem, 3.5vw, 3.5rem)', lineHeight: 1, marginTop: '90px' }}>
 							{/* Render title with colored words */}
 							{(() => {
 								let lastIndex = 0;
@@ -300,7 +301,7 @@ export default function CaseStudySection() {
 								return elements;
 							})()}
 						</h1>
-						<p className='case-studies-description text-base sm:text-lg md:text-xl lg:text-xl xl:text-xl text-left w-full pt-2 sm:pt-3'>{subtitleTranslation}</p>
+						<p className='case-studies-description text-sm sm:text-base md:text-lg lg:text-lg xl:text-lg text-left w-full' style={{ marginTop: '-35px' }}>{subtitleTranslation}</p>
 					</div>
 
 					{/* Right column - responsive layout */}
@@ -338,7 +339,7 @@ export default function CaseStudySection() {
 
 										{/* Title and description below the image */}
 										<div className='space-y-1 sm:space-y-2 px-1 sm:px-2'>
-											<h3 className='text-base sm:text-lg lg:text-xl font-bold leading-tight'>{study.title}</h3>
+											<h3 className='text-sm sm:text-base lg:text-lg font-bold' style={{ lineHeight: 1 }}>{study.title}</h3>
 											<p className='text-sm sm:text-base text-gray-600 leading-tight'>{study.subtitle}</p>
 										</div>
 									</div>

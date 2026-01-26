@@ -268,13 +268,13 @@ export default function ServicesSection() {
 					</div>
 
 					{/* Container div with ref */}
-					<div ref={sectionContainerRef} className='relative w-full h-full p-4 pl-10' style={{ zIndex: 2 }}>
+					<div ref={sectionContainerRef} className='relative w-full h-full pl-12 max-[1200px]:pl-6 max-[900px]:px-6 max-md:px-4 max-[480px]:px-3' style={{ zIndex: 2 }}>
 						{/* Removed the floating GIF section */}
 
 						<div className='flex flex-col md:flex-row items-center justify-between gap-8 sm:gap-12'>
 							{/* Left side with colored text */}
 							<motion.div className='md:w-full' initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.1 }}>
-								<h1 className='leading-tight font-black max-w-[642px] m-0' style={{ fontSize: 'clamp(1rem, 5.5vw, 4rem)' }}>
+								<h1 className='font-black m-0' style={{ fontSize: 'clamp(0.9rem, 4vw, 4.5rem)', lineHeight: 1, marginTop: '-3px' }}>
 									{/* Enhanced title rendering with proper dash styling */}
 									{(() => {
 										let lastIndex = 0;
@@ -323,7 +323,7 @@ export default function ServicesSection() {
 												const parts = remainingText.split('—');
 												elements.push(<span key='text-end-before'>{parts[0]}</span>);
 												elements.push(
-													<span key='dash-end' style={{ fontSize: '0.6em', fontWeight: '200', transform: 'scaleX(0.5)', display: 'inline-block' }}>
+													<span key='dash-end' style={{ fontSize: '0.1em', fontWeight: '200', transform: 'scaleX(0.5)', display: 'inline-block' }}>
 														–
 													</span>
 												);
@@ -336,7 +336,7 @@ export default function ServicesSection() {
 										return elements;
 									})()}
 									<br />
-									<span className='text-black text-2xl sm:text-3xl md:text-xl font-medium mt-6 block'>
+									<span className='text-black text-lg font-normal leading-relaxed mt-6 block max-md:text-sm max-md:leading-snug max-[480px]:text-[0.85rem]'>
 										{/* Enhanced subtitle rendering with proper dash styling */}
 										{(() => {
 											// Handle em dashes in subtitle
@@ -369,18 +369,21 @@ export default function ServicesSection() {
 							<motion.div key='services-list' className='md:w-full w-full' initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{ duration: 0.5 }} ref={servicesRef}>
 								<div className='flex flex-col items-start text-left space-y-6 sm:space-y-8 p-4 sm:p-10 ml-0 sm:ml-10'>
 									{/* Services list - direct implementation instead of using components */}
-									<div className='w-full space-y-5 sm:space-y-8'>
+									<div className='w-full space-y-2 sm:space-y-3'>
 										{services.map((service, index) => (
 											<div
 												key={service}
-												className={`cursor-pointer transform transition-all duration-300 ${index === activeServiceIndex ? 'text-black font-black text-2xl sm:text-3xl md:text-4xl -translate-y-1 sm:-translate-y-2' : 'text-gray-500 font-bold text-xl sm:text-2xl md:text-3xl'}`}
+												className={`cursor-pointer transform transition-all duration-300 ${index === activeServiceIndex ? 'text-black font-black -translate-y-1 sm:-translate-y-2' : 'text-gray-500 font-bold'}`}
+												style={{
+													fontSize: index === activeServiceIndex ? 'clamp(0.9rem, 2vw, 1.5rem)' : 'clamp(0.8rem, 1.5vw, 1.2rem)'
+												}}
 												onClick={() => handleServiceClick(index)}
 												ref={(el) => {
 													if (el) serviceItemsRef.current[index] = el;
 												}}
 											>
 												<span>{service}</span>
-												{index === activeServiceIndex && <div className='h-1 w-32 sm:w-48 bg-[#d142e2] rounded-full mt-1 transform transition-all duration-300'></div>}
+												{index === activeServiceIndex && <div className='h-1 bg-[#d142e2] rounded-full mt-1 transform transition-all duration-300' style={{ width: 'clamp(6rem, 8vw, 8rem)' }}></div>}
 											</div>
 										))}
 									</div>

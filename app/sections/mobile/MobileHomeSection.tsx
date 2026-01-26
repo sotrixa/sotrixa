@@ -107,7 +107,7 @@ const MobileHome: React.FC = () => {
 	return (
 		<div id='mobile-home' ref={containerRef} className='relative min-h-screen w-full overflow-hidden flex items-center justify-center bg-[#fafafa]'>
 			<div ref={bodyRef} className='relative z-10 flex flex-col items-center text-center px-4 sm:px-6 md:px-8 py-12 sm:py-16 md:py-20 max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl mx-auto'>
-				<h1 ref={headingRef} className='text-[2rem] xs:text-[2.2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] font-bold leading-tight mb-4 sm:mb-6 md:mb-8 text-black'>
+				<h1 ref={headingRef} className='text-[2rem] xs:text-[2.2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] font-bold mb-4 sm:mb-6 md:mb-8 text-black text-left' style={{ lineHeight: 1 }}>
 					<span className='inline'>We are a </span>
 					<span className='inline text-[#53EBDD] bg-black px-2 py-1 sm:px-3 sm:py-2 rounded-lg mr-1'>strategy</span>
 					<span className='inline'> lab for </span>
@@ -116,7 +116,7 @@ const MobileHome: React.FC = () => {
 					<span className='inline text-[#EBDD53] bg-black px-2 py-1 sm:px-3 sm:py-2 rounded-lg'>thinkers</span>
 				</h1>
 
-				<p ref={paragraphRef} className='text-sm sm:text-base md:text-lg lg:text-xl mb-6 sm:mb-8 md:mb-10 text-black max-w-full sm:max-w-md md:max-w-lg'>
+				<p ref={paragraphRef} className='text-sm sm:text-base md:text-base lg:text-lg mb-6 sm:mb-8 md:mb-10 text-black max-w-full sm:max-w-md md:max-w-lg'>
 					{getText('homeSection.paragraph', language)}
 				</p>
 

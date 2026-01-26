@@ -127,7 +127,7 @@ export default function MobileServicesSection() {
 						<div className='flex flex-col items-center justify-center mt-10 gap-8 py-8 min-h-screen'>
 							{/* EXACT SAME TITLE SECTION AS DESKTOP - Mobile optimized layout */}
 							<motion.div className='w-full text-center' initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.1 }}>
-								<div className='text-2xl sm:text-3xl md:text-4xl leading-tight font-black max-w-full px-4'>
+								<div className='text-xl sm:text-2xl md:text-3xl font-black text-left max-w-full px-4' style={{ lineHeight: 1 }}>
 									{/* EXACT SAME TITLE RENDERING LOGIC AS DESKTOP */}
 									{(() => {
 										let lastIndex = 0;
@@ -188,8 +188,7 @@ export default function MobileServicesSection() {
 
 										return elements;
 									})()}
-									<br />
-									<span className='text-black text-lg sm:text-xl font-medium mt-4 block'>
+									<span className='text-black text-base sm:text-lg font-medium mt-3 block text-left'>
 										{/* EXACT SAME SUBTITLE RENDERING AS DESKTOP */}
 										{(() => {
 											// Handle em dashes in subtitle
@@ -236,8 +235,8 @@ export default function MobileServicesSection() {
 												key={service}
 												className={`cursor-pointer transform transition-all duration-300 ${
 													index === activeServiceIndex 
-														? 'text-black font-black text-xl sm:text-2xl -translate-y-1' 
-														: 'text-gray-500 font-bold text-lg sm:text-xl hover:text-gray-700 hover:-translate-y-1'
+														? 'text-black font-black text-lg sm:text-xl -translate-y-1' 
+														: 'text-gray-500 font-bold text-base sm:text-lg hover:text-gray-700 hover:-translate-y-1'
 												}`}
 												onClick={() => handleServiceClick(index)}
 												ref={(el) => {

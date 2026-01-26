@@ -33,7 +33,7 @@ export function RightPanel({ rightSideRef, rightContentRef, servicesTitleRef, ac
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.5 }}
         >
-          <h3 ref={servicesTitleRef} className='text-2xl font-black mb-6 text-black'>
+          <h3 ref={servicesTitleRef} className='text-2xl font-black mb-6 text-black' style={{ lineHeight: 1 }}>
             {activeService || 'Services'}
           </h3>
 

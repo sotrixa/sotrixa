@@ -108,8 +108,8 @@ export default function CaseStudyDetailMobile({ study, onClose }: CaseStudyDetai
 
 				{/* Title */}
 				<div ref={titleRef} className='mb-6'>
-					<h1 className='text-3xl sm:text-4xl font-black text-black mb-3'>{study.title}</h1>
-					<p className='text-lg sm:text-xl text-gray-600'>{study.subtitle}</p>
+					<h1 className='text-2xl sm:text-3xl font-black text-black mb-3' style={{ lineHeight: 1 }}>{study.title}</h1>
+					<p className='text-base sm:text-lg text-gray-600'>{study.subtitle}</p>
 				</div>
 
 				{/* Main Image */}
@@ -130,8 +130,8 @@ export default function CaseStudyDetailMobile({ study, onClose }: CaseStudyDetai
 					{/* Description */}
 					{study.description && (
 						<div>
-							<h2 className='text-xl sm:text-2xl font-bold text-black mb-4'>Overview</h2>
-							<p className='text-base sm:text-lg text-gray-700 leading-relaxed whitespace-pre-line'>
+							<h2 className='text-lg sm:text-xl font-bold text-black mb-4' style={{ lineHeight: 1 }}>Overview</h2>
+							<p className='text-sm sm:text-base text-gray-700 leading-relaxed whitespace-pre-line'>
 								{study.description}
 							</p>
 						</div>
@@ -140,8 +140,8 @@ export default function CaseStudyDetailMobile({ study, onClose }: CaseStudyDetai
 					{/* Challenge */}
 					{study.challenge && (
 						<div>
-							<h2 className='text-xl sm:text-2xl font-bold text-black mb-4'>Challenge</h2>
-							<p className='text-base sm:text-lg text-gray-700 leading-relaxed whitespace-pre-line'>
+							<h2 className='text-lg sm:text-xl font-bold text-black mb-4' style={{ lineHeight: 1 }}>Challenge</h2>
+							<p className='text-sm sm:text-base text-gray-700 leading-relaxed whitespace-pre-line'>
 								{study.challenge}
 							</p>
 						</div>
@@ -150,8 +150,8 @@ export default function CaseStudyDetailMobile({ study, onClose }: CaseStudyDetai
 					{/* Solution */}
 					{study.solution && (
 						<div>
-							<h2 className='text-xl sm:text-2xl font-bold text-black mb-4'>Solution</h2>
-							<p className='text-base sm:text-lg text-gray-700 leading-relaxed whitespace-pre-line'>
+							<h2 className='text-lg sm:text-xl font-bold text-black mb-4' style={{ lineHeight: 1 }}>Solution</h2>
+							<p className='text-sm sm:text-base text-gray-700 leading-relaxed whitespace-pre-line'>
 								{study.solution}
 							</p>
 						</div>
@@ -160,8 +160,8 @@ export default function CaseStudyDetailMobile({ study, onClose }: CaseStudyDetai
 					{/* Results */}
 					{study.results && (
 						<div>
-							<h2 className='text-xl sm:text-2xl font-bold text-black mb-4'>Results</h2>
-							<p className='text-base sm:text-lg text-gray-700 leading-relaxed whitespace-pre-line'>
+							<h2 className='text-lg sm:text-xl font-bold text-black mb-4' style={{ lineHeight: 1 }}>Results</h2>
+							<p className='text-sm sm:text-base text-gray-700 leading-relaxed whitespace-pre-line'>
 								{study.results}
 							</p>
 						</div>

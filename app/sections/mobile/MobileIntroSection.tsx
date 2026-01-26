@@ -143,12 +143,12 @@ function MobileIntroSectionComponent() {
 
 				<div className='relative z-10 w-full px-4 flex items-center justify-center'>
 					<motion.div className='w-full max-w-md text-center space-y-4' initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8 }}>
-						<h1 className='text-3xl font-black leading-tight'>{renderColoredText(firstLine)}</h1>
-						<h2 className='text-3xl font-black leading-tight'>{renderColoredText(secondLine)}</h2>
+						<h1 className='text-2xl font-black text-center' style={{ lineHeight: 1 }}>{renderColoredText(firstLine)}</h1>
+						<h2 className='text-2xl font-black text-center' style={{ lineHeight: 1 }}>{renderColoredText(secondLine)}</h2>
 
 						{/* Subheading with play button */}
 						<div className='flex items-center justify-center gap-3 mt-4'>
-							<p className='text-lg font-medium'>{subheadingText}</p>
+							<p className='text-base font-medium'>{subheadingText}</p>
 
 							{/* Play button */}
 							<button type='button' className='bg-white rounded-full p-2 shadow-lg cursor-pointer hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-[#d142e2] group' onClick={handlePlayClick} aria-label='Play Sotrixa introduction video'>

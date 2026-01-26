@@ -133,11 +133,11 @@ export default function CreatedToMatterSection() {
 				></div>
 			</div>
 
-			<div className='relative w-full h-full p-4 sm:p-25' style={{ zIndex: 2 }}>
-				<div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center'>
+			<div className='relative w-full h-full' style={{ zIndex: 2 }}>
+				<div className='w-full pl-12 max-[1200px]:pl-6 max-[900px]:px-6 max-md:px-4 max-[480px]:px-3 flex flex-col items-start'>
 					{/* Title section */}
-					<div ref={titleRef}>
-						<h1 className='leading-tight font-bold m-0' style={{ fontSize: 'clamp(1rem, 5.5vw, 4rem)' }}>
+					<div ref={titleRef} className='text-left'>
+						<h1 className='font-bold m-0 text-left' style={{ fontSize: 'clamp(0.9rem, 4vw, 4.5rem)', lineHeight: 1 }}>
 							<span>Created to </span>
 							<span style={{ color: '#d142e2' }}>Matter</span>
 						</h1>
@@ -146,12 +146,12 @@ export default function CreatedToMatterSection() {
 
 					{/* Content paragraphs */}
 					<div ref={contentRef} className='grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12'>
-						<motion.div className='text-lg sm:text-xl leading-relaxed space-y-6' initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
+						<motion.div className='text-base sm:text-lg leading-relaxed space-y-6' initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
 							<p>{renderTextWithStyledDash('Empowering bold ideas with strategies that align vision, purpose, and growth. Sotrixa partners with visionary entrepreneurs, creatives, and changemakers—those building with purpose and seeking clarity along the way.')}</p>
 							<p>{renderTextWithStyledDash('We work closely to translate bold ideas into aligned, authentic strategies that are ready for real-world growth.')}</p>
 						</motion.div>
 
-						<motion.div className='text-lg sm:text-xl leading-relaxed space-y-6' initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
+						<motion.div className='text-base sm:text-lg leading-relaxed space-y-6' initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
 							<p>{renderTextWithStyledDash('Through deep research, sharp analysis, and strategic design, vision becomes structure—turning potential into direction, and ambition into action.')}</p>
 							<p>{renderTextWithStyledDash('Beyond client work, Sotrixa invests in artistic and educational initiatives, giving under- resourced children access to imagination, learning, and creative self-expression. Because the future needs more creators—and every child deserves a space to dream.')}</p>
 						</motion.div>

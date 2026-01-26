@@ -105,7 +105,7 @@ export function LeftPanel({
       </div>
 
       <div className='mb-6'>
-        <h1 className='!text-4xl md:!text-5xl lg:!text-5xl font-bold mb-0 text-black' ref={headingRef}>
+        <h1 className='!text-4xl md:!text-5xl lg:!text-5xl font-bold mb-0 text-black' style={{ lineHeight: 1 }} ref={headingRef}>
           {activeService && serviceContents[activeService] ? renderStyledTitle(serviceContents[activeService].title, activeService) : <span className='text-transparent bg-clip-text bg-gradient-to-r from-[#EBDD53] via-[#DD53EB] to-[#53EBDD]'>{currentContent.title}</span>}
         </h1>
       </div>

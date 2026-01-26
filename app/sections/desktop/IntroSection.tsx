@@ -314,18 +314,13 @@ export default function IntroSection() {
 				/>
 
 				<div className='grid grid-cols-1 md:grid-cols-2 md:gap-8 relative z-10 items-center'>
-					<div className='w-full px-4 flex flex-col items-center md:items-center md:px-6'>
-						<motion.div className='w-full max-w-md md:max-w-none text-left md:text-left space-y-2 md:space-y-6 md:bg-transparent p-4 rounded-lg md:p-0 md:rounded-none md:shadow-none' initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8 }}>
-							{/* Title with optimized font sizes */}
-							<div className='mb-6 md:mb-8 pl-4'>
-								<div className='space-y-2 md:space-y-4'>
-									<h1 className='font-black leading-tight md:leading-none block' style={{ fontSize: 'clamp(1rem, 5.5vw, 4rem)' }}>{renderColoredText(fullTitle)}</h1>
-								</div>
-							</div>
+					<div className='w-full pl-12 max-[1200px]:pl-6 max-[900px]:px-6 max-md:px-4 max-[480px]:px-3 flex flex-col items-center md:items-start'>
+						<motion.div className='w-full max-w-md md:max-w-none text-left md:bg-transparent rounded-lg md:rounded-none md:shadow-none' initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8 }}>
+							<h1 className='font-black block text-left m-0' style={{ fontSize: 'clamp(0.9rem, 4vw, 4.5rem)', lineHeight: 1, marginTop: '-36px' }}>{renderColoredText(fullTitle)}</h1>
 
 							{/* Subheading in its own row */}
 							<div className='w-full mt-6'>
-								<p className=' pl-5'>{subheadingText}</p>
+								<p className='text-sm sm:text-base text-left'>{subheadingText}</p>
 
 								{/* Mobile-only play button */}
 								<button type='button' className='block md:hidden mt-4 bg-white rounded-full p-2 shadow-lg cursor-pointer hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-[#d142e2] group' onClick={handlePlayClick} aria-label='Play Sotrixa introduction video'>

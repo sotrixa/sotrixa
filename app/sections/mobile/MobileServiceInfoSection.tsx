@@ -344,7 +344,7 @@ const MobileServiceInfoSection: React.FC<MobileServiceInfoSectionProps> = ({ onB
 					<span>Back to services</span>
 				</button>
 				{/* Title */}
-				<motion.h1 className='text-2xl font-bold tracking-tight mb-2 bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] text-transparent bg-clip-text' initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+				<motion.h1 className='text-xl font-bold tracking-tight mb-2 bg-gradient-to-r from-[#f4dd65] via-[#d142e2] to-[#70DFC6] text-transparent bg-clip-text' style={{ lineHeight: 1 }} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
 					{currentContent.title}
 				</motion.h1>
 				{/* Approach Title */}
@@ -363,7 +363,7 @@ const MobileServiceInfoSection: React.FC<MobileServiceInfoSectionProps> = ({ onB
 				<div className='grid grid-cols-1 gap-4 mt-4'>
 					{currentContent.values.map((value, idx) => (
 						<motion.div key={idx} className='p-4 rounded-lg bg-gray-50/50 hover:bg-gray-50/80 transition-colors duration-300' initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + idx * 0.1, duration: 0.5 }}>
-							<h3 className='text-lg font-bold mb-2'>{value.title}</h3>
+							<h3 className='text-base font-bold mb-2' style={{ lineHeight: 1 }}>{value.title}</h3>
 							{value.content && <p className='text-gray-600 leading-relaxed'>{value.content}</p>}
 						</motion.div>
 					))}
