@@ -375,7 +375,7 @@ export default function ServicesSection() {
 												key={service}
 												className={`cursor-pointer transform transition-all duration-300 ${index === activeServiceIndex ? 'text-black font-black -translate-y-1 sm:-translate-y-2' : 'text-gray-500 font-bold'}`}
 												style={{
-													fontSize: index === activeServiceIndex ? 'clamp(0.9rem, 2vw, 1.5rem)' : 'clamp(0.8rem, 1.5vw, 1.2rem)'
+													fontSize: index === activeServiceIndex ? 'clamp(0.9rem, 2vw, 1.5rem)' : 'clamp(1.6rem, 1.5vw, 2.5rem)'
 												}}
 												onClick={() => handleServiceClick(index)}
 												ref={(el) => {
