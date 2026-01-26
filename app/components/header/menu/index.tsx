@@ -45,7 +45,7 @@ const menu: MenuItem[] = [
 		sectionId: 'services', // Add section ID for direct link
 	},
 	{
-		title: 'CASE STUDY',
+		title: 'CASE STUDIES',
 		description: 'Our Work & Results',
 		images: ['case1.jpg', 'case2.jpg'],
 		sectionIndex: 3, // Index position in the page (0-indexed)
@@ -139,7 +139,7 @@ export default function Menu({ closeMenu }: MenuProps) {
 
 			<motion.div variants={opacity} {...mountAnim} custom={0.5} className={styles.footer}>
 
-			       <div className='p-4 flex gap-4'>
+			       <div className='flex gap-4'>
 				   <a href="https://www.instagram.com/sotrixa" target="_blank" rel="noopener noreferrer" className='uppercase'>Instagram</a>
 				   {/* <a href="https://www.linkedin.com/sotrixa" target="_blank" rel="noopener noreferrer" className='uppercase'>LinkedIn</a> */}
 				   </div>

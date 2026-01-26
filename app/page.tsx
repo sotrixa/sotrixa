@@ -24,7 +24,7 @@ const MobileContactSection = dynamic(() => import('@/app/sections/mobile/MobileC
 
 export default function Home() {
 	// Sections for the pagination
-	const sections = ['Home', 'Intro', 'Services', 'Case Study', 'Contact'];
+	const sections = ['Home', 'Intro', 'Services', 'Case Studies', 'Contact'];
 
 	return (
 		<>
