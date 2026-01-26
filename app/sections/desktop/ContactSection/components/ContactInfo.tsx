@@ -7,7 +7,7 @@ interface ContactInfoProps {
 
 export function ContactInfo({ contactInfoRef, animationsCreated }: ContactInfoProps) {
   return (
-    <div className='space-y-3 sm:space-y-4 mt-4 sm:mt-6 md:mt-8 lg:mt-16' ref={contactInfoRef} style={{ opacity: animationsCreated ? undefined : 1 }}>
+    <div className='space-y-3 sm:space-y-4 mt-4 sm:mt-6 items-center' ref={contactInfoRef} style={{ opacity: animationsCreated ? undefined : 1 }}>
       <div className='space-y-2 sm:space-y-3'>
         <div>
           <p className='text-xs uppercase tracking-wider font-medium text-gray-500 mb-2'>Get in touch with us</p>

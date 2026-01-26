@@ -32,15 +32,7 @@ export function BackgroundElements({ gridBackgroundRef, particlesRef, gearRefs }
         </svg>
       </div>
 
-      <div className='absolute top-[25%] left-[18%] z-0 opacity-20'>
-        <svg
-          ref={(el) => {
-            if (el) gearRefs.current[1] = el;
-          }}
-        >
-          <GearSVG size={120} toothCount={10} color='#666' opacity={0.2} />
-        </svg>
-      </div>
+      
 
       <div className='absolute bottom-[30%] right-[15%] z-0 opacity-25'>
         <svg
@@ -73,8 +65,8 @@ export function BackgroundElements({ gridBackgroundRef, particlesRef, gearRefs }
       </div>
 
       {/* Abstract lines */}
-      <div className='absolute top-[30%] left-0 w-[25%] h-[2px] bg-gradient-to-r from-transparent via-gray-400 to-transparent opacity-30' />
-      <div className='absolute bottom-[40%] right-0 w-[30%] h-[2px] bg-gradient-to-l from-transparent via-gray-400 to-transparent opacity-30' />
+      {/* <div className='absolute top-[30%] left-0 w-[25%] h-[2px] bg-gradient-to-r from-transparent via-gray-400 to-transparent opacity-30' />
+      <div className='absolute bottom-[40%] right-0 w-[30%] h-[2px] bg-gradient-to-l from-transparent via-gray-400 to-transparent opacity-30' /> */}
 
       {/* Dots grid in one corner */}
       <div
