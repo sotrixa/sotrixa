@@ -101,7 +101,7 @@ export function RightPanel({
                   paddingBottom: "2rem",
                   display: "block",
                   WebkitOverflowScrolling: "touch",
-                } as any
+                } satisfies React.CSSProperties
               }
             >
               <h3

@@ -6,12 +6,14 @@ interface SectionProps {
   children: React.ReactNode;
   className?: string;
   id?: string;
+  style?: React.CSSProperties;
 }
 
 export default function Section({
   children,
   className = "",
   id,
+  style,
 }: SectionProps) {
   const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -47,7 +49,7 @@ export default function Section({
     <section
       id={id}
       className={`p-0 ${className}`}
-      style={{ ...sectionStyle, boxSizing: "border-box" }}
+      style={{ ...sectionStyle, ...style, boxSizing: "border-box" }}
     >
       {children}
     </section>
