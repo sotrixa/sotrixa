@@ -110,7 +110,7 @@ export function LeftPanel({
 
   return (
     <div
-      className="w-full md:w-1/2 p-4 md:p-4 flex flex-col justify-center min-h-screen md:min-h-full"
+      className="w-full md:w-1/2 p-4 md:p-4 flex flex-col justify-center min-h-full"
       ref={leftSideRef}
     >
       <div className="mb-6" ref={logoRef}>

@@ -210,8 +210,8 @@ export default function ServiceInfoSection({
   return (
     <Section
       id="services-info"
-      className="bg-white w-screen h-screen flex items-center justify-center px-[clamp(1rem,3vw,2rem)]"
-      style={{ minWidth: "100vw", minHeight: "100vh" }}
+      className="bg-white w-screen h-screen flex items-center justify-center px-[clamp(1rem,3vw,2rem)] overflow-visible"
+      style={{ minWidth: "100vw", minHeight: "100vh", overflow: "visible" }}
     >
       <BackgroundElements
         gridBackgroundRef={gridBackgroundRef}
