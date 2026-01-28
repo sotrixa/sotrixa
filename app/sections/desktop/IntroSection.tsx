@@ -456,7 +456,7 @@ export default function IntroSection() {
               <h1
                 className="font-black block text-left m-0 w-full min-w-0"
                 style={{
-                  fontSize: "clamp(1.5rem, 6vw, 4.5rem)",
+                  fontSize: "clamp(1.25rem, 5.5vw, 4.5rem)",
                   lineHeight: 1,
                   wordBreak: "break-word",
                   overflowWrap: "break-word",
@@ -468,9 +468,9 @@ export default function IntroSection() {
               {/* Subheading in its own row */}
               <div className="w-full mt-6 min-w-0">
                 <p
-                  className="text-sm sm:text-base text-left w-full min-w-0 m-0"
+                  className="text-left w-full min-w-0 m-0"
                   style={{
-                    fontSize: "clamp(0.9rem, 2vw, 1rem)",
+                    fontSize: "clamp(0.875rem, 1.8vw, 1.125rem)",
                     wordBreak: "break-word",
                     overflowWrap: "break-word",
                   }}
@@ -522,7 +522,12 @@ export default function IntroSection() {
 
               {/* Mobile-only testimonial */}
               <div className="block md:hidden mt-6">
-                <p className="text-sm leading-tight py-2 px-0 text-left">
+                <p
+                  className="leading-tight py-2 px-0 text-left"
+                  style={{
+                    fontSize: "clamp(0.75rem, 1.5vw, 0.875rem)",
+                  }}
+                >
                   {renderTestimonial(testimonialText)}
                 </p>
               </div>
@@ -542,7 +547,12 @@ export default function IntroSection() {
               {/* Desktop-only testimonial */}
               <div className="hidden md:block text-center">
                 <div className="mt-4">
-                  <p className="text-lg max-w-xl mx-auto">
+                  <p
+                    className="max-w-xl mx-auto"
+                    style={{
+                      fontSize: "clamp(0.875rem, 2vw, 1.125rem)",
+                    }}
+                  >
                     {renderTestimonial(testimonialText)}
                   </p>
                 </div>
