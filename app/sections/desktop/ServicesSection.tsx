@@ -305,7 +305,7 @@ export default function ServicesSection() {
                 transition={{ duration: 0.1 }}
               >
                 <h1
-                  className="font-black m-0 w-full text-left min-w-0"
+                  className="font-black m-0 w-full text-left min-w-0 px-2 xs:px-2 sm:px-3 md:px-4 lg:px-4 xl:px-4"
                   style={{
                     fontSize: "clamp(1rem, 4vw, 4.5rem)",
                     lineHeight: 1,

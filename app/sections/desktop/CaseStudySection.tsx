@@ -299,7 +299,7 @@ export default function CaseStudySection() {
           {/* Left column - responsive layout */}
           <div className="flex flex-col items-start min-w-0 min-h-0 justify-center">
             <h1
-              className="case-studies-title font-black text-black text-left w-full m-0 min-w-0"
+              className="case-studies-title font-black text-black text-left w-full m-0 min-w-0 px-2 xs:px-1 sm:px-2 md:px-1 lg:px-2 xl:px-3"
               style={{
                 fontSize: "clamp(1rem, 4vw, 3.5rem)",
                 lineHeight: "1.1",
@@ -405,7 +405,7 @@ export default function CaseStudySection() {
               })()}
             </h1>
             <p
-              className="case-studies-description text-left w-full min-w-0 m-0"
+              className="case-studies-description text-left w-full min-w-0 m-0 px-2 xs:px-1 sm:px-2 md:px-1 lg:px-2 xl:px-3"
               style={{
                 fontSize: "clamp(0.7rem, 1.5vw, 1.125rem)",
                 margin: 0,

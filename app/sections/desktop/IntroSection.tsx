@@ -454,7 +454,7 @@ export default function IntroSection() {
               transition={{ duration: 0.8 }}
             >
               <h1
-                className="font-black block text-left m-0 w-full min-w-0"
+                className="font-black block text-left m-0 w-full min-w-0 px-2 xs:px-4 sm:px-5 md:px-5 lg:px-6 xl:px-8"
                 style={{
                   fontSize: "clamp(1.25rem, 5.5vw, 4.5rem)",
                   lineHeight: 1,
@@ -468,7 +468,7 @@ export default function IntroSection() {
               {/* Subheading in its own row */}
               <div className="w-full mt-6 min-w-0">
                 <p
-                  className="text-left w-full min-w-0 m-0"
+                  className="text-left w-full min-w-0 m-0 px-2 xs:px-4 sm:px-5 md:px-5 lg:px-6 xl:px-8"
                   style={{
                     fontSize: "clamp(0.875rem, 1.8vw, 1.125rem)",
                     wordBreak: "break-word",
