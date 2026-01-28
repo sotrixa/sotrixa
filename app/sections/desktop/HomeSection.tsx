@@ -323,8 +323,8 @@ export default function HomeSection() {
         <video
           className="object-contain relative z-[2] m-0 p-0 border-none outline-none shadow-none block bg-transparent overflow-hidden max-w-full max-h-full"
           style={{
-            width: "clamp(150px, 40vw, 80vh)",
-            height: "clamp(100px, 30vh, 70vh)",
+            width: "clamp(150px, 80vw, 100vh)",
+            height: "clamp(100px, 70vh, 95vh)",
           }}
           autoPlay
           loop
