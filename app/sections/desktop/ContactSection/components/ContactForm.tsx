@@ -1,5 +1,8 @@
-import React from 'react';
-import { formContainerStyles, formItemWrapperStyles, labelStyles, inputStyles, textareaStyles, buttonStyles } from '../utils/formStyles';
+import React from "react";
+import {
+  formContainerStyles,
+  formItemWrapperStyles,
+} from "../utils/formStyles";
 
 interface ContactFormData {
   name: string;
@@ -16,7 +19,9 @@ interface ContactFormProps {
   isSubmitting: boolean;
   isSuccess: boolean;
   error: string | null;
-  handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  handleInputChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => void;
   handleSubmit: (e: React.FormEvent) => Promise<void>;
 }
 
@@ -42,104 +47,197 @@ export function ContactForm({
     <div ref={formRef} style={{ opacity: animationsCreated ? undefined : 1 }}>
       {/* Success Message */}
       {isSuccess && (
-        <div className='mb-4 p-3 bg-green-50 border border-green-200 rounded-md'>
-          <p className='text-green-800 text-sm font-medium'>✓ Message sent successfully!</p>
-          <p className='text-green-600 text-xs mt-1'>We&apos;ll get back to you soon.</p>
+        <div
+          className="mb-4 p-3 sm:p-4 bg-green-50 border border-green-200 rounded-md"
+          style={{ fontSize: "clamp(0.75rem, 1.2vw, 0.875rem)" }}
+        >
+          <p className="text-green-800 font-medium">
+            ✓ Message sent successfully!
+          </p>
+          <p className="text-green-600 text-xs mt-1">
+            We&apos;ll get back to you soon.
+          </p>
         </div>
       )}
 
       {/* Error Message */}
       {error && (
-        <div className='mb-4 p-3 bg-red-50 border border-red-200 rounded-md'>
-          <p className='text-red-800 text-sm font-medium'>⚠ {error}</p>
-          <p className='text-red-600 text-xs mt-1'>Please try again or contact us directly.</p>
+        <div
+          className="mb-4 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-md"
+          style={{ fontSize: "clamp(0.75rem, 1.2vw, 0.875rem)" }}
+        >
+          <p className="text-red-800 font-medium">⚠ {error}</p>
+          <p className="text-red-600 text-xs mt-1">
+            Please try again or contact us directly.
+          </p>
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className='space-y-2 sm:space-y-2.5 contact-form-override' style={formContainerStyles}>
-        <div className='grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5'>
-          <div ref={addToFormRefs} style={formItemWrapperStyles(animationsCreated)}>
-            <label htmlFor='name' className='block mb-1 text-xs font-medium text-gray-700' style={labelStyles}>
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-[clamp(0.3rem,0.7vw,0.5rem)] contact-form-override"
+        style={formContainerStyles}
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-[clamp(0.3rem,0.6vw,0.5rem)]">
+          <div
+            ref={addToFormRefs}
+            style={formItemWrapperStyles(animationsCreated)}
+          >
+            <label
+              htmlFor="name"
+              className="block font-medium text-gray-700"
+              style={{
+                fontSize: "clamp(0.6rem, 0.85vw, 0.9rem)",
+                marginBottom: "clamp(0.2rem, 0.5vw, 0.4rem)",
+              }}
+            >
               Name *
             </label>
             <input
-              type='text'
-              id='name'
-              name='name'
+              type="text"
+              id="name"
+              name="name"
               value={formData.name}
               onChange={handleInputChange}
-              className='w-full px-3 py-1.5 sm:py-2 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800 text-sm'
-              placeholder='John Doe'
+              className="w-full bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800"
+              style={{
+                padding:
+                  "clamp(0.3rem, 0.7vw, 0.55rem) clamp(0.35rem, 0.9vw, 0.6rem)",
+                fontSize: "clamp(0.75rem, 1.1vw, 1rem)",
+              }}
+              placeholder="John Doe"
               required
               disabled={isSubmitting}
-              style={inputStyles}
             />
           </div>
 
-          <div ref={addToFormRefs} style={formItemWrapperStyles(animationsCreated)}>
-            <label htmlFor='email' className='block mb-1 text-xs font-medium text-gray-700' style={labelStyles}>
+          <div
+            ref={addToFormRefs}
+            style={formItemWrapperStyles(animationsCreated)}
+          >
+            <label
+              htmlFor="email"
+              className="block font-medium text-gray-700"
+              style={{
+                fontSize: "clamp(0.6rem, 0.85vw, 0.9rem)",
+                marginBottom: "clamp(0.2rem, 0.5vw, 0.4rem)",
+              }}
+            >
               Email *
             </label>
             <input
-              type='email'
-              id='email'
-              name='email'
+              type="email"
+              id="email"
+              name="email"
               value={formData.email}
               onChange={handleInputChange}
-              className='w-full px-3 py-1.5 sm:py-2 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800 text-sm'
-              placeholder='john@example.com'
+              className="w-full bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800"
+              style={{
+                padding:
+                  "clamp(0.3rem, 0.7vw, 0.55rem) clamp(0.35rem, 0.9vw, 0.6rem)",
+                fontSize: "clamp(0.75rem, 1.1vw, 1rem)",
+              }}
+              placeholder="john@example.com"
               required
               disabled={isSubmitting}
-              style={inputStyles}
             />
           </div>
         </div>
 
-        <div ref={addToFormRefs} style={formItemWrapperStyles(animationsCreated)}>
-          <label htmlFor='subject' className='block mb-1 text-xs font-medium text-gray-700' style={labelStyles}>
+        <div
+          ref={addToFormRefs}
+          style={formItemWrapperStyles(animationsCreated)}
+        >
+          <label
+            htmlFor="subject"
+            className="block font-medium text-gray-700"
+            style={{
+              fontSize: "clamp(0.6rem, 0.85vw, 0.9rem)",
+              marginBottom: "clamp(0.2rem, 0.5vw, 0.4rem)",
+            }}
+          >
             Subject *
           </label>
           <input
-            type='text'
-            id='subject'
-            name='subject'
+            type="text"
+            id="subject"
+            name="subject"
             value={formData.subject}
             onChange={handleInputChange}
-            className='w-full px-3 py-1.5 sm:py-2 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800 text-sm'
-            placeholder='Project inquiry'
+            className="w-full bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800"
+            style={{
+              padding:
+                "clamp(0.3rem, 0.7vw, 0.55rem) clamp(0.35rem, 0.9vw, 0.6rem)",
+              fontSize: "clamp(0.75rem, 1.1vw, 1rem)",
+            }}
+            placeholder="Project inquiry"
             required
             disabled={isSubmitting}
-            style={inputStyles}
           />
         </div>
 
-        <div ref={addToFormRefs} style={formItemWrapperStyles(animationsCreated)}>
-          <label htmlFor='message' className='block mb-1 text-xs font-medium text-gray-700' style={labelStyles}>
+        <div
+          ref={addToFormRefs}
+          style={formItemWrapperStyles(animationsCreated)}
+        >
+          <label
+            htmlFor="message"
+            className="block font-medium text-gray-700"
+            style={{
+              fontSize: "clamp(0.6rem, 0.85vw, 0.9rem)",
+              marginBottom: "clamp(0.2rem, 0.5vw, 0.4rem)",
+            }}
+          >
             Message *
           </label>
           <textarea
-            id='message'
-            name='message'
+            id="message"
+            name="message"
             value={formData.message}
             onChange={handleInputChange}
             rows={3}
-            className='w-full px-3 py-1.5 sm:py-2 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800 text-sm resize-none'
-            placeholder='Tell us about your project...'
+            className="w-full bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-colors text-gray-800 resize-none"
+            style={{
+              padding:
+                "clamp(0.3rem, 0.7vw, 0.55rem) clamp(0.35rem, 0.9vw, 0.6rem)",
+              fontSize: "clamp(0.75rem, 1.1vw, 1rem)",
+            }}
+            placeholder="Tell us about your project..."
             required
             disabled={isSubmitting}
-            style={textareaStyles}
           ></textarea>
         </div>
 
-        <div ref={addToFormRefs} style={{ ...formItemWrapperStyles(animationsCreated), userSelect: undefined }}>
-          <button type='submit' disabled={isSubmitting} className='px-4 sm:px-5 py-1.5 sm:py-2 bg-black text-white font-medium rounded-md hover:bg-gray-800 transition-colors text-sm disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2' style={buttonStyles}>
+        <div
+          ref={addToFormRefs}
+          style={{
+            ...formItemWrapperStyles(animationsCreated),
+            userSelect: undefined,
+          }}
+        >
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="bg-black text-white font-medium rounded-md hover:bg-gray-800 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-[clamp(0.25rem,1vw,0.5rem)]"
+            style={{
+              padding:
+                "clamp(0.3rem, 0.7vw, 0.55rem) clamp(0.7rem, 1.3vw, 1.1rem)",
+              fontSize: "clamp(0.75rem, 1.1vw, 1rem)",
+            }}
+          >
             {isSubmitting ? (
               <>
-                <div className='w-3 h-3 border border-white border-t-transparent rounded-full animate-spin'></div>
+                <div
+                  className="border border-white border-t-transparent rounded-full animate-spin"
+                  style={{
+                    width: "clamp(0.55rem, 0.9vw, 0.8rem)",
+                    height: "clamp(0.55rem, 0.9vw, 0.8rem)",
+                  }}
+                ></div>
                 Sending...
               </>
             ) : (
-              'Send Message'
+              "Send Message"
             )}
           </button>
         </div>
