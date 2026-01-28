@@ -301,8 +301,10 @@ export default function CaseStudySection() {
             <h1
               className="case-studies-title font-black text-black text-left w-full m-0 min-w-0"
               style={{
-                fontSize: "clamp(1.5rem, 6vw, 3.5rem)",
-                lineHeight: 1,
+                fontSize: "clamp(1rem, 4vw, 3.5rem)",
+                lineHeight: "1.1",
+                margin: 0,
+                marginBottom: "-0.3em",
                 wordBreak: "break-word",
                 overflowWrap: "break-word",
               }}
@@ -403,9 +405,10 @@ export default function CaseStudySection() {
               })()}
             </h1>
             <p
-              className="case-studies-description text-left w-full mt-4 min-w-0 m-0"
+              className="case-studies-description text-left w-full min-w-0 m-0"
               style={{
-                fontSize: "clamp(0.9rem, 2vw, 1.125rem)",
+                fontSize: "clamp(0.7rem, 1.5vw, 1.125rem)",
+                margin: 0,
                 wordBreak: "break-word",
                 overflowWrap: "break-word",
               }}
@@ -415,63 +418,66 @@ export default function CaseStudySection() {
           </div>
 
           {/* Right column - responsive layout */}
-          <div className="relative min-w-0 min-h-0">
-            {/* Case studies container */}
-            <div className="relative overflow-hidden h-auto">
-              {/* Navigation arrows - responsive positioning */}
-              <div className="absolute left-0 top-1/2 -translate-y-1/2 z-10 flex flex-col gap-2 sm:gap-3 pl-1 sm:pl-2">
-                <button
-                  onClick={goToPrevious}
-                  disabled={isPrevDisabled}
-                  className={`w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 flex items-center justify-center transition-all duration-200 ${isPrevDisabled ? "opacity-30 cursor-not-allowed" : "opacity-70 hover:opacity-100 hover:scale-110 active:scale-95"}`}
-                  aria-label="Previous case study"
+          <div className="relative min-w-0 min-h-0 flex items-center gap-4">
+            {/* Navigation arrows - OUTSIDE carousel */}
+            <div className="flex flex-col gap-2 sm:gap-3">
+              <button
+                onClick={goToPrevious}
+                disabled={isPrevDisabled}
+                className={`w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 flex items-center justify-center transition-all duration-200 ${isPrevDisabled ? "opacity-30 cursor-not-allowed" : "opacity-70 hover:opacity-100 hover:scale-110 active:scale-95"}`}
+                aria-label="Previous case study"
+              >
+                <svg
+                  width="24"
+                  height="24"
+                  className="sm:w-7 sm:h-7 lg:w-8 lg:h-8"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
                 >
-                  <svg
-                    width="24"
-                    height="24"
-                    className="sm:w-7 sm:h-7 lg:w-8 lg:h-8"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M15 18l-6-6 6-6" />
-                  </svg>
-                </button>
-                <button
-                  onClick={goToNext}
-                  disabled={isNextDisabled()}
-                  className={`w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 flex items-center justify-center transition-all duration-200 ${isNextDisabled() ? "opacity-30 cursor-not-allowed" : "opacity-70 hover:opacity-100 hover:scale-110 active:scale-95"}`}
-                  aria-label="Next case study"
+                  <path d="M15 18l-6-6 6-6" />
+                </svg>
+              </button>
+              <button
+                onClick={goToNext}
+                disabled={isNextDisabled()}
+                className={`w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 flex items-center justify-center transition-all duration-200 ${isNextDisabled() ? "opacity-30 cursor-not-allowed" : "opacity-70 hover:opacity-100 hover:scale-110 active:scale-95"}`}
+                aria-label="Next case study"
+              >
+                <svg
+                  width="24"
+                  height="24"
+                  className="sm:w-7 sm:h-7 lg:w-8 lg:h-8"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
                 >
-                  <svg
-                    width="24"
-                    height="24"
-                    className="sm:w-7 sm:h-7 lg:w-8 lg:h-8"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M9 18l6-6-6-6" />
-                  </svg>
-                </button>
-              </div>
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
+              </button>
+            </div>
 
+            {/* Case studies container */}
+            <div className="relative overflow-hidden h-auto flex-1">
               <div
                 ref={sliderRef}
-                className="slider-container flex gap-3 sm:gap-4 md:gap-6 px-[clamp(0.75rem,2vw,1.5rem)] pb-4 sm:pb-6 pt-2 sm:pt-3"
+                className="slider-container flex gap-3 sm:gap-4 md:gap-6 pb-4 sm:pb-6 pt-2 sm:pt-3"
               >
                 {getVisibleSlides().map((study, index) => (
                   <div
                     key={`${currentSlideIndex}-${index}`}
-                    className="slider-item flex-shrink-0 min-w-[250px] sm:min-w-[300px] md:min-w-[350px] gap-[clamp(0.75rem,2vw,1.5rem)] cursor-pointer transition-transform duration-300 hover:-translate-y-2 select-text flex flex-col"
+                    className="slider-item flex-shrink-0 min-w-[250px] sm:min-w-[300px] md:min-w-[calc(50%-1rem)] lg:min-w-[calc(50%-1.5rem)] gap-[clamp(0.75rem,2vw,1.5rem)] cursor-pointer transition-transform duration-300 hover:-translate-y-2 select-text flex flex-col"
                     onClick={() => handleStudyClick(study)}
                   >
                     {/* Image container */}
                     <div
                       className="rounded-lg border border-gray-200 shadow-md overflow-hidden"
-                      style={{ aspectRatio: "16/9" }}
+                      style={{
+                        aspectRatio: "1/1",
+                        minHeight: "clamp(250px, 50vh, 500px)",
+                      }}
                     >
                       <div
                         className="relative"
@@ -507,7 +513,7 @@ export default function CaseStudySection() {
                       <h3
                         className="font-bold"
                         style={{
-                          fontSize: "clamp(0.85rem, 2vw, 1rem)",
+                          fontSize: "clamp(0.7rem, 1.2vw, 1rem)",
                           lineHeight: 1,
                         }}
                       >
@@ -515,7 +521,7 @@ export default function CaseStudySection() {
                       </h3>
                       <p
                         className="text-gray-600 leading-tight"
-                        style={{ fontSize: "clamp(0.8rem, 1.5vw, 0.95rem)" }}
+                        style={{ fontSize: "clamp(0.6rem, 0.9vw, 0.9rem)" }}
                       >
                         {study.subtitle}
                       </p>
