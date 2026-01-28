@@ -1,0 +1,65 @@
+{
+  "statusLine": {
+    "type": "command",
+    "command": ".claude/scripts/status-line-with-pricing.sh"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "comment": "Block writes on production branches",
+        "matcher": "Edit|Write|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/scripts/protect-production-branch.sh",
+            "stdin": "hook_data"
+          }
+        ]
+      },
+      {
+        "comment": "Cost optimization guard",
+        "matcher": "Task|WebSearch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/scripts/cost-guard.sh",
+            "stdin": "hook_data"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "comment": "Auto-format JS/TS files",
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path' | { read file_path; if echo \"$file_path\" | grep -qE '\\.(js|ts|jsx|tsx)$'; then npx prettier --write \"$file_path\" 2>/dev/null || true; fi; }"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Read:**",
+      "Grep:**",
+      "Glob:**",
+      "Bash:git status",
+      "Bash:git diff",
+      "Bash:git log",
+      "Bash:npm install",
+      "Bash:npm test",
+      "Bash:ls *"
+    ]
+  },
+  "env": {
+    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "88",
+    "MAX_THINKING_TOKENS": "8000",
+    "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "16000",
+    "BASH_MAX_OUTPUT_LENGTH": "15000",
+    "BASH_DEFAULT_TIMEOUT_MS": "30000"
+  },
+  "respectGitignore": true
+}

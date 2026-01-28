@@ -1,24 +1,27 @@
-'use client';
+"use client";
 
-import React, { useEffect, useRef, useState } from 'react';
-import Section from '../../components/layout/Section';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ServiceInfoSectionProps } from '@/app/types/services';
-import { LetterElements } from '@/app/types/animation';
-import { serviceContents } from './ServiceInfoSection/data/serviceContents';
-import { BackgroundElements } from './ServiceInfoSection/components/BackgroundElements';
-import { LeftPanel } from './ServiceInfoSection/components/LeftPanel';
-import { RightPanel } from './ServiceInfoSection/components/RightPanel';
-import { useParticleEffects } from './ServiceInfoSection/hooks/useParticleEffects';
-import { useServiceAnimation } from './ServiceInfoSection/hooks/useServiceAnimation';
+import React, { useEffect, useRef, useState } from "react";
+import Section from "../../components/layout/Section";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ServiceInfoSectionProps } from "@/app/types/services";
+import { LetterElements } from "@/app/types/animation";
+import { serviceContents } from "./ServiceInfoSection/data/serviceContents";
+import { BackgroundElements } from "./ServiceInfoSection/components/BackgroundElements";
+import { LeftPanel } from "./ServiceInfoSection/components/LeftPanel";
+import { RightPanel } from "./ServiceInfoSection/components/RightPanel";
+import { useParticleEffects } from "./ServiceInfoSection/hooks/useParticleEffects";
+import { useServiceAnimation } from "./ServiceInfoSection/hooks/useServiceAnimation";
 
 // Register ScrollTrigger plugin only
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-export default function ServiceInfoSection({ onBackClick, activeService: initialActiveService }: ServiceInfoSectionProps) {
+export default function ServiceInfoSection({
+  onBackClick,
+  activeService: initialActiveService,
+}: ServiceInfoSectionProps) {
   // Refs
   const sectionDivRef = useRef<HTMLDivElement>(null);
   const leftSideRef = useRef<HTMLDivElement>(null);
@@ -35,16 +38,29 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
   const gearRefs = useRef<Array<SVGSVGElement | null>>([]);
 
   // State
-  const [activeService, setActiveService] = useState<string | undefined>(initialActiveService);
+  const [activeService, setActiveService] = useState<string | undefined>(
+    initialActiveService,
+  );
   const serviceTitleRefs = useRef<(HTMLHeadingElement | null)[]>([]);
   const splitTextRefs = useRef<LetterElements[]>([]);
 
   // Get current content
-  const currentContent = activeService && serviceContents[activeService] ? serviceContents[activeService] : serviceContents['RESEARCH'];
+  const currentContent =
+    activeService && serviceContents[activeService]
+      ? serviceContents[activeService]
+      : serviceContents["RESEARCH"];
 
   // Hooks
-  const { createParticles, animateParticles } = useParticleEffects({ particlesRef });
-  const { animateLetterStagger, resetLetterAnimation, playExitAnimation, handleBackToServices, createLetterAnimations } = useServiceAnimation({
+  const { createParticles, animateParticles } = useParticleEffects({
+    particlesRef,
+  });
+  const {
+    animateLetterStagger,
+    resetLetterAnimation,
+    playExitAnimation,
+    handleBackToServices,
+    createLetterAnimations,
+  } = useServiceAnimation({
     sectionDivRef,
     headingRef,
     servicesGridRef,
@@ -68,9 +84,10 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
     // Animate grid background
     if (gridBackgroundRef.current) {
       gsap.to(gridBackgroundRef.current, {
-        backgroundPosition: '100px 100px, 100px 100px, 200px 200px, 200px 200px',
+        backgroundPosition:
+          "100px 100px, 100px 100px, 200px 200px, 200px 200px",
         duration: 60,
-        ease: 'linear',
+        ease: "linear",
         repeat: -1,
       });
     }
@@ -80,13 +97,13 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
       if (!gearRef) return;
 
       gsap.set(gearRef, {
-        transformOrigin: 'center center',
+        transformOrigin: "center center",
       });
 
       gsap.to(gearRef, {
-        rotation: index % 2 === 0 ? '+=360' : '-=360',
+        rotation: index % 2 === 0 ? "+=360" : "-=360",
         duration: 20 + index * 5,
-        ease: 'none',
+        ease: "none",
         repeat: -1,
       });
     });
@@ -99,20 +116,28 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
     // Initialize text styles for service titles
     serviceTitleRefs.current.forEach((titleRef, index) => {
       if (titleRef) {
-        const serviceNames = ['RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRAND STORYTELLING', 'MARKETING', 'WEBSITE DEVELOPMENT'];
+        const serviceNames = [
+          "RESEARCH",
+          "BUSINESS ARCHITECTURE",
+          "BESPOKE STRATEGY CREATION",
+          "BRAND STORYTELLING",
+          "MARKETING",
+          "WEBSITE DEVELOPMENT",
+        ];
         const service = serviceNames[index];
 
         gsap.set(titleRef, {
-          letterSpacing: '0.05em',
-          color: activeService === service ? '#DD53EB' : '#333',
-          fontWeight: 'bold',
-          textShadow: activeService === service ? '0 0 3px rgba(221,83,235,0.3)' : 'none',
+          letterSpacing: "0.05em",
+          color: activeService === service ? "#DD53EB" : "#333",
+          fontWeight: "bold",
+          textShadow:
+            activeService === service ? "0 0 3px rgba(221,83,235,0.3)" : "none",
         });
 
         if (activeService === service) {
           gsap.to(titleRef, {
-            color: '#DD53EB',
-            fontWeight: 'bold',
+            color: "#DD53EB",
+            fontWeight: "bold",
             duration: 0.3,
           });
         }
@@ -133,8 +158,8 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
         scale: 1,
         duration: 0.6,
         delay: 0.2,
-        ease: 'back.out(1.7)',
-      }
+        ease: "back.out(1.7)",
+      },
     );
 
     // Initial entrance animations for section
@@ -149,8 +174,8 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
         scale: 1,
         duration: 0.6,
         delay: 0.3,
-        ease: 'power2.out',
-      }
+        ease: "power2.out",
+      },
     );
 
     // Divider line animation
@@ -164,8 +189,8 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
           scaleY: 1,
           duration: 0.8,
           delay: 0.4,
-          ease: 'power2.out',
-        }
+          ease: "power2.out",
+        },
       );
     }
 
@@ -177,16 +202,27 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
 
   // Expose exit animation globally
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       window.playServiceInfoExitAnimation = playExitAnimation;
     }
   }, [playExitAnimation]);
 
   return (
-    <Section id='services-info' className='bg-white'>
-      <BackgroundElements gridBackgroundRef={gridBackgroundRef} particlesRef={particlesRef} gearRefs={gearRefs} />
+    <Section
+      id="services-info"
+      className="bg-white w-screen h-screen flex items-center justify-center px-[clamp(1rem,3vw,2rem)]"
+      style={{ minWidth: "100vw", minHeight: "100vh" }}
+    >
+      <BackgroundElements
+        gridBackgroundRef={gridBackgroundRef}
+        particlesRef={particlesRef}
+        gearRefs={gearRefs}
+      />
 
-      <div ref={sectionDivRef} className='flex flex-col md:flex-row w-full h-full relative z-20 mx-auto my-8 mt-0'>
+      <div
+        ref={sectionDivRef}
+        className="flex flex-col md:flex-row w-full h-full relative z-20 mx-auto my-0"
+      >
         <LeftPanel
           leftSideRef={leftSideRef}
           logoRef={logoRef}
@@ -203,8 +239,8 @@ export default function ServiceInfoSection({ onBackClick, activeService: initial
         />
 
         {/* Divider line */}
-        <div className='relative md:h-full w-full md:w-[1px] h-[1px] my-4 md:my-0 mx-auto md:mx-0 flex-shrink-0'>
-          <div ref={dividerLineRef} className='absolute inset-0 bg-gray-200' />
+        <div className="relative md:h-full w-full md:w-[1px] h-[1px] my-4 md:my-0 mx-auto md:mx-0 flex-shrink-0">
+          <div ref={dividerLineRef} className="absolute inset-0 bg-gray-200" />
         </div>
 
         <RightPanel

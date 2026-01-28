@@ -1,0 +1,56 @@
+╔════════════════════════════════════════════════════════════════╗
+║        CLAUDE CODE COST OPTIMIZATION QUICK REFERENCE           ║
+╚════════════════════════════════════════════════════════════════╝
+
+📊 STATUS LINE
+  Format: [Model] Context: X% 🟢 | Cache: Y% 🟢 | $0.02¢ (↓$0.15¢)
+  💚 <50% Good | 💛 50-80% Warning | 🔴 >80% Clear needed
+
+🎯 GOLDEN RULES
+  1. Use Task tool for "where is X?" (not Grep/Read directly)
+  2. Be concise in prompts
+  3. Use skills with forked context (/code-review, /commit-standard)
+  4. /clear when context > 70%
+  5. Use Ralph for multi-story work
+
+⚡ QUICK COMMANDS
+  /clear              Reset context (use when >70%)
+  /cost               View session costs (if available)
+  /compact            Manually compact context
+
+🔧 COST OPTIMIZATION
+  Analyze session:    Use cost-optimizer agent
+  View trends:        .claude/analyze-costs.sh
+  Check config:       .claude/verify-optimization.sh
+
+💰 MODEL COSTS (per 1M tokens)
+  Haiku:   $1 input,  $5 output    (simple tasks)
+  Sonnet:  $3 input, $15 output    (complex tasks)
+  Cache:   $0.30 read (90% cheaper!)
+
+📁 KEY FILES
+  Status line:        .claude/status-line-with-pricing.sh
+  Full guide:         .claude/CONTEXT_MANAGEMENT.md
+  Advanced tips:      .claude/ADVANCED_OPTIMIZATIONS.md
+  Quick tips:         .claude/CONTEXT_QUICK_REFERENCE.md
+
+🎓 BEST PRACTICES
+  ✅ Monitor status line constantly
+  ✅ Use forked context for complex operations
+  ✅ Let me use Task tool automatically for searches
+  ✅ /clear between unrelated tasks
+  ✅ Run cost analysis weekly
+
+❌ AVOID
+  ❌ Multiple Grep/Read for same search
+  ❌ Verbose prompts
+  ❌ Ignoring context warnings
+  ❌ Working past 80% context
+  ❌ Using Sonnet for simple tasks
+
+🎯 TARGET METRICS
+  Context usage:     < 50% average
+  Cache hit rate:    > 70%
+  Cost per session:  Track and optimize weekly
+
+Press Ctrl+C to exit | View full docs: .claude/MASTER_OPTIMIZATION_GUIDE.md
