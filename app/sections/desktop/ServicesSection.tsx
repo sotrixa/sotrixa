@@ -307,7 +307,7 @@ export default function ServicesSection() {
                 <h1
                   className="font-black m-0 w-full text-left min-w-0"
                   style={{
-                    fontSize: "clamp(1.5rem, 6vw, 4.5rem)",
+                    fontSize: "clamp(1rem, 4vw, 4.5rem)",
                     lineHeight: 1,
                     wordBreak: "break-word",
                     overflowWrap: "break-word",
@@ -414,7 +414,7 @@ export default function ServicesSection() {
                   <span
                     className="text-black font-normal leading-relaxed mt-6 block text-left w-full min-w-0"
                     style={{
-                      fontSize: "clamp(0.9rem, 2vw, 1.125rem)",
+                      fontSize: "clamp(0.7rem, 1.5vw, 1.125rem)",
                       wordBreak: "break-word",
                       overflowWrap: "break-word",
                     }}
@@ -477,8 +477,8 @@ export default function ServicesSection() {
                         style={{
                           fontSize:
                             index === activeServiceIndex
-                              ? "clamp(0.9rem, 2vw, 1.5rem)"
-                              : "clamp(1.6rem, 1.5vw, 2.5rem)",
+                              ? "clamp(0.7rem, 1.2vw, 1rem)"
+                              : "clamp(0.9rem, 2vw, 2rem)",
                         }}
                         onClick={() => handleServiceClick(index)}
                         ref={(el) => {
