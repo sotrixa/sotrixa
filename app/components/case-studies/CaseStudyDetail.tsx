@@ -221,7 +221,7 @@ export default function CaseStudyDetail({
         <div className="col-span-6 relative">
           {/* Content container */}
           <div
-            className="mt-10 bg-white overflow-y-auto max-w-full relative z-10"
+            className="mt-20 bg-white overflow-y-auto max-w-full relative z-10"
             style={{ height: "max(calc(97vh - 300px), 450px)" }}
           >
             {/* Navigation row with both buttons */}
@@ -283,7 +283,7 @@ export default function CaseStudyDetail({
             <h2
               ref={titleRef}
               className="font-bold text-black mb-8 leading-tight max-w-full break-words"
-              style={{ fontSize: "clamp(1.5rem, 5vw, 3.5rem)" }}
+              style={{ fontSize: "clamp(0.875rem, 3vw, 3rem)" }}
             >
               {currentStudy.title}
             </h2>
@@ -294,7 +294,7 @@ export default function CaseStudyDetail({
                   <div className="mb-8 max-w-full">
                     <p
                       className="text-gray-700 leading-relaxed break-words"
-                      style={{ fontSize: "clamp(0.7rem, 1.5vw, 1rem)" }}
+                      style={{ fontSize: "clamp(0.875rem, 1.3vw, 1.0625rem)" }}
                     >
                       {currentStudy.description}
                     </p>
@@ -305,13 +305,13 @@ export default function CaseStudyDetail({
                   <div className="mb-8 max-w-full">
                     <h3
                       className="font-medium text-gray-900 mb-4 break-words"
-                      style={{ fontSize: "clamp(0.9rem, 2vw, 1.25rem)" }}
+                      style={{ fontSize: "clamp(1rem, 2vw, 1.35rem)" }}
                     >
                       Challenge
                     </h3>
                     <p
                       className="text-gray-700 leading-relaxed break-words"
-                      style={{ fontSize: "clamp(0.7rem, 1.5vw, 1rem)" }}
+                      style={{ fontSize: "clamp(0.875rem, 1.3vw, 1.0625rem)" }}
                     >
                       {currentStudy.challenge}
                     </p>
@@ -322,13 +322,13 @@ export default function CaseStudyDetail({
                   <div className="mb-8 max-w-full">
                     <h3
                       className="font-medium text-gray-900 mb-4 break-words"
-                      style={{ fontSize: "clamp(0.9rem, 2vw, 1.25rem)" }}
+                      style={{ fontSize: "clamp(1rem, 2vw, 1.35rem)" }}
                     >
                       Solution
                     </h3>
                     <div
                       className="text-gray-700 leading-relaxed whitespace-pre-line break-words max-w-full"
-                      style={{ fontSize: "clamp(0.7rem, 1.5vw, 1rem)" }}
+                      style={{ fontSize: "clamp(0.875rem, 1.3vw, 1.0625rem)" }}
                     >
                       {currentStudy.solution}
                     </div>
@@ -339,13 +339,13 @@ export default function CaseStudyDetail({
                   <div className="mb-8 max-w-full">
                     <h3
                       className="font-medium text-gray-900 mb-4 break-words"
-                      style={{ fontSize: "clamp(0.9rem, 2vw, 1.25rem)" }}
+                      style={{ fontSize: "clamp(1rem, 2vw, 1.35rem)" }}
                     >
                       Results
                     </h3>
                     <p
                       className="text-gray-700 leading-relaxed break-words"
-                      style={{ fontSize: "clamp(0.7rem, 1.5vw, 1rem)" }}
+                      style={{ fontSize: "clamp(0.875rem, 1.3vw, 1.0625rem)" }}
                     >
                       {currentStudy.results}
                     </p>
