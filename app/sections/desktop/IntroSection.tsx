@@ -456,8 +456,8 @@ export default function IntroSection() {
               <h1
                 className="font-black block text-left m-0 w-full min-w-0 px-2 xs:px-4 sm:px-5 md:px-5 lg:px-6 xl:px-8"
                 style={{
-                  fontSize: "clamp(1.25rem, 5.5vw, 4.5rem)",
-                  lineHeight: 1,
+                  fontSize: "clamp(1rem, 4vw, 5rem)",
+                  lineHeight: 1.1,
                   wordBreak: "break-word",
                   overflowWrap: "break-word",
                 }}
