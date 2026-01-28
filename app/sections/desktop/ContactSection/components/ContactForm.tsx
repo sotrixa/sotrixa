@@ -44,7 +44,11 @@ export function ContactForm({
   };
 
   return (
-    <div ref={formRef} style={{ opacity: animationsCreated ? undefined : 1 }}>
+    <div
+      ref={formRef}
+      className="xs:px-1 sm:px-2 md:px-1 lg:px-2 xl:px-5"
+      style={{ opacity: animationsCreated ? undefined : 1 }}
+    >
       {/* Success Message */}
       {isSuccess && (
         <div

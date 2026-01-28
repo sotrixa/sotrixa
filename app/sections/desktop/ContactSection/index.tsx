@@ -39,16 +39,17 @@ export default function ContactSection() {
   return (
     <Section id="contact" className="bg-[#FAFAFA] text-black relative">
       <div
-        className="flex flex-col lg:flex-row gap-[clamp(0.5rem,3vw,1.5rem)] relative z-10 items-center justify-center w-screen h-screen"
+        className="flex flex-col lg:flex-row gap-[clamp(0.5rem,3vw,1.5rem)] relative z-10 items-center justify-center w-screen h-screen px-2 xs:px-1 sm:px-2 md:px-1 lg:px-2 xl:px-3"
         style={{
           minWidth: "100vw",
           minHeight: "100vh",
-          padding: "clamp(0.75rem, 1.5vw, 1.25rem) clamp(0.6rem, 1.5vw, 1rem)",
+          paddingTop: "clamp(0.75rem, 1.5vw, 1.25rem)",
+          paddingBottom: "clamp(0.75rem, 1.5vw, 1.25rem)",
         }}
       >
         {/* Left Column - Contact Content */}
         <motion.div
-          className="flex-1 flex flex-col items-start min-w-0 min-h-0 justify-center"
+          className="flex-1 flex flex-col items-start min-w-0 min-h-0 justify-center px-2 xs:px-1 sm:px-2 md:px-1 lg:px-2 xl:px-3"
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8 }}

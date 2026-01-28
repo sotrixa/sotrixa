@@ -11,7 +11,7 @@ export function ContactInfo({
 }: ContactInfoProps) {
   return (
     <div
-      className="items-start"
+      className="items-start px-2 xs:px-1 sm:px-2 md:px-1 lg:px-2 xl:px-5"
       ref={contactInfoRef}
       style={{
         opacity: animationsCreated ? undefined : 1,
