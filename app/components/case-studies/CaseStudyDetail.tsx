@@ -207,8 +207,11 @@ export default function CaseStudyDetail({
   return (
     <div
       ref={detailRef}
-      className="w-full bg-white relative mt-32"
-      style={{ minHeight: "max(100vh, 800px)" }}
+      className="w-full bg-white relative"
+      style={{
+        marginTop: "clamp(2rem, 8vw, 4rem)",
+        minHeight: "max(100vh, 800px)",
+      }}
       onKeyDown={handleKeyDown}
       tabIndex={0}
     >
@@ -218,11 +221,13 @@ export default function CaseStudyDetail({
         style={{ minHeight: "max(100vh, 800px)" }}
       >
         {/* Left column - Content (6 columns) */}
-        <div className="col-span-6 relative">
+        <div className="col-span-6 relative h-full flex items-center">
           {/* Content container */}
           <div
-            className="mt-20 bg-white overflow-y-auto max-w-full relative z-10"
-            style={{ height: "max(calc(97vh - 300px), 450px)" }}
+            className="bg-white overflow-y-auto max-w-full relative z-10 w-full"
+            style={{
+              maxHeight: "clamp(300px, 55vh, 700px)",
+            }}
           >
             {/* Navigation row with both buttons */}
             <div
