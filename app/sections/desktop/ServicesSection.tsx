@@ -94,6 +94,8 @@ export default function ServicesSection() {
     isAnimating,
   });
 
+
+
   // Get random position within boundaries
   const getRandomPosition = () => {
     // Ensure values stay within the screen boundaries (with padding)
@@ -473,12 +475,9 @@ export default function ServicesSection() {
                     {services.map((service, index) => (
                       <div
                         key={service}
-                        className={`cursor-pointer transform transition-all duration-300 ${index === activeServiceIndex ? "text-black font-black -translate-y-1 sm:-translate-y-2" : "text-gray-500 font-bold"}`}
+                        className={`cursor-pointer transition-all duration-300 ${index === activeServiceIndex ? "text-black font-black" : "text-gray-500 font-bold"}`}
                         style={{
-                          fontSize:
-                            index === activeServiceIndex
-                              ? "clamp(0.7rem, 1.2vw, 1rem)"
-                              : "clamp(0.9rem, 2vw, 2rem)",
+                          fontSize: "clamp(0.9rem, 2vw, 2rem)",
                         }}
                         onClick={() => handleServiceClick(index)}
                         ref={(el) => {
@@ -488,7 +487,7 @@ export default function ServicesSection() {
                         <span>{service}</span>
                         {index === activeServiceIndex && (
                           <div
-                            className="bg-[#d142e2] rounded-full transform transition-all duration-300"
+                            className="bg-[#d142e2] rounded-full transition-all duration-300"
                             style={{
                               height: "clamp(2px, 0.5vh, 4px)",
                               width: "clamp(6rem, 8vw, 8rem)",
