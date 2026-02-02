@@ -283,7 +283,7 @@ export default function CaseStudySection() {
           style={{ display: showDetail ? "none" : "grid" }}
         >
           {/* Left column - responsive layout */}
-          <div className="flex flex-col items-start min-w-0 min-h-0 justify-center mt-12">
+          <div className="flex flex-col items-start min-w-0 min-h-0 justify-center mt-2">
             <h1
               className="case-studies-title font-black text-black text-left w-full m-0 min-w-0 px-2 xs:px-1 sm:px-2 md:px-1 lg:px-2 xl:px-3"
               style={{
