@@ -317,11 +317,11 @@ export default function HomeSection() {
 
       <div
         ref={videoContainerRef}
-        className="relative flex items-center justify-center z-[1] bg-[#fbfbfb] max-w-full max-h-full flex-1 min-w-0 min-h-0"
-        style={{ maxWidth: "100%", minWidth: "0" }}
+        className="relative flex items-center justify-center z-[1] bg-[#fbfbfb] overflow-hidden flex-1 min-w-0 min-h-0"
+        style={{ maxWidth: "100%", maxHeight: "100%" }}
       >
         <video
-          className="object-contain relative z-[2] m-0 p-0 border-none outline-none shadow-none block bg-transparent overflow-hidden max-w-full max-h-full"
+          className="object-contain m-0 p-0 border-none outline-none shadow-none block bg-transparent max-w-full max-h-full"
           style={{
             width: "clamp(150px, 80vw, 100vh)",
             height: "clamp(100px, 70vh, 95vh)",

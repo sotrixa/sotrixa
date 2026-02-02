@@ -318,8 +318,8 @@ export default function IntroSection() {
         </div>
 
         {/* Desktop-only play button */}
-        <div className="absolute inset-0 hidden md:flex items-center justify-center pointer-events-none">
-          <div className="pointer-events-auto">
+        <div className="absolute inset-0 hidden md:flex items-start justify-center pointer-events-none" style={{ paddingTop: "12%" }}>
+          <div className="pointer-events-auto" style={{ marginTop: "4rem" }}>
             <button
               type="button"
               className="rounded-full shadow-lg cursor-pointer hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-[#583c48] group"
@@ -536,7 +536,7 @@ export default function IntroSection() {
 
           {/* Desktop-only video container with proper spacing */}
           <motion.div
-            className="hidden md:block relative flex-1 min-w-0 min-h-0"
+            className="hidden md:block relative flex-1 min-w-0 min-h-0 overflow-hidden"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
@@ -546,9 +546,9 @@ export default function IntroSection() {
 
               {/* Desktop-only testimonial */}
               <div className="hidden md:block text-center">
-                <div className="mt-4">
+                <div className="mt-0">
                   <p
-                    className="max-w-xl mx-auto"
+                    className="max-w-xl mx-auto -mt-8"
                     style={{
                       fontSize: "clamp(0.875rem, 2vw, 1.125rem)",
                     }}
