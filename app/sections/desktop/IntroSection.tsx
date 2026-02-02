@@ -318,27 +318,27 @@ export default function IntroSection() {
         </div>
 
         {/* Desktop-only play button - centered on thumbnail */}
-        <div className="absolute inset-0 hidden md:flex items-center justify-center pointer-events-none">
+        <div className="absolute inset-0 hidden md:flex items-center justify-center pointer-events-none" style={{ transform: 'translateY(-1.5rem)' }}>
           <div className="pointer-events-auto">
             <button
               type="button"
               className="rounded-full shadow-lg cursor-pointer hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-[#583c48] group"
-              style={{ padding: "clamp(0.75rem, 2.5vw, 1.5rem)" }}
+              style={{ padding: "clamp(0.25rem, 1vw, 0.75rem)" }}
               onClick={handlePlayClick}
               aria-label="Play Sotrixa introduction video"
             >
               <div
                 className="flex items-center justify-center group-hover:scale-110 transition-transform relative"
                 style={{
-                  width: "clamp(3rem, 8vw, 5rem)",
-                  height: "clamp(3rem, 8vw, 5rem)",
+                  width: "clamp(1.25rem, 3vw, 2.5rem)",
+                  height: "clamp(1.25rem, 3vw, 2.5rem)",
                 }}
               >
                 <motion.div
                   className="absolute top-1/2 left-1/2 rounded-full pointer-events-none bg-white -translate-x-1/2 -translate-y-1/2"
                   style={{
-                    width: "clamp(5rem, 12vw, 8rem)",
-                    height: "clamp(5rem, 12vw, 8rem)",
+                    width: "clamp(2rem, 5vw, 3.5rem)",
+                    height: "clamp(2rem, 5vw, 3.5rem)",
                   }}
                   animate={desktopIconPulseAnimation}
                 />
@@ -348,8 +348,8 @@ export default function IntroSection() {
                   fill="currentColor"
                   className="text-[#583c48] relative z-10"
                   style={{
-                    width: "clamp(2.5rem, 6vw, 4rem)",
-                    height: "clamp(2.5rem, 6vw, 4rem)",
+                    width: "clamp(0.875rem, 2.5vw, 1.75rem)",
+                    height: "clamp(0.875rem, 2.5vw, 1.75rem)",
                   }}
                 >
                   <path d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" />

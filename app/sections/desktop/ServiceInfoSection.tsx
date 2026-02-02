@@ -239,9 +239,9 @@ export default function ServiceInfoSection({
         />
 
         {/* Divider line */}
-        <div className="relative md:h-full w-full md:w-[1px] h-[1px] my-4 md:my-0 mx-auto md:mx-0 flex-shrink-0">
+        {/* <div className="relative md:h-full w-full md:w-[1px] h-[1px] my-4 md:my-0 mx-auto md:mx-0 flex-shrink-0">
           <div ref={dividerLineRef} className="absolute inset-0 bg-gray-200" />
-        </div>
+        </div> */}
 
         <RightPanel
           rightSideRef={rightSideRef}
