@@ -317,14 +317,16 @@ export default function HomeSection() {
 
       <div
         ref={videoContainerRef}
-        className="relative flex items-center justify-center z-[1] bg-[#fbfbfb] overflow-hidden flex-1 min-w-0 min-h-0"
-        style={{ maxWidth: "100%", maxHeight: "100%" }}
+        className="relative flex items-center justify-center z-[1] bg-[#fbfbfb] overflow-hidden flex-1 min-w-0 min-h-0 h-full"
+        style={{ maxWidth: "100%" }}
       >
         <video
-          className="object-contain m-0 p-0 border-none outline-none shadow-none block bg-transparent max-w-full max-h-full"
+          className="object-contain m-auto p-0 border-none outline-none shadow-none block bg-transparent"
           style={{
-            width: "clamp(150px, 80vw, 100vh)",
-            height: "clamp(100px, 70vh, 95vh)",
+            width: "clamp(350px, 50vw, 900px)",
+            height: "auto",
+            maxHeight: "85vh",
+            aspectRatio: "16/9",
           }}
           autoPlay
           loop

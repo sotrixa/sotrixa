@@ -362,8 +362,8 @@ export default function CaseStudyDetail({
         </div>
 
         {/* Right column - Image (6 columns) */}
-        <div className="col-span-6 flex items-start justify-center pt-20">
-          <div ref={imageRef} className="w-full max-w-[500px] sticky top-20">
+        <div className="col-span-6 flex items-start justify-center mt-24">
+          <div ref={imageRef} className="w-full max-w-[500px] sticky top-20" style={{ marginTop: 'clamp(6rem, 12vh, 10rem)' }}>
             <Image
               src={currentStudy.image}
               alt={currentStudy.title}

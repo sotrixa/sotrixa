@@ -307,7 +307,7 @@ export default function ServicesSection() {
                 transition={{ duration: 0.1 }}
               >
                 <h1
-                  className="font-black m-0 w-full text-left min-w-0 px-2 xs:px-2 sm:px-3 md:px-4 lg:px-4 xl:px-4"
+                  className="mt-2 font-black m-0 w-full text-left min-w-0 px-2 xs:px-2 sm:px-3 md:px-4 lg:px-4 xl:px-4"
                   style={{
                     fontSize: "clamp(1rem, 4vw, 4.5rem)",
                     lineHeight: 1,
@@ -469,7 +469,7 @@ export default function ServicesSection() {
                 transition={{ duration: 0.5 }}
                 ref={servicesRef}
               >
-                <div className="flex flex-col items-start text-left gap-[clamp(1rem,3vh,2rem)]">
+                <div className="mt-6 flex flex-col items-start text-left gap-[clamp(1rem,3vh,2rem)]">
                   {/* Services list - direct implementation instead of using components */}
                   <div className="flex flex-col gap-[clamp(0.5rem, 1vh, 0.75rem)]">
                     {services.map((service, index) => (

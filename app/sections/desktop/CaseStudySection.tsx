@@ -97,9 +97,9 @@ export default function CaseStudySection() {
   const [showDetail, setShowDetail] = useState(false);
   const [language] = useState<Language>("en");
 
-  // Navigation state for carousel
+  // Navigation state for carousel - always show 2 case studies per view
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-  const [slidesPerView, setSlidesPerView] = useState(1);
+  const slidesPerView = 2;
 
   // Get title and subtitle from translations
   const titleTranslation = getText("caseStudySection.title", language);
@@ -108,20 +108,6 @@ export default function CaseStudySection() {
   // Parse the colored text in title
   const { text: rawTitleText, coloredWords } =
     parseColoredText(titleTranslation);
-
-  // Update slides per view on resize
-  useEffect(() => {
-    const updateSlidesPerView = () => {
-      setSlidesPerView(window.innerWidth >= 1024 ? 2 : 1);
-    };
-
-    // Set initial value
-    updateSlidesPerView();
-
-    // Add resize listener
-    window.addEventListener("resize", updateSlidesPerView);
-    return () => window.removeEventListener("resize", updateSlidesPerView);
-  }, []);
 
   const handleStudyClick = (study: CaseStudy) => {
     // First set the selected study data
@@ -297,11 +283,11 @@ export default function CaseStudySection() {
           style={{ display: showDetail ? "none" : "grid" }}
         >
           {/* Left column - responsive layout */}
-          <div className="flex flex-col items-start min-w-0 min-h-0 justify-center">
+          <div className="flex flex-col items-start min-w-0 min-h-0 justify-center mt-12">
             <h1
               className="case-studies-title font-black text-black text-left w-full m-0 min-w-0 px-2 xs:px-1 sm:px-2 md:px-1 lg:px-2 xl:px-3"
               style={{
-                fontSize: "clamp(1rem, 4vw, 3.5rem)",
+                fontSize: "clamp(1rem, 4vw, 3.8rem)",
                 lineHeight: "1.1",
                 margin: 0,
                 marginBottom: "-0.3em",
@@ -420,17 +406,16 @@ export default function CaseStudySection() {
           {/* Right column - responsive layout */}
           <div className="relative min-w-0 min-h-0 flex items-center gap-4">
             {/* Navigation arrows - OUTSIDE carousel */}
-            <div className="flex flex-col gap-2 sm:gap-3">
+            <div className="flex flex-col gap-3">
               <button
                 onClick={goToPrevious}
                 disabled={isPrevDisabled}
-                className={`w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 flex items-center justify-center transition-all duration-200 ${isPrevDisabled ? "opacity-30 cursor-not-allowed" : "opacity-70 hover:opacity-100 hover:scale-110 active:scale-95"}`}
+                className={`w-12 h-12 flex items-center justify-center transition-all duration-200 ${isPrevDisabled ? "opacity-30 cursor-not-allowed" : "opacity-70 hover:opacity-100 hover:scale-110 active:scale-95"}`}
                 aria-label="Previous case study"
               >
                 <svg
                   width="24"
                   height="24"
-                  className="sm:w-7 sm:h-7 lg:w-8 lg:h-8"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -442,13 +427,12 @@ export default function CaseStudySection() {
               <button
                 onClick={goToNext}
                 disabled={isNextDisabled()}
-                className={`w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 flex items-center justify-center transition-all duration-200 ${isNextDisabled() ? "opacity-30 cursor-not-allowed" : "opacity-70 hover:opacity-100 hover:scale-110 active:scale-95"}`}
+                className={`w-12 h-12 flex items-center justify-center transition-all duration-200 ${isNextDisabled() ? "opacity-30 cursor-not-allowed" : "opacity-70 hover:opacity-100 hover:scale-110 active:scale-95"}`}
                 aria-label="Next case study"
               >
                 <svg
                   width="24"
                   height="24"
-                  className="sm:w-7 sm:h-7 lg:w-8 lg:h-8"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -463,25 +447,20 @@ export default function CaseStudySection() {
             <div className="relative overflow-hidden h-auto flex-1">
               <div
                 ref={sliderRef}
-                className="slider-container flex gap-3 sm:gap-4 md:gap-6 pb-4 sm:pb-6 pt-2 sm:pt-3"
+                className="slider-container grid grid-cols-2 gap-6 pb-6 pt-3"
               >
                 {getVisibleSlides().map((study, index) => (
                   <div
                     key={`${currentSlideIndex}-${index}`}
-                    className="slider-item flex-shrink-0 min-w-[250px] sm:min-w-[300px] md:min-w-[calc(50%-1rem)] lg:min-w-[calc(50%-1.5rem)] gap-[clamp(0.75rem,2vw,1.5rem)] cursor-pointer transition-transform duration-300 hover:-translate-y-2 select-text flex flex-col"
+                    className="slider-item cursor-pointer transition-transform duration-300 hover:-translate-y-2 select-text flex flex-col"
                     onClick={() => handleStudyClick(study)}
                   >
                     {/* Image container */}
                     <div
-                      className="rounded-lg border border-gray-200 shadow-md overflow-hidden"
-                      style={{
-                        aspectRatio: "1/1",
-                        minHeight: "clamp(250px, 50vh, 500px)",
-                      }}
+                      className="rounded-lg border border-gray-200 shadow-md overflow-hidden h-[320px]"
                     >
                       <div
-                        className="relative"
-                        style={{ width: "100%", height: "100%" }}
+                        className="relative w-full h-full"
                       >
                         <Image
                           src={study.image}
@@ -489,7 +468,7 @@ export default function CaseStudySection() {
                           className="object-cover hover:scale-105 transition-transform duration-300"
                           fill
                           style={{ objectFit: "cover" }}
-                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          sizes="(max-width: 768px) 100vw, 50vw"
                           priority={index === 0}
                         />
 
@@ -498,7 +477,7 @@ export default function CaseStudySection() {
                           className="absolute inset-0 transition-all duration-300 flex items-center justify-center opacity-0 hover:opacity-100"
                           style={{ backgroundColor: "rgba(83, 235, 221, 0.3)" }}
                         >
-                          <span className="px-3 py-1.5 sm:px-4 sm:py-2 md:px-6 md:py-3 bg-white text-black font-bold rounded-lg transform scale-95 hover:scale-100 transition-transform text-xs sm:text-sm md:text-base">
+                          <span className="px-4 py-2 bg-white text-black font-bold rounded-lg transform scale-95 hover:scale-100 transition-transform text-sm">
                             View Details
                           </span>
                         </div>
@@ -506,23 +485,11 @@ export default function CaseStudySection() {
                     </div>
 
                     {/* Title and description below the image */}
-                    <div
-                      style={{ gap: "clamp(0.25rem, 1vw, 0.5rem)" }}
-                      className="flex flex-col"
-                    >
-                      <h3
-                        className="font-bold"
-                        style={{
-                          fontSize: "clamp(0.7rem, 1.2vw, 1rem)",
-                          lineHeight: 1,
-                        }}
-                      >
+                    <div className="flex flex-col gap-2 mt-3">
+                      <h3 className="font-bold text-sm leading-tight">
                         {study.title}
                       </h3>
-                      <p
-                        className="text-gray-600 leading-tight"
-                        style={{ fontSize: "clamp(0.6rem, 0.9vw, 0.9rem)" }}
-                      >
+                      <p className="text-gray-600 leading-tight text-xs">
                         {study.subtitle}
                       </p>
                     </div>

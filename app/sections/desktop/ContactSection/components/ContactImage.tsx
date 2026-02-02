@@ -11,7 +11,7 @@ export function ContactImage({
 }: ContactImageProps) {
   return (
     <div
-      className="flex items-center justify-center w-full h-full"
+      className="flex items-center justify-center w-full h-full overflow-hidden"
       ref={imageRef}
       style={{ opacity: animationsCreated ? undefined : 1 }}
     >
@@ -25,7 +25,7 @@ export function ContactImage({
           loop
           muted
           playsInline
-          className="w-full h-full object-contain"
+          className="w-full h-full object-contain block m-0 p-0 border-0 outline-none"
         />
       </div>
     </div>
