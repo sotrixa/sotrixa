@@ -449,7 +449,7 @@ export default function IntroSection() {
           }}
         >
           <div className="flex flex-col md:flex-row items-stretch justify-center gap-[clamp(1.5rem,8vw,3rem)] w-full h-[70vh]">
-            <div className="flex-1 flex flex-col items-start min-w-0 justify-start pt-[20vh]">
+            <div className="flex-1 flex flex-col items-start min-w-0 justify-center">
               <h1
                 className="font-black text-left w-full min-w-0 m-0 px-2 xs:px-4 sm:px-5 md:px-5 lg:px-6 xl:px-8"
                 style={{
@@ -532,7 +532,7 @@ export default function IntroSection() {
 
             {/* Desktop-only video container with proper spacing */}
             <motion.div
-              className="hidden md:block relative flex-1 min-w-0 min-h-0 overflow-hidden"
+              className="hidden md:flex flex-1 flex-col items-center min-w-0 justify-center"
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.5 }}

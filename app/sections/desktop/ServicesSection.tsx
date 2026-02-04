@@ -295,7 +295,7 @@ export default function ServicesSection() {
 
             <div className="flex flex-col md:flex-row items-stretch justify-center gap-[clamp(1.5rem,8vw,3rem)] w-full h-[70vh]">
               {/* Left side with colored text */}
-              <div className="flex-1 flex flex-col items-start min-w-0 justify-start pt-[20vh]">
+              <div className="flex-1 flex flex-col items-start min-w-0 justify-center">
                 <h1
                   className="font-black text-left w-full min-w-0 m-0 px-2 xs:px-4 sm:px-5 md:px-5 lg:px-6 xl:px-8"
                   style={{
@@ -452,14 +452,14 @@ export default function ServicesSection() {
               {/* Right side with service list - removed conditional rendering for detail view */}
               <motion.div
                 key="services-list"
-                className="flex-1 min-w-0 min-h-0"
+                className="flex-1 flex flex-col items-start min-w-0 justify-center"
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -50 }}
                 transition={{ duration: 0.5 }}
                 ref={servicesRef}
               >
-                <div className="mt-6 flex flex-col items-start text-left gap-[clamp(1rem,3vh,2rem)]">
+                <div className="flex flex-col items-start text-left gap-[clamp(1rem,3vh,2rem)]">
                   {/* Services list - direct implementation instead of using components */}
                   <div className="flex flex-col gap-[clamp(0.5rem, 1vh, 0.75rem)]">
                     {services.map((service, index) => (

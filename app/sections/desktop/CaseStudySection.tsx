@@ -252,7 +252,7 @@ export default function CaseStudySection() {
             }}
           >
             {/* Left column - responsive layout */}
-            <div className="flex-1 flex flex-col items-start min-w-0 justify-start pt-[20vh]">
+            <div className="flex-1 flex flex-col items-start min-w-0 justify-center">
               <h1
                 className="case-studies-title font-black text-left w-full min-w-0 m-0 px-2 xs:px-4 sm:px-5 md:px-5 lg:px-6 xl:px-8"
                 style={{
@@ -374,103 +374,105 @@ export default function CaseStudySection() {
             </div>
 
             {/* Right column - responsive layout */}
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "1rem",
-              }}
-            >
-              {/* Navigation arrows - OUTSIDE carousel */}
-              <div className="flex flex-col gap-3">
-                <button
-                  onClick={goToPrevious}
-                  disabled={isPrevDisabled}
-                  className={`w-12 h-12 flex items-center justify-center transition-all duration-200 ${isPrevDisabled ? "opacity-30 cursor-not-allowed" : "opacity-70 hover:opacity-100 hover:scale-110 active:scale-95"}`}
-                  aria-label="Previous case study"
-                >
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
+            <div className="flex-1 flex flex-col items-center min-w-0 justify-center">
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "1rem",
+                }}
+              >
+                {/* Navigation arrows - OUTSIDE carousel */}
+                <div className="flex flex-col gap-3">
+                  <button
+                    onClick={goToPrevious}
+                    disabled={isPrevDisabled}
+                    className={`w-12 h-12 flex items-center justify-center transition-all duration-200 ${isPrevDisabled ? "opacity-30 cursor-not-allowed" : "opacity-70 hover:opacity-100 hover:scale-110 active:scale-95"}`}
+                    aria-label="Previous case study"
                   >
-                    <path d="M15 18l-6-6 6-6" />
-                  </svg>
-                </button>
-                <button
-                  onClick={goToNext}
-                  disabled={isNextDisabled()}
-                  className={`w-12 h-12 flex items-center justify-center transition-all duration-200 ${isNextDisabled() ? "opacity-30 cursor-not-allowed" : "opacity-70 hover:opacity-100 hover:scale-110 active:scale-95"}`}
-                  aria-label="Next case study"
-                >
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M9 18l6-6-6-6" />
-                  </svg>
-                </button>
-              </div>
-
-              {/* Case studies container */}
-              <div className="relative overflow-hidden h-auto flex-1">
-                <div
-                  ref={sliderRef}
-                  className="slider-container grid grid-cols-2 gap-6 pb-6 pt-3"
-                >
-                  {getVisibleSlides().map((study, index) => (
-                    <div
-                      key={`${currentSlideIndex}-${index}`}
-                      className="slider-item cursor-pointer transition-transform duration-300 hover:-translate-y-2 select-text flex flex-col"
-                      onClick={() => handleStudyClick(study)}
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
                     >
-                      {/* Image container */}
-                      <div className="rounded-lg border border-gray-200 shadow-md overflow-hidden h-[320px]">
-                        <div className="relative w-full h-full">
-                          <Image
-                            src={study.image}
-                            alt={study.title}
-                            className="object-cover hover:scale-105 transition-transform duration-300"
-                            fill
-                            style={{ objectFit: "cover" }}
-                            sizes="(max-width: 768px) 100vw, 50vw"
-                            priority={index === 0}
-                          />
+                      <path d="M15 18l-6-6 6-6" />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={goToNext}
+                    disabled={isNextDisabled()}
+                    className={`w-12 h-12 flex items-center justify-center transition-all duration-200 ${isNextDisabled() ? "opacity-30 cursor-not-allowed" : "opacity-70 hover:opacity-100 hover:scale-110 active:scale-95"}`}
+                    aria-label="Next case study"
+                  >
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <path d="M9 18l6-6-6-6" />
+                    </svg>
+                  </button>
+                </div>
 
-                          {/* Overlay with view details button */}
-                          <div
-                            className="absolute inset-0 transition-all duration-300 flex items-center justify-center opacity-0 hover:opacity-100"
-                            style={{
-                              backgroundColor: "rgba(83, 235, 221, 0.3)",
-                            }}
-                          >
-                            <span className="px-4 py-2 bg-white text-black font-bold rounded-lg transform scale-95 hover:scale-100 transition-transform text-sm">
-                              View Details
-                            </span>
+                {/* Case studies container */}
+                <div className="relative overflow-hidden h-auto flex-1">
+                  <div
+                    ref={sliderRef}
+                    className="slider-container grid grid-cols-2 gap-6 pb-6 pt-3"
+                  >
+                    {getVisibleSlides().map((study, index) => (
+                      <div
+                        key={`${currentSlideIndex}-${index}`}
+                        className="slider-item cursor-pointer transition-transform duration-300 hover:-translate-y-2 select-text flex flex-col"
+                        onClick={() => handleStudyClick(study)}
+                      >
+                        {/* Image container */}
+                        <div className="rounded-lg border border-gray-200 shadow-md overflow-hidden h-[320px]">
+                          <div className="relative w-full h-full">
+                            <Image
+                              src={study.image}
+                              alt={study.title}
+                              className="object-cover hover:scale-105 transition-transform duration-300"
+                              fill
+                              style={{ objectFit: "cover" }}
+                              sizes="(max-width: 768px) 100vw, 50vw"
+                              priority={index === 0}
+                            />
+
+                            {/* Overlay with view details button */}
+                            <div
+                              className="absolute inset-0 transition-all duration-300 flex items-center justify-center opacity-0 hover:opacity-100"
+                              style={{
+                                backgroundColor: "rgba(83, 235, 221, 0.3)",
+                              }}
+                            >
+                              <span className="px-4 py-2 bg-white text-black font-bold rounded-lg transform scale-95 hover:scale-100 transition-transform text-sm">
+                                View Details
+                              </span>
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      {/* Title and description below the image */}
-                      <div className="flex flex-col gap-2 mt-3">
-                        <h3 className="font-bold text-sm leading-tight">
-                          {study.title}
-                        </h3>
-                        <p className="text-gray-600 leading-tight text-xs">
-                          {study.subtitle}
-                        </p>
+                        {/* Title and description below the image */}
+                        <div className="flex flex-col gap-2 mt-3">
+                          <h3 className="font-bold text-sm leading-tight">
+                            {study.title}
+                          </h3>
+                          <p className="text-gray-600 leading-tight text-xs">
+                            {study.subtitle}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

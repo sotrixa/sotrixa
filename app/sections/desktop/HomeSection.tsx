@@ -229,7 +229,7 @@ export default function HomeSection() {
       <div className="flex flex-col md:flex-row items-stretch justify-center gap-[clamp(1.5rem,8vw,3rem)] w-full h-[70vh]">
         <div
           ref={bodyRef}
-          className="flex-1 flex flex-col items-start min-w-0 justify-start pt-[20vh]"
+          className="flex-1 flex flex-col items-start min-w-0 justify-center"
         >
           <h1
             ref={headingRef}
@@ -318,8 +318,7 @@ export default function HomeSection() {
 
         <div
           ref={videoContainerRef}
-          className="relative flex items-center justify-center z-[1] bg-[#fbfbfb] overflow-hidden flex-1 min-w-0 min-h-0 h-full"
-          style={{ maxWidth: "100%" }}
+          className="flex-1 flex flex-col items-center min-w-0 justify-center"
         >
           <video
             className="object-contain m-auto p-0 border-none outline-none shadow-none block bg-transparent"
