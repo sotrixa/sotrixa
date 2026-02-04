@@ -305,7 +305,7 @@ export default function IntroSection() {
 
     return (
       <>
-        {/* Desktop-only image */}
+        {/* Desktop-only image with play button inside */}
         <div className="hidden md:block relative w-full aspect-video">
           <Image
             src="/About-us-cover.svg"
@@ -315,50 +315,49 @@ export default function IntroSection() {
             sizes="(max-width: 768px) 100vw, 50vw"
             priority
           />
-        </div>
-
-        {/* Desktop-only play button - centered on thumbnail */}
-        <div
-          className="absolute inset-0 hidden md:flex items-center justify-center pointer-events-none"
-          style={{ transform: "translateY(-1.5rem)" }}
-        >
-          <div className="pointer-events-auto">
-            <button
-              type="button"
-              className="rounded-full shadow-lg cursor-pointer hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-[#583c48] group"
-              style={{ padding: "clamp(0.25rem, 1vw, 0.75rem)" }}
-              onClick={handlePlayClick}
-              aria-label="Play Sotrixa introduction video"
-            >
-              <div
-                className="flex items-center justify-center group-hover:scale-110 transition-transform relative"
-                style={{
-                  width: "clamp(1.25rem, 3vw, 2.5rem)",
-                  height: "clamp(1.25rem, 3vw, 2.5rem)",
-                }}
+          {/* Play button - centered on image */}
+          <div
+            className="absolute inset-0 flex items-center justify-center pointer-events-none"
+            style={{ transform: "translateY(-0.7rem)" }}
+          >
+            <div className="pointer-events-auto">
+              <button
+                type="button"
+                className="rounded-full shadow-lg cursor-pointer hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-[#583c48] group"
+                style={{ padding: "clamp(0.25rem, 1vw, 0.75rem)" }}
+                onClick={handlePlayClick}
+                aria-label="Play Sotrixa introduction video"
               >
-                <motion.div
-                  className="absolute top-1/2 left-1/2 rounded-full pointer-events-none bg-white -translate-x-1/2 -translate-y-1/2"
+                <div
+                  className="flex items-center justify-center group-hover:scale-110 transition-transform relative"
                   style={{
-                    width: "clamp(2rem, 5vw, 3.5rem)",
-                    height: "clamp(2rem, 5vw, 3.5rem)",
-                  }}
-                  animate={desktopIconPulseAnimation}
-                />
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="text-[#583c48] relative z-10"
-                  style={{
-                    width: "clamp(0.875rem, 2.5vw, 1.75rem)",
-                    height: "clamp(0.875rem, 2.5vw, 1.75rem)",
+                    width: "clamp(1.25rem, 3vw, 2.5rem)",
+                    height: "clamp(1.25rem, 3vw, 2.5rem)",
                   }}
                 >
-                  <path d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" />
-                </svg>
-              </div>
-            </button>
+                  <motion.div
+                    className="absolute top-1/2 left-1/2 rounded-full pointer-events-none bg-white -translate-x-1/2 -translate-y-1/2"
+                    style={{
+                      width: "clamp(2rem, 5vw, 3.5rem)",
+                      height: "clamp(2rem, 5vw, 3.5rem)",
+                    }}
+                    animate={desktopIconPulseAnimation}
+                  />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="text-[#583c48] relative z-10"
+                    style={{
+                      width: "clamp(0.875rem, 2.5vw, 1.75rem)",
+                      height: "clamp(0.875rem, 2.5vw, 1.75rem)",
+                    }}
+                  >
+                    <path d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" />
+                  </svg>
+                </div>
+              </button>
+            </div>
           </div>
         </div>
       </>
@@ -537,8 +536,13 @@ export default function IntroSection() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.5 }}
             >
-              <div className="relative">
-                <div style={{ aspectRatio: "16/9" }}>
+              <div className="relative w-full">
+                <div
+                  style={{
+                    aspectRatio: "16/9",
+                    width: "clamp(400px, 45vw, 800px)",
+                  }}
+                >
                   {renderVideoContent()}
                 </div>
 

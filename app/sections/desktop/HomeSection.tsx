@@ -254,11 +254,11 @@ export default function HomeSection() {
             ) : (
               // Original layout for desktop
               <>
-                <span>We are a </span>
+                <span className="text-black">We are a </span>
                 <span style={{ color: "#53EBDD" }}>strategy</span>
-                <span> lab for </span>
+                <span className="text-black"> lab for </span>
                 <span style={{ color: "#DD53EB" }}>visionary</span>
-                <span> </span>
+                <span className="text-black"> </span>
                 <span style={{ color: "#EBDD53" }}>thinkers</span>
               </>
             )}
@@ -266,7 +266,7 @@ export default function HomeSection() {
 
           <p
             ref={paragraphRef}
-            className="leading-relaxed font-normal pointer-events-auto text-left w-full min-w-0 m-0 px-2 xs:px-4 sm:px-5 md:px-5 lg:px-6 xl:px-8 break-words"
+            className="leading-relaxed font-normal pointer-events-auto text-left w-full min-w-0 m-0 px-2 xs:px-4 sm:px-5 md:px-5 lg:px-6 xl:px-8 break-words text-black"
             style={{
               fontSize: "clamp(0.8rem, 1.5vw, 1.35rem)",
             }}
@@ -275,10 +275,10 @@ export default function HomeSection() {
           </p>
           <div
             ref={buttonsRef}
-            className="flex pointer-events-auto flex-wrap gap-[clamp(1rem,3vw,2rem)] px-2 xs:px-4 sm:px-5 md:px-5 lg:px-6 xl:px-8"
+            className="flex pointer-events-auto flex-wrap gap-[clamp(1rem,3vw,2rem)] px-2 xs:px-4 sm:px-5 md:px-5 lg:px-6 xl:px-8 mt-4"
           >
             <button
-              className="font-medium cursor-pointer bg-transparent border-none p-0 hover:underline"
+              className="font-medium cursor-pointer bg-transparent border-none p-0 hover:underline text-black"
               style={{ fontSize: "clamp(0.85rem, 1.5vw, 1rem)" }}
               onClick={() => {
                 // Navigate to Contact section (index 4)
@@ -290,7 +290,7 @@ export default function HomeSection() {
               {getText("homeSection.talkToUs", language)}
             </button>
             <button
-              className="font-medium cursor-pointer bg-transparent border-none p-0 hover:underline"
+              className="font-medium cursor-pointer bg-transparent border-none p-0 hover:underline text-black"
               style={{ fontSize: "clamp(0.85rem, 1.5vw, 1rem)" }}
               onClick={() => {
                 // Navigate to Services section (index 2)
@@ -302,7 +302,7 @@ export default function HomeSection() {
               What we do
             </button>
             <button
-              className="font-medium cursor-pointer bg-transparent border-none p-0 hover:underline"
+              className="font-medium cursor-pointer bg-transparent border-none p-0 hover:underline text-black"
               style={{ fontSize: "clamp(0.85rem, 1.5vw, 1rem)" }}
               onClick={() => {
                 // Navigate to Case Study section (index 3)
@@ -318,15 +318,18 @@ export default function HomeSection() {
 
         <div
           ref={videoContainerRef}
-          className="flex-1 flex flex-col items-center min-w-0 justify-center"
+          className="flex-1 flex flex-col items-center min-w-0 justify-center overflow-hidden border-none outline-none"
         >
           <video
             className="object-contain m-auto p-0 border-none outline-none shadow-none block bg-transparent"
             style={{
-              width: "clamp(350px, 50vw, 900px)",
+              width: "clamp(600px, 75vw, 1400px)",
               height: "auto",
-              maxHeight: "85vh",
+              maxHeight: "100vh",
               aspectRatio: "16/9",
+              border: "none",
+              outline: "none",
+              boxShadow: "none",
             }}
             autoPlay
             loop
