@@ -248,11 +248,18 @@ export default function CaseStudySection() {
               gap: "clamp(1.5rem,8vw,3rem)",
               width: "100%",
               height: "70vh",
-              alignItems: "stretch",
             }}
           >
             {/* Left column - responsive layout */}
-            <div className="flex-1 flex flex-col items-start min-w-0 justify-center">
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+                justifyContent: "flex-start",
+                paddingTop: "15vh",
+              }}
+            >
               <h1
                 className="case-studies-title font-black text-left w-full min-w-0 m-0 px-2 xs:px-4 sm:px-5 md:px-5 lg:px-6 xl:px-8"
                 style={{
@@ -374,7 +381,14 @@ export default function CaseStudySection() {
             </div>
 
             {/* Right column - responsive layout */}
-            <div className="flex-1 flex flex-col items-center min-w-0 justify-center">
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <div
                 style={{
                   display: "flex",
@@ -426,7 +440,14 @@ export default function CaseStudySection() {
                 <div className="relative overflow-hidden h-auto flex-1">
                   <div
                     ref={sliderRef}
-                    className="slider-container grid grid-cols-2 gap-6 pb-6 pt-3"
+                    className="slider-container"
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "1fr 1fr",
+                      gap: "1.5rem",
+                      paddingBottom: "1.5rem",
+                      paddingTop: "0.75rem",
+                    }}
                   >
                     {getVisibleSlides().map((study, index) => (
                       <div
@@ -435,7 +456,10 @@ export default function CaseStudySection() {
                         onClick={() => handleStudyClick(study)}
                       >
                         {/* Image container */}
-                        <div className="rounded-lg border border-gray-200 shadow-md overflow-hidden h-[320px]">
+                        <div
+                          className="rounded-lg border border-gray-200 shadow-md overflow-hidden"
+                          style={{ height: "320px" }}
+                        >
                           <div className="relative w-full h-full">
                             <Image
                               src={study.image}

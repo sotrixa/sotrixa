@@ -1,0 +1,34 @@
+[     122ms] Error: Incompatible React versions: The "react" and "react-dom" packages must have the exact same version. Instead got:
+  - react:      19.3.0-canary-f93b9fd4-20251217
+  - react-dom:  19.2.0-canary-0bdb9206-20250818
+Learn more: https://react.dev/warnings/version-mismatch
+    at http://localhost:3000/_next/static/chunks/c7e19_next_dist_compiled_react-dom_d475d771._.js:14497:88
+    at http://localhost:3000/_next/static/chunks/c7e19_next_dist_compiled_react-dom_d475d771._.js:14498:7
+    at module evaluation (http://localhost:3000/_next/static/chunks/c7e19_next_dist_compiled_react-dom_d475d771._.js:14574:2)
+    at http://localhost:3000/_next/static/chunks/turbopack-sotrixa-2_63d46bbd._.js:879:13
+    at runModuleExecutionHooks (http://localhost:3000/_next/static/chunks/turbopack-sotrixa-2_63d46bbd._.js:904:13)
+    at instantiateModule (http://localhost:3000/_next/static/chunks/turbopack-sotrixa-2_63d46bbd._.js:877:9)
+    at getOrInstantiateModuleFromParent (http://localhost:3000/_next/static/chunks/turbopack-sotrixa-2_63d46bbd._.js:830:12)
+    at DevContext.commonJsRequire [as r] (http://localhost:3000/_next/static/chunks/turbopack-sotrixa-2_63d46bbd._.js:259:12)
+    at module evaluation (http://localhost:3000/_next/static/chunks/c7e19_next_dist_compiled_react-dom_d475d771._.js:14607:44)
+    at http://localhost:3000/_next/static/chunks/turbopack-sotrixa-2_63d46bbd._.js:879:13
+    at runModuleExecutionHooks (http://localhost:3000/_next/static/chunks/turbopack-sotrixa-2_63d46bbd._.js:904:13)
+    at instantiateModule (http://localhost:3000/_next/static/chunks/turbopack-sotrixa-2_63d46bbd._.js:877:9)
+    at getOrInstantiateModuleFromParent (http://localhost:3000/_next/static/chunks/turbopack-sotrixa-2_63d46bbd._.js:830:12)
+    at DevContext.commonJsRequire [as r] (http://localhost:3000/_next/static/chunks/turbopack-sotrixa-2_63d46bbd._.js:259:12)
+    at module evaluation (http://localhost:3000/_next/static/chunks/c7e19_next_dist_client_85894c41._.js:12441:80)
+    at http://localhost:3000/_next/static/chunks/turbopack-sotrixa-2_63d46bbd._.js:879:13
+    at runModuleExecutionHooks (http://localhost:3000/_next/static/chunks/turbopack-sotrixa-2_63d46bbd._.js:904:13)
+    at instantiateModule (http://localhost:3000/_next/static/chunks/turbopack-sotrixa-2_63d46bbd._.js:877:9)
+    at getOrInstantiateModuleFromParent (http://localhost:3000/_next/static/chunks/turbopack-sotrixa-2_63d46bbd._.js:830:12)
+    at DevContext.commonJsRequire [as r] (http://localhost:3000/_next/static/chunks/turbopack-sotrixa-2_63d46bbd._.js:259:12)
+    at http://localhost:3000/_next/static/chunks/c7e19_next_dist_client_85894c41._.js:12703:47
+    at http://localhost:3000/_next/static/chunks/c7e19_next_dist_client_85894c41._.js:177:9
+    at loadScriptsInSequence (http://localhost:3000/_next/static/chunks/c7e19_next_dist_client_85894c41._.js:141:16)
+    at appBootstrap (http://localhost:3000/_next/static/chunks/c7e19_next_dist_client_85894c41._.js:170:5)
+    at module evaluation (http://localhost:3000/_next/static/chunks/c7e19_next_dist_client_85894c41._.js:12702:32)
+    at http://localhost:3000/_next/static/chunks/turbopack-sotrixa-2_63d46bbd._.js:879:13
+    at runModuleExecutionHooks (http://localhost:3000/_next/static/chunks/turbopack-sotrixa-2_63d46bbd._.js:904:13)
+    at instantiateModule (http://localhost:3000/_next/static/chunks/turbopack-sotrixa-2_63d46bbd._.js:877:9)
+    at getOrInstantiateRuntimeModule (http://localhost:3000/_next/static/chunks/turbopack-sotrixa-2_63d46bbd._.js:808:12)
+    at Object.registerChunk (http://localhost:3000/_next/static/chunks/turbopack-sotrixa-2_63d46bbd._.js:1626:21)

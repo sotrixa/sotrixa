@@ -226,10 +226,14 @@ export default function HomeSection() {
         minHeight: "100vh",
       }}
     >
-      <div className="flex flex-col md:flex-row items-stretch justify-center gap-[clamp(1.5rem,8vw,3rem)] w-full h-[70vh]">
+      <div
+        className="flex flex-col md:flex-row items-stretch justify-center gap-[clamp(1.5rem,8vw,3rem)] w-full"
+        style={{ height: "70vh" }}
+      >
         <div
           ref={bodyRef}
-          className="flex-1 flex flex-col items-start min-w-0 justify-center"
+          className="flex-1 flex flex-col items-start min-w-0 justify-start"
+          style={{ paddingTop: "15vh" }}
         >
           <h1
             ref={headingRef}
@@ -318,7 +322,17 @@ export default function HomeSection() {
 
         <div
           ref={videoContainerRef}
-          className="flex-1 flex flex-col items-center min-w-0 justify-center overflow-hidden border-none outline-none"
+          style={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            minWidth: 0,
+            justifyContent: "center",
+            overflow: "hidden",
+            border: "none",
+            outline: "none",
+          }}
         >
           <video
             className="object-contain m-auto p-0 border-none outline-none shadow-none block bg-transparent"
