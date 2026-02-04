@@ -223,110 +223,121 @@ export default function CaseStudySection() {
     }
   }, [currentSlideIndex]);
 
-  // After initial render, apply GSAP animations based on showDetail state
-  useEffect(() => {
-    if (!sectionRef.current) return;
-
-    if (showDetail) {
-      // Hide grid view and show detail view
-      gsap.to(".case-studies-grid", {
-        opacity: 0,
-        y: -20,
-        duration: 0.3,
-        ease: "power2.in",
-        display: "none",
-      });
-
-      const detailContainer = document.querySelector(
-        ".case-study-detail-container",
-      );
-      if (detailContainer) {
-        gsap.fromTo(
-          detailContainer,
-          { opacity: 0, y: 20, display: "block" },
-          { opacity: 1, y: 0, duration: 0.4, delay: 0.1, ease: "power2.out" },
-        );
-      }
-    } else {
-      // Hide detail view and show grid view
-      const detailContainer = document.querySelector(
-        ".case-study-detail-container",
-      );
-      if (detailContainer) {
-        gsap.to(detailContainer, {
-          opacity: 0,
-          y: 20,
-          duration: 0.3,
-          ease: "power2.in",
-          display: "none",
-        });
-      }
-
-      gsap.fromTo(
-        ".case-studies-grid",
-        { opacity: 0, y: 0, display: "grid" },
-        { opacity: 1, y: 0, duration: 0.4, delay: 0.1, ease: "power2.out" },
-      );
-    }
-  }, [showDetail]);
+  // GSAP animations removed to fix layout issues
 
   return (
     <Section id="case-study" className="bg-white text-black overflow-visible">
       <div
         ref={sectionRef}
-        className="flex items-center justify-center px-[clamp(1rem,3vw,2rem)] py-[clamp(2rem,5vh,3rem)] w-screen h-screen"
-        style={{ minWidth: "100vw", minHeight: "100vh" }}
+        className="px-[clamp(1rem,3vw,2rem)] py-[clamp(2rem,5vh,3rem)] w-screen h-screen"
+        style={{
+          minWidth: "100vw",
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
       >
         {/* Grid view - set initial display style based on selected study */}
-        <div
-          className="grid grid-cols-1 lg:grid-cols-2 gap-[clamp(1.5rem,10vw,4rem)] case-studies-grid w-full"
-          style={{ display: showDetail ? "none" : "grid" }}
-        >
-          {/* Left column - responsive layout */}
-          <div className="flex flex-col items-start min-w-0 min-h-0 justify-center mt-2">
-            <h1
-              className="case-studies-title font-black text-black text-left w-full m-0 min-w-0 px-2 xs:px-1 sm:px-2 md:px-1 lg:px-2 xl:px-3"
-              style={{
-                fontSize: "clamp(1rem, 4vw, 3.8rem)",
-                lineHeight: "1.1",
-                margin: 0,
-                marginBottom: "-0.3em",
-                wordBreak: "break-word",
-                overflowWrap: "break-word",
-              }}
-            >
-              {/* Render title with colored words */}
-              {(() => {
-                let lastIndex = 0;
-                const elements = [];
+        {!showDetail && (
+          <div
+            className="case-studies-grid"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "clamp(1.5rem,8vw,3rem)",
+              width: "100%",
+              height: "70vh",
+              alignItems: "stretch",
+            }}
+          >
+            {/* Left column - responsive layout */}
+            <div className="flex-1 flex flex-col items-start min-w-0 justify-start">
+              <h1
+                className="case-studies-title font-black text-left w-full min-w-0 m-0 px-2 xs:px-4 sm:px-5 md:px-5 lg:px-6 xl:px-8"
+                style={{
+                  fontSize: "clamp(1rem, 4vw, 5rem)",
+                  lineHeight: 1.1,
+                  wordBreak: "break-word",
+                  overflowWrap: "break-word",
+                }}
+              >
+                {/* Render title with colored words */}
+                {(() => {
+                  let lastIndex = 0;
+                  const elements = [];
 
-                // Sort colored words by their position in the original text
-                const sortedWords = [...coloredWords].sort(
-                  (a, b) =>
-                    rawTitleText.indexOf(a.word) - rawTitleText.indexOf(b.word),
-                );
+                  // Sort colored words by their position in the original text
+                  const sortedWords = [...coloredWords].sort(
+                    (a, b) =>
+                      rawTitleText.indexOf(a.word) -
+                      rawTitleText.indexOf(b.word),
+                  );
 
-                // Process each colored word
-                sortedWords.forEach(({ word, color }, i) => {
-                  const wordIndex = rawTitleText.indexOf(word, lastIndex);
+                  // Process each colored word
+                  sortedWords.forEach(({ word, color }, i) => {
+                    const wordIndex = rawTitleText.indexOf(word, lastIndex);
 
-                  // Add text before the colored word
-                  if (wordIndex > lastIndex) {
-                    const textBefore = rawTitleText.substring(
-                      lastIndex,
-                      wordIndex,
+                    // Add text before the colored word
+                    if (wordIndex > lastIndex) {
+                      const textBefore = rawTitleText.substring(
+                        lastIndex,
+                        wordIndex,
+                      );
+                      // Check if text contains em dash and style it smaller
+                      if (textBefore.includes("—")) {
+                        const parts = textBefore.split("—");
+                        elements.push(
+                          <span key={`text-${i}-before`}>{parts[0]}</span>,
+                        );
+                        elements.push(
+                          <span
+                            key={`dash-${i}`}
+                            style={{
+                              fontSize: "1em",
+                              fontWeight: "200",
+                              transform: "scaleX(0.5)",
+                              display: "inline-block",
+                            }}
+                          >
+                            –
+                          </span>,
+                        );
+                        if (parts[1])
+                          elements.push(
+                            <span key={`text-${i}-after`}>{parts[1]}</span>,
+                          );
+                      } else {
+                        elements.push(
+                          <span key={`text-${i}`}>{textBefore}</span>,
+                        );
+                      }
+                    }
+
+                    // Add the colored word
+                    elements.push(
+                      <span key={`colored-${i}`} style={{ color }}>
+                        {word}
+                      </span>,
                     );
-                    // Check if text contains em dash and style it smaller
-                    if (textBefore.includes("—")) {
-                      const parts = textBefore.split("—");
+
+                    lastIndex = wordIndex + word.length;
+                  });
+
+                  // Add any remaining text
+                  if (lastIndex < rawTitleText.length) {
+                    const remainingText = rawTitleText.substring(lastIndex);
+                    // Check if remaining text contains em dash and style it smaller
+                    if (remainingText.includes("—")) {
+                      const parts = remainingText.split("—");
                       elements.push(
-                        <span key={`text-${i}-before`}>{parts[0]}</span>,
+                        <span key="text-end-before">{parts[0]}</span>,
                       );
                       elements.push(
                         <span
-                          key={`dash-${i}`}
+                          key="dash-end"
                           style={{
-                            fontSize: "1em",
+                            fontSize: "0.6em",
                             fontWeight: "200",
                             transform: "scaleX(0.5)",
                             display: "inline-block",
@@ -337,168 +348,134 @@ export default function CaseStudySection() {
                       );
                       if (parts[1])
                         elements.push(
-                          <span key={`text-${i}-after`}>{parts[1]}</span>,
+                          <span key="text-end-after">{parts[1]}</span>,
                         );
                     } else {
                       elements.push(
-                        <span key={`text-${i}`}>{textBefore}</span>,
+                        <span key="text-end">{remainingText}</span>,
                       );
                     }
                   }
 
-                  // Add the colored word
-                  elements.push(
-                    <span key={`colored-${i}`} style={{ color }}>
-                      {word}
-                    </span>,
-                  );
-
-                  lastIndex = wordIndex + word.length;
-                });
-
-                // Add any remaining text
-                if (lastIndex < rawTitleText.length) {
-                  const remainingText = rawTitleText.substring(lastIndex);
-                  // Check if remaining text contains em dash and style it smaller
-                  if (remainingText.includes("—")) {
-                    const parts = remainingText.split("—");
-                    elements.push(
-                      <span key="text-end-before">{parts[0]}</span>,
-                    );
-                    elements.push(
-                      <span
-                        key="dash-end"
-                        style={{
-                          fontSize: "0.6em",
-                          fontWeight: "200",
-                          transform: "scaleX(0.5)",
-                          display: "inline-block",
-                        }}
-                      >
-                        –
-                      </span>,
-                    );
-                    if (parts[1])
-                      elements.push(
-                        <span key="text-end-after">{parts[1]}</span>,
-                      );
-                  } else {
-                    elements.push(<span key="text-end">{remainingText}</span>);
-                  }
-                }
-
-                return elements;
-              })()}
-            </h1>
-            <p
-              className="case-studies-description text-left w-full min-w-0 m-0 px-2 xs:px-1 sm:px-2 md:px-1 lg:px-2 xl:px-3"
-              style={{
-                fontSize: "clamp(0.7rem, 1.5vw, 1.125rem)",
-                margin: 0,
-                wordBreak: "break-word",
-                overflowWrap: "break-word",
-              }}
-            >
-              {subtitleTranslation}
-            </p>
-          </div>
-
-          {/* Right column - responsive layout */}
-          <div className="relative min-w-0 min-h-0 flex items-center gap-4">
-            {/* Navigation arrows - OUTSIDE carousel */}
-            <div className="flex flex-col gap-3">
-              <button
-                onClick={goToPrevious}
-                disabled={isPrevDisabled}
-                className={`w-12 h-12 flex items-center justify-center transition-all duration-200 ${isPrevDisabled ? "opacity-30 cursor-not-allowed" : "opacity-70 hover:opacity-100 hover:scale-110 active:scale-95"}`}
-                aria-label="Previous case study"
+                  return elements;
+                })()}
+              </h1>
+              <p
+                className="case-studies-description text-left w-full min-w-0 m-0 px-2 xs:px-1 sm:px-2 md:px-1 lg:px-2 xl:px-3"
+                style={{
+                  fontSize: "clamp(0.7rem, 1.5vw, 1.125rem)",
+                  margin: 0,
+                  wordBreak: "break-word",
+                  overflowWrap: "break-word",
+                }}
               >
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M15 18l-6-6 6-6" />
-                </svg>
-              </button>
-              <button
-                onClick={goToNext}
-                disabled={isNextDisabled()}
-                className={`w-12 h-12 flex items-center justify-center transition-all duration-200 ${isNextDisabled() ? "opacity-30 cursor-not-allowed" : "opacity-70 hover:opacity-100 hover:scale-110 active:scale-95"}`}
-                aria-label="Next case study"
-              >
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M9 18l6-6-6-6" />
-                </svg>
-              </button>
+                {subtitleTranslation}
+              </p>
             </div>
 
-            {/* Case studies container */}
-            <div className="relative overflow-hidden h-auto flex-1">
-              <div
-                ref={sliderRef}
-                className="slider-container grid grid-cols-2 gap-6 pb-6 pt-3"
-              >
-                {getVisibleSlides().map((study, index) => (
-                  <div
-                    key={`${currentSlideIndex}-${index}`}
-                    className="slider-item cursor-pointer transition-transform duration-300 hover:-translate-y-2 select-text flex flex-col"
-                    onClick={() => handleStudyClick(study)}
+            {/* Right column - responsive layout */}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "1rem",
+              }}
+            >
+              {/* Navigation arrows - OUTSIDE carousel */}
+              <div className="flex flex-col gap-3">
+                <button
+                  onClick={goToPrevious}
+                  disabled={isPrevDisabled}
+                  className={`w-12 h-12 flex items-center justify-center transition-all duration-200 ${isPrevDisabled ? "opacity-30 cursor-not-allowed" : "opacity-70 hover:opacity-100 hover:scale-110 active:scale-95"}`}
+                  aria-label="Previous case study"
+                >
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
                   >
-                    {/* Image container */}
-                    <div
-                      className="rounded-lg border border-gray-200 shadow-md overflow-hidden h-[320px]"
-                    >
-                      <div
-                        className="relative w-full h-full"
-                      >
-                        <Image
-                          src={study.image}
-                          alt={study.title}
-                          className="object-cover hover:scale-105 transition-transform duration-300"
-                          fill
-                          style={{ objectFit: "cover" }}
-                          sizes="(max-width: 768px) 100vw, 50vw"
-                          priority={index === 0}
-                        />
+                    <path d="M15 18l-6-6 6-6" />
+                  </svg>
+                </button>
+                <button
+                  onClick={goToNext}
+                  disabled={isNextDisabled()}
+                  className={`w-12 h-12 flex items-center justify-center transition-all duration-200 ${isNextDisabled() ? "opacity-30 cursor-not-allowed" : "opacity-70 hover:opacity-100 hover:scale-110 active:scale-95"}`}
+                  aria-label="Next case study"
+                >
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="M9 18l6-6-6-6" />
+                  </svg>
+                </button>
+              </div>
 
-                        {/* Overlay with view details button */}
-                        <div
-                          className="absolute inset-0 transition-all duration-300 flex items-center justify-center opacity-0 hover:opacity-100"
-                          style={{ backgroundColor: "rgba(83, 235, 221, 0.3)" }}
-                        >
-                          <span className="px-4 py-2 bg-white text-black font-bold rounded-lg transform scale-95 hover:scale-100 transition-transform text-sm">
-                            View Details
-                          </span>
+              {/* Case studies container */}
+              <div className="relative overflow-hidden h-auto flex-1">
+                <div
+                  ref={sliderRef}
+                  className="slider-container grid grid-cols-2 gap-6 pb-6 pt-3"
+                >
+                  {getVisibleSlides().map((study, index) => (
+                    <div
+                      key={`${currentSlideIndex}-${index}`}
+                      className="slider-item cursor-pointer transition-transform duration-300 hover:-translate-y-2 select-text flex flex-col"
+                      onClick={() => handleStudyClick(study)}
+                    >
+                      {/* Image container */}
+                      <div className="rounded-lg border border-gray-200 shadow-md overflow-hidden h-[320px]">
+                        <div className="relative w-full h-full">
+                          <Image
+                            src={study.image}
+                            alt={study.title}
+                            className="object-cover hover:scale-105 transition-transform duration-300"
+                            fill
+                            style={{ objectFit: "cover" }}
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                            priority={index === 0}
+                          />
+
+                          {/* Overlay with view details button */}
+                          <div
+                            className="absolute inset-0 transition-all duration-300 flex items-center justify-center opacity-0 hover:opacity-100"
+                            style={{
+                              backgroundColor: "rgba(83, 235, 221, 0.3)",
+                            }}
+                          >
+                            <span className="px-4 py-2 bg-white text-black font-bold rounded-lg transform scale-95 hover:scale-100 transition-transform text-sm">
+                              View Details
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    {/* Title and description below the image */}
-                    <div className="flex flex-col gap-2 mt-3">
-                      <h3 className="font-bold text-sm leading-tight">
-                        {study.title}
-                      </h3>
-                      <p className="text-gray-600 leading-tight text-xs">
-                        {study.subtitle}
-                      </p>
+                      {/* Title and description below the image */}
+                      <div className="flex flex-col gap-2 mt-3">
+                        <h3 className="font-bold text-sm leading-tight">
+                          {study.title}
+                        </h3>
+                        <p className="text-gray-600 leading-tight text-xs">
+                          {study.subtitle}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Detail view - always render but control visibility with CSS */}
         {selectedStudy && (

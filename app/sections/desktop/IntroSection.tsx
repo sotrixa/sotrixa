@@ -318,7 +318,10 @@ export default function IntroSection() {
         </div>
 
         {/* Desktop-only play button - centered on thumbnail */}
-        <div className="absolute inset-0 hidden md:flex items-center justify-center pointer-events-none" style={{ transform: 'translateY(-1.5rem)' }}>
+        <div
+          className="absolute inset-0 hidden md:flex items-center justify-center pointer-events-none"
+          style={{ transform: "translateY(-1.5rem)" }}
+        >
           <div className="pointer-events-auto">
             <button
               type="button"
@@ -439,22 +442,16 @@ export default function IntroSection() {
         />
 
         <div
-          className="flex flex-col lg:flex-row gap-[clamp(1.5rem,8vw,3rem)] relative z-10 items-center justify-center w-screen h-screen"
+          className="px-[clamp(1rem,3vw,2rem)] py-[clamp(2rem,5vh,3rem)] flex items-center justify-center w-screen h-screen relative z-10"
           style={{
             minWidth: "100vw",
             minHeight: "100vh",
-            padding: "2rem 1rem",
           }}
         >
-          <div className="flex-1 flex flex-col items-start min-w-0 min-h-0 justify-center">
-            <motion.div
-              className="w-full text-left min-w-0"
-              initial={{ y: 50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8 }}
-            >
+          <div className="flex flex-col md:flex-row items-stretch justify-center gap-[clamp(1.5rem,8vw,3rem)] w-full h-[70vh]">
+            <div className="flex-1 flex flex-col items-start min-w-0 justify-start">
               <h1
-                className="font-black block text-left m-0 w-full min-w-0 px-2 xs:px-4 sm:px-5 md:px-5 lg:px-6 xl:px-8"
+                className="font-black text-left w-full min-w-0 m-0 px-2 xs:px-4 sm:px-5 md:px-5 lg:px-6 xl:px-8"
                 style={{
                   fontSize: "clamp(1rem, 4vw, 5rem)",
                   lineHeight: 1.1,
@@ -531,34 +528,36 @@ export default function IntroSection() {
                   {renderTestimonial(testimonialText)}
                 </p>
               </div>
-            </motion.div>
-          </div>
+            </div>
 
-          {/* Desktop-only video container with proper spacing */}
-          <motion.div
-            className="hidden md:block relative flex-1 min-w-0 min-h-0 overflow-hidden"
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-          >
-            <div className="relative">
-              <div style={{ aspectRatio: "16/9" }}>{renderVideoContent()}</div>
+            {/* Desktop-only video container with proper spacing */}
+            <motion.div
+              className="hidden md:block relative flex-1 min-w-0 min-h-0 overflow-hidden"
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+            >
+              <div className="relative">
+                <div style={{ aspectRatio: "16/9" }}>
+                  {renderVideoContent()}
+                </div>
 
-              {/* Desktop-only testimonial */}
-              <div className="hidden md:block text-center">
-                <div className="mt-0">
-                  <p
-                    className="max-w-xl mx-auto -mt-8"
-                    style={{
-                      fontSize: "clamp(0.875rem, 2vw, 1.125rem)",
-                    }}
-                  >
-                    {renderTestimonial(testimonialText)}
-                  </p>
+                {/* Desktop-only testimonial */}
+                <div className="hidden md:block text-center">
+                  <div className="mt-0">
+                    <p
+                      className="max-w-xl mx-auto -mt-8"
+                      style={{
+                        fontSize: "clamp(0.875rem, 2vw, 1.125rem)",
+                      }}
+                    >
+                      {renderTestimonial(testimonialText)}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
       </Section>
     </>

@@ -220,130 +220,132 @@ export default function HomeSection() {
     <div
       id="home"
       ref={containerRef}
-      className="flex flex-col lg:flex-row items-center justify-center bg-[#fbfbfb] relative w-screen h-screen gap-[clamp(1.5rem,8vw,3rem)]"
+      className="bg-[#fbfbfb] relative px-[clamp(1rem,3vw,2rem)] py-[clamp(2rem,5vh,3rem)] flex items-center justify-center w-screen h-screen"
       style={{
         minWidth: "100vw",
         minHeight: "100vh",
-        padding: "2rem 1rem",
       }}
     >
-      <div
-        ref={bodyRef}
-        className="text-left font-bold relative text-black pointer-events-none flex flex-col z-[2] justify-center gap-[clamp(0.5rem,2vh,1.5rem)] flex-1 items-start min-w-0 min-h-0"
-        style={{ maxWidth: "100%", minWidth: "0" }}
-      >
-        <h1
-          ref={headingRef}
-          className="font-black pointer-events-auto text-left w-full min-w-0 m-0 px-2 xs:px-4 sm:px-5 md:px-5 lg:px-6 xl:px-8 break-words"
-          style={{
-            fontSize: "clamp(1rem, 4vw, 5rem)",
-            lineHeight: 1.1,
-          }}
-        >
-          {isMobile ? (
-            // Simplified layout for mobile
-            <>
-              <span className="text-black">We are a </span>
-              <span style={{ color: "#53EBDD" }}>strategy lab</span>
-              <span className="text-black"> for </span>
-              <span style={{ color: "#DD53EB" }}>visionary</span>
-              <span className="text-black"> </span>
-              <span style={{ color: "#EBDD53" }}>thinkers</span>
-            </>
-          ) : (
-            // Original layout for desktop
-            <>
-              <span>We are a </span>
-              <span style={{ color: "#53EBDD" }}>strategy</span>
-              <span> lab for </span>
-              <span style={{ color: "#DD53EB" }}>visionary</span>
-              <span> </span>
-              <span style={{ color: "#EBDD53" }}>thinkers</span>
-            </>
-          )}
-        </h1>
-
-        <p
-          ref={paragraphRef}
-          className="leading-relaxed font-normal pointer-events-auto text-left w-full min-w-0 m-0 px-2 xs:px-4 sm:px-5 md:px-5 lg:px-6 xl:px-8 break-words"
-          style={{
-            fontSize: "clamp(0.8rem, 1.5vw, 1.35rem)",
-          }}
-        >
-          {getText("homeSection.paragraph", language)}
-        </p>
+      <div className="flex flex-col md:flex-row items-stretch justify-center gap-[clamp(1.5rem,8vw,3rem)] w-full h-[70vh]">
         <div
-          ref={buttonsRef}
-          className="flex pointer-events-auto flex-wrap gap-[clamp(1rem,3vw,2rem)] px-2 xs:px-4 sm:px-5 md:px-5 lg:px-6 xl:px-8"
+          ref={bodyRef}
+          className="flex-1 flex flex-col items-start min-w-0 justify-start"
         >
-          <button
-            className="font-medium cursor-pointer bg-transparent border-none p-0 hover:underline"
-            style={{ fontSize: "clamp(0.85rem, 1.5vw, 1rem)" }}
-            onClick={() => {
-              // Navigate to Contact section (index 4)
-              if (window.horizontalScrollControls) {
-                window.horizontalScrollControls.navigateToPanel(4);
-              }
+          <h1
+            ref={headingRef}
+            className="font-black text-left w-full min-w-0 m-0 px-2 xs:px-4 sm:px-5 md:px-5 lg:px-6 xl:px-8"
+            style={{
+              fontSize: "clamp(1rem, 4vw, 5rem)",
+              lineHeight: 1.1,
+              wordBreak: "break-word",
+              overflowWrap: "break-word",
             }}
           >
-            {getText("homeSection.talkToUs", language)}
-          </button>
-          <button
-            className="font-medium cursor-pointer bg-transparent border-none p-0 hover:underline"
-            style={{ fontSize: "clamp(0.85rem, 1.5vw, 1rem)" }}
-            onClick={() => {
-              // Navigate to Services section (index 2)
-              if (window.horizontalScrollControls) {
-                window.horizontalScrollControls.navigateToPanel(2);
-              }
-            }}
-          >
-            What we do
-          </button>
-          <button
-            className="font-medium cursor-pointer bg-transparent border-none p-0 hover:underline"
-            style={{ fontSize: "clamp(0.85rem, 1.5vw, 1rem)" }}
-            onClick={() => {
-              // Navigate to Case Study section (index 3)
-              if (window.horizontalScrollControls) {
-                window.horizontalScrollControls.navigateToPanel(3);
-              }
-            }}
-          >
-            {getText("homeSection.seeOurWork", language)}
-          </button>
-        </div>
-      </div>
+            {isMobile ? (
+              // Simplified layout for mobile
+              <>
+                <span className="text-black">We are a </span>
+                <span style={{ color: "#53EBDD" }}>strategy lab</span>
+                <span className="text-black"> for </span>
+                <span style={{ color: "#DD53EB" }}>visionary</span>
+                <span className="text-black"> </span>
+                <span style={{ color: "#EBDD53" }}>thinkers</span>
+              </>
+            ) : (
+              // Original layout for desktop
+              <>
+                <span>We are a </span>
+                <span style={{ color: "#53EBDD" }}>strategy</span>
+                <span> lab for </span>
+                <span style={{ color: "#DD53EB" }}>visionary</span>
+                <span> </span>
+                <span style={{ color: "#EBDD53" }}>thinkers</span>
+              </>
+            )}
+          </h1>
 
-      <div
-        ref={videoContainerRef}
-        className="relative flex items-center justify-center z-[1] bg-[#fbfbfb] overflow-hidden flex-1 min-w-0 min-h-0 h-full"
-        style={{ maxWidth: "100%" }}
-      >
-        <video
-          className="object-contain m-auto p-0 border-none outline-none shadow-none block bg-transparent"
-          style={{
-            width: "clamp(350px, 50vw, 900px)",
-            height: "auto",
-            maxHeight: "85vh",
-            aspectRatio: "16/9",
-          }}
-          autoPlay
-          loop
-          muted
-          playsInline
-          ref={videoRef}
+          <p
+            ref={paragraphRef}
+            className="leading-relaxed font-normal pointer-events-auto text-left w-full min-w-0 m-0 px-2 xs:px-4 sm:px-5 md:px-5 lg:px-6 xl:px-8 break-words"
+            style={{
+              fontSize: "clamp(0.8rem, 1.5vw, 1.35rem)",
+            }}
+          >
+            {getText("homeSection.paragraph", language)}
+          </p>
+          <div
+            ref={buttonsRef}
+            className="flex pointer-events-auto flex-wrap gap-[clamp(1rem,3vw,2rem)] px-2 xs:px-4 sm:px-5 md:px-5 lg:px-6 xl:px-8"
+          >
+            <button
+              className="font-medium cursor-pointer bg-transparent border-none p-0 hover:underline"
+              style={{ fontSize: "clamp(0.85rem, 1.5vw, 1rem)" }}
+              onClick={() => {
+                // Navigate to Contact section (index 4)
+                if (window.horizontalScrollControls) {
+                  window.horizontalScrollControls.navigateToPanel(4);
+                }
+              }}
+            >
+              {getText("homeSection.talkToUs", language)}
+            </button>
+            <button
+              className="font-medium cursor-pointer bg-transparent border-none p-0 hover:underline"
+              style={{ fontSize: "clamp(0.85rem, 1.5vw, 1rem)" }}
+              onClick={() => {
+                // Navigate to Services section (index 2)
+                if (window.horizontalScrollControls) {
+                  window.horizontalScrollControls.navigateToPanel(2);
+                }
+              }}
+            >
+              What we do
+            </button>
+            <button
+              className="font-medium cursor-pointer bg-transparent border-none p-0 hover:underline"
+              style={{ fontSize: "clamp(0.85rem, 1.5vw, 1rem)" }}
+              onClick={() => {
+                // Navigate to Case Study section (index 3)
+                if (window.horizontalScrollControls) {
+                  window.horizontalScrollControls.navigateToPanel(3);
+                }
+              }}
+            >
+              {getText("homeSection.seeOurWork", language)}
+            </button>
+          </div>
+        </div>
+
+        <div
+          ref={videoContainerRef}
+          className="relative flex items-center justify-center z-[1] bg-[#fbfbfb] overflow-hidden flex-1 min-w-0 min-h-0 h-full"
+          style={{ maxWidth: "100%" }}
         >
-          <source
-            src={
-              isMobile
-                ? "/video/Sotrixa Home Page Animation.mp4"
-                : "/video/Sotrixa Home Page Animation.mp4"
-            }
-            type="video/mp4"
-          />
-          Your browser does not support the video tag.
-        </video>
+          <video
+            className="object-contain m-auto p-0 border-none outline-none shadow-none block bg-transparent"
+            style={{
+              width: "clamp(350px, 50vw, 900px)",
+              height: "auto",
+              maxHeight: "85vh",
+              aspectRatio: "16/9",
+            }}
+            autoPlay
+            loop
+            muted
+            playsInline
+            ref={videoRef}
+          >
+            <source
+              src={
+                isMobile
+                  ? "/video/Sotrixa Home Page Animation.mp4"
+                  : "/video/Sotrixa Home Page Animation.mp4"
+              }
+              type="video/mp4"
+            />
+            Your browser does not support the video tag.
+          </video>
+        </div>
       </div>
 
       <div

@@ -94,8 +94,6 @@ export default function ServicesSection() {
     isAnimating,
   });
 
-
-
   // Get random position within boundaries
   const getRandomPosition = () => {
     // Ensure values stay within the screen boundaries (with padding)
@@ -295,22 +293,14 @@ export default function ServicesSection() {
           >
             {/* Removed the floating GIF section */}
 
-            <div
-              className="flex flex-col lg:flex-row items-start lg:items-center justify-center gap-[clamp(1.5rem,10vw,4rem)] w-full"
-              style={{ minHeight: "auto" }}
-            >
+            <div className="flex flex-col md:flex-row items-stretch justify-center gap-[clamp(1.5rem,8vw,3rem)] w-full h-[70vh]">
               {/* Left side with colored text */}
-              <motion.div
-                className="flex-1 min-w-0 min-h-0 flex flex-col justify-center"
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.1 }}
-              >
+              <div className="flex-1 flex flex-col items-start min-w-0 justify-start">
                 <h1
-                  className="mt-4 font-black m-0 w-full text-left min-w-0 px-2 xs:px-2 sm:px-3 md:px-4 lg:px-4 xl:px-4"
+                  className="font-black text-left w-full min-w-0 m-0 px-2 xs:px-4 sm:px-5 md:px-5 lg:px-6 xl:px-8"
                   style={{
-                    fontSize: "clamp(1rem, 4vw, 4.5rem)",
-                    lineHeight: 1,
+                    fontSize: "clamp(1rem, 4vw, 5rem)",
+                    lineHeight: 1.1,
                     wordBreak: "break-word",
                     overflowWrap: "break-word",
                   }}
@@ -457,7 +447,7 @@ export default function ServicesSection() {
                     })()}
                   </span>
                 </h1>
-              </motion.div>
+              </div>
 
               {/* Right side with service list - removed conditional rendering for detail view */}
               <motion.div
