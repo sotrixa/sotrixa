@@ -229,7 +229,7 @@ export default function HomeSection() {
       <div className="flex flex-col md:flex-row items-stretch justify-center gap-[clamp(1.5rem,8vw,3rem)] w-full h-[70vh]">
         <div
           ref={bodyRef}
-          className="flex-1 flex flex-col items-start min-w-0 justify-start"
+          className="flex-1 flex flex-col items-start min-w-0 justify-start pt-[20vh]"
         >
           <h1
             ref={headingRef}

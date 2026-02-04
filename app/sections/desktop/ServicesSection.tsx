@@ -295,7 +295,7 @@ export default function ServicesSection() {
 
             <div className="flex flex-col md:flex-row items-stretch justify-center gap-[clamp(1.5rem,8vw,3rem)] w-full h-[70vh]">
               {/* Left side with colored text */}
-              <div className="flex-1 flex flex-col items-start min-w-0 justify-start">
+              <div className="flex-1 flex flex-col items-start min-w-0 justify-start pt-[20vh]">
                 <h1
                   className="font-black text-left w-full min-w-0 m-0 px-2 xs:px-4 sm:px-5 md:px-5 lg:px-6 xl:px-8"
                   style={{
