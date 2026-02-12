@@ -336,9 +336,9 @@ export default function HomeSection() {
           }}
         >
           <video
-            className="object-contain m-auto p-0 border-none outline-none shadow-none block bg-transparent"
+            className="object-contain m-auto p-0 border-none outline-none shadow-none block bg-[#fbfbfb]"
             style={{
-              width: "clamp(600px, 75vw, 1400px)",
+              width: "clamp(800px, 85vw, 1800px)",
               height: "auto",
               maxHeight: "100vh",
               aspectRatio: "16/9",

@@ -25,7 +25,7 @@ export function ContactImage({
           loop
           muted
           playsInline
-          className="w-full h-full object-contain block m-0 p-0 border-0 outline-none"
+          className="absolute inset-0 w-full h-full object-cover block m-0 p-0 border-0 outline-none bg-[#fbfbfb]"
         />
       </div>
     </div>
