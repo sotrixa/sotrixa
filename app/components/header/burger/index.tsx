@@ -123,18 +123,25 @@ export default function Burger({
             animate={isMenuOpen ? "opened" : "closed"}
             style={{
               position: "absolute",
-              width: "50px",
-              height: "50px",
-              top: "8px",
+              width: "40px",
+              height: "40px",
+              top: "6px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            <Image
-              src="/menu-close.svg"
-              alt="Close"
-              width={50}
-              height={50}
-              style={{ filter: "invert(1)" }}
-            />
+            <span
+              aria-hidden="true"
+              style={{
+                color: "white",
+                fontSize: "64px",
+                fontWeight: 100,
+                lineHeight: 1,
+              }}
+            >
+              ×
+            </span>
           </motion.div>
           <motion.p
             variants={menuTextVariants}

@@ -142,8 +142,8 @@ export default function CaseStudySection() {
       );
       tl.fromTo(
         ".case-studies-description",
-        { y: 50, opacity: 0 },
-        { y: 40, opacity: 1, duration: 0.8 },
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8 },
         "-=0.6",
       );
 
@@ -261,12 +261,13 @@ export default function CaseStudySection() {
               }}
             >
               <h1
-                className="case-studies-title font-black text-left w-full min-w-0 m-0 px-2 xs:px-4 sm:px-5 md:px-5 lg:px-6 xl:px-8"
+                className="case-studies-title font-black text-left w-full min-w-0 m-0 px-2 xs:px-0 sm:px-0 md:px-0 lg:px-0 xl:px-0"
                 style={{
-                  fontSize: "clamp(1rem, 4vw, 5rem)",
+                  fontSize: "clamp(1rem, 4vw, 3.8rem)",
                   lineHeight: 1.1,
                   wordBreak: "break-word",
                   overflowWrap: "break-word",
+                  margin: 1,
                 }}
               >
                 {/* Render title with colored words */}
@@ -368,10 +369,10 @@ export default function CaseStudySection() {
                 })()}
               </h1>
               <p
-                className="case-studies-description text-left w-full min-w-0 m-0 px-2 xs:px-1 sm:px-2 md:px-1 lg:px-2 xl:px-3"
+                className="case-studies-description text-left w-full min-w-0 px-2 xs:px-0 sm:px-0 md:px-0 lg:px-0 xl:px-0"
                 style={{
                   fontSize: "clamp(0.7rem, 1.5vw, 1.125rem)",
-                  margin: 0,
+                  marginTop: "0.75rem",
                   wordBreak: "break-word",
                   overflowWrap: "break-word",
                 }}
@@ -458,7 +459,7 @@ export default function CaseStudySection() {
                         {/* Image container */}
                         <div
                           className="rounded-lg border border-gray-200 shadow-md overflow-hidden"
-                          style={{ height: "320px" }}
+                          style={{ height: "360px" }}
                         >
                           <div className="relative w-full h-full">
                             <Image
@@ -486,11 +487,11 @@ export default function CaseStudySection() {
                         </div>
 
                         {/* Title and description below the image */}
-                        <div className="flex flex-col gap-2 mt-3">
-                          <h3 className="font-bold text-sm leading-tight">
+                        <div className="flex flex-col gap-2 mt-4">
+                          <h3 className="font-bold text-base leading-snug">
                             {study.title}
                           </h3>
-                          <p className="text-gray-600 leading-tight text-xs">
+                          <p className="text-gray-600 leading-snug text-sm">
                             {study.subtitle}
                           </p>
                         </div>

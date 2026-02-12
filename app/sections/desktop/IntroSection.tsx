@@ -260,7 +260,7 @@ export default function IntroSection() {
     if (isVideoPlaying) {
       return (
         <div
-          className="relative w-full h-full bg-black rounded-xl overflow-hidden shadow-lg z-20"
+          className="relative w-full h-full bg-black rounded-xl overflow-hidden shadow-lg z-20 mt-[-2rem]"
           onMouseEnter={() => setIsVideoHovered(true)}
           onMouseLeave={() => setIsVideoHovered(false)}
         >
@@ -306,7 +306,7 @@ export default function IntroSection() {
     return (
       <>
         {/* Desktop-only image with play button inside */}
-        <div className="hidden md:block relative w-full aspect-video">
+        <div className="hidden md:block relative w-full aspect-video -translate-y-4 mt-[-5rem]">
           <Image
             src="/About-us-cover.svg"
             alt="Sotrixa research visualization"
@@ -456,7 +456,7 @@ export default function IntroSection() {
               style={{ paddingTop: "15vh" }}
             >
               <h1
-                className="font-black text-left w-full min-w-0 m-0 px-2 xs:px-4 sm:px-5 md:px-5 lg:px-6 xl:px-8"
+                className="font-black text-left w-full min-w-0 m-0 px-2 xs:px-0 sm:px-0 md:px-0 lg:px-0 xl:px-0"
                 style={{
                   fontSize: "clamp(1rem, 4vw, 5rem)",
                   lineHeight: 1.1,
@@ -468,9 +468,9 @@ export default function IntroSection() {
               </h1>
 
               {/* Subheading in its own row */}
-              <div className="w-full mt-6 min-w-0">
+              <div className="w-full mt-4 min-w-0">
                 <p
-                  className="text-left w-full min-w-0 m-0 px-2 xs:px-4 sm:px-5 md:px-5 lg:px-6 xl:px-8"
+                  className="text-left w-full min-w-0 m-0 px-2 xs:px-0 sm:px-0 md:px-0 lg:px-0 xl:px-0"
                   style={{
                     fontSize: "clamp(0.875rem, 1.8vw, 1.125rem)",
                     wordBreak: "break-word",

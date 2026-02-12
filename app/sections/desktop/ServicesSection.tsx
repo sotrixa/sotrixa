@@ -303,9 +303,9 @@ export default function ServicesSection() {
                 style={{ paddingTop: "15vh" }}
               >
                 <h1
-                  className="font-black text-left w-full min-w-0 m-0 px-2 xs:px-4 sm:px-5 md:px-5 lg:px-6 xl:px-8"
+                  className="font-black text-left w-full min-w-0 m-0 px-2 xs:px-0 sm:px-0 md:px-0 lg:px-0 xl:px-0"
                   style={{
-                    fontSize: "clamp(1rem, 4vw, 5rem)",
+                    fontSize: "clamp(1rem, 4vw, 3.7rem)",
                     lineHeight: 1.1,
                     wordBreak: "break-word",
                     overflowWrap: "break-word",
@@ -410,7 +410,7 @@ export default function ServicesSection() {
                   })()}
                   <br />
                   <span
-                    className="text-black font-normal leading-relaxed mt-6 block text-left w-full min-w-0"
+                    className="text-black font-normal leading-relaxed mt-4 block text-left w-full min-w-0"
                     style={{
                       fontSize: "clamp(0.7rem, 1.5vw, 1.125rem)",
                       wordBreak: "break-word",

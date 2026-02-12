@@ -237,7 +237,7 @@ export default function HomeSection() {
         >
           <h1
             ref={headingRef}
-            className="font-black text-left w-full min-w-0 m-0 px-2 xs:px-4 sm:px-5 md:px-5 lg:px-6 xl:px-8"
+            className="font-black text-left w-full min-w-0 m-0 px-2 xs:px-0 sm:px-0 md:px-0 lg:px-0 xl:px-0"
             style={{
               fontSize: "clamp(1rem, 4vw, 5rem)",
               lineHeight: 1.1,
@@ -270,7 +270,7 @@ export default function HomeSection() {
 
           <p
             ref={paragraphRef}
-            className="leading-relaxed font-normal pointer-events-auto text-left w-full min-w-0 m-0 px-2 xs:px-4 sm:px-5 md:px-5 lg:px-6 xl:px-8 break-words text-black"
+            className="leading-relaxed font-normal pointer-events-auto text-left w-full min-w-0 m-0 px-2 xs:px-0 sm:px-0 md:px-0 lg:px-0 xl:px-0 break-words text-black pt-4"
             style={{
               fontSize: "clamp(0.8rem, 1.5vw, 1.35rem)",
             }}
@@ -279,7 +279,7 @@ export default function HomeSection() {
           </p>
           <div
             ref={buttonsRef}
-            className="flex pointer-events-auto flex-wrap gap-[clamp(1rem,3vw,2rem)] px-2 xs:px-4 sm:px-5 md:px-5 lg:px-6 xl:px-8 mt-4"
+            className="flex pointer-events-auto flex-wrap gap-[clamp(1rem,3vw,2rem)] px-2 xs:px-0 sm:px-0 md:px-0 lg:px-0 xl:px-0 mt-4"
           >
             <button
               className="font-medium cursor-pointer bg-transparent border-none p-0 hover:underline text-black"
@@ -332,6 +332,7 @@ export default function HomeSection() {
             overflow: "hidden",
             border: "none",
             outline: "none",
+            ...(isMobile ? {} : { marginTop: "-10vh" }),
           }}
         >
           <video
