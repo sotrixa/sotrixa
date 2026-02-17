@@ -146,10 +146,10 @@ export default function CreatedToMatterSection() {
       </div>
 
       <div
-        className="relative w-full flex flex-col justify-start"
-        style={{ zIndex: 2, paddingTop: "clamp(80px, 10vw, 120px)" }}
+        className="relative w-full flex flex-col justify-center items-center min-h-screen"
+        style={{ zIndex: 2 }}
       >
-        <div className="w-full px-12 max-[1200px]:px-6 max-[900px]:px-6 max-md:px-4 max-[480px]:px-3">
+        <div className="w-full px-8 max-[1200px]:px-2 max-[900px]:px-2 max-md:px-4 max-[480px]:px-2">
           {/* Content grid */}
           <div
             ref={contentRef}
