@@ -1,5 +1,5 @@
 import React from "react";
-import { InstagramIcon } from "hugeicons-react";
+import { InstagramIcon, Linkedin01Icon } from "hugeicons-react";
 
 interface ContactInfoProps {
   contactInfoRef: React.RefObject<HTMLDivElement | null>;
@@ -123,7 +123,7 @@ export function ContactInfo({
           >
             Follow Us
           </p>
-          <div className="flex" style={{ gap: "clamp(0.3rem, 0.6vw, 0.5rem)" }}>
+          <div className="flex" style={{ gap: "clamp(0.5rem, 1vw, 0.8rem)" }}>
             {/* Instagram */}
             <a
               href="https://www.instagram.com/sotrixa"
@@ -135,6 +135,22 @@ export function ContactInfo({
               }}
             >
               <InstagramIcon
+                className="text-white"
+                size={16}
+                strokeWidth={1.5}
+              />
+            </a>
+            {/* LinkedIn */}
+            <a
+              href="https://www.linkedin.com/company/sotrixa"
+              className="flex items-center justify-center bg-black border border-white hover:bg-gray-800 transition-colors rounded-sm"
+              aria-label="LinkedIn"
+              style={{
+                width: "clamp(1.2rem, 2.2vw, 1.5rem)",
+                height: "clamp(1.2rem, 2.2vw, 1.5rem)",
+              }}
+            >
+              <Linkedin01Icon
                 className="text-white"
                 size={16}
                 strokeWidth={1.5}

@@ -58,7 +58,7 @@ export default function Navigation() {
           {/* Logo */}
           <Link
             href={getLogoHref()}
-            className="transition-transform duration-300 hover:scale-105 flex-shrink-0"
+            className="transition-transform duration-300 hover:scale-105 flex-shrink-0 ml-[-0.7rem]"
           >
             <Image
               src="/sotrixa-logo.webp"
