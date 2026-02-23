@@ -354,11 +354,7 @@ export default function HomeSection() {
             ref={videoRef}
           >
             <source
-              src={
-                isMobile
-                  ? "/video/0223.mp4"
-                  : "/video/0223.mp4"
-              }
+              src={isMobile ? "/video/0223.mp4#t=0.1" : "/video/0223.mp4#t=0.1"}
               type="video/mp4"
             />
             Your browser does not support the video tag.

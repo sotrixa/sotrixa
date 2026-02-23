@@ -97,11 +97,10 @@ export default function Burger({
   return (
     <div className={styles.burgerContainer} ref={burgerRef}>
       <motion.div
-        className={styles.burger}
+        className={`${styles.burger} ${isMobile ? styles.burgerMobile : ''}`}
         variants={burger}
         animate={isMenuOpen ? "opened" : "closed"}
         onClick={isMenuOpen ? closeMenu : openMenu}
-        data-mobile={isMobile ? 'true' : undefined}
       >
         <div className={styles.bounds}></div>
         {!isMenuOpen && !isMobile && <div className={styles.background}></div>}
