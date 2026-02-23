@@ -20,6 +20,7 @@ const MobileHomeSection = dynamic(() => import('@/app/sections/mobile/MobileHome
 const MobileIntroSection = dynamic(() => import('@/app/sections/mobile/MobileIntroSection').then((mod) => ({ default: mod.default })), { ssr: false });
 const MobileServicesSection = dynamic(() => import('@/app/sections/mobile/MobileServicesSection').then((mod) => ({ default: mod.default })), { ssr: false });
 const MobileCaseStudySection = dynamic(() => import('@/app/sections/mobile/MobileCaseStudySection').then((mod) => ({ default: mod.default })), { ssr: false });
+const MobileCreatedToMatterSection = dynamic(() => import('@/app/sections/mobile/MobileCreatedToMatterSection').then((mod) => ({ default: mod.default })), { ssr: false });
 const MobileContactSection = dynamic(() => import('@/app/sections/mobile/MobileContactSection').then((mod) => ({ default: mod.default })), { ssr: false });
 
 export default function Home() {
@@ -35,6 +36,7 @@ export default function Home() {
 					<MobileIntroSection />
 					<MobileServicesSection />
 					<MobileCaseStudySection />
+					<MobileCreatedToMatterSection />
 					<MobileContactSection />
 				</MobileLayout>
 			</div>

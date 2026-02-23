@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import Image from 'next/image';
+// Using standard img tag for SVG support
 import gsap from 'gsap';
 
 type CaseStudy = {
@@ -114,13 +114,11 @@ export default function CaseStudyDetailMobile({ study, onClose }: CaseStudyDetai
 
 				{/* Main Image */}
 				<div ref={imageRef} className='mb-8'>
-					<div className='relative w-full h-[300px] sm:h-[400px] rounded-lg overflow-hidden shadow-lg'>
-						<Image
+					<div className='relative w-full h-[300px] sm:h-[400px] rounded-lg overflow-hidden shadow-lg bg-white p-4'>
+						<img
 							src={study.image}
 							alt={study.title}
-							fill
-							className='object-cover'
-							priority
+							className='w-full h-full object-contain'
 						/>
 					</div>
 				</div>

@@ -54,8 +54,10 @@ const menu: MenuItem[] = [
 	{
 		title: 'CREATED TO MATTER',
 		description: 'Our Purpose & Mission',
-		images: ['agence1.jpg', 'agence2.jpg'], // Using existing images
-		path: '/created-to-matter', // Direct path to the new page
+		images: ['agence1.jpg', 'agence2.jpg'],
+		sectionIndex: 4,
+		sectionId: 'created-to-matter',
+		path: '/created-to-matter',
 	},
 ];
 

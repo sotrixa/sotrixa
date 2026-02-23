@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
-import Image from 'next/image';
+// Using standard img tag for SVG support
 import Section from '../../components/layout/Section';
 import CaseStudyDetailMobile from './CaseStudyDetailMobile';
 import { getText, parseColoredText, Language } from '../../data/translations';
@@ -325,10 +325,10 @@ export default function MobileCaseStudySection() {
 							<div ref={sliderRef} className='slider-container flex gap-3 sm:gap-4 md:gap-6 px-3 sm:px-4 pb-4 sm:pb-6 pt-2 sm:pt-3 ml-12 sm:ml-14 lg:ml-16'>
 								{getVisibleSlides().map((study, index) => (
 									<div key={`${currentSlideIndex}-${index}`} className='slider-item flex-shrink-0 w-full sm:w-[280px] md:w-[320px] lg:w-1/2 space-y-3 sm:space-y-4 cursor-pointer transition-transform duration-300 hover:-translate-y-2' onClick={() => handleStudyClick(study)}>
-										{/* Image container - EXACT SAME AS DESKTOP */}
-										<div className='h-[200px] xs:h-[220px] sm:h-[240px] md:h-[280px] lg:h-[320px] xl:h-[380px] rounded-lg border border-gray-200 shadow-md overflow-hidden'>
+										{/* Image container - SVG optimized */}
+										<div className='h-[200px] xs:h-[220px] sm:h-[240px] md:h-[280px] lg:h-[320px] xl:h-[380px] rounded-lg border border-gray-200 shadow-md overflow-hidden bg-white'>
 											<div className='relative w-full h-full'>
-												<Image src={study.image} alt={study.title} className='object-cover hover:scale-105 transition-transform duration-300' fill style={{ objectFit: 'cover' }} sizes='(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw' priority={index === 0} />
+												<img src={study.image} alt={study.title} className='w-full h-full object-contain hover:scale-105 transition-transform duration-300' />
 
 												{/* Overlay with view details button - EXACT SAME AS DESKTOP */}
 												<div className='absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center opacity-0 hover:opacity-100'>

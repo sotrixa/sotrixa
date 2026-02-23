@@ -324,23 +324,25 @@ export default function HomeSection() {
           ref={videoContainerRef}
           style={{
             flex: 1,
-            position: "relative",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
             minWidth: 0,
-            overflow: "hidden",
+            justifyContent: "center",
+            position: "relative",
             ...(isMobile ? {} : { marginTop: "-10vh" }),
           }}
         >
           <video
             className="object-contain p-0 block"
             style={{
-              position: "absolute",
-              top: "-3px",
-              left: "-3px",
-              width: "calc(100% + 6px)",
-              height: "calc(100% + 6px)",
+              width: "100%",
+              height: "auto",
+              maxHeight: "100vh",
+              aspectRatio: "16/9",
               border: "none",
               outline: "none",
-              boxShadow: "none",
+              boxShadow: "0 0 0 4px #fbfbfb",
               display: "block",
             }}
             autoPlay
