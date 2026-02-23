@@ -337,9 +337,9 @@ export default function HomeSection() {
           }}
         >
           <video
-            className="object-contain m-auto p-0 border-none outline-none shadow-none block bg-[#fbfbfb]"
+            className="object-contain p-0 border-none outline-none shadow-none block"
             style={{
-              width: "100%",
+              width: "calc(100% + 4px)",
               height: "auto",
               maxHeight: "100vh",
               aspectRatio: "16/9",
@@ -347,6 +347,7 @@ export default function HomeSection() {
               outline: "none",
               boxShadow: "none",
               display: "block",
+              margin: "-2px",
             }}
             autoPlay
             loop
