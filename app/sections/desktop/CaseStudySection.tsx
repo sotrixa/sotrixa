@@ -458,16 +458,15 @@ export default function CaseStudySection() {
                       >
                         {/* Image container */}
                         <div
-                          className="rounded-lg border border-gray-200 shadow-md overflow-hidden"
+                          className="rounded-lg border border-gray-200 shadow-md overflow-hidden bg-white"
                           style={{ height: "360px" }}
                         >
                           <div className="relative w-full h-full">
                             <Image
                               src={study.image}
                               alt={study.title}
-                              className="object-cover hover:scale-105 transition-transform duration-300"
                               fill
-                              style={{ objectFit: "cover" }}
+                              className="object-contain hover:scale-105 transition-transform duration-300"
                               sizes="(max-width: 768px) 100vw, 50vw"
                               priority={index === 0}
                             />
