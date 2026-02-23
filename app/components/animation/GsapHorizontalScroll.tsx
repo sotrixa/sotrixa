@@ -174,11 +174,11 @@ export default function GsapHorizontalScroll({
       {/* Navigation components */}
       <ScrollNavigation />
 
-      {/* Loading Screen - hidden on mobile */}
+      {/* Loading Screen - hidden on mobile, transparent background */}
       {!isInitialized && (
         <div
           ref={loadingRef}
-          className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-black hidden lg:flex"
+          className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden hidden lg:flex"
         >
           {/* Main content container */}
           <div className="text-center px-8 max-w-2xl mx-auto">

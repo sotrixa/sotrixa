@@ -205,6 +205,13 @@ body {
 		-webkit-overflow-scrolling: touch;
 	}
 
+	/* Remove global top padding & dark background on mobile */
+	body {
+		padding-top: 0;
+		background: #ffffff;
+		color: #000000;
+	}
+
 	.custom-cursor {
 		display: none !important;
 	}

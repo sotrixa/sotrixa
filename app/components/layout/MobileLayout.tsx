@@ -116,10 +116,10 @@ function MobileLayoutComponent({ children }: Props) {
 			</AnimatePresence>
 
 			{/* Main content - starts from the top of the page */}
-			<main className='w-full'>{children}</main>
+			{/* <main className='w-full'>{children}</main> */}
 
 			{/* Mobile footer */}
-			<footer className='bg-black text-white py-8 px-4'>
+			{/* <footer className='bg-black text-white py-8 px-4'>
 				<div className='container mx-auto'>
 					<div className='flex justify-between items-center flex-wrap'>
 						<div className='mb-4 md:mb-0'>
@@ -136,7 +136,7 @@ function MobileLayoutComponent({ children }: Props) {
 					</div>
 					<div className='mt-6 text-sm text-gray-400'>© {new Date().getFullYear()} Sotrixa. All rights reserved.</div>
 				</div>
-			</footer>
+			</footer> */}
 
 			{/* Scroll to top button */}
 			{isScrolled && <ScrollToTopButton />}
