@@ -332,14 +332,14 @@ export default function HomeSection() {
             overflow: "hidden",
             border: "none",
             outline: "none",
-            clipPath: "inset(1px)",
+            clipPath: "inset(3px)",
             ...(isMobile ? {} : { marginTop: "-10vh" }),
           }}
         >
           <video
             className="object-contain p-0 border-none outline-none shadow-none block"
             style={{
-              width: "calc(100% + 4px)",
+              width: "100%",
               height: "auto",
               maxHeight: "100vh",
               aspectRatio: "16/9",
@@ -347,7 +347,7 @@ export default function HomeSection() {
               outline: "none",
               boxShadow: "none",
               display: "block",
-              margin: "-2px",
+              transform: "scale(1.02)",
             }}
             autoPlay
             loop
