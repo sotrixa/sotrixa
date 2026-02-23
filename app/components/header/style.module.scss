@@ -6,10 +6,8 @@
 	transition: background-color 0.3s ease, box-shadow 0.3s ease;
 	pointer-events: auto;
 
-	@media (max-width: 768px) {
-		position: relative;
-		top: auto;
-		right: auto;
-		z-index: 99;
+	/* Hide desktop header on mobile/tablet */
+	@media (max-width: 1023px) {
+		display: none !important;
 	}
 }

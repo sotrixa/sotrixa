@@ -29,6 +29,15 @@ export default function Home() {
 
 	return (
 		<>
+			{/* Force desktop layout hidden on mobile using media query */}
+			<style jsx>{`
+				@media (max-width: 1023px) {
+					.desktop-layout {
+						display: none !important;
+					}
+				}
+			`}</style>
+
 			{/* Mobile layout - hidden on desktop with Tailwind classes */}
 			<div className='block lg:hidden'>
 				<MobileLayout>
@@ -42,7 +51,7 @@ export default function Home() {
 			</div>
 
 			{/* Desktop layout - hidden on mobile/tablet with Tailwind classes */}
-			<div className='hidden lg:block'>
+			<div className='hidden lg:block desktop-layout'>
 				<main className='relative bg-black min-h-screen overflow-y-auto overflow-x-hidden'>
 					<KeyboardControls />
 					<Navigation />

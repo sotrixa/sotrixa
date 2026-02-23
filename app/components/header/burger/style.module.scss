@@ -20,6 +20,11 @@
 	user-select: none;
 	transition: all 0.3s ease;
 
+	/* Hide desktop burger on mobile/tablet */
+	@media screen and (max-width: 1023px) {
+		display: none !important;
+	}
+
 	/* Add a full-area clickable overlay */
 	&::before {
 		content: '';
@@ -145,8 +150,8 @@
 	}
 }
 
-/* Mobile specific adjustments (768px and below) */
-@media screen and (max-width: 768px) {
+/* Mobile specific adjustments (1023px and below to match Tailwind lg breakpoint) */
+@media screen and (max-width: 1023px) {
 	.burger {
 		width: clamp(50px, 10vw, 90px);
 		height: clamp(45px, 8vw, 80px);
@@ -154,7 +159,7 @@
 		position: static;
 		right: auto;
 		top: auto;
-		background-color: transparent;
+		background-color: transparent !important;
 
 		p {
 			font-size: clamp(8px, 1.6vw, 11px);
@@ -170,8 +175,8 @@
 	}
 }
 
-/* Small tablets and large phones (600px - 768px) */
-@media screen and (max-width: 768px) and (min-width: 600px) {
+/* Small tablets and large phones (600px - 1023px) */
+@media screen and (max-width: 1023px) and (min-width: 600px) {
 	.burger {
 		width: clamp(55px, 11vw, 85px);
 		height: clamp(48px, 9.5vw, 75px);

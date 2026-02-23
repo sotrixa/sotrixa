@@ -268,23 +268,23 @@ export default function HomeSection() {
             </button>
           </div>
         </div>
-      <div
-        className="relative w-full aspect-square rounded-lg overflow-hidden"
-        style={{
-          maxWidth: "clamp(8rem, 50vw, 42rem)",
-          clipPath: "inset(0 round 0.5rem)",
-        }}
-      >
-        <video
-          src="/video/0223.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute -inset-[2px] w-[calc(100%+4px)] h-[calc(100%+4px)] object-cover block m-0 p-0 border-0 outline-none"
-        />
-      </div>
+        <div
+          className="relative w-full aspect-square rounded-lg overflow-hidden"
+          style={{
+            maxWidth: "clamp(5rem, 50vw, 40rem)",
+            clipPath: "inset(0 round 0.5rem)",
+          }}
+        >
+          <video
+            src="/video/0223.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute -inset-[2px] w-[calc(100%+4px)] h-[calc(100%+4px)] object-contaign block m-0 p-0 border-0 outline-none"
+          />
         </div>
+      </div>
     </div>
   );
 }
