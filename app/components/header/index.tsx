@@ -4,10 +4,27 @@ import styles from "./style.module.scss";
 import Burger from "./burger";
 import Stairs from "./stairs";
 import Menu from "./menu";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface HeaderProps {
   isScrolled?: boolean;
+}
+
+// Wrapper component to handle proper exit animation
+function MenuOverlay({ closeMenu }: { closeMenu: () => void }) {
+  return (
+    <motion.div
+      key="menu-overlay"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="fixed inset-0 z-[998]"
+    >
+      <Stairs />
+      <Menu closeMenu={closeMenu} />
+    </motion.div>
+  );
 }
 
 export default function Header({
@@ -85,12 +102,7 @@ export default function Header({
         isScrolled={isScrolled}
       />
       <AnimatePresence mode="wait">
-        {menuIsOpen && (
-          <>
-            <Stairs />
-            <Menu closeMenu={closeMenu} />
-          </>
-        )}
+        {menuIsOpen && <MenuOverlay closeMenu={closeMenu} />}
       </AnimatePresence>
     </div>
   );

@@ -14,7 +14,8 @@ export default function Navigation() {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
+      // Use 1024px to match Tailwind's lg breakpoint
+      setIsMobile(window.innerWidth < 1024);
     };
 
     const handleScroll = () => {

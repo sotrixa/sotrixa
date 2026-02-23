@@ -268,35 +268,23 @@ export default function HomeSection() {
             </button>
           </div>
         </div>
-
-        <div
-          ref={videoContainerRef}
-          className="flex items-center justify-center w-full h-full overflow-hidden"
-          style={{
-            flex: 1,
-            minWidth: 0,
-            ...(isMobile ? {} : { marginTop: "-10vh" }),
-          }}
-        >
-          <div
-            className="relative w-full overflow-hidden"
-            style={{
-              aspectRatio: "16/9",
-              clipPath: "inset(0 round 0.5rem)",
-            }}
-          >
-            <video
-              ref={videoRef}
-              src="/video/0223.mp4#t=0.1"
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="absolute -inset-[2px] w-[calc(100%+4px)] h-[calc(100%+4px)] object-contaign block m-0 p-0 border-0 outline-none"
-            />
-          </div>
-        </div>
+      <div
+        className="relative w-full aspect-square rounded-lg overflow-hidden"
+        style={{
+          maxWidth: "clamp(8rem, 50vw, 42rem)",
+          clipPath: "inset(0 round 0.5rem)",
+        }}
+      >
+        <video
+          src="/video/0223.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute -inset-[2px] w-[calc(100%+4px)] h-[calc(100%+4px)] object-cover block m-0 p-0 border-0 outline-none"
+        />
       </div>
+        </div>
     </div>
   );
 }

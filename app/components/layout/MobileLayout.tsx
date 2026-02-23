@@ -6,10 +6,28 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Burger from '@/app/components/header/burger';
 import Menu from '@/app/components/header/menu';
+import Stairs from '@/app/components/header/stairs';
 
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
+
+// Wrapper component to handle proper exit animation
+function MenuOverlay({ closeMenu }: { closeMenu: () => void }) {
+	return (
+		<motion.div
+			key="menu-overlay"
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			exit={{ opacity: 0 }}
+			transition={{ duration: 0.3 }}
+			className="fixed inset-0 z-[998]"
+		>
+			<Stairs />
+			<Menu closeMenu={closeMenu} />
+		</motion.div>
+	);
+}
 
 // Register ScrollTrigger plugin
 if (typeof window !== 'undefined') {
@@ -94,11 +112,7 @@ function MobileLayoutComponent({ children }: Props) {
 
 			{/* Menu components outside header for proper z-index stacking */}
 			<AnimatePresence mode='wait'>
-				{menuIsOpen && (
-					<>
-						<Menu closeMenu={() => setMenuIsOpen(false)} />
-					</>
-				)}
+				{menuIsOpen && <MenuOverlay closeMenu={() => setMenuIsOpen(false)} />}
 			</AnimatePresence>
 
 			{/* Main content - starts from the top of the page */}
