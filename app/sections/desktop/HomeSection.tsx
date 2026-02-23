@@ -331,21 +331,21 @@ export default function HomeSection() {
             justifyContent: "center",
             position: "relative",
             overflow: "hidden",
+            aspectRatio: "16/9",
             ...(isMobile ? {} : { marginTop: "-10vh" }),
           }}
         >
           <video
-            className="object-contain p-0 block"
+            className="p-0 block"
             style={{
-              width: "102%",
-              height: "auto",
-              maxHeight: "100vh",
-              aspectRatio: "16/9",
+              width: "100%",
+              height: "100%",
+              objectFit: "contain",
               border: "none",
               outline: "none",
               boxShadow: "none",
               display: "block",
-              margin: "-1%",
+              transform: "scale(0.85)",
             }}
             autoPlay
             loop
@@ -356,8 +356,8 @@ export default function HomeSection() {
             <source
               src={
                 isMobile
-                  ? "/video/Sotrixa Home Page Animation.mp4"
-                  : "/video/Sotrixa Home Page Animation.mp4"
+                  ? "/video/0223.mp4"
+                  : "/video/0223.mp4"
               }
               type="video/mp4"
             />

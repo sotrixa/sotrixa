@@ -10,6 +10,7 @@ interface BurgerProps {
   closeMenu: () => void;
   isMenuOpen: boolean;
   isScrolled: boolean;
+  isMobile?: boolean;
 }
 
 export default function Burger({
@@ -17,6 +18,7 @@ export default function Burger({
   closeMenu,
   isMenuOpen,
   isScrolled,
+  isMobile = false,
 }: BurgerProps) {
   const burger = {
     closed: {
@@ -99,9 +101,10 @@ export default function Burger({
         variants={burger}
         animate={isMenuOpen ? "opened" : "closed"}
         onClick={isMenuOpen ? closeMenu : openMenu}
+        data-mobile={isMobile ? 'true' : undefined}
       >
         <div className={styles.bounds}></div>
-        {!isMenuOpen && <div className={styles.background}></div>}
+        {!isMenuOpen && !isMobile && <div className={styles.background}></div>}
         <div className={"burgerMenu " + styles.burgerInner}>
           <motion.div
             className="menu-icon"

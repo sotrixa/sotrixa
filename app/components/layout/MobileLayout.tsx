@@ -87,7 +87,7 @@ function MobileLayoutComponent({ children }: Props) {
 
 					{/* Burger menu with proper spacing - white icons regardless of scroll state */}
 					<div className='h-full flex items-center justify-center pointer-events-auto pb-2'>
-						<Burger openMenu={() => setMenuIsOpen(true)} closeMenu={() => setMenuIsOpen(false)} isMenuOpen={menuIsOpen} isScrolled={false} />
+						<Burger openMenu={() => setMenuIsOpen(true)} closeMenu={() => setMenuIsOpen(false)} isMenuOpen={menuIsOpen} isScrolled={false} isMobile={true} />
 					</div>
 				</div>
 			</header>
