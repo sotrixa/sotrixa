@@ -271,7 +271,7 @@ export default function HomeSection() {
         <div
           className="relative w-full aspect-square rounded-lg overflow-hidden"
           style={{
-            maxWidth: "clamp(5rem, 50vw, 40rem)",
+            maxWidth: "clamp(0rem, 41vw, 41rem)",
             clipPath: "inset(0 round 0.5rem)",
           }}
         >
@@ -281,7 +281,7 @@ export default function HomeSection() {
             loop
             muted
             playsInline
-            className="absolute -inset-[2px] w-[calc(100%+4px)] h-[calc(100%+4px)] object-contaign block m-0 p-0 border-0 outline-none"
+            className="absolute -inset-[2px] w-[calc(76%+4px)] h-[calc(76%+4px)] object-contaign block p-0 border-0 outline-none"
           />
         </div>
       </div>

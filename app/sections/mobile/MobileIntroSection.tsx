@@ -105,7 +105,7 @@ function MobileIntroSectionComponent() {
     // Use portal to render the overlay at the document body level
     return ReactDOM.createPortal(
       <div
-        className="fixed inset-0 z-[9999] bg-black/35 flex items-center justify-center"
+        className="fixed inset-0 z-[9999] flex items-center justify-center"
         style={{ top: 0, left: 0, right: 0, bottom: 0 }}
       >
         <div
