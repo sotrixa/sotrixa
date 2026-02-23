@@ -16,8 +16,11 @@ export function ContactImage({
       style={{ opacity: animationsCreated ? undefined : 1 }}
     >
       <div
-        className="relative w-full aspect-square rounded-lg overflow-hidden bg-gray-50"
-        style={{ maxWidth: "clamp(8rem, 35vw, 35rem)" }}
+        className="relative w-full aspect-square rounded-lg overflow-hidden"
+        style={{
+          maxWidth: "clamp(8rem, 35vw, 35rem)",
+          clipPath: "inset(0 round 0.5rem)",
+        }}
       >
         <video
           src="/video/Contact-page-video.mp4"
@@ -25,7 +28,7 @@ export function ContactImage({
           loop
           muted
           playsInline
-          className="absolute -inset-[1px] w-[calc(100%+2px)] h-[calc(100%+2px)] object-cover block m-0 p-0 border-0 outline-none bg-gray-50"
+          className="absolute -inset-[2px] w-[calc(100%+4px)] h-[calc(100%+4px)] object-cover block m-0 p-0 border-0 outline-none"
         />
       </div>
     </div>
