@@ -338,13 +338,14 @@ export default function HomeSection() {
           <video
             className="object-contain m-auto p-0 border-none outline-none shadow-none block bg-[#fbfbfb]"
             style={{
-              width: "clamp(800px, 85vw, 1800px)",
+              width: "calc(clamp(800px, 85vw, 1800px) + 2px)",
               height: "auto",
-              maxHeight: "100vh",
+              maxHeight: "calc(100vh + 2px)",
               aspectRatio: "16/9",
               border: "none",
               outline: "none",
               boxShadow: "none",
+              margin: "-1px",
             }}
             autoPlay
             loop

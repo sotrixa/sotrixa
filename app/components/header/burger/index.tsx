@@ -106,6 +106,7 @@ export default function Burger({
           <motion.div
             className="menu-icon"
             variants={iconVariants}
+            initial="closed"
             animate={isMenuOpen ? "opened" : "closed"}
             style={{ position: "relative", width: "62px", height: "15px" }}
           >
@@ -120,6 +121,7 @@ export default function Burger({
           <motion.div
             className="close-icon"
             variants={closeIconVariants}
+            initial="closed"
             animate={isMenuOpen ? "opened" : "closed"}
             style={{
               position: "absolute",
@@ -145,6 +147,7 @@ export default function Burger({
           </motion.div>
           <motion.p
             variants={menuTextVariants}
+            initial="closed"
             animate={isMenuOpen ? "opened" : "closed"}
             style={{
               color: isScrolled ? "black" : "white",
