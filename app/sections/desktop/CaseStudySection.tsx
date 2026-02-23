@@ -28,7 +28,7 @@ const caseStudies: CaseStudiesData = {
     {
       title: "Hospitality Business",
       subtitle: "A well-established hospitality business in Bulgaria",
-      image: "/1_Icon_Hospitality Business.svg",
+      image: "/1_Icon_Hospitality_Business.svg",
       description:
         "A well-established hospitality business in Bulgaria sought new avenues for expansion and strategic growth. With a strong foundation, the goal was to uncover actionable insights to inform future development.",
       challenge:
