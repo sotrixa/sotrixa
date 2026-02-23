@@ -6,7 +6,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Burger from '@/app/components/header/burger';
 import Menu from '@/app/components/header/menu';
-import Stairs from '@/app/components/header/stairs';
+
 import { AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -96,7 +96,6 @@ function MobileLayoutComponent({ children }: Props) {
 			<AnimatePresence mode='wait'>
 				{menuIsOpen && (
 					<>
-						<Stairs />
 						<Menu closeMenu={() => setMenuIsOpen(false)} />
 					</>
 				)}
