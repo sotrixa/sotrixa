@@ -85,7 +85,7 @@ const serviceContents: Record<string, ServiceContent> = {
 			},
 		],
 	},
-	BRANDING: {
+	'BRAND STORYTELLING': {
 		title: "Bringing your business's true story to life—visually, verbally, and emotionally.",
 		description: ['A brand is the memory, the feeling, the story people carry after they meet you.​', 'At Sotrixa, branding is an act of alignment: we listen deeply to what your business is becoming and translate that into visual and verbal identities that feel alive and true.​'],
 		approachTitle: 'More than an aesthetic, an invitation',

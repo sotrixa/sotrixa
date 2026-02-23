@@ -74,6 +74,23 @@ export default function Menu({ closeMenu }: MenuProps) {
 			return;
 		}
 
+		// Check if we're on mobile (screen width less than lg breakpoint - 1024px)
+		const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
+
+		// If it's a direct path but we're on mobile and have a sectionId, scroll to section instead
+		if (item.path && isMobile && item.sectionId) {
+			setTimeout(() => {
+				const targetSection = document.getElementById(`mobile-${item.sectionId}`);
+				if (targetSection) {
+					targetSection.scrollIntoView({ behavior: 'smooth' });
+				} else {
+					// Fallback to regular path navigation
+					window.location.href = item.path!;
+				}
+			}, 300);
+			return;
+		}
+
 		// If it's a direct path, navigate to the page
 		if (item.path) {
 			setTimeout(() => {

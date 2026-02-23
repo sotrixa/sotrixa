@@ -342,7 +342,7 @@ export default function HomeSection() {
               aspectRatio: "16/9",
               border: "none",
               outline: "none",
-              boxShadow: "0 0 0 4px #fbfbfb",
+              boxShadow: "none",
               display: "block",
             }}
             autoPlay
@@ -361,6 +361,19 @@ export default function HomeSection() {
             />
             Your browser does not support the video tag.
           </video>
+          {/* Overlay frame to cover video edge rendering artifacts */}
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              boxShadow: "inset 0 0 0 5px #fbfbfb",
+              pointerEvents: "none",
+              zIndex: 1,
+            }}
+          />
         </div>
       </div>
 

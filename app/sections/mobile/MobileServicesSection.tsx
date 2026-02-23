@@ -16,7 +16,7 @@ export default function MobileServicesSection() {
 	const [language] = useState<Language>('en');
 	
 	// EXACT SAME SERVICES AS DESKTOP
-	const services = ['RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRANDING', 'MARKETING', 'WEBSITE DEVELOPMENT'];
+	const services = ['RESEARCH', 'BUSINESS ARCHITECTURE', 'BESPOKE STRATEGY CREATION', 'BRAND STORYTELLING', 'MARKETING', 'WEBSITE DEVELOPMENT'];
 
 	const isAnimating = useRef(false);
 	const isScrolling = useRef(false);
