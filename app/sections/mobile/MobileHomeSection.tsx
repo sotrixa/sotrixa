@@ -176,8 +176,8 @@ const MobileHome: React.FC = () => {
 			</div>
 
 			{/* Video background - responsive sizing */}
-			<div ref={videoContainerRef} className='absolute inset-0 w-full h-full z-0 pointer-events-none opacity-80 sm:opacity-90'>
-				<video className='absolute inset-0 w-full h-full object-cover' autoPlay loop muted playsInline>
+			<div ref={videoContainerRef} className='absolute inset-0 w-full h-full z-0 pointer-events-none opacity-80 sm:opacity-90 bg-white'>
+				<video className='absolute inset-0 w-full h-full object-cover bg-white' autoPlay loop muted playsInline>
 					<source src='/video/Sotrixa Home Page Animation.mp4' type='video/mp4' />
 					Your browser does not support the video tag.
 				</video>

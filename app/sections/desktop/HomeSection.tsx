@@ -18,7 +18,6 @@ declare global {
 }
 
 export default function HomeSection() {
-  const [windowWidth, setWindowWidth] = useState(0);
   const { language } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
@@ -27,7 +26,6 @@ export default function HomeSection() {
   const paragraphRef = useRef<HTMLParagraphElement>(null);
   const buttonsRef = useRef<HTMLDivElement>(null);
   const videoContainerRef = useRef<HTMLDivElement>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -35,10 +33,7 @@ export default function HomeSection() {
 
   useEffect(() => {
     const handleResize = () => {
-      const width = window.innerWidth;
-      setWindowWidth(width);
-      // Consistent with main page mobile detection
-      setIsMobile(width < 1024);
+      setIsMobile(window.innerWidth < 1024);
     };
 
     // Initial call
@@ -53,12 +48,6 @@ export default function HomeSection() {
     // Skip on server side
     if (typeof window === "undefined") return;
 
-    // Immediately hide grid elements on mount to prevent flash
-    if (gridRef.current) {
-      const columns = gridRef.current.querySelectorAll("[data-grid-column]");
-      gsap.set(columns, { autoAlpha: 0 });
-    }
-
     // Short delay to ensure DOM is fully rendered
     const animationTimeout = setTimeout(() => {
       if (!containerRef.current) return;
@@ -68,22 +57,6 @@ export default function HomeSection() {
         const tl = gsap.timeline({
           defaults: { ease: "power3.out" },
         });
-
-        // Grid animation
-        if (gridRef.current) {
-          const columns =
-            gridRef.current.querySelectorAll("[data-grid-column]");
-          // Use fewer columns on mobile for better performance
-          const visibleColumns = isMobile
-            ? Array.from(columns).slice(0, isMobile ? 10 : 20)
-            : columns;
-
-          tl.fromTo(
-            visibleColumns,
-            { autoAlpha: 0 },
-            { autoAlpha: 1, stagger: 0.03, duration: 0.5 },
-          );
-        }
 
         // Heading parts animation without hiding content first
         if (headingRef.current) {
@@ -192,30 +165,6 @@ export default function HomeSection() {
     };
   }, []);
 
-  const getBlocks = () => {
-    // Fewer blocks on mobile for better performance
-    const blockSize = isMobile ? windowWidth * 0.03 : windowWidth * 0.02;
-    const nbOfBlocks = Math.ceil(window.innerHeight / blockSize);
-    const limitedBlocks = isMobile ? Math.min(nbOfBlocks, 15) : nbOfBlocks;
-
-    return [...Array(limitedBlocks).keys()].map((_, index) => {
-      return (
-        <div
-          key={index}
-          className="flex-1 w-full transition-colors duration-300"
-          onMouseEnter={(e) => colorize(e.target as HTMLDivElement)}
-        />
-      );
-    });
-  };
-
-  const colorize = (el: HTMLDivElement) => {
-    el.style.backgroundColor = "black";
-    setTimeout(() => {
-      el.style.backgroundColor = "transparent";
-    }, 300);
-  };
-
   return (
     <div
       id="home"
@@ -322,60 +271,31 @@ export default function HomeSection() {
 
         <div
           ref={videoContainerRef}
+          className="flex items-center justify-center w-full h-full overflow-hidden"
           style={{
             flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
             minWidth: 0,
-            justifyContent: "center",
-            position: "relative",
-            overflow: "hidden",
-            aspectRatio: "16/9",
             ...(isMobile ? {} : { marginTop: "-10vh" }),
           }}
         >
-          <video
-            className="p-0 block"
+          <div
+            className="relative w-full overflow-hidden"
             style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "contain",
-              border: "none",
-              outline: "none",
-              boxShadow: "none",
-              display: "block",
-              transform: "scale(0.85)",
+              aspectRatio: "16/9",
+              clipPath: "inset(0 round 0.5rem)",
             }}
-            autoPlay
-            loop
-            muted
-            playsInline
-            ref={videoRef}
           >
-            <source
-              src={isMobile ? "/video/0223.mp4#t=0.1" : "/video/0223.mp4#t=0.1"}
-              type="video/mp4"
+            <video
+              ref={videoRef}
+              src="/video/0223.mp4#t=0.1"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute -inset-[2px] w-[calc(100%+4px)] h-[calc(100%+4px)] object-contaign block m-0 p-0 border-0 outline-none"
             />
-            Your browser does not support the video tag.
-          </video>
+          </div>
         </div>
-      </div>
-
-      <div
-        ref={gridRef}
-        className="absolute top-0 left-0 h-full w-full grid grid-cols-[repeat(40,1fr)] -z-[1] pointer-events-none max-md:-z-[2] max-[1024px]:grid-cols-[repeat(10,1fr)]"
-      >
-        {windowWidth > 0 &&
-          [...Array(isMobile ? 10 : 40).keys()].map((_, index) => (
-            <div
-              key={"b_" + index}
-              data-grid-column
-              className="h-full flex flex-col opacity-0"
-            >
-              {getBlocks()}
-            </div>
-          ))}
       </div>
     </div>
   );
