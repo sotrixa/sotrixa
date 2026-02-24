@@ -10,7 +10,6 @@ interface BurgerProps {
   closeMenu: () => void;
   isMenuOpen: boolean;
   isScrolled: boolean;
-  isMobile?: boolean;
 }
 
 export default function Burger({
@@ -18,7 +17,6 @@ export default function Burger({
   closeMenu,
   isMenuOpen,
   isScrolled,
-  isMobile = false,
 }: BurgerProps) {
   const burger = {
     closed: {
@@ -97,13 +95,13 @@ export default function Burger({
   return (
     <div className={styles.burgerContainer} ref={burgerRef}>
       <motion.div
-        className={`${styles.burger} ${isMobile ? styles.burgerMobile : ''}`}
+        className={styles.burger}
         variants={burger}
         animate={isMenuOpen ? "opened" : "closed"}
         onClick={isMenuOpen ? closeMenu : openMenu}
       >
         <div className={styles.bounds}></div>
-        {!isMenuOpen && !isMobile && <div className={styles.background}></div>}
+        <div className={styles.background}></div>
         <div className={"burgerMenu " + styles.burgerInner}>
           <motion.div
             className="menu-icon"
@@ -121,31 +119,16 @@ export default function Burger({
             />
           </motion.div>
           <motion.div
-            className="close-icon"
+            className={`close-icon ${styles.closeIcon}`}
             variants={closeIconVariants}
             initial="closed"
             animate={isMenuOpen ? "opened" : "closed"}
-            style={{
-              position: "absolute",
-              width: "40px",
-              height: "40px",
-              top: "6px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+            onClick={(e) => {
+              e.stopPropagation();
+              closeMenu();
             }}
           >
-            <span
-              aria-hidden="true"
-              style={{
-                color: "white",
-                fontSize: "64px",
-                fontWeight: 100,
-                lineHeight: 1,
-              }}
-            >
-              ×
-            </span>
+            <span aria-hidden="true">×</span>
           </motion.div>
           <motion.p
             variants={menuTextVariants}

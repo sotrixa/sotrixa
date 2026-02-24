@@ -77,7 +77,7 @@ export default function Navigation() {
 
           {/* Mobile Menu - only show on mobile */}
           {isMobile && (
-            <div className="relative">
+            <div className="relative -mr-2 xs:-mr-3 sm:-mr-4 md:-mr-6">
               <Header />
             </div>
           )}

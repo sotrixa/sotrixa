@@ -10,14 +10,13 @@
 	inset: 0;
 
 	.header {
-		display: none;
+		display: flex;
 		justify-content: flex-end;
 		padding: 20px;
 		z-index: 10;
 
 		svg {
-			/* cursor: pointer; */
-		cursor: auto;
+			cursor: pointer;
 			width: 100px;
 			height: 100px;
 			path {

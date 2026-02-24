@@ -1,83 +1,32 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useLanguage } from "../../data/LanguageContext";
 import { getText } from "../../data/translations";
+import Image from "next/image";
 import ReactDOM from "react-dom";
-import ScrollToTopButtonComponent from "../../components/scroll/ScrollToTopButton";
 
-function MobileIntroSectionComponent() {
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-  const [isVideoHovered, setIsVideoHovered] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
+export default function MobileIntroSection() {
   const { language } = useLanguage();
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Auto-focus the video when it starts playing
-  useEffect(() => {
-    if (isVideoPlaying) {
-      // Short delay to ensure DOM is ready
-      setTimeout(() => {
-        videoRef.current?.focus();
-      }, 100);
-    }
-  }, [isVideoPlaying]);
-
-  // Prevent body scrolling when video is playing on mobile
-  useEffect(() => {
-    if (isVideoPlaying) {
-      // Save current scroll position
-      const scrollY = window.scrollY;
-      // Add styles to body
-      document.body.style.position = "fixed";
-      document.body.style.width = "100%";
-      document.body.style.top = `-${scrollY}px`;
-    } else {
-      // Restore scroll position
-      const scrollY = document.body.style.top;
-      document.body.style.position = "";
-      document.body.style.width = "";
-      document.body.style.top = "";
-      if (scrollY) {
-        window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
-      }
-    }
-  }, [isVideoPlaying]);
-
-  const handlePlayClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handlePlayClick = () => {
     setIsVideoPlaying(true);
-
-    // Wait for state update then play video
-    setTimeout(() => {
-      if (videoRef.current) {
-        videoRef.current.play().catch((error) => {
-          console.error("Video playback failed:", error);
-        });
-      }
-    }, 50);
+    setTimeout(() => videoRef.current?.play().catch(console.error), 50);
   };
 
-  const handleCloseVideo = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    // Pause and reset video
+  const handleCloseVideo = () => {
     if (videoRef.current) {
       videoRef.current.pause();
       videoRef.current.currentTime = 0;
     }
-
     setIsVideoPlaying(false);
   };
 
   const renderColoredText = (text: string) => {
-    // Parse the text with color markers {{word:#color}}
     const parts = text.split(/(\{\{.*?\}\})/g);
-
     return parts.map((part, i) => {
-      // Check if this part is a color marker
       const match = part.match(/\{\{(.*?):(.*?)\}\}/);
       if (match) {
         const [, word, color] = match;
@@ -91,64 +40,40 @@ function MobileIntroSectionComponent() {
     });
   };
 
-  // Split the title into two parts
   const titleText = getText("introSection.title", language).split("\n");
-  const firstLine = titleText[0] || "";
-  const secondLine = titleText[1] || "";
   const subheadingText = getText("introSection.subheading", language);
   const testimonialText = getText("introSection.testimonial", language);
 
-  // Mobile fullscreen video overlay
-  const renderMobileVideoOverlay = () => {
+  const renderVideoOverlay = () => {
     if (!isVideoPlaying) return null;
-
-    // Use portal to render the overlay at the document body level
     return ReactDOM.createPortal(
-      <div
-        className="fixed inset-0 z-[9999] flex items-center justify-center"
-        style={{ top: 0, left: 0, right: 0, bottom: 0 }}
-      >
-        <div
-          className="relative w-[90%] aspect-video mx-auto max-w-lg max-h-[80vh]"
-          onMouseEnter={() => setIsVideoHovered(true)}
-          onMouseLeave={() => setIsVideoHovered(false)}
-          onTouchStart={() => setIsVideoHovered(true)}
-          onTouchEnd={() => setIsVideoHovered(false)}
-        >
+      <div className="fixed inset-0 z-[9999] bg-black flex items-center justify-center p-4">
+        <div className="relative w-full max-w-lg">
           <button
-            className="absolute top-4 right-4 bg-white/90 rounded-full cursor-pointer p-2 z-10 shadow-lg focus:outline-none focus:ring-2 focus:ring-white group"
+            className="absolute -top-10 right-0 text-white/70 hover:text-white transition-colors"
             onClick={handleCloseVideo}
-            aria-label="Close video"
           >
             <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
+              className="w-8 h-8"
               fill="none"
+              viewBox="0 0 24 24"
               stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="w-5 h-5 text-black group-hover:scale-110 transition-transform"
             >
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
-
           <video
             ref={videoRef}
-            className="w-full h-full object-cover"
-            controls={isVideoHovered}
-            autoPlay
+            className="w-full rounded-2xl"
+            controls
             playsInline
-            onError={() => console.error("Mobile video failed to load")}
-            tabIndex={0}
           >
             <source src="/video/Sotrixa-final-subs.mp4" type="video/mp4" />
-            <p className="p-4 text-white text-center">
-              Your browser does not support the video tag. Please use a modern
-              browser to view this video.
-            </p>
           </video>
         </div>
       </div>,
@@ -158,97 +83,67 @@ function MobileIntroSectionComponent() {
 
   return (
     <>
-      {/* Mobile fullscreen video overlay */}
-      {renderMobileVideoOverlay()}
+      {renderVideoOverlay()}
+      <section id="mobile-intro" className="w-full bg-white">
+        <div className="px-6 py-12">
+          {/* Label */}
+          <div className="mb-6">
+            <span className="text-[10px] font-bold tracking-[0.3em] text-gray-400 uppercase">
+              About
+            </span>
+          </div>
 
-      <section
-        id="intro"
-        className="bg-[#FAFAFA] text-black relative h-screen flex items-center justify-center"
-      >
-        {/* Mobile-only background image */}
-        <div
-          className="absolute inset-0 z-0"
-          style={{
-            backgroundImage: "url(/intro-section.webp)",
-            backgroundSize: "cover",
-            backgroundPosition: "center center",
-            backgroundRepeat: "no-repeat",
-            opacity: 0.4,
-          }}
-        />
-
-        <div className="relative z-10 w-full px-4 flex items-center justify-center">
-          <motion.div
-            className="w-full max-w-md text-center space-y-4"
-            initial={{ y: 50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8 }}
-          >
+          {/* Title */}
+          <div className="mb-8">
             <h1
-              className="font-black text-center"
-              style={{
-                fontSize: "clamp(1.25rem, 5.5vw, 4.5rem)",
-                lineHeight: 1,
-              }}
+              className="font-black text-black leading-[1.1]"
+              style={{ fontSize: "1.875rem" }}
             >
-              {renderColoredText(firstLine)}
+              {renderColoredText(titleText[0] || "")}
             </h1>
-            <h2
-              className="font-black text-center"
-              style={{
-                fontSize: "clamp(1.25rem, 5.5vw, 4.5rem)",
-                lineHeight: 1,
-              }}
+            <h1
+              className="font-black text-black leading-[1.1] mt-1"
+              style={{ fontSize: "1.875rem" }}
             >
-              {renderColoredText(secondLine)}
-            </h2>
+              {renderColoredText(titleText[1] || "")}
+            </h1>
+          </div>
 
-            {/* Subheading with play button */}
-            <div className="flex items-center justify-center gap-3 mt-4">
-              <p
-                className="font-medium"
-                style={{ fontSize: "clamp(0.875rem, 1.8vw, 1.125rem)" }}
-              >
-                {subheadingText}
-              </p>
-
-              {/* Play button */}
-              <button
-                type="button"
-                className="bg-white rounded-full p-2 shadow-lg cursor-pointer hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-[#d142e2] group"
-                onClick={handlePlayClick}
-                aria-label="Play Sotrixa introduction video"
-              >
-                <div className="w-7 h-7 flex items-center justify-center group-hover:scale-110 transition-transform">
+          {/* Video Thumbnail */}
+          <div className="mb-8" onClick={handlePlayClick}>
+            <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-gray-100 cursor-pointer">
+              <Image
+                src="/About-us-cover.svg"
+                alt="Sotrixa"
+                fill
+                className="object-contain"
+                sizes="100vw"
+              />
+              <div className="absolute inset-0 bg-black/10 flex items-center justify-center">
+                <div className="w-16 h-16 rounded-full bg-white shadow-xl flex items-center justify-center">
                   <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
+                    className="w-6 h-6 text-black ml-1"
                     fill="currentColor"
-                    className="w-4 h-4 text-[#d142e2]"
+                    viewBox="0 0 24 24"
                   >
                     <path d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" />
                   </svg>
                 </div>
-              </button>
+              </div>
             </div>
+          </div>
 
-            {/* Testimonial */}
-            <div className="mt-6">
-              <p
-                className="leading-tight py-2 px-3 rounded-md"
-                style={{
-                  fontSize: "clamp(0.75rem, 1.5vw, 0.875rem)",
-                }}
-              >
-                {testimonialText}
-              </p>
-            </div>
-          </motion.div>
+          {/* Text */}
+          <div className="mb-2">
+            <h2 className="font-bold text-black text-lg mb-3">
+              {subheadingText}
+            </h2>
+            <p className="text-gray-500 text-[15px] leading-relaxed">
+              {testimonialText}
+            </p>
+          </div>
         </div>
-
-        <ScrollToTopButtonComponent />
       </section>
     </>
   );
 }
-export default MobileIntroSectionComponent;

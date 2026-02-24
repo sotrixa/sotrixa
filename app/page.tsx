@@ -12,6 +12,15 @@ import ContactSection from "@/app/sections/desktop/ContactSection";
 import Navigation from "@/app/components/navigation/Navigation";
 import dynamic from "next/dynamic";
 
+// Use a wrapper component for MobileLayout
+const MobileLayout = dynamic(
+  () =>
+    import("@/app/components/layout/MobileLayout").then((mod) => ({
+      default: mod.default,
+    })),
+  { ssr: false },
+);
+
 // Dynamic imports for mobile components
 const MobileHomeSection = dynamic(
   () =>
@@ -41,13 +50,6 @@ const MobileCaseStudySection = dynamic(
     })),
   { ssr: false },
 );
-const MobileCreatedToMatterSection = dynamic(
-  () =>
-    import("@/app/sections/mobile/MobileCreatedToMatterSection").then(
-      (mod) => ({ default: mod.default }),
-    ),
-  { ssr: false },
-);
 const MobileContactSection = dynamic(
   () =>
     import("@/app/sections/mobile/MobileContactSection").then((mod) => ({
@@ -71,25 +73,22 @@ export default function Home() {
         }
       `}</style>
 
-      {/* Shared navigation for both mobile and desktop */}
-      <Navigation />
-
       {/* Mobile layout - hidden on desktop with Tailwind classes */}
       <div className="block lg:hidden">
-        <main className="w-full">
+        <MobileLayout>
           <MobileHomeSection />
           <MobileIntroSection />
           <MobileServicesSection />
           <MobileCaseStudySection />
-          <MobileCreatedToMatterSection />
           <MobileContactSection />
-        </main>
+        </MobileLayout>
       </div>
 
       {/* Desktop layout - hidden on mobile/tablet with Tailwind classes */}
       <div className="hidden lg:block desktop-layout">
         <main className="relative bg-black min-h-screen overflow-y-auto overflow-x-hidden">
           <KeyboardControls />
+          <Navigation />
           <GsapHorizontalScroll>
             <HomeSection />
             <IntroSection />
