@@ -98,23 +98,27 @@ export default function CaseStudyDetailMobile({
       ref={detailRef}
       className="fixed inset-0 bg-white z-50 overflow-y-auto"
     >
-      <div className="p-4 pb-8">
+      <div className="px-5 pb-8">
         {/* Header with close button */}
-        <div className="flex justify-between items-center mb-6 sticky top-0 bg-white pb-4">
+        <div className="flex justify-between items-center sticky top-0 bg-white py-4 mb-6 border-b border-gray-100">
+          <h2 className="text-sm font-semibold text-gray-900">Case Study</h2>
           <button
             onClick={handleClose}
-            className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 hover:bg-gray-50 transition-colors"
+            className="text-gray-600 hover:text-black transition-colors"
             aria-label="Close case study"
           >
             <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
+              className="w-5 h-5"
               fill="none"
+              viewBox="0 0 24 24"
               stroke="currentColor"
-              strokeWidth="2"
             >
-              <path d="M18 6L6 18M6 6l12 12" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
@@ -122,17 +126,17 @@ export default function CaseStudyDetailMobile({
         {/* Title */}
         <div ref={titleRef} className="mb-6">
           <h1
-            className="text-2xl sm:text-3xl font-black text-black mb-3"
+            className="text-2xl font-black text-black mb-2"
             style={{ lineHeight: 1 }}
           >
             {study.title}
           </h1>
-          <p className="text-base sm:text-lg text-gray-600">{study.subtitle}</p>
+          <p className="text-sm text-gray-600">{study.subtitle}</p>
         </div>
 
         {/* Main Image */}
         <div ref={imageRef} className="mb-8">
-          <div className="relative w-full h-[300px] sm:h-[400px] rounded-lg overflow-hidden shadow-lg bg-white p-4">
+          <div className="relative w-full h-64 rounded-lg overflow-hidden bg-gray-50 p-4">
             <img
               src={study.image}
               alt={study.title}
@@ -142,70 +146,43 @@ export default function CaseStudyDetailMobile({
         </div>
 
         {/* Content Sections */}
-        <div ref={contentRef} className="space-y-8 pb-20">
-          {/* Description */}
+        <div ref={contentRef} className="space-y-6 pb-12">
           {study.description && (
             <div>
-              <h2
-                className="text-lg sm:text-xl font-bold text-black mb-4"
-                style={{ lineHeight: 1 }}
-              >
-                Overview
-              </h2>
-              <p className="text-sm sm:text-base text-gray-700 leading-relaxed whitespace-pre-line">
+              <h3 className="font-bold text-black text-sm mb-2">Overview</h3>
+              <p className="text-gray-700 text-xs leading-relaxed">
                 {study.description}
               </p>
             </div>
           )}
 
-          {/* Challenge */}
           {study.challenge && (
-            <div>
-              <h2
-                className="text-lg sm:text-xl font-bold text-black mb-4"
-                style={{ lineHeight: 1 }}
-              >
-                Challenge
-              </h2>
-              <p className="text-sm sm:text-base text-gray-700 leading-relaxed whitespace-pre-line">
+            <div className="border-t border-gray-200 pt-4">
+              <h3 className="font-bold text-black text-sm mb-2">Challenge</h3>
+              <p className="text-gray-700 text-xs leading-relaxed">
                 {study.challenge}
               </p>
             </div>
           )}
 
-          {/* Solution */}
           {study.solution && (
-            <div>
-              <h2
-                className="text-lg sm:text-xl font-bold text-black mb-4"
-                style={{ lineHeight: 1 }}
-              >
-                Solution
-              </h2>
-              <p className="text-sm sm:text-base text-gray-700 leading-relaxed whitespace-pre-line">
+            <div className="border-t border-gray-200 pt-4">
+              <h3 className="font-bold text-black text-sm mb-2">Solution</h3>
+              <p className="text-gray-700 text-xs leading-relaxed">
                 {study.solution}
               </p>
             </div>
           )}
 
-          {/* Results */}
           {study.results && (
-            <div>
-              <h2
-                className="text-lg sm:text-xl font-bold text-black mb-4"
-                style={{ lineHeight: 1 }}
-              >
-                Results
-              </h2>
-              <p className="text-sm sm:text-base text-gray-700 leading-relaxed whitespace-pre-line">
+            <div className="border-t border-gray-200 pt-4">
+              <h3 className="font-bold text-black text-sm mb-2">Results</h3>
+              <p className="text-gray-700 text-xs leading-relaxed">
                 {study.results}
               </p>
             </div>
           )}
         </div>
-
-        {/* Bottom spacing */}
-        <div className="h-8"></div>
       </div>
     </div>
   );

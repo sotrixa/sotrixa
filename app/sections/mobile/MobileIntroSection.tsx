@@ -85,10 +85,10 @@ export default function MobileIntroSection() {
     <>
       {renderVideoOverlay()}
       <section id="mobile-intro" className="w-full bg-white">
-        <div className="px-6 py-12">
+        <div className="px-5 py-10">
           {/* Label */}
           <div className="mb-6">
-            <span className="text-[10px] font-bold tracking-[0.3em] text-gray-400 uppercase">
+            <span className="text-[11px] font-bold tracking-widest text-gray-500 uppercase">
               About
             </span>
           </div>
@@ -96,22 +96,22 @@ export default function MobileIntroSection() {
           {/* Title */}
           <div className="mb-8">
             <h1
-              className="font-black text-black leading-[1.1]"
-              style={{ fontSize: "1.875rem" }}
+              className="font-black text-black leading-tight"
+              style={{ fontSize: "1.625rem" }}
             >
               {renderColoredText(titleText[0] || "")}
-            </h1>
-            <h1
-              className="font-black text-black leading-[1.1] mt-1"
-              style={{ fontSize: "1.875rem" }}
-            >
-              {renderColoredText(titleText[1] || "")}
+              {titleText[1] && (
+                <>
+                  <br />
+                  {renderColoredText(titleText[1])}
+                </>
+              )}
             </h1>
           </div>
 
           {/* Video Thumbnail */}
           <div className="mb-8" onClick={handlePlayClick}>
-            <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-gray-100 cursor-pointer">
+            <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-gray-100 cursor-pointer">
               <Image
                 src="/About-us-cover.svg"
                 alt="Sotrixa"
@@ -119,10 +119,10 @@ export default function MobileIntroSection() {
                 className="object-contain"
                 sizes="100vw"
               />
-              <div className="absolute inset-0 bg-black/10 flex items-center justify-center">
-                <div className="w-16 h-16 rounded-full bg-white shadow-xl flex items-center justify-center">
+              <div className="absolute inset-0 bg-black/5 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center">
                   <svg
-                    className="w-6 h-6 text-black ml-1"
+                    className="w-5 h-5 text-black ml-0.5"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -134,14 +134,12 @@ export default function MobileIntroSection() {
           </div>
 
           {/* Text */}
-          <div className="mb-2">
-            <h2 className="font-bold text-black text-lg mb-3">
-              {subheadingText}
-            </h2>
-            <p className="text-gray-500 text-[15px] leading-relaxed">
-              {testimonialText}
-            </p>
-          </div>
+          <h2 className="font-bold text-black text-base mb-3">
+            {subheadingText}
+          </h2>
+          <p className="text-gray-600 text-sm leading-relaxed">
+            {testimonialText}
+          </p>
         </div>
       </section>
     </>

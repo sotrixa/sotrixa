@@ -273,7 +273,7 @@ export default function HomeSection() {
           style={{
             maxWidth: "clamp(0rem, 42vw, 55rem)",
             clipPath: "inset(0 round 0.5rem)",
-            marginTop: "clamp(-7rem, -15vw, -10rem)",
+            marginTop: "clamp(-5.5rem, -15vw, -10rem)",
           }}
         >
           <video
@@ -282,7 +282,7 @@ export default function HomeSection() {
             loop
             muted
             playsInline
-            className="absolute -inset-[2px] w-[calc(92%+4px)] h-[calc(92%+4px)] object-contaign block p-0 border-0 outline-none"
+            className="absolute -inset-[2px] w-[calc(91%+4px)] h-[calc(91%+4px)] object-contaign block p-0 border-0 outline-none"
           />
         </div>
       </div>

@@ -132,10 +132,10 @@ export default function MobileCaseStudySection() {
 
   return (
     <section id="mobile-case-studies" className="w-full bg-white">
-      <div className="px-6 py-12">
+      <div className="px-5 py-10">
         {/* Label */}
         <div className="mb-6">
-          <span className="text-[10px] font-bold tracking-[0.3em] text-gray-400 uppercase">
+          <span className="text-[11px] font-bold tracking-widest text-gray-500 uppercase">
             Work
           </span>
         </div>
@@ -143,20 +143,20 @@ export default function MobileCaseStudySection() {
         {/* Title */}
         <div className="mb-8">
           <h1
-            className="font-black text-black leading-[1.1]"
+            className="font-black text-black leading-tight"
             style={{ fontSize: "1.5rem" }}
           >
             {renderColoredTitle()}
           </h1>
-          <p className="text-gray-500 text-sm mt-2">{subtitleTranslation}</p>
+          <p className="text-gray-600 text-xs mt-2">{subtitleTranslation}</p>
         </div>
 
         {/* Card */}
         <div
-          className="bg-gray-50 rounded-2xl overflow-hidden mb-6"
+          className="bg-gray-50 rounded-lg overflow-hidden mb-6 cursor-pointer hover:bg-gray-100 transition-colors"
           onClick={() => currentStudy && handleStudyClick(currentStudy)}
         >
-          <div className="relative h-44 bg-white">
+          <div className="relative h-32 bg-white">
             <Image
               src={currentStudy?.image || ""}
               alt={currentStudy?.title || ""}
@@ -165,59 +165,47 @@ export default function MobileCaseStudySection() {
               sizes="100vw"
             />
           </div>
-          <div className="p-5">
-            <h3 className="font-bold text-black mb-1">{currentStudy?.title}</h3>
-            <p className="text-gray-500 text-sm">{currentStudy?.subtitle}</p>
+          <div className="p-4">
+            <h3 className="font-bold text-black text-sm mb-1">
+              {currentStudy?.title}
+            </h3>
+            <p className="text-gray-500 text-xs">{currentStudy?.subtitle}</p>
           </div>
         </div>
 
         {/* Nav */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-3">
           <button
             onClick={goToPrevious}
             disabled={currentSlideIndex === 0}
-            className={`w-12 h-12 rounded-full flex items-center justify-center ${currentSlideIndex === 0 ? "bg-gray-100 text-gray-300" : "bg-black text-white"}`}
+            className={`flex-1 py-2 rounded-lg font-medium text-sm transition-colors ${
+              currentSlideIndex === 0
+                ? "bg-gray-100 text-gray-300"
+                : "bg-black text-white hover:bg-gray-800"
+            }`}
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
+            ← Prev
           </button>
-          <div className="flex gap-1.5">
+          <div className="flex gap-1">
             {getAllSlides().map((_, i) => (
               <div
                 key={i}
-                className={`h-1.5 rounded-full ${i === currentSlideIndex ? "bg-black w-6" : "bg-gray-200 w-1.5"}`}
+                className={`h-1 rounded-full transition-all ${
+                  i === currentSlideIndex ? "bg-black w-6" : "bg-gray-300 w-1.5"
+                }`}
               />
             ))}
           </div>
           <button
             onClick={goToNext}
             disabled={currentSlideIndex >= getAllSlides().length - 1}
-            className={`w-12 h-12 rounded-full flex items-center justify-center ${currentSlideIndex >= getAllSlides().length - 1 ? "bg-gray-100 text-gray-300" : "bg-black text-white"}`}
+            className={`flex-1 py-2 rounded-lg font-medium text-sm transition-colors ${
+              currentSlideIndex >= getAllSlides().length - 1
+                ? "bg-gray-100 text-gray-300"
+                : "bg-black text-white hover:bg-gray-800"
+            }`}
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
+            Next →
           </button>
         </div>
       </div>

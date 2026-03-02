@@ -71,10 +71,10 @@ export default function MobileServicesSection() {
 
   return (
     <section id="mobile-services" className="w-full bg-white">
-      <div className="px-6 py-12">
+      <div className="px-5 py-10">
         {/* Label */}
         <div className="mb-6">
-          <span className="text-[10px] font-bold tracking-[0.3em] text-gray-400 uppercase">
+          <span className="text-[11px] font-bold tracking-widest text-gray-500 uppercase">
             Services
           </span>
         </div>
@@ -82,40 +82,27 @@ export default function MobileServicesSection() {
         {/* Title */}
         <div className="mb-8">
           <h1
-            className="font-black text-black leading-[1.1]"
-            style={{ fontSize: "1.75rem" }}
+            className="font-black text-black leading-tight"
+            style={{ fontSize: "1.625rem" }}
           >
             {renderColoredTitle()}
           </h1>
-          <p className="text-gray-500 text-sm mt-3">{subtitleTranslation}</p>
+          <p className="text-gray-600 text-xs mt-3">{subtitleTranslation}</p>
         </div>
 
         {/* List */}
-        <div className="space-y-2">
+        <div className="space-y-1">
           {services.map((service, index) => (
             <button
               key={service}
               onClick={() => handleServiceClick(index)}
-              className={`w-full text-left px-4 py-4 rounded-xl transition-all flex items-center justify-between ${
+              className={`w-full text-left px-4 py-3 rounded-lg transition-all text-sm font-medium ${
                 index === activeServiceIndex
                   ? "bg-black text-white"
-                  : "bg-gray-50 text-gray-600 hover:bg-gray-100"
+                  : "text-gray-700 hover:bg-gray-50"
               }`}
             >
-              <span className="font-semibold text-sm">{service}</span>
-              <svg
-                className={`w-4 h-4 ${index === activeServiceIndex ? "text-white" : "text-gray-400"}`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
+              {service}
             </button>
           ))}
         </div>
