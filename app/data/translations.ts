@@ -42,8 +42,8 @@ export const translations: Translations = {
     bg: "Проучването също трябва да бъде",
   },
   "introSection.title": {
-    en: "Every {{strategy:#53EBDD}} has a {{rhythm:#DD53EB}}—ours begins by {{listening:#EBDD53}}",
-    bg: "Всяка {{strategy:#53EBDD}} има свой {{rhythm:#DD53EB}}—нашата започва със {{listening:#EBDD53}}",
+    en: "Every {{strategy:#53EBDD}} has a {{rhythm:#DD53EB}} – ours begins by {{listening:#EBDD53}}",
+    bg: "Всяка {{strategy:#53EBDD}} има свой {{rhythm:#DD53EB}} – нашата започва със {{listening:#EBDD53}}",
   },
   "introSection.subheading": {
     en: "See how it unfolds",

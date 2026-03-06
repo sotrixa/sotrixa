@@ -36,30 +36,6 @@ export default function MobileIntroSection() {
           </span>
         );
       }
-      if (part.includes("—")) {
-        return (
-          <span key={i}>
-            {part.split("—").map((s, j, arr) => (
-              <span key={j}>
-                {s}
-                {j < arr.length - 1 && (
-                  <span
-                    style={{
-                      fontWeight: 400,
-                      fontSize: "0.45em",
-                      verticalAlign: "middle",
-                      opacity: 0.4,
-                    }}
-                  >
-                    {" "}
-                    —{" "}
-                  </span>
-                )}
-              </span>
-            ))}
-          </span>
-        );
-      }
       return <span key={i}>{part}</span>;
     });
   };
