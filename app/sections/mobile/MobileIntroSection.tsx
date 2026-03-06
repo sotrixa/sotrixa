@@ -36,11 +36,27 @@ export default function MobileIntroSection() {
           </span>
         );
       }
-      // Make em-dash smaller in mobile
-      if (part === "—") {
+      if (part.includes("—")) {
         return (
-          <span key={i} className="text-sm md:text-xl">
-            {part}
+          <span key={i}>
+            {part.split("—").map((s, j, arr) => (
+              <span key={j}>
+                {s}
+                {j < arr.length - 1 && (
+                  <span
+                    style={{
+                      fontWeight: 400,
+                      fontSize: "0.45em",
+                      verticalAlign: "middle",
+                      opacity: 0.4,
+                    }}
+                  >
+                    {" "}
+                    —{" "}
+                  </span>
+                )}
+              </span>
+            ))}
           </span>
         );
       }
@@ -107,12 +123,6 @@ export default function MobileIntroSection() {
               style={{ scrollMarginTop: "90px" }}
             >
               {renderColoredText(titleText[0] || "")}
-              {titleText[1] && (
-                <>
-                  <br />
-                  {renderColoredText(titleText[1])}
-                </>
-              )}
             </h1>
           </div>
 
