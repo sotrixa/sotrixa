@@ -10,7 +10,7 @@ interface MobileServiceInfoSectionProps {
 
 const colorMappings: Record<string, Record<string, string>> = {
   RESEARCH: {
-    research: "#53EBDD",
+    research: "#DD53EB",
     signals: "#53EBDD",
     strategies: "#EBDD53",
   },
