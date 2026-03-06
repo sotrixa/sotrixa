@@ -15,8 +15,12 @@ export default function MobileHomeSection() {
   }, []);
 
   const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) element.scrollIntoView({ behavior: "smooth" });
+    setTimeout(() => {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 100);
   };
 
   return (
@@ -57,24 +61,24 @@ export default function MobileHomeSection() {
 
         {/* CTA Buttons */}
         <div className="space-y-2.5">
-          <button
-            onClick={() => scrollToSection("mobile-contact")}
-            className="w-full py-3 px-4 bg-black text-white font-semibold text-sm rounded-lg transition-all duration-200 active:scale-95 active:opacity-80 hover:bg-gray-900 cursor-pointer min-h-[40px]"
+          <a
+            href="#mobile-contact"
+            className="block w-full py-3 px-4 bg-black text-white font-semibold text-sm rounded-lg transition-all duration-200 active:scale-95 active:opacity-80 hover:bg-gray-900 cursor-pointer min-h-[40px] text-center"
           >
             {getText("homeSection.talkToUs", language)}
-          </button>
-          <button
-            onClick={() => scrollToSection("mobile-services")}
-            className="w-full py-3 px-4 bg-gray-100 text-black font-semibold text-sm rounded-lg transition-all duration-200 active:scale-95 active:opacity-80 hover:bg-gray-200 cursor-pointer min-h-[40px]"
+          </a>
+          <a
+            href="#mobile-services"
+            className="block w-full py-3 px-4 bg-gray-100 text-black font-semibold text-sm rounded-lg transition-all duration-200 active:scale-95 active:opacity-80 hover:bg-gray-200 cursor-pointer min-h-[40px] text-center"
           >
             What we do
-          </button>
-          <button
-            onClick={() => scrollToSection("mobile-case-studies")}
-            className="w-full py-3 px-4 text-gray-700 font-semibold text-sm transition-all duration-200 active:opacity-60 hover:text-black cursor-pointer border-b border-gray-300 pb-2 min-h-[40px]"
+          </a>
+          <a
+            href="#mobile-case-studies"
+            className="block w-full py-3 px-4 text-gray-700 font-semibold text-sm transition-all duration-200 active:opacity-60 hover:text-black cursor-pointer border-b border-gray-300 pb-2 min-h-[40px] text-center"
           >
             See our work
-          </button>
+          </a>
         </div>
       </div>
     </section>

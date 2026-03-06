@@ -169,9 +169,9 @@
 	.burger {
 		display: flex !important;
 		/* Make mobile button box bigger - INCREASED SIZE */
-		width: clamp(100px, 25vw, 160px);
-		height: clamp(85px, 20vw, 140px);
-		padding: clamp(12px, 3vw, 24px);
+		width: clamp(90px, 28vw, 120px);
+		height: clamp(70px, 15vw, 85px);
+		padding: clamp(8px, 1.5vw, 12px);
 		/* Position at the very right edge */
 		position: fixed;
 		right: 0;
@@ -179,8 +179,8 @@
 		margin: 0;
 		/* Keep solid black background box on mobile */
 		background-color: black;
-		/* Remove border-box sizing on mobile */
-		box-sizing: content-box;
+		/* Use border-box sizing to fit within header */
+		box-sizing: border-box;
 
 		p {
 			font-size: clamp(11px, 2.5vw, 16px);

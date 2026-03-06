@@ -88,12 +88,11 @@ function MobileLayoutComponent({ children }: Props) {
       {/* Mobile header - responsive height and positioning */}
       <header
         style={{
-          backgroundColor: isScrolled && !menuIsOpen ? "white" : "transparent",
-          boxShadow:
-            isScrolled && !menuIsOpen ? "0 2px 4px rgba(0, 0, 0, 0.1)" : "none",
+          backgroundColor: "white",
+          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
           pointerEvents: "none", // Allow clicks to pass through the header to content underneath
         }}
-        className="fixed top-0 left-0 w-full h-[80px] sm:h-[90px] md:h-[100px] lg:h-[120px] z-50 transition-all duration-300"
+        className="fixed top-0 left-0 w-full h-[80px] sm:h-[90px] md:h-[100px] lg:h-[120px] z-50 transition-all duration-300 overflow-hidden"
       >
         {/* Inner container that ensures all elements are within the header background */}
         <div className="relative w-full h-full flex justify-between items-center px-4 md:px-8">
@@ -107,10 +106,7 @@ function MobileLayoutComponent({ children }: Props) {
                 height={36}
                 className="transition-all duration-300"
                 style={{
-                  filter:
-                    isScrolled && !menuIsOpen
-                      ? "none"
-                      : "brightness(0) invert(0)",
+                  filter: "none",
                 }}
                 priority
               />
@@ -187,7 +183,7 @@ function MobileLayoutComponent({ children }: Props) {
           {/* Links Section - Compact */}
           <div className="flex gap-6 mb-8 pb-8 border-b border-gray-800">
             <a
-              href="/"
+              href="#mobile-home"
               className="text-sm text-gray-300 hover:text-white transition-colors"
             >
               Home
