@@ -102,7 +102,10 @@ export default function MobileIntroSection() {
 
           {/* Title */}
           <div className="mb-10">
-            <h1 className="font-black text-black leading-tight text-3xl md:text-4xl">
+            <h1
+              className="font-black text-black leading-tight text-3xl md:text-4xl"
+              style={{ scrollMarginTop: "90px" }}
+            >
               {renderColoredText(titleText[0] || "")}
               {titleText[1] && (
                 <>

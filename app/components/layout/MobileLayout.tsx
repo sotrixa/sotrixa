@@ -183,9 +183,9 @@ function MobileLayoutComponent({ children }: Props) {
           {/* Links Section - Compact */}
           <div className="flex gap-6 mb-8 pb-8 border-b border-gray-800">
             {[
-              { label: "Home", id: "mobile-home" },
+              { label: "About Us", id: "mobile-intro" },
               { label: "Services", id: "mobile-services" },
-              { label: "Work", id: "mobile-case-studies" },
+              { label: "Case Studies", id: "mobile-case-studies" },
               { label: "Contact", id: "mobile-contact" },
             ].map(({ label, id }) => (
               <button
