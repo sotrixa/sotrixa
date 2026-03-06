@@ -36,6 +36,14 @@ export default function MobileIntroSection() {
           </span>
         );
       }
+      // Make em-dash smaller in mobile
+      if (part === "—") {
+        return (
+          <span key={i} className="text-lg md:text-3xl">
+            {part}
+          </span>
+        );
+      }
       return <span key={i}>{part}</span>;
     });
   };
@@ -119,7 +127,7 @@ export default function MobileIntroSection() {
               sizes="100vw"
               priority
             />
-            <div className="absolute inset-0 flex items-center justify-center">
+            <div className="absolute inset-0 flex items-center justify-center -translate-y-4">
               <div className="w-14 h-14 rounded-full bg-white hover:bg-white/90 flex items-center justify-center transition-all duration-200 shadow-lg">
                 <svg
                   className="w-6 h-6 text-black ml-0.5"

@@ -78,14 +78,17 @@ export default function Menu({ closeMenu }: MenuProps) {
 
     // On mobile, always scroll to the mobile section
     if (isMobile && item.sectionId) {
+      const sectionId = `mobile-${item.sectionId}`;
       setTimeout(() => {
-        const targetSection = document.getElementById(
-          `mobile-${item.sectionId}`,
-        );
-        if (targetSection) {
-          targetSection.scrollIntoView({ behavior: "smooth" });
+        document.body.style.overflow = "";
+        const h1 = document.querySelector(
+          `#${sectionId} h1`,
+        ) as HTMLElement | null;
+        const target = h1 || document.getElementById(sectionId);
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
         }
-      }, 300);
+      }, 500);
       return;
     }
 

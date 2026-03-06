@@ -21,15 +21,26 @@ export default function MobileContactSection() {
       className="w-full"
     >
       <div className="px-4 py-12 max-w-md mx-auto">
-      
-        {/* Title & Description */}
-        <div className="mb-12">
-          <h1 className="font-black text-black leading-tight text-3xl md:text-4xl mb-4">
+        {/* Title */}
+        <div className="mb-8">
+          <h1 className="font-black text-black leading-tight text-3xl md:text-4xl mb-4 scroll-mt-[90px]">
             Let&apos;s Talk
           </h1>
           <p className="text-gray-600 text-sm font-normal leading-relaxed">
             Have a project in mind? Let&apos;s create something great together.
           </p>
+        </div>
+
+        {/* Video */}
+        <div className="mb-8 rounded-xl overflow-hidden w-full aspect-square">
+          <video
+            src="/video/Contact-page-video.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+          />
         </div>
 
         {/* Contact Information */}

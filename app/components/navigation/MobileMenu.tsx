@@ -3,12 +3,31 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+const mobileStyles = `
+  @media (max-width: 768px) {
+    html {
+      scroll-padding-top: 120px;
+    }
+    #mobile-home,
+    #mobile-intro,
+    #mobile-services,
+    #mobile-case-studies,
+    #mobile-contact {
+      scroll-margin-top: 80px;
+    }
+  }
+`;
+
 export default function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleNavClick = () => {
+    toggleMenu();
   };
 
   useEffect(() => {
@@ -22,6 +41,7 @@ export default function MobileMenu() {
 
   return (
     <>
+      <style>{mobileStyles}</style>
       {/* Sticky Header */}
       <div
         className={`md:hidden fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 transition-all duration-300 ${
@@ -71,36 +91,36 @@ export default function MobileMenu() {
             <div className="pt-20 px-5 pb-8 space-y-3">
               <a
                 href="#mobile-home"
-                className="block py-3 text-gray-900 font-semibold text-base hover:text-gray-600 transition-colors"
-                onClick={toggleMenu}
+                className="block py-10 text-gray-900 font-semibold text-7xl hover:text-gray-600 transition-colors"
+                onClick={handleNavClick}
               >
                 Home
               </a>
               <a
                 href="#mobile-intro"
-                className="block py-3 text-gray-900 font-semibold text-base hover:text-gray-600 transition-colors"
-                onClick={toggleMenu}
+                className="block py-10 text-gray-900 font-semibold text-7xl hover:text-gray-600 transition-colors"
+                onClick={handleNavClick}
               >
                 About
               </a>
               <a
                 href="#mobile-services"
-                className="block py-3 text-gray-900 font-semibold text-base hover:text-gray-600 transition-colors"
-                onClick={toggleMenu}
+                className="block py-10 text-gray-900 font-semibold text-7xl hover:text-gray-600 transition-colors"
+                onClick={handleNavClick}
               >
                 Services
               </a>
               <a
                 href="#mobile-case-studies"
-                className="block py-3 text-gray-900 font-semibold text-base hover:text-gray-600 transition-colors"
-                onClick={toggleMenu}
+                className="block py-10 text-gray-900 font-semibold text-7xl hover:text-gray-600 transition-colors"
+                onClick={handleNavClick}
               >
                 Work
               </a>
               <a
                 href="#mobile-contact"
-                className="block py-3 text-gray-900 font-semibold text-base hover:text-gray-600 transition-colors"
-                onClick={toggleMenu}
+                className="block py-10 text-gray-900 font-semibold text-7xl hover:text-gray-600 transition-colors"
+                onClick={handleNavClick}
               >
                 Contact
               </a>

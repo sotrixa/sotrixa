@@ -34,7 +34,7 @@ export default function MobileHomeSection() {
 
         {/* Hero Headline */}
         <div className="mb-8">
-          <h1 className="font-black text-black leading-tight text-4xl md:text-5xl">
+          <h1 className="font-black text-black leading-tight text-4xl md:text-5xl scroll-mt-[90px]">
             We are a <span style={{ color: "#53EBDD" }}>strategy</span> lab for{" "}
             <span style={{ color: "#DD53EB" }}>visionary</span>{" "}
             <span style={{ color: "#EBDD53" }}>thinkers</span>

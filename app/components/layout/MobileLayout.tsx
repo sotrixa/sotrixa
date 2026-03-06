@@ -182,30 +182,31 @@ function MobileLayoutComponent({ children }: Props) {
 
           {/* Links Section - Compact */}
           <div className="flex gap-6 mb-8 pb-8 border-b border-gray-800">
-            <a
-              href="#mobile-home"
-              className="text-sm text-gray-300 hover:text-white transition-colors"
-            >
-              Home
-            </a>
-            <a
-              href="/#mobile-services"
-              className="text-sm text-gray-300 hover:text-white transition-colors"
-            >
-              Services
-            </a>
-            <a
-              href="/#mobile-case-studies"
-              className="text-sm text-gray-300 hover:text-white transition-colors"
-            >
-              Work
-            </a>
-            <a
-              href="/#mobile-contact"
-              className="text-sm text-gray-300 hover:text-white transition-colors"
-            >
-              Contact
-            </a>
+            {[
+              { label: "Home", id: "mobile-home" },
+              { label: "Services", id: "mobile-services" },
+              { label: "Work", id: "mobile-case-studies" },
+              { label: "Contact", id: "mobile-contact" },
+            ].map(({ label, id }) => (
+              <button
+                key={id}
+                onClick={() => {
+                  const h1 = document.querySelector(
+                    `#${id} h1`,
+                  ) as HTMLElement | null;
+                  const target = h1 || document.getElementById(id);
+                  if (target) {
+                    target.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                    });
+                  }
+                }}
+                className="text-sm text-gray-300 hover:text-white transition-colors cursor-pointer bg-transparent border-none p-0"
+              >
+                {label}
+              </button>
+            ))}
           </div>
 
           {/* Copyright - Compact */}

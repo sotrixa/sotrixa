@@ -39,11 +39,29 @@ export default function MobileServicesSection() {
     sortedWords.forEach(({ word, color }, i) => {
       const wordIndex = rawTitleText.indexOf(word, lastIndex);
       if (wordIndex > lastIndex) {
-        elements.push(
-          <span key={`text-${i}`}>
-            {rawTitleText.substring(lastIndex, wordIndex)}
-          </span>,
-        );
+        const textBefore = rawTitleText.substring(lastIndex, wordIndex);
+        // Handle em-dash styling
+        if (textBefore.includes("—")) {
+          const parts = textBefore.split("—");
+          elements.push(<span key={`text-${i}-before`}>{parts[0]}</span>);
+          elements.push(
+            <span
+              key={`dash-${i}`}
+              style={{
+                fontSize: "0.6em",
+                fontWeight: "200",
+                transform: "scaleX(0.5)",
+                display: "inline-block",
+              }}
+            >
+              –
+            </span>,
+          );
+          if (parts[1])
+            elements.push(<span key={`text-${i}-after`}>{parts[1]}</span>);
+        } else {
+          elements.push(<span key={`text-${i}`}>{textBefore}</span>);
+        }
       }
       elements.push(
         <span key={`colored-${i}`} style={{ color }}>
@@ -53,9 +71,28 @@ export default function MobileServicesSection() {
       lastIndex = wordIndex + word.length;
     });
     if (lastIndex < rawTitleText.length) {
-      elements.push(
-        <span key="text-end">{rawTitleText.substring(lastIndex)}</span>,
-      );
+      const remainingText = rawTitleText.substring(lastIndex);
+      if (remainingText.includes("—")) {
+        const parts = remainingText.split("—");
+        elements.push(<span key="text-end-before">{parts[0]}</span>);
+        elements.push(
+          <span
+            key="dash-end"
+            style={{
+              fontSize: "0.6em",
+              fontWeight: "200",
+              transform: "scaleX(0.5)",
+              display: "inline-block",
+            }}
+          >
+            –
+          </span>,
+        );
+        if (parts[1])
+          elements.push(<span key="text-end-after">{parts[1]}</span>);
+      } else {
+        elements.push(<span key="text-end">{remainingText}</span>);
+      }
     }
     return elements;
   };
@@ -76,11 +113,9 @@ export default function MobileServicesSection() {
       className="w-full"
     >
       <div className="px-4 py-12 max-w-md mx-auto">
-       
-
         {/* Title & Subtitle */}
         <div className="mb-12">
-          <h1 className="font-black text-black leading-tight text-3xl md:text-4xl mb-4">
+          <h1 className="font-black text-black leading-tight text-3xl md:text-4xl mb-4 scroll-mt-[90px]">
             {renderColoredTitle()}
           </h1>
           <p className="text-gray-600 text-sm font-normal leading-relaxed">

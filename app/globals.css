@@ -205,6 +205,10 @@ body {
 		-webkit-overflow-scrolling: touch;
 	}
 
+	html {
+		scroll-padding-top: 100px;
+	}
+
 	/* Remove global top padding & dark background on mobile */
 	body {
 		padding-top: 0;

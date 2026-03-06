@@ -1,162 +1,108 @@
 "use client";
 
 import React from "react";
+import { serviceContents } from "../desktop/ServiceInfoSection/data/serviceContents";
 
 interface MobileServiceInfoSectionProps {
   onBackClick?: () => void;
   activeService?: string;
 }
 
-interface ServiceContent {
-  title: string;
-  description: string[];
-  values: {
-    title: string;
-    content?: string;
-  }[];
-}
-
-const serviceContents: Record<string, ServiceContent> = {
-  "CREATED TO MATTER": {
-    title:
-      "Empowering bold ideas with strategies that align vision, purpose, and growth.",
-    description: [
-      "Sotrixa partners with visionary entrepreneurs, creatives, and changemakers—those building with purpose and seeking clarity along the way.",
-      "We work closely to translate bold ideas into aligned, authentic strategies that are ready for real-world growth.",
-    ],
-    values: [
-      {
-        title: "Impact",
-        content:
-          "Through deep research, sharp analysis, and strategic design, vision becomes structure—turning potential into direction, and ambition into action.",
-      },
-      {
-        title: "Meaning",
-        content:
-          "Beyond client work, Sotrixa invests in artistic and educational initiatives, giving under-resourced children access to imagination, learning, and creative self-expression.",
-      },
-    ],
-  },
+const colorMappings: Record<string, Record<string, string>> = {
   RESEARCH: {
-    title:
-      "Deep research, nuanced insight, and future-facing signals that shape powerful strategies.",
-    description: [
-      "At Sotrixa, research is a journey of co-discovery—driven by curiosity, shaped by context, and grounded in your vision.",
-      "Together, we listen between the lines, observe subtle patterns, and trace emerging signals that guide strategic decisions.",
-    ],
-    values: [
-      {
-        title: "Curiosity",
-        content:
-          "By blending human stories with data-driven insights, we craft nuanced research journeys—through in-depth interviews, thoughtful surveys, cultural listening, and pattern-sensing.",
-      },
-      {
-        title: "Conscience",
-        content:
-          "What we uncover together: Category Analysis, Competitive Analysis, Consumer Behavior Insights, Trend Scanning & Forecasting, and Audience Segmentation.",
-      },
-    ],
+    research: "#53EBDD",
+    signals: "#53EBDD",
+    strategies: "#EBDD53",
   },
   "BUSINESS ARCHITECTURE": {
-    title:
-      "Turning vision into a structured, evolving business—ready for real-world growth.",
-    description: [
-      "Every idea holds immense potential, but to thrive, it needs form, coherence, and a structure that sustains growth.",
-      "At Sotrixa, we shape the fundamental elements of your business—what you offer, how you function, and the role you are meant to play.",
-    ],
-    values: [
-      {
-        title: "Structure",
-        content:
-          "Through co-creation, we translate concepts into frameworks and possibilities into actionable plans. Business Model Design, Offer Design & Positioning, and Operational Frameworks.",
-      },
-      {
-        title: "Scalability",
-        content:
-          "We help define Mission, Vision & Values—the deeper truths that guide your evolution, while creating Growth Pathways to strategize expansion.",
-      },
-    ],
+    vision: "#DD53EB",
+    structured: "#53EBDD",
+    growth: "#EBDD53",
   },
   "BESPOKE STRATEGY CREATION": {
-    title:
-      "Precision-crafted roadmaps that move your vision forward with clarity, coherence, and purpose.",
-    description: [
-      "No two businesses move at the same rhythm.",
-      "At Sotrixa, strategy honors your unique goals, capacity, and context—designing roadmaps that are intelligent, flexible, and fully aligned with your evolution.",
-    ],
-    values: [
-      {
-        title: "Precision",
-        content:
-          "Whether you are launching something new, expanding reach, refining an offer, or exploring partnerships, each strategic layer moves vision into structured momentum.",
-      },
-      {
-        title: "Adaptability",
-        content:
-          "From go-to-market approaches and visibility plans to audience engagement, growth models, and positioning strategies.",
-      },
-    ],
+    vision: "#DD53EB",
+    clarity: "#53EBDD",
+    purpose: "#EBDD53",
   },
   "BRAND STORYTELLING": {
-    title:
-      "Bringing your business's true story to life—visually, verbally, and emotionally.",
-    description: [
-      "A brand is the memory, the feeling, the story people carry after they meet you.",
-      "At Sotrixa, branding is an act of alignment: we listen deeply to what your business is becoming and translate that into visual and verbal identities that feel alive and true.",
-    ],
-    values: [
-      {
-        title: "Authenticity",
-        content:
-          "We create logos, color palettes, typography, design elements, and voice and tone guidelines—crafted with precision and emotional resonance.",
-      },
-      {
-        title: "Distinction",
-        content:
-          "Your brand becomes an invitation: a true reflection of your story, ready to connect and inspire.",
-      },
-    ],
+    Bringing: "#DD53EB",
+    story: "#53EBDD",
+    emotionally: "#EBDD53",
   },
   MARKETING: {
-    title:
-      "Expanding your presence with soulful marketing strategies that resonate and move.",
-    description: [
-      "Marketing is the movement of your story into the world—the choreography of voice, vision, and presence.",
-      "At Sotrixa, we craft marketing strategies that are intelligent, soulful, and grounded in authenticity.",
-    ],
-    values: [
-      {
-        title: "Creativity",
-        content:
-          "From channel strategies and campaign direction to content pillars and creative activations, every element amplifies your voice with coherence and clarity.",
-      },
-      {
-        title: "Measurement",
-        content:
-          "We design collaborations and strategic initiatives that expand your reach with purpose and impact, building sustainable momentum for your brand.",
-      },
-    ],
+    presence: "#DD53EB",
+    strategies: "#53EBDD",
+    move: "#EBDD53",
   },
   "WEBSITE DEVELOPMENT": {
-    title:
-      "Crafting websites where form meets feeling, and strategy becomes tangible experience.",
-    description: [
-      "Your website is the home of your vision—where strategy meets experience and form meets feeling.",
-      "At Sotrixa, we design digital spaces that are beautiful, functional, and reflect your brand's essence while guiding your audience into connection and action.",
-    ],
-    values: [
-      {
-        title: "Usability",
-        content:
-          "Rooted in clarity, crafted with care, your website becomes a living, evolving expression of everything you stand for.",
-      },
-      {
-        title: "Performance",
-        content:
-          "We build responsive, accessible experiences optimized to deliver your message with impact, creating seamless journeys that engage and convert.",
-      },
-    ],
+    websites: "#DD53EB",
+    feeling: "#53EBDD",
+    experience: "#EBDD53",
   },
+};
+
+const renderStyledTitle = (title: string, service: string) => {
+  const colors = colorMappings[service] || {};
+  const dashParts = title.split(/(—|–|-)/g);
+
+  return (
+    <span>
+      {dashParts.map((dashPart, dashIndex) => {
+        if (dashPart === "—" || dashPart === "–" || dashPart === "-") {
+          return (
+            <span
+              key={dashIndex}
+              style={{
+                fontSize: "1em",
+                fontWeight: "200",
+                transform: "scaleX(0.5)",
+                display: "inline-block",
+              }}
+            >
+              –
+            </span>
+          );
+        }
+
+        const words = dashPart.split(" ");
+        return words.map((word, wordIndex) => {
+          const cleanWord = word.replace(/[.,!?;:]$/, "");
+          const punctuation = word.match(/[.,!?;:]$/)?.[0] || "";
+          const color = colors[cleanWord];
+
+          return (
+            <span key={`${dashIndex}-${wordIndex}`}>
+              {color ? <span style={{ color }}>{cleanWord}</span> : cleanWord}
+              {punctuation}
+              {wordIndex < words.length - 1 ? " " : ""}
+            </span>
+          );
+        });
+      })}
+    </span>
+  );
+};
+
+const renderTextWithStyledDashes = (text: string) => {
+  const parts = text.split(/(—|–|-)/g);
+  return parts.map((part, i) => {
+    if (part === "—" || part === "–" || part === "-") {
+      return (
+        <span
+          key={i}
+          style={{
+            fontSize: "1em",
+            fontWeight: "200",
+            transform: "scaleX(0.5)",
+            display: "inline-block",
+          }}
+        >
+          –
+        </span>
+      );
+    }
+    return <span key={i}>{part}</span>;
+  });
 };
 
 const MobileServiceInfoSection: React.FC<MobileServiceInfoSectionProps> = ({
@@ -197,38 +143,74 @@ const MobileServiceInfoSection: React.FC<MobileServiceInfoSectionProps> = ({
       <div className="flex-1 flex flex-col px-4 py-8 max-w-md mx-auto w-full">
         {/* Title */}
         <h1 className="text-2xl font-black text-black mb-8 leading-snug">
-          {currentContent.title}
+          {renderStyledTitle(currentContent.title, activeService || "RESEARCH")}
         </h1>
 
         {/* Description Paragraphs */}
-        <div className="mb-10 space-y-4">
-          {currentContent.description.map((paragraph, idx) => (
-            <p
-              key={idx}
-              className="text-gray-700 text-sm leading-relaxed font-normal"
-            >
-              {paragraph}
-            </p>
-          ))}
-        </div>
+        <div className="mb-10 space-y-3">
+          {currentContent.description.map((paragraph, idx) => {
+            // Bullet points with colored dots
+            if (paragraph.startsWith("•")) {
+              const parts = paragraph.substring(1).trim().split("–");
+              const bulletTitle = parts[0].trim();
+              const bulletContent = parts.length > 1 ? parts[1].trim() : "";
 
-        {/* Values Section */}
-        <div className="space-y-6">
-          {currentContent.values.map((value, idx) => (
-            <div
-              key={idx}
-              className={`${idx !== 0 ? "border-t border-gray-200 pt-6" : ""}`}
-            >
-              <h3 className="font-bold text-black text-sm mb-3">
-                {value.title}
-              </h3>
-              {value.content && (
-                <p className="text-gray-600 text-xs leading-relaxed font-normal">
-                  {value.content}
+              return (
+                <div key={idx} className="flex items-start gap-2">
+                  <span className="text-[#DD53EB] mt-0.5 flex-shrink-0 text-lg">
+                    •
+                  </span>
+                  <div>
+                    <span className="font-medium text-gray-800 text-sm">
+                      {bulletTitle}
+                    </span>
+                    {bulletContent && (
+                      <>
+                        {" "}
+                        <span
+                          style={{
+                            fontSize: "1em",
+                            fontWeight: "200",
+                            transform: "scaleX(0.5)",
+                            display: "inline-block",
+                          }}
+                        >
+                          –
+                        </span>{" "}
+                        <span className="text-gray-600 text-sm">
+                          {renderTextWithStyledDashes(bulletContent)}
+                        </span>
+                      </>
+                    )}
+                  </div>
+                </div>
+              );
+            }
+
+            // Section headers
+            if (paragraph.endsWith(":​")) {
+              return (
+                <p
+                  key={idx}
+                  className="text-gray-700 font-medium mt-4 mb-2 text-sm"
+                >
+                  {paragraph}
                 </p>
-              )}
-            </div>
-          ))}
+              );
+            }
+
+            // Empty line spacing
+            if (paragraph === "") {
+              return <div key={idx} className="h-2" />;
+            }
+
+            // Regular paragraphs
+            return (
+              <p key={idx} className="text-gray-700 leading-relaxed text-sm">
+                {renderTextWithStyledDashes(paragraph)}
+              </p>
+            );
+          })}
         </div>
       </div>
     </div>
