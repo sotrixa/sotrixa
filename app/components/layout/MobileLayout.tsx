@@ -138,23 +138,24 @@ function MobileLayoutComponent({ children }: Props) {
       <main className="w-full">{children}</main>
 
       {/* Mobile footer */}
-      <footer className="bg-black text-white py-8 px-4">
-        <div className="container mx-auto">
-          <div className="flex justify-between items-center flex-wrap">
-            <div className="mb-4 md:mb-0">
+      <footer className="bg-black text-white">
+        <div className="max-w-md mx-auto px-4 py-8">
+          {/* Logo and Social - Side by side */}
+          <div className="flex items-start justify-between mb-8">
+            <div style={{ filter: "brightness(0) invert(1)" }}>
               <Image
                 src="/sotrixa-logo.webp"
                 alt="Sotrixa Logo"
-                width={100}
-                height={33}
+                width={50}
+                height={16}
               />
             </div>
-            <div className="flex space-x-4">
+            <div className="flex gap-2">
               <a
                 href="https://www.instagram.com/sotrixa"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-teal-400 transition-colors"
+                className="w-8 h-8 rounded flex items-center justify-center text-gray-300 hover:text-white transition-colors duration-200 cursor-pointer"
                 aria-label="Instagram"
               >
                 <svg
@@ -169,7 +170,7 @@ function MobileLayoutComponent({ children }: Props) {
                 href="https://www.linkedin.com/company/sotrixa"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-teal-400 transition-colors"
+                className="w-8 h-8 rounded flex items-center justify-center text-gray-300 hover:text-white transition-colors duration-200 cursor-pointer"
                 aria-label="LinkedIn"
               >
                 <svg
@@ -182,7 +183,37 @@ function MobileLayoutComponent({ children }: Props) {
               </a>
             </div>
           </div>
-          <div className="mt-6 text-sm text-gray-400">
+
+          {/* Links Section - Compact */}
+          <div className="flex gap-6 mb-8 pb-8 border-b border-gray-800">
+            <a
+              href="/"
+              className="text-sm text-gray-300 hover:text-white transition-colors"
+            >
+              Home
+            </a>
+            <a
+              href="/#mobile-services"
+              className="text-sm text-gray-300 hover:text-white transition-colors"
+            >
+              Services
+            </a>
+            <a
+              href="/#mobile-case-studies"
+              className="text-sm text-gray-300 hover:text-white transition-colors"
+            >
+              Work
+            </a>
+            <a
+              href="/#mobile-contact"
+              className="text-sm text-gray-300 hover:text-white transition-colors"
+            >
+              Contact
+            </a>
+          </div>
+
+          {/* Copyright - Compact */}
+          <div className="text-xs text-gray-500">
             © {new Date().getFullYear()} Sotrixa. All rights reserved.
           </div>
         </div>

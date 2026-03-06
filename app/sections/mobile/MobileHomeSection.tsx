@@ -20,63 +20,58 @@ export default function MobileHomeSection() {
   };
 
   return (
-    <section id="mobile-home" className="w-full bg-white">
-      <div className="px-5 pt-16 pb-10">
-        {/* Brand */}
-        <div className="mb-8">
-          <span className="text-[11px] font-bold tracking-widest text-gray-500 uppercase">
-            Sotrixa
-          </span>
-        </div>
+    <section
+      id="mobile-home"
+      style={{ backgroundColor: "#fbfbfb" }}
+      className="w-full min-h-screen"
+    >
+      <div className="px-4 pt-28 pb-16 max-w-md mx-auto">
+        {/* Brand Label */}
 
-        {/* Hero */}
+        {/* Hero Headline */}
         <div className="mb-8">
-          <h1
-            className="font-black text-black leading-tight"
-            style={{ fontSize: "1.75rem" }}
-          >
+          <h1 className="font-black text-black leading-tight text-4xl md:text-5xl">
             We are a <span style={{ color: "#53EBDD" }}>strategy</span> lab for{" "}
             <span style={{ color: "#DD53EB" }}>visionary</span>{" "}
             <span style={{ color: "#EBDD53" }}>thinkers</span>
           </h1>
         </div>
 
-        <p className="text-gray-600 text-sm leading-relaxed mb-8">
+        {/* Description */}
+        <p className="text-gray-600 text-sm leading-relaxed mb-12 font-normal">
           {getText("homeSection.paragraph", language)}
         </p>
 
-        {/* Video */}
-        <div className="mb-8 rounded-lg overflow-hidden bg-black">
-          <div className="aspect-video bg-black">
-            <video
-              ref={videoRef}
-              src="/video/0223.mp4"
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full h-full object-cover"
-            />
-          </div>
+        {/* Video Section - Centered */}
+        <div className="mb-12 rounded-xl overflow-hidden bg-gray-900 mx-auto w-full">
+          <video
+            ref={videoRef}
+            src="/video/0223.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-auto object-contain block"
+          />
         </div>
 
-        {/* Buttons */}
+        {/* CTA Buttons */}
         <div className="space-y-2.5">
           <button
             onClick={() => scrollToSection("mobile-contact")}
-            className="w-full py-3 bg-black text-white font-semibold text-sm rounded-lg transition-opacity active:opacity-80"
+            className="w-full py-3 px-4 bg-black text-white font-semibold text-sm rounded-lg transition-all duration-200 active:scale-95 active:opacity-80 hover:bg-gray-900 cursor-pointer min-h-[40px]"
           >
             {getText("homeSection.talkToUs", language)}
           </button>
           <button
             onClick={() => scrollToSection("mobile-services")}
-            className="w-full py-3 bg-gray-100 text-black font-semibold text-sm rounded-lg transition-opacity active:opacity-80"
+            className="w-full py-3 px-4 bg-gray-100 text-black font-semibold text-sm rounded-lg transition-all duration-200 active:scale-95 active:opacity-80 hover:bg-gray-200 cursor-pointer min-h-[40px]"
           >
             What we do
           </button>
           <button
             onClick={() => scrollToSection("mobile-case-studies")}
-            className="w-full py-3 text-gray-700 font-semibold text-sm transition-opacity active:opacity-60"
+            className="w-full py-3 px-4 text-gray-700 font-semibold text-sm transition-all duration-200 active:opacity-60 hover:text-black cursor-pointer border-b border-gray-300 pb-2 min-h-[40px]"
           >
             See our work
           </button>

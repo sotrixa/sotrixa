@@ -169,18 +169,17 @@ const MobileServiceInfoSection: React.FC<MobileServiceInfoSectionProps> = ({
       : serviceContents["CREATED TO MATTER"];
 
   return (
-    <div className="fixed inset-0 z-50 w-full h-full bg-white overflow-auto flex flex-col">
-      {/* Content */}
-      <div className="flex-1 flex flex-col px-5 py-6">
-        {/* Back button */}
+    <div className="fixed inset-0 z-50 w-full h-full bg-white overflow-y-auto flex flex-col">
+      {/* Header with Back Button */}
+      <div className="sticky top-0 bg-white border-b border-gray-200 px-4 py-4">
         <button
           onClick={onBackClick}
-          className="flex items-center gap-2 text-gray-600 hover:text-black transition-colors mb-8 py-2 text-sm font-medium"
+          className="flex items-center gap-2 text-gray-600 hover:text-black transition-colors text-sm font-medium cursor-pointer min-h-[44px]"
           aria-label="Back to services"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4"
+            className="h-5 w-5"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
@@ -190,35 +189,41 @@ const MobileServiceInfoSection: React.FC<MobileServiceInfoSectionProps> = ({
               clipRule="evenodd"
             />
           </svg>
-          Back
+          <span>Back</span>
         </button>
+      </div>
 
+      {/* Content */}
+      <div className="flex-1 flex flex-col px-4 py-8 max-w-md mx-auto w-full">
         {/* Title */}
-        <h1 className="text-lg font-black text-black mb-6 leading-tight">
+        <h1 className="text-2xl font-black text-black mb-8 leading-snug">
           {currentContent.title}
         </h1>
 
-        {/* Description */}
-        <div className="mb-8 space-y-3">
+        {/* Description Paragraphs */}
+        <div className="mb-10 space-y-4">
           {currentContent.description.map((paragraph, idx) => (
-            <p key={idx} className="text-gray-700 text-sm leading-relaxed">
+            <p
+              key={idx}
+              className="text-gray-700 text-sm leading-relaxed font-normal"
+            >
               {paragraph}
             </p>
           ))}
         </div>
 
-        {/* Values */}
-        <div className="space-y-4">
+        {/* Values Section */}
+        <div className="space-y-6">
           {currentContent.values.map((value, idx) => (
             <div
               key={idx}
-              className="border-t border-gray-200 pt-4 first:border-t-0 first:pt-0"
+              className={`${idx !== 0 ? "border-t border-gray-200 pt-6" : ""}`}
             >
-              <h3 className="font-bold text-black text-sm mb-2">
+              <h3 className="font-bold text-black text-sm mb-3">
                 {value.title}
               </h3>
               {value.content && (
-                <p className="text-gray-600 text-xs leading-relaxed">
+                <p className="text-gray-600 text-xs leading-relaxed font-normal">
                   {value.content}
                 </p>
               )}

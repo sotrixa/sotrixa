@@ -70,39 +70,50 @@ export default function MobileServicesSection() {
   }
 
   return (
-    <section id="mobile-services" className="w-full bg-white">
-      <div className="px-5 py-10">
-        {/* Label */}
-        <div className="mb-6">
-          <span className="text-[11px] font-bold tracking-widest text-gray-500 uppercase">
-            Services
-          </span>
-        </div>
+    <section
+      id="mobile-services"
+      style={{ backgroundColor: "#fbfbfb" }}
+      className="w-full"
+    >
+      <div className="px-4 py-12 max-w-md mx-auto">
+       
 
-        {/* Title */}
-        <div className="mb-8">
-          <h1
-            className="font-black text-black leading-tight"
-            style={{ fontSize: "1.625rem" }}
-          >
+        {/* Title & Subtitle */}
+        <div className="mb-12">
+          <h1 className="font-black text-black leading-tight text-3xl md:text-4xl mb-4">
             {renderColoredTitle()}
           </h1>
-          <p className="text-gray-600 text-xs mt-3">{subtitleTranslation}</p>
+          <p className="text-gray-600 text-sm font-normal leading-relaxed">
+            {subtitleTranslation}
+          </p>
         </div>
 
-        {/* List */}
-        <div className="space-y-1">
+        {/* Services List */}
+        <div className="space-y-3">
           {services.map((service, index) => (
             <button
               key={service}
               onClick={() => handleServiceClick(index)}
-              className={`w-full text-left px-4 py-3 rounded-lg transition-all text-sm font-medium ${
+              className={`w-full text-left px-5 py-4 rounded-lg transition-all duration-200 text-sm font-semibold cursor-pointer min-h-[48px] flex items-center group ${
                 index === activeServiceIndex
-                  ? "bg-black text-white"
-                  : "text-gray-700 hover:bg-gray-50"
+                  ? "bg-black text-white shadow-md scale-100"
+                  : "text-gray-700 hover:bg-gray-100 active:bg-gray-200 active:scale-98"
               }`}
             >
-              {service}
+              <span className="flex-1">{service}</span>
+              {index === activeServiceIndex && (
+                <svg
+                  className="w-5 h-5 text-white"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              )}
             </button>
           ))}
         </div>

@@ -84,21 +84,17 @@ export default function MobileIntroSection() {
   return (
     <>
       {renderVideoOverlay()}
-      <section id="mobile-intro" className="w-full bg-white">
-        <div className="px-5 py-10">
-          {/* Label */}
-          <div className="mb-6">
-            <span className="text-[11px] font-bold tracking-widest text-gray-500 uppercase">
-              About
-            </span>
-          </div>
+      <section
+        id="mobile-intro"
+        style={{ backgroundColor: "#fbfbfb" }}
+        className="w-full"
+      >
+        <div className="px-4 py-12 max-w-md mx-auto">
+          {/* Section Label */}
 
           {/* Title */}
-          <div className="mb-8">
-            <h1
-              className="font-black text-black leading-tight"
-              style={{ fontSize: "1.625rem" }}
-            >
+          <div className="mb-10">
+            <h1 className="font-black text-black leading-tight text-3xl md:text-4xl">
               {renderColoredText(titleText[0] || "")}
               {titleText[1] && (
                 <>
@@ -110,34 +106,37 @@ export default function MobileIntroSection() {
           </div>
 
           {/* Video Thumbnail */}
-          <div className="mb-8" onClick={handlePlayClick}>
-            <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-gray-100 cursor-pointer">
-              <Image
-                src="/About-us-cover.svg"
-                alt="Sotrixa"
-                fill
-                className="object-contain"
-                sizes="100vw"
-              />
-              <div className="absolute inset-0 bg-black/5 flex items-center justify-center">
-                <div className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center">
-                  <svg
-                    className="w-5 h-5 text-black ml-0.5"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" />
-                  </svg>
-                </div>
+          <div
+            className="mb-12 rounded-xl overflow-hidden mx-auto w-4/5 cursor-pointer relative"
+            onClick={handlePlayClick}
+          >
+            <Image
+              src="/About-us-cover.svg"
+              alt="Sotrixa About Us"
+              width={500}
+              height={500}
+              className="w-full h-auto object-contain block"
+              sizes="100vw"
+              priority
+            />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-14 h-14 rounded-full bg-white hover:bg-white/90 flex items-center justify-center transition-all duration-200 shadow-lg">
+                <svg
+                  className="w-6 h-6 text-black ml-0.5"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" />
+                </svg>
               </div>
             </div>
           </div>
 
-          {/* Text */}
-          <h2 className="font-bold text-black text-base mb-3">
+          {/* Content */}
+          <h2 className="font-bold text-black text-lg mb-4 leading-snug">
             {subheadingText}
           </h2>
-          <p className="text-gray-600 text-sm leading-relaxed">
+          <p className="text-gray-600 text-sm leading-relaxed font-normal">
             {testimonialText}
           </p>
         </div>

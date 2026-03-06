@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-// Using standard img tag for SVG support
 import gsap from "gsap";
 
 type CaseStudy = {
@@ -98,45 +97,43 @@ export default function CaseStudyDetailMobile({
       ref={detailRef}
       className="fixed inset-0 bg-white z-50 overflow-y-auto"
     >
-      <div className="px-5 pb-8">
-        {/* Header with close button */}
-        <div className="flex justify-between items-center sticky top-0 bg-white py-4 mb-6 border-b border-gray-100">
-          <h2 className="text-sm font-semibold text-gray-900">Case Study</h2>
-          <button
-            onClick={handleClose}
-            className="text-gray-600 hover:text-black transition-colors"
-            aria-label="Close case study"
+      {/* Header with close button */}
+      <div className="sticky top-0 bg-white border-b border-gray-200 px-4 py-4 flex justify-between items-center">
+        <h2 className="text-sm font-semibold text-gray-900">Case Study</h2>
+        <button
+          onClick={handleClose}
+          className="text-gray-600 hover:text-black transition-colors cursor-pointer p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+          aria-label="Close case study"
+        >
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-        </div>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
 
-        {/* Title */}
-        <div ref={titleRef} className="mb-6">
-          <h1
-            className="text-2xl font-black text-black mb-2"
-            style={{ lineHeight: 1 }}
-          >
+      {/* Content */}
+      <div className="px-4 py-8 max-w-md mx-auto">
+        {/* Title Section */}
+        <div ref={titleRef} className="mb-8">
+          <h1 className="text-2xl font-black text-black mb-3 leading-snug">
             {study.title}
           </h1>
-          <p className="text-sm text-gray-600">{study.subtitle}</p>
+          <p className="text-sm text-gray-600 font-normal">{study.subtitle}</p>
         </div>
 
         {/* Main Image */}
-        <div ref={imageRef} className="mb-8">
-          <div className="relative w-full h-64 rounded-lg overflow-hidden bg-gray-50 p-4">
+        <div ref={imageRef} className="mb-10">
+          <div className="relative w-full h-64 rounded-xl overflow-hidden bg-gray-50 p-6 shadow-sm">
             <img
               src={study.image}
               alt={study.title}
@@ -149,35 +146,35 @@ export default function CaseStudyDetailMobile({
         <div ref={contentRef} className="space-y-6 pb-12">
           {study.description && (
             <div>
-              <h3 className="font-bold text-black text-sm mb-2">Overview</h3>
-              <p className="text-gray-700 text-xs leading-relaxed">
+              <h3 className="font-bold text-black text-sm mb-3">Overview</h3>
+              <p className="text-gray-700 text-sm leading-relaxed font-normal">
                 {study.description}
               </p>
             </div>
           )}
 
           {study.challenge && (
-            <div className="border-t border-gray-200 pt-4">
-              <h3 className="font-bold text-black text-sm mb-2">Challenge</h3>
-              <p className="text-gray-700 text-xs leading-relaxed">
+            <div className="border-t border-gray-200 pt-6">
+              <h3 className="font-bold text-black text-sm mb-3">Challenge</h3>
+              <p className="text-gray-700 text-sm leading-relaxed font-normal">
                 {study.challenge}
               </p>
             </div>
           )}
 
           {study.solution && (
-            <div className="border-t border-gray-200 pt-4">
-              <h3 className="font-bold text-black text-sm mb-2">Solution</h3>
-              <p className="text-gray-700 text-xs leading-relaxed">
+            <div className="border-t border-gray-200 pt-6">
+              <h3 className="font-bold text-black text-sm mb-3">Solution</h3>
+              <p className="text-gray-700 text-sm leading-relaxed font-normal">
                 {study.solution}
               </p>
             </div>
           )}
 
           {study.results && (
-            <div className="border-t border-gray-200 pt-4">
-              <h3 className="font-bold text-black text-sm mb-2">Results</h3>
-              <p className="text-gray-700 text-xs leading-relaxed">
+            <div className="border-t border-gray-200 pt-6">
+              <h3 className="font-bold text-black text-sm mb-3">Results</h3>
+              <p className="text-gray-700 text-sm leading-relaxed font-normal">
                 {study.results}
               </p>
             </div>
