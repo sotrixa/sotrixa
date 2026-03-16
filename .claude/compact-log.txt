@@ -1,5 +1,0 @@
-[Sun Jan 18 16:25:08 EET 2026] Compacting at null%
-[Sun Jan 18 19:37:35 EET 2026] Compacting at null%
-[Sun Jan 18 20:27:01 EET 2026] Compacting at null%
-[Mon Jan 19 13:09:48 EET 2026] Compacting at null%
-[Tue Jan 20 13:54:18 EET 2026] Compacting at null%
